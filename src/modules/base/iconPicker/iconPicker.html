@@ -29,7 +29,9 @@
                     id="toggleMenuButton"
                     type="button"
                     data-element-id="button-toggle-menu"
+                    onblur={handleBlur}
                     onclick={handleButtonClick}
+                    onfocus={handleFocus}
                 >
                     <label
                         if:true={menuLabel}
@@ -99,6 +101,8 @@
                     "
                     tabindex="0"
                     data-element-id="div-dropdown"
+                    onblur={handleBlur}
+                    onfocus={handleFocus}
                     onfocusin={handleMenuFocusIn}
                     onfocusout={handleMenuFocusOut}
                 >
@@ -119,8 +123,10 @@
                                 variant="label-hidden"
                                 data-element-id="lightning-input"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleSearchInput}
                                 onclick={stopPropagation}
+                                onfocus={handleFocus}
                             ></lightning-input>
                             <div
                                 class="
@@ -137,7 +143,9 @@
                                         tabs-hidden={nbHiddenCategories}
                                         data-element-id="avonni-builder-tab-bar"
                                         data-is-focusable
+                                        onblur={handleBlur}
                                         onclick={stopPropagation}
+                                        onfocus={handleFocus}
                                         onselect={handleTabSelect}
                                     ></c-tab-bar>
                                     <div
@@ -194,7 +202,9 @@
                                                             tabindex="0"
                                                             data-element-id="a-color"
                                                             data-icon={icon.value}
+                                                            onblur={handleBlur}
                                                             onclick={handlePreventDefaultStopPropagation}
+                                                            onfocus={handleFocus}
                                                             onkeydown={handleSelectIconFromKeyboard}
                                                         >
                                                             <span
@@ -239,7 +249,9 @@
                                                             read-only={readOnly}
                                                             role="option"
                                                             tabindex="0"
+                                                            onblur={handleBlur}
                                                             onclick={handlePreventDefaultStopPropagation}
+                                                            onfocus={handleFocus}
                                                             onkeydown={handleSelectIconFromKeyboard}
                                                         >
                                                             <span
@@ -281,7 +293,9 @@
                                         title={cancelButtonLabel}
                                         data-element-id="lightning-button-cancel"
                                         data-is-focusable
+                                        onblur={handleBlur}
                                         onclick={handleCancel}
+                                        onfocus={handleFocus}
                                     ></lightning-button>
                                     <lightning-button
                                         class="slds-m-left_x-small"
@@ -290,7 +304,9 @@
                                         variant="brand"
                                         data-element-id="lightning-button-done"
                                         data-is-focusable
+                                        onblur={handleBlur}
                                         onclick={handleDone}
+                                        onfocus={handleFocus}
                                     ></lightning-button>
                                 </div>
                             </footer>
@@ -313,6 +329,7 @@
                         value={computedValue}
                         data-element-id="input"
                         onblur={handleInputIconBlur}
+                        onfocus={handleFocus}
                         oninput={handleInputIcon}
                     />
                     <button
@@ -325,7 +342,9 @@
                         title={clearButtonAlternativeText}
                         type="button"
                         data-element-id="button-clear"
+                        onblur={handleBlur}
                         onclick={clearIconInput}
+                        onfocus={handleFocus}
                     >
                         <lightning-icon
                             class="slds-button__icon slds-icon-text-light"

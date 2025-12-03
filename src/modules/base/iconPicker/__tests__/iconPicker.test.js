@@ -1428,4 +1428,36 @@ describe('IconPicker', () => {
                 });
         });
     });
+
+    describe('Events', () => {
+        it('blur', () => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-toggle-menu"]'
+            );
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+            button.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+
+        it('focus', () => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-toggle-menu"]'
+            );
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+            button.dispatchEvent(new CustomEvent('focus'));
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
 });
