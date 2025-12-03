@@ -30,7 +30,9 @@
                 title={decrementButtonTitle}
                 variant="bare"
                 data-element-id="lightning-button-icon-decrement"
+                onblur={handleBlur}
                 onclick={handleDecrement}
+                onfocus={handleFocus}
             ></lightning-button-icon>
             <input
                 class={computedInputClass}
@@ -49,9 +51,9 @@
                 required={required}
                 step={step}
                 data-element-id="input"
-                onblur={handleBlur}
+                onblur={handleInputBlur}
                 onchange={handleChange}
-                onfocus={handleFocus}
+                onfocus={handleInputFocus}
                 onkeydown={handleKeyDown}
             />
             <lightning-button-icon
@@ -64,7 +66,9 @@
                 title={incrementButtonTitle}
                 variant="bare"
                 data-element-id="lightning-button-icon-increment"
+                onblur={handleBlur}
                 onclick={handleIncrement}
+                onfocus={handleFocus}
             ></lightning-button-icon>
             <div
                 if:true={helpMessage}
