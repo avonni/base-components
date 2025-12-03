@@ -947,6 +947,19 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Set the focus on the first focusable element.
+     *
+     * @public
+     */
+    @api focus() {
+        const focusableElement =
+            this.template.querySelector('[data-focusable]');
+        if (focusableElement) {
+            focusableElement.focus();
+        }
+    }
+
+    /**
      * Redo the last stroke that was undid.
      *
      * @public
@@ -1436,6 +1449,16 @@ export default class InputPen extends LightningElement {
         this.handleChange();
     }
 
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
+    }
+
     /**
      * Change event handler.
      */
@@ -1502,6 +1525,16 @@ export default class InputPen extends LightningElement {
             event.preventDefault();
             this.clear();
         }
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
     }
 
     /**
@@ -1621,5 +1654,33 @@ export default class InputPen extends LightningElement {
      */
     handleUndo() {
         this.undo();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the input.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the input.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
