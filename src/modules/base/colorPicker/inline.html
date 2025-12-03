@@ -54,7 +54,9 @@
                                 data-element-id="default"
                                 data-group-name="tabs"
                                 data-tab-name="default"
+                                onblur={handleBlur}
                                 onclick={handleTabClick}
+                                onfocus={handleFocus}
                                 >{defaultTabLabel}
                             </a>
                         </li>
@@ -75,7 +77,9 @@
                                 data-element-id="a-tokens-tab"
                                 data-group-name="tabs"
                                 data-tab-name="tokens"
+                                onblur={handleBlur}
                                 onclick={handleTabClick}
+                                onfocus={handleFocus}
                                 >{tokensTabLabel}
                             </a>
                         </li>
@@ -94,7 +98,9 @@
                                 data-element-id="custom"
                                 data-group-name="tabs"
                                 data-tab-name="custom"
+                                onblur={handleBlur}
                                 onclick={handleTabClick}
+                                onfocus={handleFocus}
                                 >{customTabLabel}
                             </a>
                         </li>
@@ -122,7 +128,9 @@
                             value={value}
                             variant={colorPaletteVariant}
                             data-element-id="avonni-color-palette"
+                            onblur={handleBlur}
                             onchange={handleColorPaletteChange}
+                            onfocus={handleFocus}
                         ></c-color-palette>
 
                         <!-- Color Gradient -->
@@ -135,7 +143,9 @@
                             read-only={readOnly}
                             value={computedGradientValue}
                             data-element-id="avonni-color-gradient"
+                            onblur={handleBlur}
                             onchange={handleColorGradientChange}
+                            onfocus={handleFocus}
                         ></c-color-gradient>
                     </div>
                 </div>

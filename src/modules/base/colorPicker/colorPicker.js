@@ -8,10 +8,10 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import inline from './inline.html';
 import standard from './standard.html';
-import { keyValues } from 'c/utilsPrivate';
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -1160,7 +1160,7 @@ export default class ColorPicker extends LightningElement {
         this.currentToken = {};
         this.focus();
 
-        this.dispatchClear();
+        this._dispatchClear();
     }
 
     /**
@@ -1340,6 +1340,31 @@ export default class ColorPicker extends LightningElement {
      */
 
     /**
+     * Handles a blur of any element in the color picker.
+     *
+     * @param {Event} event
+     */
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
+        if (
+            !this.isInsideMenu &&
+            this.dropdownVisible &&
+            !this.denyBlurOnMenuButtonClick &&
+            !this.tabPressed
+        ) {
+            this.toggleMenuVisibility();
+        }
+
+        this._dispatchBlur();
+    }
+
+    /**
      * Button click handler.
      */
     handleButtonClick() {
@@ -1445,10 +1470,25 @@ export default class ColorPicker extends LightningElement {
             this.value = this.newValue;
             this.newValue = null;
             const color = this.currentToken.color || this.value;
-            this.dispatchChange(generateColors(color));
+            this._dispatchChange(generateColors(color));
         }
 
         this.toggleMenuVisibility();
+    }
+
+    /**
+     * Handles the input focus
+     */
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
+        this.interactingState.enter();
+        this._dispatchFocus();
     }
 
     /**
@@ -1469,50 +1509,11 @@ export default class ColorPicker extends LightningElement {
             }
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = color;
-            this.dispatchChange(generateColors(color));
+            this._dispatchChange(generateColors(color));
         } else if (color === '') {
             this.clearInput();
         }
         event.stopPropagation();
-    }
-
-    /**
-     * Handles the input focus
-     */
-    handleInputFocus() {
-        this.interactingState.enter();
-        /**
-         * The event fired when the focus is set on the color picker input.
-         *
-         * @event
-         * @name focus
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    /**
-     * Handles a blur of any element in the color picker.
-     *
-     * @param {Event} event
-     */
-    handleMenuBlur() {
-        if (
-            !this.isInsideMenu &&
-            this.dropdownVisible &&
-            !this.denyBlurOnMenuButtonClick &&
-            !this.tabPressed
-        ) {
-            this.toggleMenuVisibility();
-        }
-        /**
-         * The event fired when the focus is removed from the color picker input.
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -1579,7 +1580,7 @@ export default class ColorPicker extends LightningElement {
             ) {
                 // eslint-disable-next-line @lwc/lwc/no-api-reassignments
                 this.value = this._lastSelectedDefault;
-                this.dispatchChange(generateColors(this.value));
+                this._dispatchChange(generateColors(this.value));
             } else if (
                 targetName === 'tokens' &&
                 this._lastSelectedToken &&
@@ -1587,7 +1588,7 @@ export default class ColorPicker extends LightningElement {
             ) {
                 // eslint-disable-next-line @lwc/lwc/no-api-reassignments
                 this.value = this._lastSelectedToken;
-                this.dispatchChange(generateColors(this.currentToken.color));
+                this._dispatchChange(generateColors(this.currentToken.color));
             }
         }
 
@@ -1611,12 +1612,29 @@ export default class ColorPicker extends LightningElement {
         this.loadPalette();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the color picker input.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
     /**
      * Change event dispatcher.
      *
      * @param {object} colors
      */
-    dispatchChange(colors) {
+    _dispatchChange(colors) {
         if (!this.disabled && !this.readOnly) {
             /**
              * The event fired when the color value changed.
@@ -1654,8 +1672,8 @@ export default class ColorPicker extends LightningElement {
      * Dispatches an event when the input is cleared.
      *
      */
-    dispatchClear() {
-        this.dispatchChange({
+    _dispatchClear() {
+        this._dispatchChange({
             hex: undefined,
             hexa: undefined,
             rgb: undefined,
@@ -1663,5 +1681,16 @@ export default class ColorPicker extends LightningElement {
             alpha: undefined,
             token: undefined
         });
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the color picker.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
