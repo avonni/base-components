@@ -187,6 +187,7 @@ export default class DateTimePicker extends LightningElement {
     _dateFormatWeekday = WEEKDAY_FORMATS.default;
     _dateFormatYear;
     _datePickerVariant = DATE_PICKER_VARIANTS.default;
+    _disabled = false;
     _disabledDateTimes = [];
     _endTime = DEFAULT_END_TIME;
     _hideDateLabel = false;
@@ -209,7 +210,6 @@ export default class DateTimePicker extends LightningElement {
     _showDisabledDates;
     _type = DATE_TIME_TYPES.default;
     _showTimeZone = false;
-    _disabled = false;
     _value;
     _variant = DATE_TIME_VARIANTS.default;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
@@ -1324,6 +1324,20 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Set the focus on the date time picker.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const focusableElement =
+            this.template.querySelector('[data-focusable]');
+        if (focusableElement) {
+            focusableElement.focus();
+        }
+    }
+
+    /**
      * Return the position of the date range label.
      *
      * @returns {DOMRect} Position of the date range label.
@@ -1990,6 +2004,16 @@ export default class DateTimePicker extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
+    }
+
     /**
      * Redispatches the navigate event coming from the monthly variant calendar.
      *
@@ -2001,6 +2025,16 @@ export default class DateTimePicker extends LightningElement {
                 detail: { date: event.detail.date }
             })
         );
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
     }
 
     /**
@@ -2213,6 +2247,7 @@ export default class DateTimePicker extends LightningElement {
         if (!this._valid) {
             this.classList.remove('slds-has-error');
         }
+        this.handleBlur();
     }
 
     /**
@@ -2220,6 +2255,7 @@ export default class DateTimePicker extends LightningElement {
      */
     handleValueFocus() {
         this.interactingState.enter();
+        this.handleFocus();
     }
 
     /*
@@ -2227,6 +2263,17 @@ export default class DateTimePicker extends LightningElement {
      *  EVENT DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the date time picker.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
 
     _dispatchChange() {
         /**
@@ -2246,6 +2293,17 @@ export default class DateTimePicker extends LightningElement {
                 }
             })
         );
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the date time picker.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**

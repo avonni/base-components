@@ -1519,6 +1519,14 @@ describe('DateTimePicker', () => {
             expect(spy).toHaveBeenCalled();
         });
 
+        it('focus()', () => {
+            const focusableElement =
+                element.shadowRoot.querySelector('[data-focusable]');
+            const spy = jest.spyOn(focusableElement, 'focus');
+            element.focus();
+            expect(spy).toHaveBeenCalled();
+        });
+
         it('getDateRangeBounds', () => {
             element.value = new Date(2024, 7, 30);
 
@@ -1579,6 +1587,22 @@ describe('DateTimePicker', () => {
     });
 
     describe('Events', () => {
+        it('blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const focusableElement =
+                    element.shadowRoot.querySelector('[data-focusable]');
+                focusableElement.dispatchEvent(new CustomEvent('blur'));
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
+
         describe('change', () => {
             it('Select a time', () => {
                 element.startTime = '08:30';
@@ -1825,6 +1849,22 @@ describe('DateTimePicker', () => {
                 const call = handler.mock.calls[0][0];
                 expect(call.bubbles).toBeTruthy();
                 expect(call.composed).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
+
+        it('focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const focusableElement =
+                    element.shadowRoot.querySelector('[data-focusable]');
+                focusableElement.dispatchEvent(new CustomEvent('focus'));
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
                 expect(call.cancelable).toBeFalsy();
             });
         });
