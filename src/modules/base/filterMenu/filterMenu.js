@@ -1807,8 +1807,8 @@ export default class FilterMenu extends LightningElement {
     /**
      * Handle the blur of the button menu.
      */
-    handleButtonBlur() {
-        this._dispatchBlur();
+    handleButtonBlur(event) {
+        this.handleBlur(event);
 
         if (this._allowBlur) {
             this._close();
