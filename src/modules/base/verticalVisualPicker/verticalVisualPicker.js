@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     classSet,
     generateUUID,
@@ -7,7 +7,7 @@ import {
     normalizeString
 } from 'c/utils';
 import { equal } from 'c/utilsPrivate';
-import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
+import { LightningElement, api } from 'lwc';
 import Item from './item';
 
 const DEFAULT_MIN = 0;
@@ -816,11 +816,15 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Dispatches the blur event.
      */
-    handleBlur() {
-        if (this._cancelBlur) {
+    handleBlur(event) {
+        if (
+            this._cancelBlur ||
+            (event.relatedTarget && this.template.contains(event.relatedTarget))
+        ) {
             return;
         }
         this.interactingState.leave();
+        this._dispatchBlur();
     }
 
     /**
@@ -871,7 +875,7 @@ export default class VerticalVisualPicker extends LightningElement {
             );
         }
 
-        this.dispatchChange();
+        this._dispatchChange();
         this.refreshCheckedAttributes();
         this.initItems();
 
@@ -912,8 +916,15 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Handles the focus event.
      */
-    handleFocus() {
+    handleFocus(event) {
         this.interactingState.enter();
+
+        if (
+            !event.relatedTarget ||
+            !this.template.contains(event.relatedTarget)
+        ) {
+            this._dispatchFocus();
+        }
     }
 
     /**
@@ -992,7 +1003,7 @@ export default class VerticalVisualPicker extends LightningElement {
         newValue.push(...subItemsSelected);
 
         this._value = newValue;
-        this.dispatchChange();
+        this._dispatchChange();
         this.refreshCheckedAttributes();
     }
 
@@ -1024,10 +1035,27 @@ export default class VerticalVisualPicker extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the vertical visual picker.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
     /**
      * Dispatch the 'change' event.
      */
-    dispatchChange() {
+    _dispatchChange() {
         const dispatchString =
             this.type === 'radio' &&
             this._items.every((item) => !item.subItems);
@@ -1046,5 +1074,16 @@ export default class VerticalVisualPicker extends LightningElement {
                 }
             })
         );
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the vertical visual picker.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
