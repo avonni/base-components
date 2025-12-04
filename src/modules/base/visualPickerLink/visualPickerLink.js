@@ -206,6 +206,11 @@ export default class VisualPickerLink extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the link, if present.
+     *
+     * @public
+     */
     @api
     focus() {
         const link = this.template.querySelector('[data-element-id="a"]');

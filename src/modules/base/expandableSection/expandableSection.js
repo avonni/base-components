@@ -200,6 +200,11 @@ export default class ExpandableSection extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the collapse button.
+     *
+     * @public
+     */
     @api
     focus() {
         const button = this.template.querySelector(
