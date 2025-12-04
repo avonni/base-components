@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 import visualPickerLink from './visualPickerLink.html';
 import visualPickerLinkInfoOnly from './visualPickerLinkInfoOnly.html';
 
@@ -202,9 +202,43 @@ export default class VisualPickerLink extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    @api
+    focus() {
+        const link = this.template.querySelector('[data-element-id="a"]');
+        if (link) {
+            link.focus();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
+    }
 
     /**
      * Click event handler.
@@ -221,5 +255,33 @@ export default class VisualPickerLink extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('click'));
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the visual picker link.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the visual picker link.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
