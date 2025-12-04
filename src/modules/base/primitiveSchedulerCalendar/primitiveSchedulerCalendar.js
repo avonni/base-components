@@ -1265,7 +1265,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 // Create a cell group for the multi day events row
                 const referenceCells = this.columns.map((col) => {
                     const date = dateTimeObjectFrom(col.start, {
-                        timezone: this.timezone
+                        zone: this.timezone
                     });
                     const disabled = !this.availableMonths.includes(
                         date.month - 1
