@@ -24,6 +24,7 @@ describe('Button', () => {
             expect(element.accessKey).toBeUndefined();
             expect(element.disableAnimation).toBeFalsy();
             expect(element.disabled).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('small');
@@ -90,6 +91,69 @@ describe('Button', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('No order by default', () => {
+                element.label = 'Label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('First', () => {
+                element.groupOrder = 'first';
+                element.label = 'Label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Middle', () => {
+                element.groupOrder = 'middle';
+                element.label = 'Label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_middle');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Last', () => {
+                element.groupOrder = 'last';
+                element.label = 'Label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_last');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
                 });
             });
         });

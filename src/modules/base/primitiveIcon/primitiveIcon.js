@@ -1,15 +1,14 @@
-import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
-import { normalizeString as normalize } from 'c/utils';
-import standardTemplate from './primitiveIcon.html';
 import {
     fetchIconLibrary,
-    hasIconLibrary,
     getIconLibrary,
     getName,
+    hasIconLibrary,
     isValidName,
     polyfill
 } from 'c/iconUtils';
+import { classSet, normalizeString as normalize } from 'c/utils';
+import { LightningElement, api } from 'lwc';
+import standardTemplate from './primitiveIcon.html';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -121,14 +120,13 @@ export default class PrimitiveIcon extends LightningElement {
     }
 
     get computedClass() {
-        const { normalizedSize, normalizedVariant } = this;
         const classes = classSet(this.svgClass);
 
-        if (normalizedVariant !== 'bare') {
+        if (this.normalizedVariant !== 'bare') {
             classes.add('slds-icon');
         }
 
-        switch (normalizedVariant) {
+        switch (this.normalizedVariant) {
             case 'error':
                 classes.add('slds-icon-text-error');
                 break;
@@ -147,8 +145,8 @@ export default class PrimitiveIcon extends LightningElement {
                 }
         }
 
-        if (normalizedSize !== 'medium') {
-            classes.add(`slds-icon_${normalizedSize}`);
+        if (this.normalizedSize !== 'medium') {
+            classes.add(`slds-icon_${this.normalizedSize}`);
         }
 
         return classes.toString();

@@ -168,7 +168,7 @@ export default class InputData extends LightningElement {
     }
 
     /**
-     * If present, the input field is read-only and cannot be edited by users.
+     * Maximum number of lines in the dual list box for multi-select picklist.
      *
      * @type {boolean}
      * @default false
@@ -186,7 +186,7 @@ export default class InputData extends LightningElement {
     }
 
     /**
-     * Maximum number of lines in the dual list box for multi-select picklist.
+     * If present, the input field is read-only and cannot be edited by users.
      *
      * @type {boolean}
      * @default false

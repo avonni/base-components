@@ -163,6 +163,7 @@ export default class List extends LightningElement {
     _visibleActions;
     _visibleMediaActions;
 
+    _cachedWidth = 0;
     _cardRendersBeforeScrollUpdate = 0;
     _columnsSizes = {
         default: 1
@@ -207,7 +208,7 @@ export default class List extends LightningElement {
     _savedComputedItems;
     _scrollingInterval;
     _scrollTop = 0;
-    _setItemsSizeCallbacks = new Map();
+    _setFieldItemsSizeCallbacks = new Map();
     _singleLinePageFirstIndex = 0;
 
     computedActions = [];
@@ -985,6 +986,15 @@ export default class List extends LightningElement {
                 : [];
         }
         return this.computedItems;
+    }
+
+    /**
+     * Query selector for the fields container.
+     */
+    get fieldsContainer() {
+        return this.template.querySelector(
+            '[data-element-id="fields-container-wrapper"]'
+        );
     }
 
     /**
@@ -1830,8 +1840,10 @@ export default class List extends LightningElement {
         this._resizeObserver = new AvonniResizeObserver(
             this.listContainer,
             () => {
-                this._setItemsSizeCallbacks.forEach((callback) => {
-                    callback();
+                const width =
+                    this.fieldsContainer?.getBoundingClientRect().width || 0;
+                this._setFieldItemsSizeCallbacks.forEach((callback) => {
+                    callback(width);
                 });
             }
         );
@@ -1984,6 +1996,25 @@ export default class List extends LightningElement {
         if (this.isSingleLine && this.enableInfiniteLoading) {
             this.checkSingleLineLoading();
         }
+    }
+
+    setFieldItemInitialSize(callbackSetSize) {
+        // If the size is already being computed, skip to avoid multiple computations.
+        if (!this._isComputingCachedWidth) {
+            this._isComputingCachedWidth = true;
+
+            // Compute the width on the next microtask to ensure DOM is ready.
+            queueMicrotask(() => {
+                this._cachedWidth =
+                    this.fieldsContainer?.getBoundingClientRect().width || 0;
+                this._isComputingCachedWidth = false;
+            });
+        }
+
+        // Set the size on the next microtask to ensure the cached width is ready.
+        queueMicrotask(() => {
+            callbackSetSize(this._cachedWidth);
+        });
     }
 
     setFieldsAreResizedByParent(value) {
@@ -2393,7 +2424,22 @@ export default class List extends LightningElement {
         event.stopPropagation();
         const { name, callbacks } = event.detail;
         callbacks.setIsResizedByParent(true);
-        this._setItemsSizeCallbacks.set(name, callbacks.setItemsSize);
+        this._setFieldItemsSizeCallbacks.set(name, callbacks.setItemsSize);
+
+        const setAllFieldsItemsSize = () => {
+            const widthFields =
+                this.fieldsContainer?.getBoundingClientRect().width || 0;
+            this._setFieldItemsSizeCallbacks.forEach((callback) => {
+                callback(widthFields);
+            });
+        };
+
+        try {
+            // Set initial size so the field layout doesn't jump before the resize observer is triggered
+            this.setFieldItemInitialSize(callbacks.setItemsSize);
+        } catch (error) {
+            console.error(error);
+        }
 
         this.dispatchEvent(
             new CustomEvent('privatelayoutconnected', {
@@ -2402,7 +2448,7 @@ export default class List extends LightningElement {
                     callbacks: {
                         setIsResizedByParent:
                             this.setFieldsAreResizedByParent.bind(this),
-                        setItemsSize: callbacks.setItemsSize
+                        setAllFieldsItemsSize
                     }
                 },
                 bubbles: true,
@@ -2412,7 +2458,27 @@ export default class List extends LightningElement {
     }
 
     handleFieldsLayoutDisconnected(event) {
-        this._setItemsSizeCallbacks.delete(event.detail.name);
+        event.stopPropagation();
+        this._setFieldItemsSizeCallbacks.delete(event.detail.name);
+        const setAllFieldsItemsSize = () => {
+            const width =
+                this.fieldsContainer?.getBoundingClientRect().width || 0;
+            this._setFieldItemsSizeCallbacks.forEach((callback) => {
+                callback(width);
+            });
+        };
+        this.dispatchEvent(
+            new CustomEvent('privatelayoutdisconnected', {
+                detail: {
+                    name: event.detail.name,
+                    callbacks: {
+                        setAllFieldsItemsSize
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     handleLayoutSizeChange(event) {

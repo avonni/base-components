@@ -1,4 +1,5 @@
 import IconPicker from 'c/iconPicker';
+import { AutoPosition } from 'c/positionLibrary';
 import { createElement } from 'lwc';
 
 let element;
@@ -1225,6 +1226,23 @@ describe('IconPicker', () => {
     });
 
     describe('Popover behavior', () => {
+        it('Popover is positioned automatically', () => {
+            element.shadowRoot
+                .querySelector('[data-element-id="button-toggle-menu"]')
+                .click();
+            jest.runAllTimers();
+
+            expect(AutoPosition.prototype.start).toHaveBeenCalled();
+            return Promise.resolve().then(() => {
+                element.shadowRoot
+                    .querySelector('[data-element-id="button-toggle-menu"]')
+                    .click();
+
+                jest.runAllTimers();
+                expect(AutoPosition.prototype.stop).toHaveBeenCalled();
+            });
+        });
+
         it('Close popover on outside click', () => {
             return Promise.resolve()
                 .then(() => {

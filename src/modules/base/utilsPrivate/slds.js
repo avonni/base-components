@@ -31,12 +31,13 @@
  */
 
 let isSlds2;
-const SLDS1_ONLY_STYLING_TOKEN = '--slds-g-color-border-base-1';
+const SLDS2_ICON_RADIUS_BORDER_TOKEN = '--slds-s-icon-radius-border';
+const SLDS2_ICON_RADIUS_BORDER_TOKEN_EXPECTED_VALUE = '100%';
 
 /**
- * Function to determine if an org is using SLDS1 (not SLDS2).
+ * Function to determine if an org is using SLDS2.
  * @param {*} element - Any DOM element.
- * @returns {boolean} - True if the element is in an org using SLDS1, false if it uses SLDS2.
+ * @returns {boolean} - True if the element is in an org using SLDS2, false if it uses SLDS1.
  */
 export function isOrgSlds2() {
     const hasCachedResult = isSlds2 !== undefined;
@@ -45,9 +46,10 @@ export function isOrgSlds2() {
     const computedStyle = getComputedStyle(document.documentElement);
     if (!computedStyle) return false;
 
-    // Heuristic: SLDS1 defines a value for --slds-g-color-border-base-1 but not SLDS2.
-    // Ref: https://www.lightningdesignsystem.com/2e1ef8501/p/591960-global-styling-hooks/t/bb830d7441
-    const value = computedStyle.getPropertyValue(SLDS1_ONLY_STYLING_TOKEN);
-    isSlds2 = !value?.trim();
-    return isSlds2;
+    // Heuristic: SLDS2 defines --slds-s-icon-radius-border has a circle value.
+    return (
+        computedStyle
+            .getPropertyValue(SLDS2_ICON_RADIUS_BORDER_TOKEN)
+            ?.trim() === SLDS2_ICON_RADIUS_BORDER_TOKEN_EXPECTED_VALUE
+    );
 }

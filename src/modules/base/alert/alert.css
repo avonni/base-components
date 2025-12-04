@@ -75,11 +75,27 @@
     --sds-c-icon-color-foreground: var(
         --avonni-alert-base-icon-color-foreground
     );
-    --slds-c-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-alert-base-icon-color-foreground-default,
-        var(--slds-g-color-on-info-1, #ffffff)
+        var(
+            --avonni-alert-base-icon-color-foreground,
+            var(--slds-g-color-on-info-1, #ffffff)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-alert-base-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-alert-base-icon-color-foreground
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-alert-base-icon-color-foreground-default,
+        var(
+            --avonni-alert-base-icon-color-foreground,
+            var(--slds-g-color-on-info-1, #ffffff)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-alert-base-icon-color-background
     );
     background: var(--avonni-alert-base-icon-color-background, transparent);
@@ -87,6 +103,10 @@
 
 .avonni-alert_base .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-base-close-icon-color-foreground-default,
+        var(--slds-g-color-on-info-1, #ffffff)
+    );
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-base-close-icon-color-foreground-default,
         var(--slds-g-color-on-info-1, #ffffff)
     );
@@ -107,11 +127,27 @@
     --sds-c-icon-color-foreground: var(
         --avonni-alert-warning-icon-color-foreground
     );
-    --slds-c-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-alert-warning-icon-color-foreground-default,
-        var(--slds-g-color-on-warning-1, #514f4d)
+        var(
+            --avonni-alert-warning-icon-color-foreground,
+            var(--slds-g-color-on-warning-1, #514f4d)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-alert-warning-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-alert-warning-icon-color-foreground
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-alert-warning-icon-color-foreground-default,
+        var(
+            --avonni-alert-warning-icon-color-foreground,
+            var(--slds-g-color-on-warning-1, #514f4d)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-alert-warning-icon-color-background
     );
     background: var(--avonni-alert-warning-icon-color-background, transparent);
@@ -119,6 +155,10 @@
 
 .avonni-alert_warning .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-warning-close-icon-color-foreground-default,
+        var(--slds-g-color-on-warning-1, #514f4d)
+    );
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-warning-close-icon-color-foreground-default,
         var(--slds-g-color-on-warning-1, #514f4d)
     );
@@ -139,11 +179,27 @@
     --sds-c-icon-color-foreground: var(
         --avonni-alert-error-icon-color-foreground
     );
-    --slds-c-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-alert-error-icon-color-foreground-default,
-        var(--slds-g-color-on-error-1, #ffffff)
+        var(
+            --avonni-alert-error-icon-color-foreground,
+            var(--slds-g-color-on-error-1, #ffffff)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-alert-error-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-alert-error-icon-color-foreground
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-alert-error-icon-color-foreground-default,
+        var(
+            --avonni-alert-error-icon-color-foreground,
+            var(--slds-g-color-on-error-1, #ffffff)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-alert-error-icon-color-background
     );
     background: var(--avonni-alert-error-icon-color-background, transparent);
@@ -151,6 +207,10 @@
 
 .avonni-alert_error .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-error-close-icon-color-foreground-default,
+        var(--slds-g-color-on-error-1, #ffffff)
+    );
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-error-close-icon-color-foreground-default,
         var(--slds-g-color-on-error-1, #ffffff)
     );
@@ -169,13 +229,30 @@
 
 .avonni-alert_offline .avonni-alert__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
+        --avonni-alert-offline-icon-color-foreground,
+        var(--slds-g-color-neutral-base-100, #ffffff)
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-offline-icon-color-foreground-default,
+        var(
+            --avonni-alert-offline-icon-color-foreground,
+            var(--slds-g-color-neutral-base-100, #ffffff)
+        )
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-alert-offline-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
         --avonni-alert-offline-icon-color-foreground
     );
     --slds-c-icon-color-foreground-default: var(
         --avonni-alert-offline-icon-color-foreground-default,
-        var(--slds-g-color-neutral-base-100, #ffffff)
+        var(
+            --avonni-alert-offline-icon-color-foreground,
+            var(--slds-g-color-neutral-base-100, #ffffff)
+        )
     );
-    --sds-c-icon-color-background: var(
+    --slds-c-icon-color-background: var(
         --avonni-alert-offline-icon-color-background
     );
     background: var(--avonni-alert-offline-icon-color-background, transparent);
@@ -183,6 +260,10 @@
 
 .avonni-alert_offline .avonni-alert__button-icon {
     --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-offline-close-icon-color-foreground-default,
+        var(--slds-g-color-neutral-base-100, #ffffff)
+    );
+    --slds-c-icon-color-foreground-default: var(
         --avonni-alert-offline-close-icon-color-foreground-default,
         var(--slds-g-color-neutral-base-100, #ffffff)
     );

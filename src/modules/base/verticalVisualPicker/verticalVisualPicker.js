@@ -700,6 +700,23 @@ export default class VerticalVisualPicker extends LightningElement {
      */
 
     /**
+     * Aria label computed for screen readers.
+     *
+     * @type {string}
+     */
+    computeAriaLabel(item) {
+        const title = item.title;
+        const description = item.description;
+        const tags = Array.isArray(item.tags)
+            ? item.tags
+                  .filter((tag) => tag && tag.label)
+                  .map((tag) => tag.label)
+                  .join(', ')
+            : null;
+        return [title, description, tags].filter(Boolean).join(', ');
+    }
+
+    /**
      * Initialize the items.
      */
     initItems() {
@@ -712,6 +729,7 @@ export default class VerticalVisualPicker extends LightningElement {
                 this.type === 'checkbox' && !this.value.includes(item.value);
             return new Item({
                 ...item,
+                computedAriaLabel: this.computeAriaLabel(item),
                 disabled:
                     this.disabled ||
                     item.disabled ||

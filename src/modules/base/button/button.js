@@ -28,6 +28,14 @@ export default class Button extends PrimitiveButton {
      * @default false
      */
     /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @name groupOrder
+     * @public
+     * @type {string}
+     */
+    /**
      * The Lightning Design System name of the icon.
      * Names are written in the format 'utility:down' where 'utility' is the category,
      * and 'down' is the specific icon to be displayed.
@@ -215,8 +223,9 @@ export default class Button extends PrimitiveButton {
      * @type {string}
      */
     get computedButtonClass() {
-        return classSet('slds-button avonni-button')
-            .add(`avonni-button_${this.computedVariant}`)
+        const classes = super.computedButtonClass;
+        return classSet(classes)
+            .add(`avonni-button avonni-button_${this.computedVariant}`)
             .add({
                 'slds-button_neutral': this.computedVariant === 'neutral',
                 'slds-button_inverse': this.computedVariant === 'inverse',

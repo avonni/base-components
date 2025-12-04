@@ -15,16 +15,11 @@
     --avonni-avatar-initials-text-font-weight: var(
         --avonni-chip-avatar-initials-text-font-weight
     );
-    --slds-c-icon-color-background: var(
+    --avonni-avatar-fallback-icon-color-background: var(
         --avonni-chip-avatar-icon-color-background
-    );
-    --slds-c-icon-color-foreground: var(
-        --avonni-chip-avatar-icon-color-foreground
-    );
-    --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-avatar-icon-color-foreground-default
     );
     --avonni-avatar-image-object-fit: var(
         --avonni-chip-avatar-image-object-fit
     );
+    /* Avatar icon foreground color defined inside avonni-chip component to follow the variant */
 }

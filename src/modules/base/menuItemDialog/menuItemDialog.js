@@ -68,6 +68,7 @@ export default class MenuItemDialog extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-dropdown__item');
+        this.classList.add('avonni-menu-item-dialog');
         this.setAttribute('role', 'presentation');
     }
 

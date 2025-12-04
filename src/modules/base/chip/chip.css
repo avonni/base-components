@@ -148,7 +148,7 @@
     background-color: var(--avonni-chip-base-color-background, #ffffff);
     border-color: var(
         --avonni-chip-base-outline-color,
-        var(--slds-g-color-surface-container-3, #ecebea)
+        var(--slds-g-color-on-surface-1, #080707)
     );
     color: var(
         --avonni-chip-base-outline-color,
@@ -168,11 +168,11 @@
     background-color: var(--avonni-chip-error-color-background, #ffffff);
     border-color: var(
         --avonni-chip-error-outline-color,
-        var(--slds-g-color-error-container-1, #ba0517)
+        var(--slds-g-color-error-1, #ba0517)
     );
     color: var(
         --avonni-chip-error-outline-color,
-        var(--slds-g-color-error-container-1, #ba0517)
+        var(--slds-g-color-error-1, #ba0517)
     );
 }
 
@@ -181,11 +181,11 @@
     background-color: var(--avonni-chip-info-color-background, #ffffff);
     border-color: var(
         --avonni-chip-info-outline-color,
-        var(--slds-g-color-info-container-1, #706e6b)
+        var(--slds-g-color-info-1, #706e6b)
     );
     color: var(
         --avonni-chip-info-outline-color,
-        var(--slds-g-color-info-container-1, #706e6b)
+        var(--slds-g-color-info-1, #706e6b)
     );
 }
 
@@ -220,11 +220,11 @@
     background-color: var(--avonni-chip-success-color-background, #ffffff);
     border-color: var(
         --avonni-chip-success-outline-color,
-        var(--slds-g-color-success-container-1, #2e844a)
+        var(--slds-g-color-success-1, #2e844a)
     );
     color: var(
         --avonni-chip-success-outline-color,
-        var(--slds-g-color-success-container-1, #2e844a)
+        var(--slds-g-color-success-1, #2e844a)
     );
 }
 
@@ -233,20 +233,34 @@
     background-color: var(--avonni-chip-warning-color-background, #ffffff);
     border-color: var(
         --avonni-chip-warning-outline-color,
-        var(--slds-g-color-warning-container-1, #dd7a01)
+        var(--slds-g-color-warning-1, #dd7a01)
     );
     color: var(
         --avonni-chip-warning-outline-color,
-        var(--slds-g-color-warning-container-1, #dd7a01)
+        var(--slds-g-color-warning-1, #dd7a01)
     );
 }
 
+/* The following styling assumes the slot contains a lightning-icon or avonni-avatar comopnent */
+/* Used by the avonni-primitive-chip component */
+
 .avonni-chip_theme-alt-inverse .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-alt-inverse-text-color, #ffffff)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-alt-inverse-text-color, #ffffff)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-alt-inverse-text-color,
         #ffffff
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-alt-inverse-text-color,
         #ffffff
     );
@@ -261,30 +275,58 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-alt-inverse .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-alt-inverse-text-color,
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-alt-inverse-outline-color, #032d60)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-alt-inverse-outline-color, #032d60)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-alt-inverse-outline-color,
         #032d60
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-alt-inverse-text-color,
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-alt-inverse-outline-color,
         #032d60
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-alt-inverse-text-color,
+        --avonni-chip-alt-inverse-outline-color,
         #032d60
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-alt-inverse-text-color,
+        --avonni-chip-alt-inverse-outline-color,
         #032d60
     );
 }
 
 .avonni-chip_theme-base .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-base-text-color,
+            var(--slds-g-color-on-surface-1, #080707)
+        )
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-base-text-color,
+                var(--slds-g-color-on-surface-1, #080707)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-base-text-color,
         var(--slds-g-color-on-surface-1, #080707)
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-base-text-color,
         var(--slds-g-color-on-surface-1, #080707)
     );
@@ -299,30 +341,55 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-base .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-base-text-color,
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-base-outline-color,
+            var(--slds-g-color-on-surface-1, #080707)
+        )
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-base-outline-color,
+                var(--slds-g-color-on-surface-1, #080707)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-base-outline-color,
         var(--slds-g-color-on-surface-1, #080707)
     );
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-base-text-color,
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-base-outline-color,
         var(--slds-g-color-on-surface-1, #080707)
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-base-text-color,
+        --avonni-chip-base-outline-color,
         var(--slds-g-color-on-surface-1, #080707)
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-base-text-color,
+        --avonni-chip-base-outline-color,
         var(--slds-g-color-on-surface-1, #080707)
     );
 }
 
 .avonni-chip_theme-brand .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-brand-text-color,
-        #ffffff
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-brand-text-color, #ffffff)
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-brand-text-color, #ffffff)
+        )
+    );
+    --sds-c-icon-color-foreground: var(--avonni-chip-brand-text-color, #ffffff);
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-brand-text-color,
         #ffffff
     );
@@ -337,30 +404,58 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-brand .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-brand-text-color,
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-brand-outline-color, #0176d3)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-brand-outline-color, #0176d3)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-brand-outline-color,
         #0176d3
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-brand-text-color,
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-brand-outline-color,
         #0176d3
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-brand-text-color,
+        --avonni-chip-brand-outline-color,
         #0176d3
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-brand-text-color,
+        --avonni-chip-brand-outline-color,
         #0176d3
     );
 }
 
 .avonni-chip_theme-error .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-error-text-color,
+            var(--slds-g-color-on-error-1, #ffffff)
+        )
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-error-text-color,
+                var(--slds-g-color-on-error-1, #ffffff)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-error-text-color,
         var(--slds-g-color-on-error-1, #ffffff)
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-error-text-color,
         var(--slds-g-color-on-error-1, #ffffff)
     );
@@ -375,30 +470,64 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-error .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-error-text-color,
-        var(--slds-g-color-on-error-1, #ba0517)
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-error-outline-color,
+            var(--slds-g-color-error-1, #ba0517)
+        )
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-error-text-color,
-        var(--slds-g-color-on-error-1, #ba0517)
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-error-outline-color,
+                var(--slds-g-color-error-1, #ba0517)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-error-outline-color,
+        var(--slds-g-color-error-1, #ba0517)
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-error-outline-color,
+        var(--slds-g-color-error-1, #ba0517)
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-error-text-color,
-        var(--slds-g-color-on-error-1, #ba0517)
+        --avonni-chip-error-outline-color,
+        var(--slds-g-color-error-1, #ba0517)
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-error-text-color,
-        #ba0517
+        --avonni-chip-error-outline-color,
+        var(--slds-g-color-error-1, #ba0517)
     );
 }
 
 .avonni-chip_theme-info .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-info-text-color,
+            var(--slds-g-color-on-info-1, #ffffff)
+        )
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-info-text-color,
+                var(--slds-g-color-on-info-1, #ffffff)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-info-text-color,
         var(--slds-g-color-on-info-1, #ffffff)
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-info-text-color,
         var(--slds-g-color-on-info-1, #ffffff)
     );
@@ -413,30 +542,58 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-info .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-info-text-color,
-        var(--slds-g-color-on-info-1, #706e6b)
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-info-outline-color,
+            var(--slds-g-color-info-1, #706e6b)
+        )
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-info-text-color,
-        var(--slds-g-color-on-info-1, #706e6b)
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-info-outline-color,
+                var(--slds-g-color-info-1, #706e6b)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-info-outline-color,
+        var(--slds-g-color-info-1, #706e6b)
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-info-outline-color,
+        var(--slds-g-color-info-1, #706e6b)
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-info-text-color,
-        var(--slds-g-color-on-info-1, #706e6b)
+        --avonni-chip-info-outline-color,
+        var(--slds-g-color-info-1, #706e6b)
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-info-text-color,
-        var(--slds-g-color-on-info-1, #706e6b)
+        --avonni-chip-info-outline-color,
+        var(--slds-g-color-info-1, #706e6b)
     );
 }
 
 .avonni-chip_theme-inverse .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-inverse-text-color, #ffffff)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-inverse-text-color, #ffffff)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-inverse-text-color,
         #ffffff
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-inverse-text-color,
         #ffffff
     );
@@ -451,30 +608,52 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-inverse .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-inverse-text-color,
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-inverse-outline-color, #001639)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-inverse-outline-color, #001639)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-inverse-outline-color,
         #001639
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-inverse-text-color,
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-inverse-outline-color,
         #001639
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-inverse-text-color,
+        --avonni-chip-inverse-outline-color,
         #001639
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-inverse-text-color,
+        --avonni-chip-inverse-outline-color,
         #001639
     );
 }
 
 .avonni-chip_theme-offline .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-offline-text-color, #ffffff)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-offline-text-color, #ffffff)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-offline-text-color,
         #ffffff
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-offline-text-color,
         #ffffff
     );
@@ -489,30 +668,58 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-offline .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-offline-text-color,
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(--avonni-chip-offline-outline-color, #444444)
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(--avonni-chip-offline-outline-color, #444444)
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-offline-outline-color,
         #444444
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-offline-text-color,
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-offline-outline-color,
         #444444
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-offline-text-color,
+        --avonni-chip-offline-outline-color,
         #444444
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-offline-text-color,
+        --avonni-chip-offline-outline-color,
         #444444
     );
 }
 
 .avonni-chip_theme-success .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-success-text-color,
+            var(--slds-g-color-on-success-1, #ffffff)
+        )
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-success-text-color,
+                var(--slds-g-color-on-success-1, #ffffff)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-success-text-color,
         var(--slds-g-color-on-success-1, #ffffff)
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-success-text-color,
         var(--slds-g-color-on-success-1, #ffffff)
     );
@@ -527,30 +734,64 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-success .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-success-text-color,
-        var(--slds-g-color-on-success-1, #2e844a)
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-success-outline-color,
+            var(--slds-g-color-success-1, #2e844a)
+        )
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-success-text-color,
-        var(--slds-g-color-on-success-1, #2e844a)
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-success-outline-color,
+                var(--slds-g-color-success-1, #2e844a)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-success-outline-color,
+        var(--slds-g-color-success-1, #2e844a)
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-success-outline-color,
+        var(--slds-g-color-success-1, #2e844a)
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-success-text-color,
-        var(--slds-g-color-on-success-1, #2e844a)
+        --avonni-chip-success-outline-color,
+        var(--slds-g-color-success-1, #2e844a)
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-success-text-color,
-        var(--slds-g-color-on-success-1, #2e844a)
+        --avonni-chip-success-outline-color,
+        var(--slds-g-color-success-1, #2e844a)
     );
 }
 
 .avonni-chip_theme-warning .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-warning-text-color,
+            var(--slds-g-color-on-warning-1, #080707)
+        )
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-warning-text-color,
+                var(--slds-g-color-on-warning-1, #080707)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
         --avonni-chip-warning-text-color,
         var(--slds-g-color-on-warning-1, #080707)
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
+    --sds-c-icon-color-foreground-default: var(
         --avonni-chip-warning-text-color,
         var(--slds-g-color-on-warning-1, #080707)
     );
@@ -565,21 +806,38 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-warning .avonni-chip__icon {
-    --avonni-chip-avatar-icon-color-foreground: var(
-        --avonni-chip-warning-text-color,
-        var(--slds-g-color-on-warning-1, #dd7a01)
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-chip-avatar-icon-color-foreground,
+        var(
+            --avonni-chip-warning-outline-color,
+            var(--slds-g-color-warning-1, #dd7a01)
+        )
     );
-    --avonni-chip-avatar-icon-color-foreground-default: var(
-        --avonni-chip-warning-text-color,
-        var(--slds-g-color-on-warning-1, #dd7a01)
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-chip-avatar-icon-color-foreground-default,
+        var(
+            --avonni-chip-avatar-icon-color-foreground,
+            var(
+                --avonni-chip-warning-outline-color,
+                var(--slds-g-color-warning-1, #dd7a01)
+            )
+        )
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-chip-warning-outline-color,
+        var(--slds-g-color-warning-1, #dd7a01)
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-chip-warning-outline-color,
+        var(--slds-g-color-warning-1, #dd7a01)
     );
     --slds-c-icon-color-foreground: var(
-        --avonni-chip-warning-text-color,
-        var(--slds-g-color-on-warning-1, #dd7a01)
+        --avonni-chip-warning-outline-color,
+        var(--slds-g-color-warning-1, #dd7a01)
     );
     --slds-c-icon-color-foreground-default: var(
-        --avonni-chip-warning-text-color,
-        var(--slds-g-color-on-warning-1, #dd7a01)
+        --avonni-chip-warning-outline-color,
+        var(--slds-g-color-warning-1, #dd7a01)
     );
 }
 

@@ -1,5 +1,3 @@
-import { LightningElement, api } from 'lwc';
-import { classListMutation } from 'c/utilsPrivate';
 import {
     classSet,
     deepCopy,
@@ -7,6 +5,8 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 
 const DEFAULT_BACK_ACTION = {
     iconName: 'utility:chevronleft'
@@ -152,6 +152,7 @@ export default class Combobox extends LightningElement {
     _dropdownLength = DROPDOWN_LENGTHS.default;
     _enableInfiniteLoading = false;
     _groups = [];
+    _hideAvatarInSelectedOptions = false;
     _hideClearIcon = false;
     _hideOptionsUntilSearch = false;
     _hideSelectedOptions = false;
@@ -313,6 +314,21 @@ export default class Combobox extends LightningElement {
     }
     set groups(value) {
         this._groups = normalizeArray(value);
+    }
+
+    /**
+     * If present, the avatar will be hidden in selected options.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideAvatarInSelectedOptions() {
+        return this._hideAvatarInSelectedOptions;
+    }
+    set hideAvatarInSelectedOptions(value) {
+        this._hideAvatarInSelectedOptions = normalizeBoolean(value);
     }
 
     /**
@@ -775,7 +791,11 @@ export default class Combobox extends LightningElement {
      */
     get normalizedSelectedOptions() {
         return deepCopy(this.selectedOptions).map((opt) => {
-            return { ...opt, name: opt.value };
+            const normalizedOpt = { ...opt, name: opt.value };
+            if (this.hideAvatarInSelectedOptions) {
+                delete normalizedOpt.avatar;
+            }
+            return normalizedOpt;
         });
     }
 

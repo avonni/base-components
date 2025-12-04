@@ -101,8 +101,7 @@
     background-color: var(--avonni-rating-button-color-background-selected);
 }
 
-.avonni-rating__container:hover
-    .avonni-rating__active.avonni-rating__continuous,
+.avonni-rating:hover .avonni-rating__active.avonni-rating__continuous,
 .avonni-rating__active:hover {
     border-width: 1px;
     border-style: solid;
@@ -192,7 +191,7 @@
 
 .avonni-rating__active-icon:hover .avonni-rating__icon,
 .avonni-rating__active-icon.avonni-rating__icon_selected:hover,
-.avonni-rating__container:hover
+.avonni-rating:hover
     .avonni-rating__active-icon.avonni-rating__continuous-icon {
     /* Hovered icon */
     --slds-c-icon-color-foreground: var(

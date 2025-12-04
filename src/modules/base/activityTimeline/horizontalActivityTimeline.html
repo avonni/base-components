@@ -195,6 +195,7 @@
                             icon-name="utility:close"
                             size="medium"
                             variant="bare"
+                            data-element-id="lightning-button-icon-close-popover"
                             onclick={handleTooltipClose}
                         ></lightning-button-icon>
                     </header>
@@ -219,77 +220,6 @@
                             ></lightning-formatted-rich-text>
                         </p>
                     </div>
-                </div>
-                <!--Actions -->
-                <div
-                    if:true={actions.length}
-                    class="
-                        slds-timeline__actions
-                        slds-p-right_x-small
-                        slds-p-left_medium
-                        slds-p-top_none
-                        slds-align-top
-                    "
-                    slot="figure-inverse"
-                >
-                    <lightning-button-menu
-                        alternative-text="Show menu"
-                        icon-size="x-small"
-                        menu-alignment="right"
-                        variant="border-filled"
-                        data-element-id="lightning-button-menu-actions"
-                        onselect={handleActionClick}
-                    >
-                        <template for:each={actions} for:item="action">
-                            <lightning-menu-item
-                                key={action.name}
-                                class="slds-text-color_default"
-                                disabled={action.disabled}
-                                label={action.label}
-                                prefix-icon-name={action.iconName}
-                                value={action.name}
-                                data-element-id="lightning-menu-item-action"
-                            ></lightning-menu-item>
-                        </template>
-                    </lightning-button-menu>
-                </div>
-                <!-- Close button -->
-                <lightning-button-icon
-                    class="
-                        slds-popover__close
-                        slds-float_right
-                        slds-align-top
-                        slds-p-around_none
-                        slds-m-around_none
-                    "
-                    icon-name="utility:close"
-                    size="medium"
-                    variant="bare"
-                    onclick={handleTooltipClose}
-                ></lightning-button-icon>
-            </header>
-            <div
-                if:true={selectedItem.description}
-                class="
-                    slds-has-flexi-truncate
-                    slds-p-right_x-small
-                    slds-p-vertical_x-small
-                    slds-p-left_medium
-                "
-            >
-                <p
-                    class="
-                        avonni-horizontal-activity-timeline__item-description
-                    "
-                >
-                    <lightning-formatted-rich-text
-                        title={selectedItem.descriptionTitle}
-                        value={selectedItem.description}
-                        data-element-id="lightning-formatted-rich-text-description"
-                    ></lightning-formatted-rich-text>
-                </p>
-            </div>
-
                     <!-- Fields -->
                     <footer
                         if:true={selectedItem.fields}

@@ -411,10 +411,11 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     get showActions() {
-        const { size, actions } = this;
         const isSmallSize =
-            size === 'small' || size === 'x-small' || size === 'xx-small';
-        const hasActions = Array.isArray(actions) && actions.length;
+            this.size === 'small' ||
+            this.size === 'x-small' ||
+            this.size === 'xx-small';
+        const hasActions = Array.isArray(this.actions) && this.actions.length;
 
         return !isSmallSize && hasActions;
     }
@@ -490,25 +491,27 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     _updateClassList() {
-        const { size, variant, fallbackIconName, groupedAvatar } = this;
         const wrapperClass = classSet(
             'slds-is-relative avonni-avatar__display_inline-block'
         )
-            .add(`avonni-avatar_${variant}`)
-            .add(`avonni-avatar_${size}`);
+            .add(`avonni-avatar_${this.variant}`)
+            .add(`avonni-avatar_${this.size}`);
 
         const avatarClass = classSet('avonni-avatar')
             .add({
-                'avonni-avatar__border-radius_circle': variant === 'circle',
+                'avonni-avatar__border-radius_circle':
+                    this.variant === 'circle',
                 'avonni-avatar_link': this.href,
                 slds1: !isOrgSlds2(),
                 slds2: isOrgSlds2()
             })
-            .add(computeSldsClass(fallbackIconName));
+            .add(computeSldsClass(this.fallbackIconName));
 
         const fallbackIconClass = classSet('avonni-avatar__icon').add({
-            'slds-avatar-grouped__icon': groupedAvatar,
-            'avonni-avatar__action-icon': isActionIconType(fallbackIconName),
+            'slds-avatar-grouped__icon': this.groupedAvatar,
+            'avonni-avatar__action-icon': isActionIconType(
+                this.fallbackIconName
+            ),
             slds1: !isOrgSlds2(),
             slds2: isOrgSlds2()
         });

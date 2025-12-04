@@ -522,6 +522,14 @@ describe('List', () => {
                             label: 'Some item',
                             name: 'someName',
                             fields: [{ label: 'Field 1', value: 'Value 1' }]
+                        },
+                        {
+                            label: 'Some other item',
+                            name: 'someOtherName',
+                            fields: [
+                                { label: 'Field 2', value: 'Value 2' },
+                                { label: 'Field 3', value: 'Value 3' }
+                            ]
                         }
                     ];
 
@@ -529,15 +537,17 @@ describe('List', () => {
                     element.addEventListener('privatelayoutconnected', handler);
 
                     return Promise.resolve().then(() => {
-                        const field = element.shadowRoot.querySelector(
+                        const fields = element.shadowRoot.querySelectorAll(
                             '[data-element-id="avonni-output-data"]'
                         );
                         const setItemsSize = jest.fn();
                         const isResizedByParent = jest.fn();
-                        field.dispatchEvent(
+
+                        // First Item
+                        fields[0].dispatchEvent(
                             new CustomEvent('privatelayoutconnected', {
                                 detail: {
-                                    name: 'first',
+                                    name: element.items[0].name,
                                     callbacks: {
                                         setIsResizedByParent: isResizedByParent,
                                         setItemsSize
@@ -551,20 +561,144 @@ describe('List', () => {
 
                         // The event is redispatched to the parent
                         expect(handler).toHaveBeenCalled();
-                        const call = handler.mock.calls[0][0];
-                        expect(call.bubbles).toBeTruthy();
-                        expect(call.composed).toBeTruthy();
+                        const firstCall = handler.mock.calls[0][0];
+                        expect(firstCall.bubbles).toBeTruthy();
+                        expect(firstCall.composed).toBeTruthy();
                         expect(
-                            typeof call.detail.callbacks.setIsResizedByParent
+                            typeof firstCall.detail.callbacks
+                                .setIsResizedByParent
                         ).toBe('function');
-                        expect(typeof call.detail.callbacks.setItemsSize).toBe(
-                            'function'
+                        expect(
+                            typeof firstCall.detail.callbacks
+                                .setAllFieldsItemsSize
+                        ).toBe('function');
+                        expect(firstCall.detail.name).toBe(
+                            element.items[0].name
                         );
-                        expect(call.detail.name).toBe('first');
 
                         // The callback in the redispatched event is different from the original
-                        call.detail.callbacks.setIsResizedByParent(true);
+                        firstCall.detail.callbacks.setIsResizedByParent(true);
                         expect(isResizedByParent).toHaveBeenCalledTimes(1);
+
+                        // The setAllFieldsItemsSize callback calls setItemsSize for all layouts connected
+                        firstCall.detail.callbacks.setAllFieldsItemsSize();
+                        expect(setItemsSize).toHaveBeenCalledTimes(1);
+
+                        // Second Item
+                        fields[1].dispatchEvent(
+                            new CustomEvent('privatelayoutconnected', {
+                                detail: {
+                                    name: element.items[1].name,
+                                    callbacks: {
+                                        setIsResizedByParent: isResizedByParent,
+                                        setItemsSize
+                                    }
+                                },
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+
+                        expect(isResizedByParent).toHaveBeenCalledTimes(2);
+
+                        // The event is redispatched to the parent
+                        expect(handler).toHaveBeenCalled();
+                        const secondCall = handler.mock.calls[1][0];
+                        expect(secondCall.bubbles).toBeTruthy();
+                        expect(secondCall.composed).toBeTruthy();
+                        expect(
+                            typeof secondCall.detail.callbacks
+                                .setIsResizedByParent
+                        ).toBe('function');
+                        expect(
+                            typeof secondCall.detail.callbacks
+                                .setAllFieldsItemsSize
+                        ).toBe('function');
+                        expect(secondCall.detail.name).toBe(
+                            element.items[1].name
+                        );
+
+                        // The callback in the redispatched event is different from the original
+                        secondCall.detail.callbacks.setIsResizedByParent(true);
+                        expect(isResizedByParent).toHaveBeenCalledTimes(2);
+
+                        // The setAllFieldsItemsSize callback calls setItemsSize for all layouts connected
+                        secondCall.detail.callbacks.setAllFieldsItemsSize();
+                        expect(setItemsSize).toHaveBeenCalledTimes(3);
+                    });
+                });
+
+                it('The privatelayoutdisconnected event is redispatched to the parents with the new setAllFieldsItemsSize callback', () => {
+                    element.items = [
+                        {
+                            label: 'Some item',
+                            name: 'someName',
+                            fields: [{ label: 'Field 1', value: 'Value 1' }]
+                        },
+                        {
+                            label: 'Some other item',
+                            name: 'someOtherName',
+                            fields: [{ label: 'Field 2', value: 'Value 2' }]
+                        },
+                        {
+                            label: 'Another item',
+                            name: 'anotherName',
+                            fields: [{ label: 'Field 3', value: 'Value 3' }]
+                        }
+                    ];
+                    const handler = jest.fn();
+                    element.addEventListener(
+                        'privatelayoutdisconnected',
+                        handler
+                    );
+
+                    return Promise.resolve().then(() => {
+                        const fields = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-output-data"]'
+                        );
+                        const setItemsSize = jest.fn();
+                        const isResizedByParent = jest.fn();
+
+                        fields.forEach((field, index) => {
+                            field.dispatchEvent(
+                                new CustomEvent('privatelayoutconnected', {
+                                    detail: {
+                                        name: element.items[index].name,
+                                        callbacks: {
+                                            setIsResizedByParent:
+                                                isResizedByParent,
+                                            setItemsSize
+                                        }
+                                    },
+                                    bubbles: true,
+                                    composed: true
+                                })
+                            );
+                        });
+
+                        // Second Item disconnected
+                        fields[1].dispatchEvent(
+                            new CustomEvent('privatelayoutdisconnected', {
+                                detail: {
+                                    name: element.items[1].name
+                                },
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalled();
+                        const firstCall = handler.mock.calls[0][0];
+                        expect(firstCall.bubbles).toBeTruthy();
+                        expect(firstCall.composed).toBeTruthy();
+                        expect(
+                            typeof firstCall.detail.callbacks
+                                .setAllFieldsItemsSize
+                        ).toBe('function');
+
+                        // The setAllFieldsItemsSize callback calls setItemsSize for all layouts connected
+                        firstCall.detail.callbacks.setAllFieldsItemsSize();
+                        expect(setItemsSize).toHaveBeenCalledTimes(2);
                     });
                 });
             });

@@ -5,6 +5,7 @@ export default class ButtonIcon extends LightningElement {
     @api alternativeText;
     @api disableAnimation;
     @api disabled;
+    @api groupOrder;
     @api iconClass;
     @api iconName;
     @api iconSrc;

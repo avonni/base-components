@@ -10,7 +10,20 @@ export default {
             description:
                 'Avatar object. If present, the avatar is displayed to the left of the item.',
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'object' },
+                category: 'Display'
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Value of the primary metric. Can be a number or a date.',
+            required: true,
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value'
             }
         },
         currencyCode: {
@@ -21,7 +34,8 @@ export default {
             description:
                 "Only used if format-style='currency', this attribute determines which currency is displayed. Possible values are the ISO 4217 currency codes, such as 'USD' for the US dollar.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Primary Value Number Format'
             }
         },
         currencyDisplayAs: {
@@ -34,7 +48,17 @@ export default {
                 'Determines how currency is displayed. Possible values are symbol, code, and name. This value defaults to symbol.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'symbol' }
+                defaultValue: { summary: 'symbol' },
+                category: 'Primary Value Number Format'
+            }
+        },
+        day: {
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description: 'How to display the day in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
             }
         },
         description: {
@@ -43,7 +67,17 @@ export default {
             },
             description: 'Additional text to display below the label.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Display'
+            }
+        },
+        era: {
+            control: { type: 'select' },
+            options: ['short', 'long'],
+            description: 'How to display the era in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
             }
         },
         errorMessage: {
@@ -53,7 +87,8 @@ export default {
             },
             description: 'Error message to display next to the label.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Validation'
             }
         },
         formatStyle: {
@@ -61,12 +96,28 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['decimal', 'percent', 'percent-fixed', 'currency'],
+            options: [
+                'currency',
+                'date',
+                'decimal',
+                'percent',
+                'percent-fixed'
+            ],
             description:
-                'The number formatting style to use. Possible values are decimal, currency, percent, and percent-fixed. This value defaults to decimal.',
+                'The number formatting style to use. Possible values are currency, date, decimal, percent, and percent-fixed. This value defaults to decimal.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'decimal' }
+                defaultValue: { summary: 'decimal' },
+                category: 'Primary Value'
+            }
+        },
+        hour: {
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description: 'How to display the hour in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
             }
         },
         label: {
@@ -76,7 +127,8 @@ export default {
             description:
                 'Label of the statistic. If present, it will be displayed on top of the data.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Display'
             }
         },
         labelPosition: {
@@ -87,7 +139,8 @@ export default {
             options: ['top', 'bottom'],
             description: 'Position of label.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Display'
             }
         },
         loadingStateAlternativeText: {
@@ -99,7 +152,8 @@ export default {
                 'Message to display when the metric is in a loading state.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Loading...' }
+                defaultValue: { summary: 'Loading...' },
+                category: 'Validation'
             }
         },
         maximumFractionDigits: {
@@ -110,7 +164,20 @@ export default {
             description:
                 'The maximum number of fraction digits that are allowed.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Primary Value Number Format'
+            }
+        },
+        maximumIntegerDigits: {
+            name: 'maximum-integer-digits',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The maximum number of integer digits that are allowed.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Primary Value Number Format'
             }
         },
         maximumSignificantDigits: {
@@ -121,7 +188,8 @@ export default {
             description:
                 'The maximum number of significant digits that are allowed. Possible values are from 1 to 21.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Primary Value Number Format'
             }
         },
         minimumFractionDigits: {
@@ -132,7 +200,8 @@ export default {
             description:
                 'The minimum number of fraction digits that are required.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Primary Value Number Format'
             }
         },
         minimumIntegerDigits: {
@@ -143,7 +212,8 @@ export default {
             description:
                 'The minimum number of integer digits that are required. Possible values are from 1 to 21.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Primary Value Number Format'
             }
         },
         minimumSignificantDigits: {
@@ -154,7 +224,26 @@ export default {
             description:
                 'The minimum number of significant digits that are required. Possible values are from 1 to 21.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Primary Value Number Format'
+            }
+        },
+        minute: {
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description: 'How to display the minute in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
+            }
+        },
+        month: {
+            control: { type: 'select' },
+            options: ['numeric', '2-digit', 'short', 'long'],
+            description: 'How to display the month in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
             }
         },
         prefix: {
@@ -163,7 +252,20 @@ export default {
             },
             description: 'Text to display before the primary value',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Primary Value'
+            }
+        },
+        secondaryValue: {
+            name: 'secondary-value',
+            control: {
+                type: 'text'
+            },
+            description:
+                'If present, a secondary number or date will be displayed to the right of the primary one.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value'
             }
         },
         secondaryCurrencyCode: {
@@ -174,7 +276,8 @@ export default {
             description:
                 "Only used if format-style='currency', this attribute determines which currency is displayed. Possible values are the ISO 4217 currency codes, such as 'USD' for the US dollar.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Secondary Value Number Format'
             }
         },
         secondaryCurrencyDisplayAs: {
@@ -187,7 +290,19 @@ export default {
                 'Determines how currency is displayed. Possible values are symbol, code, and name. This value defaults to symbol.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'symbol' }
+                defaultValue: { summary: 'symbol' },
+                category: 'Secondary Value Number Format'
+            }
+        },
+        secondaryDay: {
+            name: 'secondary-day',
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description:
+                'How to display the day for the secondary value in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
             }
         },
         secondaryFormatStyle: {
@@ -195,12 +310,30 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['decimal', 'percent', 'percent-fixed', 'currency'],
+            options: [
+                'currency',
+                'date',
+                'decimal',
+                'percent',
+                'percent-fixed'
+            ],
             description:
-                'The formatting style to use for the secondary value. Possible values are decimal, currency, percent, and percent-fixed. This value defaults to decimal.',
+                'The formatting style to use for the secondary value. Possible values are date, decimal, currency, percent and percent-fixed.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'decimal' }
+                defaultValue: { summary: 'decimal' },
+                category: 'Secondary Value'
+            }
+        },
+        secondaryHour: {
+            name: 'secondary-hour',
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description:
+                'How to display the hour for the secondary value in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
             }
         },
         secondaryMaximumFractionDigits: {
@@ -209,9 +342,10 @@ export default {
                 type: 'number'
             },
             description:
-                'The maximum number of fraction digits that are allowed.',
+                'The maximum number of fraction digits that are allowed for the secondary value.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Secondary Value Number Format'
             }
         },
         secondaryMaximumSignificantDigits: {
@@ -220,9 +354,10 @@ export default {
                 type: 'number'
             },
             description:
-                'The maximum number of significant digits that are allowed. Possible values are from 1 to 21.',
+                'The maximum number of significant digits that are allowed for the secondary value. Possible values are from 1 to 21.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Secondary Value Number Format'
             }
         },
         secondaryMinimumFractionDigits: {
@@ -231,9 +366,10 @@ export default {
                 type: 'number'
             },
             description:
-                'The minimum number of fraction digits that are required.',
+                'The minimum number of fraction digits that are required for the secondary value.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Secondary Value Number Format'
             }
         },
         secondaryMinimumIntegerDigits: {
@@ -242,9 +378,10 @@ export default {
                 type: 'number'
             },
             description:
-                'The minimum number of integer digits that are required. Possible values are from 1 to 21.',
+                'The minimum number of integer digits that are required for the secondary value. Possible values are from 1 to 21.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Secondary Value Number Format'
             }
         },
         secondaryMinimumSignificantDigits: {
@@ -253,9 +390,32 @@ export default {
                 type: 'number'
             },
             description:
-                'The minimum number of significant digits that are required. Possible values are from 1 to 21.',
+                'The minimum number of significant digits that are required for the secondary value. Possible values are from 1 to 21.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Secondary Value Number Format'
+            }
+        },
+        secondaryMinute: {
+            name: 'secondary-minute',
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description:
+                'How to display the minute for the secondary value in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
+            }
+        },
+        secondaryMonth: {
+            name: 'secondary-month',
+            control: { type: 'select' },
+            options: ['numeric', '2-digit', 'short', 'long'],
+            description:
+                'How to display the month for the secondary value in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
             }
         },
         secondaryPosition: {
@@ -267,7 +427,8 @@ export default {
             description:
                 'Position of the secondary value, relative to the value.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Secondary Value'
             }
         },
         secondaryPrefix: {
@@ -277,7 +438,8 @@ export default {
             },
             description: 'Text to display before the secondary value.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Secondary Value'
             }
         },
         secondaryShowTrendColor: {
@@ -289,7 +451,8 @@ export default {
                 'If present, the secondary value will change color and background depending on the trend direction.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Secondary Value'
             }
         },
         secondarySuffix: {
@@ -299,11 +462,32 @@ export default {
             },
             description: 'Text to display after the secondary value.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Secondary Value'
+            }
+        },
+        secondaryTimeZone: {
+            name: 'secondary-time-zone',
+            control: { type: 'text' },
+            description: 'The time zone to use for the secondary date value.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
+            }
+        },
+        secondaryTimeZoneName: {
+            name: 'secondary-time-zone-name',
+            control: { type: 'select' },
+            options: ['short', 'long'],
+            description:
+                'The time zone name style to use for the secondary date value.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
             }
         },
         secondaryTrendBreakpointValue: {
-            name: 'seconday-trend-breakpoint-value',
+            name: 'secondary-trend-breakpoint-value',
             control: {
                 type: 'number'
             },
@@ -311,7 +495,8 @@ export default {
                 'Number at which the secondary value will be considered neutral. Works in association with `secondary-trend-icon` and `secondary-show-trend-color`.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '0' },
+                category: 'Secondary Value'
             }
         },
         secondaryTrendIcon: {
@@ -323,18 +508,8 @@ export default {
             description:
                 'Type of icon indicating the trend direction of the secondary value. Valid values include dynamic, arrow and caret.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        secondaryValue: {
-            name: 'secondary-value',
-            control: {
-                type: 'number'
-            },
-            description:
-                'If present, a secondary number will be displayed to the right of the primary one.',
-            table: {
-                type: { summary: 'number' }
+                type: { summary: 'string' },
+                category: 'Secondary Value'
             }
         },
         secondaryValueIsLoading: {
@@ -345,7 +520,8 @@ export default {
             description:
                 'If present, a spinner is displayed to indicate that the secondary value is loading.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'boolean' },
+                category: 'Secondary Value'
             }
         },
         secondaryValueSign: {
@@ -358,7 +534,30 @@ export default {
                 'Determine what signs are allowed to be displayed in front of the secondary value, to indicate that it is positive or negative.\nValid values include negative, positive-and-negative or none.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'negative' }
+                defaultValue: { summary: 'negative' },
+                category: 'Secondary Value'
+            }
+        },
+        secondaryWeekday: {
+            name: 'secondary-weekday',
+            control: { type: 'select' },
+            options: ['long', 'short', 'narrow'],
+            description:
+                'How to display the weekday for the secondary value in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
+            }
+        },
+        secondaryYear: {
+            name: 'secondary-year',
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description:
+                'How to display the year for the secondary value in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Secondary Value Date Format'
             }
         },
         showTrendColor: {
@@ -370,7 +569,8 @@ export default {
                 'If present, the value will change color depending on the trend direction.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Primary Value'
             }
         },
         suffix: {
@@ -379,7 +579,27 @@ export default {
             },
             description: 'Text to display after the primary value.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Primary Value'
+            }
+        },
+        timeZone: {
+            name: 'time-zone',
+            control: { type: 'text' },
+            description: 'The time zone to use.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
+            }
+        },
+        timeZoneName: {
+            name: 'time-zone-name',
+            control: { type: 'select' },
+            options: ['short', 'long'],
+            description: 'The time zone name style to use.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
             }
         },
         tooltip: {
@@ -388,19 +608,21 @@ export default {
             },
             description: 'Text to display when the user mouses over.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Display'
             }
         },
         trendBreakpointValue: {
             name: 'trend-breakpoint-value',
             control: {
-                type: 'number'
+                type: 'text'
             },
             description:
-                'Number at which the value will be considered neutral. Works in association with `trend-icon` and `show-trend-color`.',
+                'Numbe or date at which the value will be considered neutral. Works in association with `trend-icon` and `show-trend-color`.',
             table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                type: { summary: 'string' },
+                defaultValue: { summary: '0' },
+                category: 'Primary Value'
             }
         },
         trendIcon: {
@@ -412,17 +634,8 @@ export default {
             description:
                 'Type of icon indicating the trend direction of the value. Valid values include dynamic, arrow and caret.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        value: {
-            control: {
-                type: 'number'
-            },
-            description: 'Value of the statistic.',
-            required: true,
-            table: {
-                type: { summary: 'number' }
+                type: { summary: 'string' },
+                category: 'Primary Value'
             }
         },
         valueIsLoading: {
@@ -433,7 +646,8 @@ export default {
             description:
                 'If present, a spinner is displayed to indicate that the value is loading.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'boolean' },
+                category: 'Primary Value'
             }
         },
         valueSign: {
@@ -446,7 +660,26 @@ export default {
                 'Determine what signs are allowed to be displayed in front of the value, to indicate that it is positive or negative. \nValid values include negative, positive-and-negative or none.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'negative' }
+                defaultValue: { summary: 'negative' },
+                category: 'Primary Value'
+            }
+        },
+        weekday: {
+            control: { type: 'select' },
+            options: ['long', 'short', 'narrow'],
+            description: 'How to display the weekday in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
+            }
+        },
+        year: {
+            control: { type: 'select' },
+            options: ['numeric', '2-digit'],
+            description: 'How to display the year in date format.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Primary Value Date Format'
             }
         }
     },
@@ -459,11 +692,11 @@ export default {
         secondaryFormatStyle: 'decimal',
         secondaryPosition: 'right',
         secondaryShowTrendColor: false,
-        secondaryTrendBreakpointValue: 0,
+        secondaryTrendBreakpointValue: '0',
         secondaryValueIsLoading: false,
         secondaryValueSign: 'negative',
         showTrendColor: false,
-        trendBreakpointValue: 0,
+        trendBreakpointValue: '0',
         valueIsLoading: false,
         valueSign: 'negative'
     }
@@ -473,7 +706,7 @@ const Template = (args) => Metric(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: 7552.8
+    value: '7552.8'
 };
 
 export const BaseEmptyWithError = Template.bind({});
@@ -482,12 +715,19 @@ BaseEmptyWithError.args = {
     errorMessage: 'This is an error message'
 };
 
+export const DateFormat = Template.bind({});
+DateFormat.args = {
+    label: 'Last Updated',
+    formatStyle: 'date',
+    value: '2025-01-01'
+};
+
 export const LabelAndDescription = Template.bind({});
 LabelAndDescription.args = {
     description: 'Since last month',
     label: 'Gross volume',
-    minimumFractionDigits: 2,
-    value: 7552.8,
+    minimumFractionDigits: '2',
+    value: '7552.8',
     formatStyle: 'currency',
     avatar: {
         fallbackIconName: 'standard:lightning_usage',
@@ -499,8 +739,8 @@ export const PrefixAndSuffix = Template.bind({});
 PrefixAndSuffix.args = {
     suffix: 'incl. taxes',
     prefix: 'Total of',
-    minimumFractionDigits: 2,
-    value: 8.6,
+    minimumFractionDigits: '2',
+    value: '8.6',
     currencyCode: 'CAD',
     formatStyle: 'currency',
     tooltip: 'Canadian dollars'
@@ -512,12 +752,12 @@ TrendDown.args = {
     secondaryFormatStyle: 'percent-fixed',
     secondaryMinimumFractionDigits: 1,
     secondarySuffix: 'this month',
-    secondaryValue: 8.6,
+    secondaryValue: '8.6',
     secondaryValueSign: 'positive-and-negative',
     showTrendColor: true,
     suffix: 'overall',
     trendIcon: 'caret',
-    value: -14,
+    value: '-14',
     secondaryPosition: 'bottom'
 };
 
@@ -530,6 +770,6 @@ SecondaryTrendUp.args = {
     label: 'Total Subscribers',
     secondaryShowTrendColor: true,
     secondaryTrendIcon: 'dynamic',
-    secondaryValue: 122,
-    value: 71897
+    secondaryValue: '122',
+    value: '71897'
 };

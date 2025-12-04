@@ -86,6 +86,7 @@ describe('Filter Menu', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.dropdownAlignment).toBe('left');
             expect(element.dropdownNubbin).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.iconName).toBe('utility:down');
@@ -831,6 +832,64 @@ describe('Filter Menu', () => {
             });
         });
 
+        describe('Group Order', () => {
+            it('No order by default', () => {
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('First', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Middle', () => {
+                element.groupOrder = 'middle';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_middle');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain('slds-button_last');
+                });
+            });
+
+            it('Last', () => {
+                element.groupOrder = 'last';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList).toContain('slds-button_last');
+                    expect(button.classList).not.toContain('slds-button_first');
+                    expect(button.classList).not.toContain(
+                        'slds-button_middle'
+                    );
+                });
+            });
+        });
+
         describe('Hide Apply Reset Buttons', () => {
             // Depends on variant
             it('false, with horizontal variant', () => {
@@ -1485,6 +1544,39 @@ describe('Filter Menu', () => {
                 });
             });
 
+            it('type = time-range', () => {
+                element.type = 'time-range';
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown"]'
+                    );
+                    expect(dropdown.classList).toContain('slds-dropdown_large');
+
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="input-time-range-container"]'
+                    );
+                    expect(timeRange).toBeTruthy();
+                });
+            });
+
+            it('type = time-range, vertical variant', () => {
+                element.type = 'time-range';
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="input-time-range-container"]'
+                    );
+                    expect(timeRange).toBeTruthy();
+                });
+            });
+
             // type-attributes
             it('typeAttributes for date-range', () => {
                 const typeAttributes = {
@@ -1524,6 +1616,43 @@ describe('Filter Menu', () => {
                     expect(dateRange.timeStyle).toBe(typeAttributes.timeStyle);
                     expect(dateRange.timezone).toBe(typeAttributes.timezone);
                     expect(dateRange.type).toBe(typeAttributes.type);
+                });
+            });
+
+            it('typeAttributes for time-range', () => {
+                const typeAttributes = {
+                    labelStartTime: 'Start time',
+                    labelEndTime: 'End time',
+                    timeStyle: 'long'
+                };
+                element.type = 'time-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const startTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    const labelStartTime = element.shadowRoot.querySelector(
+                        '[data-element-id="label-start-time"]'
+                    );
+                    const endTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    const labelEndTime = element.shadowRoot.querySelector(
+                        '[data-element-id="label-end-time"]'
+                    );
+                    expect(startTime.timeStyle).toBe(typeAttributes.timeStyle);
+                    expect(labelStartTime.textContent).toBe(
+                        typeAttributes.labelStartTime
+                    );
+                    expect(endTime.timeStyle).toBe(typeAttributes.timeStyle);
+                    expect(labelEndTime.textContent).toBe(
+                        typeAttributes.labelEndTime
+                    );
                 });
             });
 
@@ -1984,6 +2113,26 @@ describe('Filter Menu', () => {
                         '[data-element-id="avonni-slider"]'
                     );
                     expect(slider.value).toEqual([0.35, 67]);
+                });
+            });
+
+            it('value, time range type', () => {
+                element.value = ['08:30:00.000', '17:00:00.000'];
+                element.type = 'time-range';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const startTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    const endTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    expect(startTime.value).toEqual(element.value[0]);
+                    expect(endTime.value).toEqual(element.value[1]);
                 });
             });
 
@@ -2479,6 +2628,41 @@ describe('Filter Menu', () => {
                 });
             });
 
+            it('Time-range type', () => {
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                element.type = 'time-range';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const startTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-start-time"]'
+                    );
+                    startTime.value = '08:30:00.000';
+                    const endTime = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input-end-time"]'
+                    );
+                    startTime.dispatchEvent(new CustomEvent('change'));
+
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.value).toEqual([
+                        '08:30:00.000',
+                        null
+                    ]);
+                    endTime.value = '17:00:00.000';
+                    endTime.dispatchEvent(new CustomEvent('change'));
+                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler.mock.calls[1][0].detail.value).toEqual([
+                        '08:30:00.000',
+                        '17:00:00.000'
+                    ]);
+                });
+            });
+
             describe('Nested items', () => {
                 it('Select root item', () => {
                     const handler = jest.fn();
@@ -2963,6 +3147,61 @@ describe('Filter Menu', () => {
                     });
             });
 
+            it('Search allows list items on horizontal variant to be checked', () => {
+                const handler = jest.fn();
+                element.addEventListener('search', handler);
+                jest.useFakeTimers();
+
+                element.variant = 'horizontal';
+                element.typeAttributes = {
+                    items: ITEMS,
+                    allowSearch: true
+                };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input"]'
+                        );
+                        input.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: 'Searchable'
+                                }
+                            })
+                        );
+
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.value).toBe('Searchable');
+                        expect(call.bubbles).toBeTruthy();
+                        expect(call.composed).toBeFalsy();
+                        expect(call.cancelable).toBeFalsy();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items).toHaveLength(1);
+                        expect(items[0].dataset.value).toBe('item-3');
+                        expect(items[0].ariaChecked).toBe('false');
+                        items[0].click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items).toHaveLength(1);
+                        expect(items[0].dataset.value).toBe('item-3');
+                        expect(items[0].ariaChecked).toBe('true');
+                    });
+            });
+
             it('Search expands nested items', () => {
                 const handler = jest.fn();
                 element.addEventListener('search', handler);
@@ -3081,41 +3320,6 @@ describe('Filter Menu', () => {
                         );
                         expect(dropdown).toBeTruthy();
                     });
-            });
-        });
-
-        describe('Private Button Register', () => {
-            it('privatebuttonregister event', () => {
-                element = createElement('base-filter-menu', {
-                    is: FilterMenu
-                });
-
-                const mockDeRegistrationCallback = jest.fn();
-
-                const handler = jest.fn().mockImplementation((event) => {
-                    event.detail.callbacks.setDeRegistrationCallback(
-                        mockDeRegistrationCallback
-                    );
-                });
-                element.addEventListener('privatebuttonregister', handler);
-
-                document.body.appendChild(element);
-
-                expect(handler).toHaveBeenCalled();
-                expect(
-                    handler.mock.calls[0][0].detail.callbacks
-                        .setDeRegistrationCallback
-                ).toBeTruthy();
-                expect(
-                    handler.mock.calls[0][0].detail.callbacks.setOrder
-                ).toBeTruthy();
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-
-                while (document.body.firstChild) {
-                    document.body.removeChild(document.body.firstChild);
-                }
-
-                expect(mockDeRegistrationCallback).toHaveBeenCalled();
             });
         });
 

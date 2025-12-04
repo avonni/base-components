@@ -22,7 +22,7 @@
     background-color: var(--avonni-blockquote-brand-color-background, #fafaf9);
     border-left-color: var(
         --avonni-blockquote-brand-color-border-left,
-        var(--slds-g-color-accent-container-1, #0176d3)
+        var(--slds-g-color-accent-1, #0176d3)
     );
     color: var(--avonni-blockquote-brand-text-color, #3e3e3c);
 }
@@ -34,7 +34,7 @@
     );
     border-left-color: var(
         --avonni-blockquote-warning-color-border-left,
-        var(--slds-g-color-warning-container-1, #dd7a01)
+        var(--slds-g-color-warning-1, #dd7a01)
     );
     color: var(--avonni-blockquote-warning-text-color, #3e3e3c);
 }
@@ -43,7 +43,7 @@
     background-color: var(--avonni-blockquote-error-color-background, #fafaf9);
     border-left-color: var(
         --avonni-blockquote-error-color-border-left,
-        var(--slds-g-color-error-container-1, #ba0517)
+        var(--slds-g-color-error-1, #ba0517)
     );
     color: var(--avonni-blockquote-error-text-color, #3e3e3c);
 }
@@ -55,7 +55,7 @@
     );
     border-left-color: var(
         --avonni-blockquote-success-color-border-left,
-        var(--slds-g-color-success-container-1, #2e844a)
+        var(--slds-g-color-success-1, #2e844a)
     );
     color: var(--avonni-blockquote-success-text-color, #3e3e3c);
 }
@@ -125,9 +125,20 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
         --avonni-blockquote-default-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-default-icon-color-foreground-default
+        --avonni-blockquote-default-icon-color-foreground-default,
+        var(--avonni-blockquote-default-icon-color-foreground)
     );
     --sds-c-icon-color-background: var(
+        --avonni-blockquote-default-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-blockquote-default-icon-color-foreground
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-blockquote-default-icon-color-foreground-default,
+        var(--avonni-blockquote-default-icon-color-foreground)
+    );
+    --slds-c-icon-color-background: var(
         --avonni-blockquote-default-icon-color-background
     );
 }
@@ -136,18 +147,37 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
     .avonni-blockquote__title {
     color: var(
         --avonni-blockquote-brand-title-text-color,
-        var(--slds-g-color-accent-container-1, #0176d3)
+        var(--slds-g-color-accent-1, #0176d3)
     );
 }
 
 .avonni-blockquote__theme-brand .avonni-blockquote__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
-        --avonni-blockquote-brand-icon-color-foreground
+        --avonni-blockquote-brand-icon-color-foreground,
+        var(--slds-g-color-accent-1, #0176d3)
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-brand-icon-color-foreground-default
+        --avonni-blockquote-brand-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-brand-icon-color-foreground,
+            var(--slds-g-color-accent-1, #0176d3)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-blockquote-brand-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-blockquote-brand-icon-color-foreground,
+        var(--slds-g-color-accent-1, #0176d3)
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-blockquote-brand-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-brand-icon-color-foreground,
+            var(--slds-g-color-accent-1, #0176d3)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-blockquote-brand-icon-color-background
     );
 }
@@ -156,18 +186,37 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
     .avonni-blockquote__title {
     color: var(
         --avonni-blockquote-warning-title-text-color,
-        var(--slds-g-color-warning-container-1, #dd7a01)
+        var(--slds-g-color-warning-1, #dd7a01)
     );
 }
 
 .avonni-blockquote__theme-warning .avonni-blockquote__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
-        --avonni-blockquote-warning-icon-color-foreground
+        --avonni-blockquote-warning-icon-color-foreground,
+        var(--slds-g-color-warning-1, #dd7a01)
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-warning-icon-color-foreground-default
+        --avonni-blockquote-warning-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-warning-icon-color-foreground,
+            var(--slds-g-color-warning-1, #dd7a01)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-blockquote-warning-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-blockquote-warning-icon-color-foreground,
+        var(--slds-g-color-warning-1, #dd7a01)
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-blockquote-warning-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-warning-icon-color-foreground,
+            var(--slds-g-color-warning-1, #dd7a01)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-blockquote-warning-icon-color-background
     );
 }
@@ -176,18 +225,37 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
     .avonni-blockquote__title {
     color: var(
         --avonni-blockquote-error-title-text-color,
-        var(--slds-g-color-error-container-1, #ba0517)
+        var(--slds-g-color-error-1, #ba0517)
     );
 }
 
 .avonni-blockquote__theme-error .avonni-blockquote__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
-        --avonni-blockquote-error-icon-color-foreground
+        --avonni-blockquote-error-icon-color-foreground,
+        var(--slds-g-color-error-1, #ba0517)
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-error-icon-color-foreground-default
+        --avonni-blockquote-error-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-error-icon-color-foreground,
+            var(--slds-g-color-error-1, #ba0517)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-blockquote-error-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-blockquote-error-icon-color-foreground,
+        var(--slds-g-color-error-1, #ba0517)
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-blockquote-error-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-error-icon-color-foreground,
+            var(--slds-g-color-error-1, #ba0517)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-blockquote-error-icon-color-background
     );
 }
@@ -196,18 +264,37 @@ blockquote.avonni-blockquote__container .avonni-blockquote__title {
     .avonni-blockquote__title {
     color: var(
         --avonni-blockquote-success-title-text-color,
-        var(--slds-g-color-success-container-1, #2e844a)
+        var(--slds-g-color-success-1, #2e844a)
     );
 }
 
 .avonni-blockquote__theme-success .avonni-blockquote__primitive-icon_color {
     --sds-c-icon-color-foreground: var(
-        --avonni-blockquote-success-icon-color-foreground
+        --avonni-blockquote-success-icon-color-foreground,
+        var(--slds-g-color-success-1, #2e844a)
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-blockquote-success-icon-color-foreground-default
+        --avonni-blockquote-success-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-success-icon-color-foreground,
+            var(--slds-g-color-success-1, #2e844a)
+        )
     );
     --sds-c-icon-color-background: var(
+        --avonni-blockquote-success-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-blockquote-success-icon-color-foreground,
+        var(--slds-g-color-success-1, #2e844a)
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-blockquote-success-icon-color-foreground-default,
+        var(
+            --avonni-blockquote-success-icon-color-foreground,
+            var(--slds-g-color-success-1, #2e844a)
+        )
+    );
+    --slds-c-icon-color-background: var(
         --avonni-blockquote-success-icon-color-background
     );
 }

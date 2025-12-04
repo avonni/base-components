@@ -15,6 +15,7 @@ import {
 } from 'c/utils';
 import {
     animationFrame,
+    buttonGroupOrderClass,
     equal,
     observePosition,
     timeout
@@ -31,6 +32,8 @@ import {
     toggleTreeItemValue,
     UNSELECT_ALL_ACTION
 } from './nestedItemsUtils';
+
+import { formatDateFromStyle, formatTimeString } from './itemFormatUtils.js';
 
 const BUTTON_VARIANTS = {
     default: 'border',
@@ -119,12 +122,13 @@ const TYPE_ATTRIBUTES = {
         'tickMarkStyle',
         'unit',
         'unitAttributes'
-    ]
+    ],
+    'time-range': ['labelEndTime', 'labelStartTime', 'timeStyle']
 };
 
 const TYPES = {
     default: 'list',
-    valid: ['date-range', 'list', 'range']
+    valid: ['date-range', 'list', 'range', 'time-range']
 };
 
 /**
@@ -141,6 +145,14 @@ export default class FilterMenu extends LightningElement {
      * @public
      */
     @api accessKey;
+    /**
+     * Reserved for internal use only.
+     * Describes the order of this element inside `lightning-button-group`. Valid values include first, middle or last.
+     *
+     * @public
+     * @type {string}
+     */
+    @api groupOrder = '';
     /**
      * Label of the menu.
      *
@@ -214,32 +226,6 @@ export default class FilterMenu extends LightningElement {
      */
 
     connectedCallback() {
-        // button-group necessities
-        /**
-        * Private button register event
-        *
-        * @event
-        * @name privatebuttonregister
-        * @param {object} callbacks
-        * *setOrder : this.setOrder.bind(this),
-        * *setDeRegistrationCallback: (deRegistrationCallback) => {
-                        this._deRegistrationCallback = deRegistrationCallback;
-                    }
-        * @bubbles
-        */
-        const privatebuttonregister = new CustomEvent('privatebuttonregister', {
-            bubbles: true,
-            detail: {
-                callbacks: {
-                    setOrder: this.setOrder.bind(this),
-                    setDeRegistrationCallback: (deRegistrationCallback) => {
-                        this._deRegistrationCallback = deRegistrationCallback;
-                    }
-                }
-            }
-        });
-
-        this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
         this.computeListItems();
         this.computeSelectedItems();
@@ -719,7 +705,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Type of the filter menu. Valid values include list, range and date-range.
+     * Type of the filter menu. Valid values include list, range, date-range and time-range.
      *
      * @type {string}
      * @default list
@@ -773,7 +759,10 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Value of the filter menu.
-     * If the type is `list`, array of selected items values. If the type is `range`, array of selected numbers. If the type is `date-range`, array of ISO 8601 dates.
+     * If the type is `list`, array of selected items values.
+     * If the type is `range`, array of selected numbers.
+     * If the type is `date-range`, array of ISO 8601 dates.
+     * If the type is `time-range`, array of time strings in the format HH:mm[:ss[.SSS]].
      *
      * @type {String[] | Number[] | Date[]}
      * @public
@@ -872,6 +861,7 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare-inverse';
 
         const classes = classSet('slds-button');
+        classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({
@@ -910,14 +900,7 @@ export default class FilterMenu extends LightningElement {
             });
         }
 
-        return classes
-            .add({
-                // order classes when part of a button-group
-                'slds-button_first': this._order === 'first',
-                'slds-button_middle': this._order === 'middle',
-                'slds-button_last': this._order === 'last'
-            })
-            .toString();
+        return classes.toString();
     }
 
     /**
@@ -956,7 +939,8 @@ export default class FilterMenu extends LightningElement {
             'slds-nubbin_bottom-right': nubbin && alignment === 'bottom-right',
             'slds-nubbin_bottom': nubbin && alignment === 'bottom-center',
             'slds-dropdown_small': isSmallRange,
-            'slds-dropdown_large': this.isDateRange && !isDateTime
+            'slds-dropdown_large':
+                (this.isDateRange && !isDateTime) || this.isTimeRange
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
@@ -1139,6 +1123,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the type is time-range.
+     *
+     * @type {boolean}
+     */
+    get isTimeRange() {
+        return this.type === 'time-range';
+    }
+
+    /**
      * True if the variant is vertical.
      *
      * @type {boolean}
@@ -1247,6 +1240,30 @@ export default class FilterMenu extends LightningElement {
      */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
+    }
+
+    /**
+     * Selected start time, when the type is time-range.
+     *
+     * @type {string|null}
+     */
+    get timeRangeStartTime() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[0];
+    }
+
+    /**
+     * Selected end time, when the type is time-range.
+     *
+     * @type {string|null}
+     */
+    get timeRangeEndTime() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[1];
     }
 
     /*
@@ -1429,7 +1446,7 @@ export default class FilterMenu extends LightningElement {
                 // Date range
                 const { dateStyle, timeStyle, timezone, type } =
                     this.computedTypeAttributes;
-                normalizedValue = this.formatDateFromStyle(date, {
+                normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle,
@@ -1447,6 +1464,8 @@ export default class FilterMenu extends LightningElement {
                 };
                 normalizedValue = value.toString();
                 normalizedValue = numberFormat(options).format(normalizedValue);
+            } else if (this.isTimeRange && value) {
+                normalizedValue = formatTimeString(value);
             }
             return string.length
                 ? `${string} - ${normalizedValue}`
@@ -1525,26 +1544,6 @@ export default class FilterMenu extends LightningElement {
             item.focus();
             item.tabIndex = '0';
         }
-    }
-
-    formatDateFromStyle(
-        date,
-        {
-            showTime = false,
-            dateStyle = 'medium',
-            timeStyle = 'short',
-            timeZone
-        }
-    ) {
-        if (!(date instanceof Date)) {
-            return '';
-        }
-        const time = showTime ? timeStyle : undefined;
-        return new Intl.DateTimeFormat('default', {
-            dateStyle,
-            timeStyle: time,
-            timeZone
-        }).format(date);
     }
 
     /**
@@ -1918,6 +1917,7 @@ export default class FilterMenu extends LightningElement {
             }
             return item;
         });
+        this.visibleItems = this.getVisibleItems();
 
         this.dispatchSelect();
     }
@@ -2069,6 +2069,34 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = [...this.value];
         this.computeListItems();
         this.dispatchApply();
+    }
+
+    /**
+     * Handle a change of the input time range, when the type is time-range.
+     *
+     * @param {Event} event
+     */
+    handleTimeRangeChange(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const elementId = event.target.dataset.elementId;
+        const value = event.target.value;
+
+        let [start, end] = this.currentValue;
+
+        start = start ?? null;
+        end = end ?? null;
+
+        if (elementId === 'lightning-input-start-time') {
+            start = value;
+        } else if (elementId === 'lightning-input-end-time') {
+            end = value;
+        }
+
+        this.currentValue = [start, end];
+
+        this.dispatchSelect();
     }
 
     handleTreeActionClick(event) {

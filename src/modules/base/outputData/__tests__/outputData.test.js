@@ -1134,6 +1134,9 @@ describe('OutputData', () => {
                     const url = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-formatted-url"]'
                     );
+                    const time = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-time"]'
+                    );
 
                     expect(text).toBeTruthy();
                     expect(text.value).toBe('A string value');

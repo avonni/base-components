@@ -36,12 +36,15 @@ export class SchedulerEventOccurrence {
      * @type {DateTime}
      */
     get firstAllowedDate() {
-        const { availableMonths, availableDaysOfTheWeek } = this;
-        if (!availableMonths || !availableDaysOfTheWeek) {
+        if (!this.availableMonths || !this.availableDaysOfTheWeek) {
             return this.from;
         }
         const start = this.weekStart || this.from;
-        return nextAllowedDay(start, availableMonths, availableDaysOfTheWeek);
+        return nextAllowedDay(
+            start,
+            this.availableMonths,
+            this.availableDaysOfTheWeek
+        );
     }
 
     /**

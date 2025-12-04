@@ -148,14 +148,12 @@ export default class OutputData extends LightningElement {
      */
     get computedLabelClass() {
         return classSet(
-            'avonni-output-data__label slds-item_label slds-truncate'
-        )
-            .add({
-                'slds-assistive-text': this.variant === 'label-hidden',
-                'slds-p-right_small avonni-output-data__label_inline':
-                    this.variant === 'label-inline'
-            })
-            .toString();
+            'avonni-output-data__label slds-item_label slds-truncate slds-form-element__label'
+        ).add({
+            'slds-assistive-text': this.variant === 'label-hidden',
+            'slds-p-right_small avonni-output-data__label_inline':
+                this.variant === 'label-inline'
+        });
     }
 
     /**
@@ -164,15 +162,11 @@ export default class OutputData extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        return classSet()
-            .add({
-                'slds-list_stacked':
-                    this.variant === 'label-stacked' ||
-                    this.variant === 'standard',
-                'slds-list_horizontal slds-wrap':
-                    this.variant === 'label-inline'
-            })
-            .toString();
+        return classSet().add({
+            'slds-list_stacked':
+                this.variant === 'label-stacked' || this.variant === 'standard',
+            'slds-list_horizontal slds-wrap': this.variant === 'label-inline'
+        });
     }
 
     /**

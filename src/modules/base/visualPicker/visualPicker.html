@@ -46,6 +46,8 @@
                         >
                             <div class={computedVisualPickerClass}>
                                 <input
+                                    aria-checked={item.checked}
+                                    aria-label={item.computedAriaLabel}
                                     disabled={item.disabled}
                                     id={item.value}
                                     name={name}

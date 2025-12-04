@@ -18,6 +18,8 @@ const DEFAULT_SHOW_MORE_BUTTON_WIDTH = 60;
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
 
+const RECOMPUTE_OVERFLOW_THRESHOLD_PX = 5;
+
 /**
  * @class
  * @name ChipContainer
@@ -57,6 +59,7 @@ export default class ChipContainer extends LightningElement {
     _resizeObserver;
     _scrollingInterval;
     _visibleItemsCount = 0;
+    _wrapperWidthWhenLastResized = 0;
 
     showPopover = false;
     _connected = false;
@@ -70,7 +73,7 @@ export default class ChipContainer extends LightningElement {
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.initVisibleItemsCount();
-        this.updateVisibleItems();
+        this.updateVisibleItems(true);
         this._connected = true;
     }
 
@@ -136,7 +139,7 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(true);
         }
     }
 
@@ -157,7 +160,7 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(true);
         }
     }
 
@@ -183,7 +186,7 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(true);
         }
     }
 
@@ -204,7 +207,7 @@ export default class ChipContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
-            this.updateVisibleItems();
+            this.updateVisibleItems(true);
         }
     }
 
@@ -545,7 +548,7 @@ export default class ChipContainer extends LightningElement {
             if (!this._connected) {
                 return;
             }
-            this.updateVisibleItems();
+            this.updateVisibleItems(false);
         });
     }
 
@@ -768,8 +771,10 @@ export default class ChipContainer extends LightningElement {
 
     /**
      * Update the number of visible and collapsed items, depending on the available space.
+     *
+     * @param {boolean} hasChangedContent If present, the number of visible items is updated even if the size of the chip container has not changed.
      */
-    updateVisibleItems() {
+    updateVisibleItems(hasChangedContent = false) {
         requestAnimationFrame(() => {
             if (!this.items) {
                 return;
@@ -784,11 +789,19 @@ export default class ChipContainer extends LightningElement {
             if (!this.wrapperElement) {
                 return;
             }
+            const wrapperWidth = this.wrapperElement.offsetWidth;
+            const isOverflow =
+                Math.abs(wrapperWidth - this._wrapperWidthWhenLastResized) >=
+                RECOMPUTE_OVERFLOW_THRESHOLD_PX;
+
+            if (!isOverflow && !hasChangedContent) {
+                return;
+            }
 
             this.saveItemsWidths();
             let fittingCount = 0;
             let width = 0;
-            let totalWidth = this.wrapperElement.offsetWidth - 10;
+            let totalWidth = wrapperWidth - 10;
             const visibleItems = this.template.querySelectorAll(
                 '[data-element-id="li-item"]'
             );
@@ -842,6 +855,11 @@ export default class ChipContainer extends LightningElement {
                 }
             }
             this._visibleItemsCount = fittingCount;
+            // Needs to update within the next frame to get the right offsetWidth
+            requestAnimationFrame(() => {
+                this._wrapperWidthWhenLastResized =
+                    this.wrapperElement?.offsetWidth || 0;
+            });
         });
     }
 
@@ -968,7 +986,7 @@ export default class ChipContainer extends LightningElement {
             this._isExpanded = true;
             this._focusedIndex = this._visibleItemsCount - 1;
             this._focusOnRender = true;
-            this.updateVisibleItems();
+            this.updateVisibleItems(false);
         }
 
         /**

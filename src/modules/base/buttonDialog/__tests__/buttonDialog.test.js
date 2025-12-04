@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import ButtonDialog from 'c/buttonDialog';
+import { createElement } from 'lwc';
 
 let element;
 describe('Button Dialog', () => {
@@ -22,6 +22,7 @@ describe('Button Dialog', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.cancelButtonLabel).toBe('Cancel');
             expect(element.disabled).toBeFalsy();
+            expect(element.groupOrder).toBe('');
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('x-small');
@@ -71,6 +72,19 @@ describe('Button Dialog', () => {
 
                 return Promise.resolve().then(() => {
                     expect(button.disabled).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Group Order', () => {
+            it('Passed to the component', () => {
+                element.groupOrder = 'first';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.groupOrder).toBe('first');
                 });
             });
         });

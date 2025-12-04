@@ -7,11 +7,17 @@ describe('Submenu', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-submenu', {
             is: Submenu
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -235,6 +241,96 @@ describe('Submenu', () => {
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
                 });
+            });
+        });
+    });
+
+    describe('Keyboard Accessibility', () => {
+        describe('Submenu keyboard navigation', () => {
+            describe('Arrow Right', () => {
+                it('Opens dropdown menu', () => {
+                    let submenu = element.shadowRoot.querySelector(
+                        '[data-element-id="a"]'
+                    );
+                    submenu.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'ArrowRight'
+                        })
+                    );
+
+                    return Promise.resolve().then(() => {
+                        submenu = element.shadowRoot.querySelector(
+                            '[data-element-id="a"]'
+                        );
+                        expect(submenu.ariaExpanded).toBe('true');
+                    });
+                });
+
+                it('Submenu does not open when disabled', () => {
+                    element.disabled = true;
+
+                    return Promise.resolve().then(() => {
+                        let submenu = element.shadowRoot.querySelector(
+                            '[data-element-id="a"]'
+                        );
+                        submenu.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'ArrowRight'
+                            })
+                        );
+
+                        return Promise.resolve().then(() => {
+                            submenu = element.shadowRoot.querySelector(
+                                '[data-element-id="a"]'
+                            );
+                            expect(submenu.ariaExpanded).toBe('false');
+                        });
+                    });
+                });
+            });
+
+            it('Does not open submenu when pressing other keys', () => {
+                let submenu = element.shadowRoot.querySelector(
+                    '[data-element-id="a"]'
+                );
+                submenu.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: 'ArrowLeft'
+                    })
+                );
+
+                return Promise.resolve().then(() => {
+                    submenu = element.shadowRoot.querySelector(
+                        '[data-element-id="a"]'
+                    );
+                    expect(submenu.ariaExpanded).toBe('false');
+                });
+            });
+        });
+
+        describe('Submenu dropdown keyboard navigation', () => {
+            it('ArrowLeft', () => {
+                const menu = element.shadowRoot.querySelector('[role="menu"]');
+                element.open();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const submenu = element.shadowRoot.querySelector(
+                            '[data-element-id="a"]'
+                        );
+                        expect(submenu.ariaExpanded).toBe('true');
+                        menu.dispatchEvent(
+                            new KeyboardEvent('keydown', {
+                                key: 'ArrowLeft'
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const submenu = element.shadowRoot.querySelector(
+                            '[data-element-id="a"]'
+                        );
+                        expect(submenu.ariaExpanded).toBe('false');
+                    });
             });
         });
     });

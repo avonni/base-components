@@ -1,5 +1,7 @@
-import { LightningElement, api } from 'lwc';
+import { api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
+import { ButtonMenuBase } from 'c/buttonMenuUtils';
 
 const DEFAULT_TAB_INDEX = '0';
 
@@ -14,7 +16,7 @@ const MENU_ALIGNMENTS = {
  * @storyId example-submenu--base
  * @public
  */
-export default class Submenu extends LightningElement {
+export default class Submenu extends ButtonMenuBase {
     /**
      * The keyboard shortcut for the menu item.
      *
@@ -231,6 +233,33 @@ export default class Submenu extends LightningElement {
     }
 
     /**
+     * Submenu dropdown keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleDropdownKeyDown(event) {
+        switch (event.key) {
+            case keyValues.down:
+            case keyValues.up: {
+                this.preventDefaultAndStopPropagation(event);
+                this.focusNextOrPreviousMenuItem(event);
+                break;
+            }
+            case keyValues.left:
+            case keyValues.escape: {
+                if (this.isOpen) {
+                    this.preventDefaultAndStopPropagation(event);
+                    this.close();
+                    this.focus();
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    /**
      * Private Focus event handler.
      */
     handleFocus() {
@@ -251,6 +280,29 @@ export default class Submenu extends LightningElement {
     }
 
     /**
+     * Submenu keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyDown(event) {
+        switch (event.key) {
+            case keyValues.right:
+            case keyValues.enter: {
+                if (this.disabled) return;
+                this.preventDefaultAndStopPropagation(event);
+                this.open();
+
+                requestAnimationFrame(() => {
+                    this.focusOnMenuItem(0);
+                });
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    /**
      * Mouse enter submenu event handler.
      *
      * @param {Event} event
@@ -262,11 +314,9 @@ export default class Submenu extends LightningElement {
                     submenu.close();
                 });
             }
-
-            this.isOpen = true;
+            this.open();
             event.stopPropagation();
         }
-
         event.preventDefault();
     }
 
