@@ -595,6 +595,10 @@
             "path": "src/modules/base/slider/slider.js"
         },
         {
+            "name": "c/status",
+            "path": "src/modules/base/status/status.js"
+        },
+        {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
         },
@@ -999,6 +1003,10 @@
             "path": "src/modules/base/splitterPane/splitterPane.js"
         },
         {
+            "name": "avonni/status",
+            "path": "src/modules/base/status/status.js"
+        },
+        {
             "name": "avonni/submenu",
             "path": "src/modules/base/submenu/submenu.js"
         },
@@ -1127,6 +1135,7 @@
         "avonni/slider",
         "avonni/splitter",
         "avonni/splitterPane",
+        "avonni/status",
         "avonni/submenu",
         "avonni/summaryDetail",
         "avonni/tabBar",
