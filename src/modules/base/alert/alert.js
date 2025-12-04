@@ -113,17 +113,42 @@ export default class Alert extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
 
     /**
      * Hide the alert and execute the close action.
      */
-    closeAlert() {
+    handleClose() {
+        const cancelled = this._dispatchClose();
+        if (cancelled) {
+            return;
+        }
         this.hideAlert = true;
         if (typeof this.closeAction === 'function') {
             this.closeAction();
         }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchClose() {
+        const event = new CustomEvent('close', { cancelable: true });
+
+        /**
+         * The event fired when the alert is closed.
+         *
+         * @event
+         * @name close
+         * @public
+         * @cancelable
+         */
+        this.dispatchEvent(event);
+        return event.defaultPrevented;
     }
 }
