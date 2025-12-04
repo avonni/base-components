@@ -599,7 +599,7 @@ export default class Combobox extends LightningElement {
         this._scopes = normalizeArray(value, 'object');
 
         if (!this.scopeValue && this.scopes.length && this.scopes[0].value) {
-            this.scopeValue = [this.scopes[0].value];
+            this.scopeValue = this.scopes[0].value;
         }
     }
 
