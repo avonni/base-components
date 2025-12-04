@@ -224,7 +224,7 @@ export default class ColorGradient extends LightningElement {
      */
     @api
     focus() {
-        const input = this.template.querySelector('[data-element-id="input"');
+        const input = this.template.querySelector('[data-element-id="input"]');
         if (input) {
             input.focus();
         }

@@ -1915,6 +1915,10 @@ export default class FilterMenu extends LightningElement {
         this._dispatchFocus();
     }
 
+    handleFocusDropdown() {
+        this._focusDropdown();
+    }
+
     /**
      * Handle a click on a list item.
      *

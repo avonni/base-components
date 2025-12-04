@@ -2241,21 +2241,21 @@ export default class DateTimePicker extends LightningElement {
      * Triggers interactingState.leave() on blur.
      * Removes slds-has-error on the whole element if not valid.
      */
-    handleValueBlur() {
+    handleValueBlur(event) {
         this._valid = !(this.required && !this._computedValue.length);
         this.interactingState.leave();
         if (!this._valid) {
             this.classList.remove('slds-has-error');
         }
-        this.handleBlur();
+        this.handleBlur(event);
     }
 
     /**
      * Triggers interactingState.enter() on focus.
      */
-    handleValueFocus() {
+    handleValueFocus(event) {
         this.interactingState.enter();
-        this.handleFocus();
+        this.handleFocus(event);
     }
 
     /*
