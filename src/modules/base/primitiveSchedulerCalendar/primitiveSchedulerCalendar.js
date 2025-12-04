@@ -1,5 +1,6 @@
 import {
     addToDate,
+    dateTimeObjectFrom,
     getWeekNumber,
     intervalFrom,
     numberOfUnitsBetweenDates
@@ -973,7 +974,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             date = date.set({ hour: availableHours[j] });
             const start = date.startOf('hour');
             const end = start.endOf('hour');
+            const month = start.month;
             column.referenceCells.push({
+                disabled: !this.availableMonths.includes(month - 1),
                 start: start.ts,
                 end: end.ts
             });
@@ -1261,7 +1264,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             if (this.isDay || this.isWeek) {
                 // Create a cell group for the multi day events row
                 const referenceCells = this.columns.map((col) => {
+                    const date = dateTimeObjectFrom(col.start, {
+                        timezone: this.timezone
+                    });
+                    const disabled = !this.availableMonths.includes(
+                        date.month - 1
+                    );
                     return {
+                        disabled,
                         start: col.start.ts,
                         end: col.end.ts - 1
                     };
@@ -1418,7 +1428,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     isDisabledCell(cell) {
         const start = Number(cell.dataset.start);
-        if (this.isMonth && start) {
+        if (start) {
             const cellMonth = this.createDate(start).month - 1;
             if (!this.availableMonths.includes(cellMonth)) {
                 return true;
@@ -2047,7 +2057,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.readOnly ||
             this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
             !this.firstSelectedResource ||
-            this.isMonth
+            this.isMonth ||
+            this.isDisabledCell(event.currentTarget)
         ) {
             return;
         }
@@ -2191,7 +2202,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             event.button ||
             this.readOnly ||
             this.hiddenActions.includes(DEFAULT_ACTION_NAMES.add) ||
-            !this.firstSelectedResource
+            !this.firstSelectedResource ||
+            this.isDisabledCell(event.currentTarget)
         ) {
             return;
         }
