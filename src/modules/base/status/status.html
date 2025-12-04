@@ -1,0 +1,25 @@
+<template>
+    <span
+        class="
+            slds-grid slds-grid_vertical-align-center
+            avonni-status__truncation_container
+        "
+        data-element-id="span-wrapper"
+    >
+        <lightning-formatted-text
+            if:true={computedState.label}
+            class="avonni-status__label slds-order_1"
+            style={computedTextStyle}
+            value={computedState.label}
+            data-element-id="lightning-formatted-text"
+        ></lightning-formatted-text>
+        <lightning-icon
+            if:true={computedState.iconName}
+            class={computedIconClass}
+            style={computedIconStyle}
+            icon-name={computedState.iconName}
+            size={iconSize}
+            data-element-id="lightning-icon"
+        ></lightning-icon>
+    </span>
+</template>
