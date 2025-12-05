@@ -97,6 +97,7 @@ describe('Filter Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.resetButtonLabel).toBe('Reset');
+            expect(element.resetButtonPosition).toBe('bottom');
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.type).toBe('list');
@@ -152,6 +153,8 @@ describe('Filter Menu', () => {
 
         describe('Button Variant', () => {
             // Depends on iconName and label
+            const baseClass =
+                'slds-button slds-truncate avonni-filter-menu__button avonni-filter-menu__allow-shrink-width';
             it('border', () => {
                 element.buttonVariant = 'border';
 
@@ -160,7 +163,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-border'
+                        `${baseClass} slds-button_icon-border`
                     );
                 });
             });
@@ -174,7 +177,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_neutral'
+                        `${baseClass} slds-button_neutral`
                     );
                 });
             });
@@ -188,7 +191,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon slds-button_icon-more'
+                        `${baseClass} slds-button_icon slds-button_icon-more`
                     );
                 });
             });
@@ -201,7 +204,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-bare'
+                        `${baseClass} slds-button_icon-bare`
                     );
                 });
             });
@@ -214,9 +217,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button'
-                    );
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -229,7 +230,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon slds-button_icon-bare slds-button_icon-more'
+                        `${baseClass} slds-button_icon slds-button_icon-bare slds-button_icon-more`
                     );
                 });
             });
@@ -242,7 +243,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-container'
+                        `${baseClass} slds-button_icon-container`
                     );
                 });
             });
@@ -255,9 +256,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button'
-                    );
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -270,7 +269,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-container'
+                        `${baseClass} slds-button_icon-container`
                     );
                 });
             });
@@ -283,7 +282,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-border-filled'
+                        `${baseClass} slds-button_icon-border-filled`
                     );
                 });
             });
@@ -296,9 +295,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button'
-                    );
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -311,7 +308,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                        `${baseClass} slds-button_icon slds-button_icon-more slds-button_icon-border-filled`
                     );
                 });
             });
@@ -324,7 +321,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-bare slds-button_icon-inverse'
+                        `${baseClass} slds-button_icon-bare slds-button_icon-inverse`
                     );
                 });
             });
@@ -337,9 +334,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button'
-                    );
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -352,7 +347,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                        `${baseClass} slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse`
                     );
                 });
             });
@@ -365,7 +360,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-border-inverse'
+                        `${baseClass} slds-button_icon-border-inverse`
                     );
                 });
             });
@@ -379,7 +374,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_inverse'
+                        `${baseClass} slds-button_inverse`
                     );
                 });
             });
@@ -393,7 +388,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_icon-border-inverse'
+                        `${baseClass} slds-button_icon-border-inverse`
                     );
                 });
             });
@@ -407,7 +402,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-truncate avonni-filter-menu__button slds-button_outline-brand'
+                        `${baseClass} slds-button_outline-brand`
                     );
                 });
             });
@@ -941,7 +936,7 @@ describe('Filter Menu', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
 
@@ -970,7 +965,7 @@ describe('Filter Menu', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(1);
+                    expect(buttons).toHaveLength(0);
                 });
             });
         });
@@ -1003,7 +998,7 @@ describe('Filter Menu', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
 
@@ -1381,12 +1376,17 @@ describe('Filter Menu', () => {
                 });
             });
 
-            it('items with group items', () => {
+            it('items with counts', () => {
                 const itemMap = ITEMS.reduce((acc, item, index) => {
                     acc[item.value] = index;
                     return acc;
                 }, {});
-                element.typeAttributes = { items: ITEMS, itemCounts: itemMap };
+                element.typeAttributes = {
+                    items: ITEMS.map((item) => ({
+                        ...item,
+                        count: itemMap[item.value]
+                    }))
+                };
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
                 );
@@ -1579,6 +1579,16 @@ describe('Filter Menu', () => {
                         '.slds-dropdown lightning-button:first-of-type'
                     );
                     expect(resetButton.label).toBe('A string label');
+                });
+            });
+        });
+
+        describe('Reset Button Position', () => {
+            it('resetButtonPosition', () => {
+                element.resetButtonPosition = 'top';
+
+                return Promise.resolve().then(() => {
+                    expect(element.resetButtonPosition).toBe('top');
                 });
             });
         });

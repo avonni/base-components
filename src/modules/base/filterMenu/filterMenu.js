@@ -2247,8 +2247,6 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
         this.reset();
 
-        // In the vertical menu, a reset event can still be dispatched even when
-        // hideApplyResetButtons is true, because of the Clear button.
         // Save the reset immediately.
         if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = [...this.currentValue];

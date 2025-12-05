@@ -319,18 +319,6 @@ describe('FilterMenuGroup', () => {
                     });
                 });
             });
-
-            it('Passed to the component with vertical variant', () => {
-                element.resetButtonLabel = 'Erase';
-                element.variant = 'vertical';
-
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-reset"]'
-                    );
-                    expect(button.label).toBe('Erase');
-                });
-            });
         });
 
         describe('singleLine', () => {
@@ -504,7 +492,8 @@ describe('FilterMenuGroup', () => {
                         '[data-element-id^="avonni-filter-menu"]'
                     );
                     menus.forEach((menu) => {
-                        expect(menu.hideApplyResetButtons).toBeTruthy();
+                        expect(menu.hideApplyResetButtons).toBeFalsy();
+                        expect(menu.resetButtonPosition).toBe('top');
                     });
 
                     const buttonGroupRow = element.shadowRoot.querySelector(
@@ -515,7 +504,7 @@ describe('FilterMenuGroup', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
         });
@@ -1128,36 +1117,6 @@ describe('FilterMenuGroup', () => {
             });
         });
 
-        describe('loaditemscounts', () => {
-            it('loaditemcounts event', () => {
-                element.menus = MENUS;
-
-                const handler = jest.fn();
-                element.addEventListener('loaditemcounts', handler);
-
-                return Promise.resolve().then(() => {
-                    const menu = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-filter-menu"]'
-                    );
-                    menu.dispatchEvent(
-                        new CustomEvent('loaditemcounts', {
-                            detail: {
-                                name: MENUS[0].name
-                            },
-                            bubbles: true
-                        })
-                    );
-
-                    expect(handler).toHaveBeenCalled();
-                    const call = handler.mock.calls[0][0];
-                    expect(call.detail.name).toBe(MENUS[0].name);
-                    expect(call.bubbles).toBeFalsy();
-                    expect(call.composed).toBeFalsy();
-                    expect(call.cancelable).toBeFalsy();
-                });
-            });
-        });
-
         describe('loadmore', () => {
             it('loadmore event', () => {
                 element.menus = MENUS;
@@ -1456,76 +1415,6 @@ describe('FilterMenuGroup', () => {
 
                     expect(element.value).toEqual(newValue);
                 });
-            });
-
-            it('reset event, vertical variant', () => {
-                element.menus = MENUS;
-                element.value = VALUE;
-                element.variant = 'vertical';
-                element.hideApplyButton = false;
-
-                const handlerReset = jest.fn();
-                element.addEventListener('reset', handlerReset);
-                const handlerApply = jest.fn();
-                element.addEventListener('apply', handlerApply);
-
-                return Promise.resolve()
-                    .then(() => {
-                        const resetButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-reset"]'
-                        );
-                        resetButton.click();
-
-                        expect(handlerReset).toHaveBeenCalled();
-                        expect(
-                            handlerReset.mock.calls[0][0].detail.name
-                        ).toBeUndefined();
-                        expect(handlerApply).not.toHaveBeenCalled();
-                    })
-                    .then(() => {
-                        const menus = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-filter-menu"]'
-                        );
-                        menus.forEach((menu) => {
-                            expect(menu.value).toEqual([]);
-                        });
-                        expect(element.value).toEqual(VALUE);
-                    });
-            });
-
-            it('reset event, vertical variant, hideApplyButton', () => {
-                element.menus = MENUS;
-                element.value = VALUE;
-                element.variant = 'vertical';
-                element.hideApplyButton = true;
-
-                const handlerReset = jest.fn();
-                element.addEventListener('reset', handlerReset);
-                const handlerApply = jest.fn();
-                element.addEventListener('apply', handlerApply);
-
-                return Promise.resolve()
-                    .then(() => {
-                        const resetButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-reset"]'
-                        );
-                        resetButton.click();
-
-                        expect(handlerReset).toHaveBeenCalled();
-                        expect(
-                            handlerReset.mock.calls[0][0].detail.name
-                        ).toBeUndefined();
-                        expect(handlerApply).toHaveBeenCalled();
-                    })
-                    .then(() => {
-                        const menus = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-filter-menu"]'
-                        );
-                        menus.forEach((menu) => {
-                            expect(menu.value).toEqual([]);
-                        });
-                        expect(element.value).toEqual({});
-                    });
             });
         });
 
