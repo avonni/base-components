@@ -399,6 +399,38 @@ describe('Input Counter', () => {
     });
 
     describe('Events', () => {
+        it('blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            input.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+
+        it('focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            input.focus();
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+
         // Input counter change
         it('decrement defaults', () => {
             const handler = jest.fn();

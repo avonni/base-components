@@ -26,7 +26,9 @@
                     disabled={disabled}
                     type="button"
                     data-element-id="button"
+                    onblur={handleBlur}
                     onclick={handleButtonClick}
+                    onfocus={handleFocus}
                     onmousedown={handleButtonMouseDown}
                 >
                     <template if:false={readOnly}>
@@ -65,11 +67,12 @@
                             class={computedDropdownClass}
                             tabindex="-1"
                             data-element-id="div-dropdown"
-                            onmouseenter={handleMenuMouseEnter}
-                            onmouseleave={handleMenuMouseLeave}
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
                             onkeydown={handleMenuKeydown}
                             onkeyup={handleMenuKeyUp}
-                            onblur={handleMenuBlur}
+                            onmouseenter={handleMenuMouseEnter}
+                            onmouseleave={handleMenuMouseLeave}
                         >
                             <!-- Loading spinner -->
                             <div
@@ -89,7 +92,7 @@
                                         avonni-color-picker__popover-body
                                         avonni-color-picker-tabs_default
                                     "
-                                    onblur={handleMenuBlur}
+                                    onblur={handleBlur}
                                 >
                                     <!-- Tabs -->
                                     <ul
@@ -118,8 +121,9 @@
                                                 data-element-id="default"
                                                 data-group-name="tabs"
                                                 data-tab-name="default"
+                                                onblur={handleBlur}
                                                 onclick={handleTabClick}
-                                                onblur={handleMenuBlur}
+                                                onfocus={handleFocus}
                                                 >{defaultTabLabel}
                                             </a>
                                         </li>
@@ -142,8 +146,9 @@
                                                 data-element-id="a-tokens-tab"
                                                 data-group-name="tabs"
                                                 data-tab-name="tokens"
-                                                onblur={handleMenuBlur}
+                                                onblur={handleBlur}
                                                 onclick={handleTabClick}
+                                                onfocus={handleFocus}
                                                 >{tokensTabLabel}
                                             </a>
                                         </li>
@@ -164,8 +169,9 @@
                                                 data-element-id="custom"
                                                 data-group-name="tabs"
                                                 data-tab-name="custom"
-                                                onblur={handleMenuBlur}
+                                                onblur={handleBlur}
                                                 onclick={handleTabClick}
+                                                onfocus={handleFocus}
                                                 >{customTabLabel}
                                             </a>
                                         </li>
@@ -174,7 +180,7 @@
                                         class={computedTabBodyClass}
                                         tabindex="-1"
                                         data-element-id="tab-body"
-                                        onblur={handleMenuBlur}
+                                        onblur={handleBlur}
                                     >
                                         <!-- Color palette -->
                                         <c-color-palette
@@ -194,8 +200,9 @@
                                             variant={colorPaletteVariant}
                                             data-element-id="avonni-color-palette"
                                             data-is-focusable
-                                            onblur={handleMenuBlur}
+                                            onblur={handleBlur}
                                             onchange={handleColorPaletteChange}
+                                            onfocus={handleFocus}
                                         ></c-color-palette>
 
                                         <!-- Color Gradient -->
@@ -207,8 +214,9 @@
                                             value={computedGradientValue}
                                             data-element-id="avonni-color-gradient"
                                             data-is-focusable
-                                            onblur={handleMenuBlur}
+                                            onblur={handleBlur}
                                             onchange={handleColorGradientChange}
+                                            onfocus={handleFocus}
                                         ></c-color-gradient>
                                     </div>
                                 </div>
@@ -222,8 +230,10 @@
                                     "
                                     type="button"
                                     title="Clear"
+                                    onblur={handleBlur}
+                                    onfocus={handleFocus}
                                 >
-                                    <a>Clear</a>
+                                    Clear
                                     <span class="slds-assistive-text"
                                         >Clear</span
                                     >
@@ -246,7 +256,9 @@
                                             title={cancelButtonLabel}
                                             data-element-id="lightning-button-cancel"
                                             data-is-focusable
+                                            onblur={handleBlur}
                                             onclick={handleCancel}
+                                            onfocus={handleFocus}
                                         ></lightning-button>
                                         <lightning-button
                                             variant="brand"
@@ -258,7 +270,9 @@
                                             title={doneButtonLabel}
                                             data-element-id="lightning-button-done"
                                             data-is-focusable
+                                            onblur={handleBlur}
                                             onclick={handleDone}
+                                            onfocus={handleFocus}
                                         ></lightning-button>
                                     </div>
                                 </footer>
@@ -289,9 +303,9 @@
                             type="text"
                             value={inputValue}
                             data-element-id="input"
-                            onblur={handleMenuBlur}
+                            onblur={handleBlur}
                             onchange={handleInputColor}
-                            onfocus={handleInputFocus}
+                            onfocus={handleFocus}
                         />
                         <button
                             if:true={showClearIcon}
@@ -303,7 +317,9 @@
                             title="Clear"
                             type="button"
                             data-element-id="button-clear"
+                            onblur={handleBlur}
                             onclick={clearInput}
+                            onfocus={handleFocus}
                         >
                             <lightning-icon
                                 size="xx-small"
@@ -320,6 +336,8 @@
                         value={inputValue}
                         variant="label-hidden"
                         data-element-id="lightning-input-read-only"
+                        onblur={handleBlur}
+                        onfocus={handleFocus}
                     ></lightning-input>
                 </div>
             </div>

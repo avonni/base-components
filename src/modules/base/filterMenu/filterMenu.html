@@ -57,7 +57,8 @@
             class={computedDropdownClass}
             tabindex="0"
             data-element-id="div-dropdown"
-            onfocus={focusDropdown}
+            onblur={handleBlur}
+            onfocus={handleFocusDropdown}
             onfocusin={handleDropdownFocusIn}
             onfocusout={handleDropdownFocusOut}
             onkeyup={handleDropdownKeyUp}
@@ -76,7 +77,9 @@
                         autocomplete="off"
                         data-element-id="lightning-input"
                         data-is-focusable
+                        onblur={handleBlur}
                         onchange={handleSearch}
+                        onfocus={handleFocus}
                     ></lightning-input>
                     <p
                         if:true={showNoResultsMessage}
@@ -102,6 +105,8 @@
                                 selected-items={currentValue}
                                 data-element-id="avonni-tree"
                                 onactionclick={handleTreeActionClick}
+                                onblur={handleBlur}
+                                onfocus={handleFocus}
                                 onloadmore={handleTreeLoadMore}
                                 onselect={handleTreeSelect}
                             ></c-tree>
@@ -128,7 +133,9 @@
                                             data-element-id="a-list-item"
                                             data-index={index}
                                             data-value={item.value}
+                                            onblur={handleBlur}
                                             onclick={handleListItemClick}
+                                            onfocus={handleFocus}
                                             onkeydown={handleListItemKeyDown}
                                         >
                                             <span
@@ -234,7 +241,9 @@
                                 week-start-day={weekStartDay}
                                 data-element-id="avonni-input-date-range"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleDateRangeChange}
+                                onfocus={handleFocus}
                             ></c-input-date-range>
                             <!-- Range -->
                             <c-slider
@@ -255,7 +264,9 @@
                                 variant="label-hidden"
                                 data-element-id="avonni-slider"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleRangeChange}
+                                onfocus={handleFocus}
                             ></c-slider>
                             <!-- Time Range -->
                             <div
@@ -280,7 +291,9 @@
                                         variant="label-hidden"
                                         data-is-focusable
                                         data-element-id="lightning-input-start-time"
+                                        onblur={handleBlur}
                                         onchange={handleTimeRangeChange}
+                                        onfocus={handleFocus}
                                     ></lightning-input>
                                 </div>
 
@@ -301,7 +314,9 @@
                                         variant="label-hidden"
                                         data-is-focusable
                                         data-element-id="lightning-input-end-time"
+                                        onblur={handleBlur}
                                         onchange={handleTimeRangeChange}
+                                        onfocus={handleFocus}
                                     ></lightning-input>
                                 </div>
                             </div>
@@ -328,7 +343,9 @@
                             variant="base"
                             data-element-id="lightning-button-reset"
                             data-is-focusable
+                            onblur={handleBlur}
                             onclick={handleResetClick}
+                            onfocus={handleFocus}
                         ></lightning-button>
                         <div
                             class="
@@ -346,7 +363,9 @@
                                 variant="brand"
                                 data-element-id="lightning-button-apply"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onclick={handleApply}
+                                onfocus={handleFocus}
                             ></lightning-button>
 
                             <lightning-formatted-text
@@ -367,6 +386,8 @@
             items={selectedItems}
             data-element-id="avonni-pill-container"
             onactionclick={handleSelectedItemRemove}
+            onblur={handleBlur}
+            onfocus={handleFocus}
         ></c-pill-container>
     </div>
 </template>

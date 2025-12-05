@@ -1030,6 +1030,23 @@ describe('Input Date Range', () => {
     });
 
     describe('Events', () => {
+        it('blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                startInput.dispatchEvent(new CustomEvent('blur'));
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
+
         it('change event', () => {
             element.startDate = startDate.setHours(0, 0, 0, 0);
             element.endDate = endDate.setHours(0, 0, 0, 0);
@@ -1190,6 +1207,23 @@ describe('Input Date Range', () => {
                         '2022-07-28T00:00:00.000Z'
                     );
                 });
+        });
+
+        it('focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                startInput.focus();
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
         });
     });
 

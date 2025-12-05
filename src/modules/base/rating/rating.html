@@ -43,7 +43,9 @@
                         type="button"
                         value={item.value}
                         data-element-id="button"
+                        onblur={handleBlur}
                         onclick={handleItemClick}
+                        onfocus={handleFocus}
                     >
                         <template if:false={iconName}>{item.value}</template>
                         <c-primitive-icon

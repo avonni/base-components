@@ -1894,6 +1894,28 @@ export default class Slider extends LightningElement {
         }, 100);
     }
 
+    handleInputBlur(event) {
+        this.handleUnlockPin(event);
+
+        if (
+            !event.relatedTarget ||
+            !this.template.contains(event.relatedTarget)
+        ) {
+            this._dispatchBlur();
+        }
+    }
+
+    handleInputFocus(event) {
+        this.handleLockPin(event);
+
+        if (
+            !event.relatedTarget ||
+            !this.template.contains(event.relatedTarget)
+        ) {
+            this._dispatchFocus();
+        }
+    }
+
     /**
      * Lock the pin so it is always displayed.
      */
@@ -1937,5 +1959,33 @@ export default class Slider extends LightningElement {
     handleUnlockPin(event) {
         this._pinLocked = false;
         this.handleThumbHovered(event);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the slider.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the slider.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

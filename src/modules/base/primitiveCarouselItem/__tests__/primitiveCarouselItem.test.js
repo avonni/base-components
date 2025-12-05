@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import PrimitiveCarouselItem from 'c/primitiveCarouselItem';
+import { createElement } from 'lwc';
 
 const bareActions = [
     {
@@ -469,6 +469,21 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
+    describe('Methods', () => {
+        it('Focus', () => {
+            element.href = 'https://www.avonni.app/';
+
+            return Promise.resolve().then(() => {
+                const tag = element.shadowRoot.querySelector(
+                    '[data-element-id="a-actions-tag"]'
+                );
+                const focusSpy = jest.spyOn(tag, 'focus');
+                element.focus();
+                expect(focusSpy).toHaveBeenCalled();
+            });
+        });
+    });
+
     describe('Events', () => {
         it('Action click', () => {
             element.title = 'Visit App Exchange';
@@ -495,6 +510,42 @@ describe('Primitive Carousel Item', () => {
                 expect([handler.mock.calls[0][0].detail.item]).toMatchObject(
                     ex
                 );
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        it('Blur', () => {
+            element.href = 'https://www.avonni.app/';
+
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const tag = element.shadowRoot.querySelector(
+                    '[data-element-id="a-actions-tag"]'
+                );
+                tag.dispatchEvent(new CustomEvent('blur'));
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        it('Focus', () => {
+            element.href = 'https://www.avonni.app/';
+
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const tag = element.shadowRoot.querySelector(
+                    '[data-element-id="a-actions-tag"]'
+                );
+                tag.dispatchEvent(new CustomEvent('focus'));
+                expect(handler).toHaveBeenCalled();
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

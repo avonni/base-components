@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import Rating from 'c/rating';
+import { createElement } from 'lwc';
 
 let element;
 describe('Rating', () => {
@@ -508,6 +508,17 @@ describe('Rating', () => {
     });
 
     describe('Methods', () => {
+        describe('focus', () => {
+            it('Passed to the button', () => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                const spy = jest.spyOn(button, 'focus');
+                button.focus();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
+
         describe('reportValidity', () => {
             it('Passed to the component', () => {
                 element.required = true;
@@ -553,6 +564,21 @@ describe('Rating', () => {
     });
 
     describe('Events', () => {
+        it('blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.dispatchEvent(new CustomEvent('blur'));
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+
         describe('Change event', () => {
             it('Passed to the component', () => {
                 const handler = jest.fn();
@@ -590,6 +616,21 @@ describe('Rating', () => {
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 });
             });
+        });
+
+        it('focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.focus();
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 });

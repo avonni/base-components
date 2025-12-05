@@ -33,9 +33,11 @@
                 multi-level-groups={multiLevelGroups}
                 options={scopes}
                 read-only={readOnly}
-                value={scopesValue}
+                value={scopeValue}
                 data-element-id="avonni-primitive-combobox-scopes"
+                onblur={handleBlur}
                 onchange={handleScopeChange}
+                onfocus={handleFocus}
             ></c-primitive-combobox>
 
             <!-- Main dropdown -->
@@ -103,6 +105,8 @@
                 sortable={sortableSelectedOptions}
                 data-element-id="avonni-pill-container"
                 onactionclick={handleRemovePill}
+                onblur={handleBlur}
+                onfocus={handleFocus}
                 onreorder={handleReorderSelectedOptions}
             ></c-pill-container>
         </div>
@@ -121,6 +125,8 @@
                 sortable-icon-position="left"
                 data-element-id="avonni-list"
                 onactionclick={handleRemoveListItem}
+                onblur={handleBlur}
+                onfocus={handleFocus}
                 onreorder={handleReorderSelectedOptions}
             ></c-list>
         </div>

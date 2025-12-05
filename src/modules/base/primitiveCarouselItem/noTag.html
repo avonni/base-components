@@ -30,7 +30,10 @@
                                 title={action.title}
                                 variant={computedActionsVariant}
                                 data-element-id="avonni-button-actions"
+                                data-focusable
+                                onblur={handleBlur}
                                 onclick={handleActionClick}
+                                onfocus={handleFocus}
                             ></c-button>
                         </div>
                         <div
@@ -48,7 +51,10 @@
                                 title={action.title}
                                 variant={computedActionsVariant}
                                 data-element-id="avonni-button-icon-actions"
+                                data-focusable
+                                onblur={handleBlur}
                                 onclick={handleActionClick}
+                                onfocus={handleFocus}
                             ></c-button-icon>
                         </div>
                     </template>
@@ -61,7 +67,10 @@
                     icon-size="x-small"
                     variant="border-filled"
                     data-element-id="avonni-button-menu"
+                    data-focusable
                     onclick={handleButtonMenuClick}
+                    onblur={handleBlur}
+                    onfocus={handleFocus}
                     onselect={handleMenuSelect}
                 >
                     <template for:each={actions} for:item="action">
@@ -142,7 +151,10 @@
                                 title={action.title}
                                 variant={computedActionsVariant}
                                 data-element-id="avonni-button-actions"
+                                data-focusable
+                                onblur={handleBlur}
                                 onclick={handleActionClick}
+                                onfocus={handleFocus}
                             ></c-button>
                         </div>
                         <div
@@ -160,7 +172,10 @@
                                 title={action.title}
                                 variant={computedActionsVariant}
                                 data-element-id="avonni-button-icon-actions"
+                                data-focusable
+                                onblur={handleBlur}
                                 onclick={handleActionClick}
+                                onfocus={handleFocus}
                             ></c-button-icon>
                         </div>
                     </template>
@@ -174,7 +189,10 @@
                     menu-alignment="auto"
                     variant="border-filled"
                     data-element-id="avonni-button-menu"
+                    data-focusable
+                    onblur={handleBlur}
                     onclick={handleButtonMenuClick}
+                    onfocus={handleFocus}
                     onselect={handleMenuSelect}
                 >
                     <template for:each={actions} for:item="action">

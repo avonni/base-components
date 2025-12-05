@@ -1,6 +1,6 @@
 import { createElement } from 'lwc';
 import Combobox from '../combobox';
-import { options, actions, scopes, scopesGroups, groups } from './data';
+import { actions, groups, options, scopes, scopesGroups } from './data';
 
 let element;
 describe('Combobox', () => {
@@ -1069,7 +1069,7 @@ describe('Combobox', () => {
                     const scopeCombobox = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-combobox-scopes"]'
                     );
-                    expect(scopeCombobox.value).toMatchObject(['all']);
+                    expect(scopeCombobox.value).toBe('all');
 
                     element.updateScope('accounts');
                 })
