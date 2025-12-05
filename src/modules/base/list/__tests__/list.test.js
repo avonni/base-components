@@ -702,6 +702,31 @@ describe('List', () => {
                     });
                 });
             });
+
+            it('Description', () => {
+                element.items = [
+                    {
+                        name: 'item-1',
+                        description: '<b>Content</b>'
+                    },
+                    {
+                        name: 'item-2',
+                        description: 'Content'
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    const itemdDescriptions =
+                        element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-formatted-rich-text-description"]'
+                        );
+                    expect(itemdDescriptions).toHaveLength(2);
+                    expect(itemdDescriptions[0].value).toBe('<b>Content</b>');
+                    expect(itemdDescriptions[0].title).toBe('Content');
+                    expect(itemdDescriptions[1].value).toBe('Content');
+                    expect(itemdDescriptions[1].title).toBe('Content');
+                });
+            });
         });
 
         describe('Label', () => {

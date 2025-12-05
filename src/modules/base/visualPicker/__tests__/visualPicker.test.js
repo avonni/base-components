@@ -441,6 +441,31 @@ describe('Visual Picker', () => {
                     expect(tags.length).toBe(3);
                 });
             });
+
+            it('Description', () => {
+                element.items = [
+                    {
+                        value: 'item-1',
+                        itemDescription: '<b>Content</b>'
+                    },
+                    {
+                        value: 'item-2',
+                        itemDescription: 'Content'
+                    }
+                ];
+
+                return Promise.resolve().then(() => {
+                    const itemDescriptions =
+                        element.shadowRoot.querySelectorAll(
+                            '[data-element-id="lightning-formatted-rich-text-description"]'
+                        );
+                    expect(itemDescriptions.length).toBe(2);
+                    expect(itemDescriptions[0].value).toBe('<b>Content</b>');
+                    expect(itemDescriptions[0].title).toBe('Content');
+                    expect(itemDescriptions[1].value).toBe('Content');
+                    expect(itemDescriptions[1].title).toBe('Content');
+                });
+            });
         });
 
         describe('Label', () => {

@@ -57,6 +57,13 @@
     );
 }
 
+.avonni-primitive-tree-item__metatext {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(--avonni-tree-item-metatext-line-clamp, 2);
+}
+
 .avonni-primitive-tree-item__metatext,
 .avonni-primitive-tree-item__metatext .avonni-primitive-item__link {
     color: var(--avonni-tree-item-metatext-text-color, #3e3e3c);

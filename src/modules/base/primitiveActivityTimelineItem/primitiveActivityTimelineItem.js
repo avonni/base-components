@@ -6,6 +6,7 @@ import {
 } from 'c/dateTimeUtils';
 import {
     classSet,
+    convertHTMLToPlainText,
     deepCopy,
     normalizeArray,
     normalizeBoolean,
@@ -53,13 +54,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     @api buttonLabel;
-    /**
-     * The description can include text, and is displayed under the title.
-     *
-     * @public
-     * @type {string}
-     */
-    @api description;
     /**
      * Object that defines the layout of the fields. The object contains the following properties:
      * - cols: Number of columns on default screen size
@@ -119,6 +113,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _closed = false;
     _dateFormat;
     _datetimeValue;
+    _description;
     _endDateValue;
     _fields = [];
     _hasCheckbox = false;
@@ -133,6 +128,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _connected = false;
 
     computedFields = [];
+    descriptionTitle;
     formattedEndDate = '';
     formattedStartDate = '';
 
@@ -308,6 +304,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         if (this._connected) {
             this.formatStartEndDates();
         }
+    }
+
+    /**
+     * The description can include text, and is displayed under the title.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get description() {
+        return this._description;
+    }
+    set description(value) {
+        this._description = value;
+        this.descriptionTitle = convertHTMLToPlainText(value);
     }
 
     /**

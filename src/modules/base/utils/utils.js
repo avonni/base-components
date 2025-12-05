@@ -1,4 +1,5 @@
 export { classSet } from './classSet';
+export { convertHTMLToPlainText } from './htmlUtils';
 export { queryFocusable } from './queryFocusable';
 export { formatLabel } from './labelUtils';
 export { generateUUID } from './idGenerator';
