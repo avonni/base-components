@@ -398,6 +398,26 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set the focus on the first focusable element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const focusableElement =
+            this.template.querySelector('[data-focusable]');
+        if (focusableElement) {
+            focusableElement.focus();
+        }
+    }
+
+    /*
      * -------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
@@ -415,6 +435,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this._dispatchActionClick(actionName);
     }
 
+    handleBlur() {
+        this._dispatchBlur();
+    }
+
     /**
      * Prevent the default event browser behavior and stop the event propagation.
      *
@@ -423,6 +447,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     handleButtonMenuClick(event) {
         event.stopPropagation();
         event.preventDefault();
+    }
+
+    handleFocus() {
+        this._dispatchFocus();
     }
 
     /**
@@ -462,6 +490,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this._dispatchActionClick(actionName);
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Action click event dispatcher.
      */
@@ -491,6 +525,28 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
+    }
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from an element of the item.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on an element of the item.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**

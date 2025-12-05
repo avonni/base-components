@@ -1,6 +1,6 @@
-import { LightningElement, api } from 'lwc';
 import { colorType, generateColors, HSVToHSL } from 'c/colorUtils';
 import { classSet, normalizeBoolean } from 'c/utils';
+import { api, LightningElement } from 'lwc';
 
 const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
 const DEFAULT_VALUE = '#ffffff';
@@ -218,6 +218,19 @@ export default class ColorGradient extends LightningElement {
      */
 
     /**
+     * Set the focus on the color gradient.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) {
+            input.focus();
+        }
+    }
+
+    /**
      * Display the given color in the color gradient.
      *
      * @param {string} color Color to display.
@@ -419,7 +432,14 @@ export default class ColorGradient extends LightningElement {
     /**
      * Public and private blur handle.
      */
-    handleBlur() {
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
         /**
          * The event fired when the color gradient loses focus.
          *
@@ -439,8 +459,7 @@ export default class ColorGradient extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('privateblur', {
                 composed: true,
-                bubbles: true,
-                cancelable: true
+                bubbles: true
             })
         );
     }
@@ -479,7 +498,22 @@ export default class ColorGradient extends LightningElement {
     /**
      * Private focus handle.
      */
-    handleFocus() {
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        /**
+         * The event fired when the focus is set on the color gradient.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+
         /**
          * @event
          * @name privatefocus
@@ -489,8 +523,7 @@ export default class ColorGradient extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('privatefocus', {
-                bubbles: true,
-                cancelable: true
+                bubbles: true
             })
         );
     }

@@ -1,12 +1,19 @@
 <template>
     <div class={computedSectionClass} data-element-id="section">
-        <div if:true={showHeader} class={computedHeaderClass} data-element-id="header">
+        <div
+            if:true={showHeader}
+            class={computedHeaderClass}
+            data-element-id="header"
+        >
             <button
                 class={computedTitleButtonClass}
                 aria-controls="section-content"
                 aria-expanded={computedAriaExpanded}
                 type="button"
+                data-element-id="button"
+                onblur={handleBlur}
                 onclick={toggleSection}
+                onfocus={handleFocus}
             >
                 <template if:true={collapsible}>
                     <lightning-icon

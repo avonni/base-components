@@ -226,9 +226,9 @@ export default class FilterMenu extends LightningElement {
      */
 
     connectedCallback() {
-        this.normalizeTypeAttributes();
-        this.computeListItems();
-        this.computeSelectedItems();
+        this._normalizeTypeAttributes();
+        this._computeListItems();
+        this._computeSelectedItems();
         this._connected = true;
 
         if (
@@ -239,7 +239,7 @@ export default class FilterMenu extends LightningElement {
         ) {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
-            this.dispatchLoadMore();
+            this._dispatchLoadMore();
         }
     }
 
@@ -250,7 +250,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     renderedCallback() {
-        this.initTooltip();
+        this._initTooltip();
 
         if (
             this.infiniteLoad &&
@@ -410,7 +410,7 @@ export default class FilterMenu extends LightningElement {
         );
 
         if (this._connected) {
-            this.supportDeprecatedAttributes();
+            this._supportDeprecatedAttributes();
         }
     }
 
@@ -451,7 +451,7 @@ export default class FilterMenu extends LightningElement {
         );
 
         if (this._connected) {
-            this.supportDeprecatedAttributes();
+            this._supportDeprecatedAttributes();
         }
     }
 
@@ -536,11 +536,11 @@ export default class FilterMenu extends LightningElement {
         const normalizedValue = normalizeBoolean(bool);
         if (this.isAutoAlignment) {
             // stop previous positioning if any as it maintains old position relationship
-            this.stopPositioning();
+            this._stopPositioning();
 
             if (this._isLoading && !normalizedValue) {
                 // was loading before and now is not, we need to reposition
-                this.startPositioning();
+                this._startPositioning();
             }
         }
 
@@ -566,7 +566,7 @@ export default class FilterMenu extends LightningElement {
         );
 
         if (this._connected) {
-            this.supportDeprecatedAttributes();
+            this._supportDeprecatedAttributes();
         }
     }
 
@@ -587,8 +587,8 @@ export default class FilterMenu extends LightningElement {
         );
 
         if (this._connected) {
-            this.supportDeprecatedAttributes();
-            this.computeListItems();
+            this._supportDeprecatedAttributes();
+            this._computeListItems();
         }
     }
 
@@ -648,7 +648,7 @@ export default class FilterMenu extends LightningElement {
         );
 
         if (this._connected) {
-            this.supportDeprecatedAttributes();
+            this._supportDeprecatedAttributes();
         }
     }
 
@@ -671,7 +671,7 @@ export default class FilterMenu extends LightningElement {
         );
 
         if (this._connected) {
-            this.supportDeprecatedAttributes();
+            this._supportDeprecatedAttributes();
         }
     }
 
@@ -722,8 +722,8 @@ export default class FilterMenu extends LightningElement {
         });
 
         if (this._connected) {
-            this.normalizeTypeAttributes();
-            this.computeSelectedItems();
+            this._normalizeTypeAttributes();
+            this._computeSelectedItems();
         }
     }
 
@@ -741,8 +741,8 @@ export default class FilterMenu extends LightningElement {
         this._typeAttributes = normalizeObject(value);
 
         if (this._connected) {
-            this.normalizeTypeAttributes();
-            this.computeSelectedItems();
+            this._normalizeTypeAttributes();
+            this._computeSelectedItems();
 
             if (
                 this.isVertical &&
@@ -752,7 +752,7 @@ export default class FilterMenu extends LightningElement {
             ) {
                 // Fire the loadmore event without waiting for the user
                 // to click on the load more button
-                this.dispatchLoadMore();
+                this._dispatchLoadMore();
             }
         }
     }
@@ -780,8 +780,8 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = deepCopy(array);
 
         if (this._connected) {
-            this.computeListItems();
-            this.computeSelectedItems();
+            this._computeListItems();
+            this._computeSelectedItems();
         }
     }
 
@@ -811,7 +811,7 @@ export default class FilterMenu extends LightningElement {
         ) {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
-            this.dispatchLoadMore();
+            this._dispatchLoadMore();
         }
     }
 
@@ -1280,8 +1280,8 @@ export default class FilterMenu extends LightningElement {
     @api
     apply() {
         this._value = [...this.currentValue];
-        this.computeSelectedItems();
-        this.close();
+        this._computeSelectedItems();
+        this._close();
     }
 
     /**
@@ -1293,8 +1293,8 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
-        this.computeListItems();
-        this.computeSelectedItems();
+        this._computeListItems();
+        this._computeSelectedItems();
 
         console.warn(
             'The clear() method is deprecated. To unselect the value, use reset(). To remove the current value, use the value attribute.'
@@ -1356,7 +1356,7 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
-            this.computeListItems();
+            this._computeListItems();
         }
     }
 
@@ -1369,7 +1369,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Initialize tooltip.
      */
-    initTooltip() {
+    _initTooltip() {
         if (this._tooltip && !this._tooltip.initialized) {
             this._tooltip.initialize();
         }
@@ -1378,7 +1378,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Create the computed list items, based on the given items.
      */
-    computeListItems() {
+    _computeListItems() {
         if (!this.isList) {
             return;
         }
@@ -1401,29 +1401,29 @@ export default class FilterMenu extends LightningElement {
             });
             return computedItem;
         });
-        this.visibleItems = this.getVisibleItems();
+        this.visibleItems = this._getVisibleItems();
 
         if (this.dropdownVisible) {
             // If the items are set while the popover is open, prevent losing focus
-            this.focusDropdown();
+            this._focusDropdown();
         }
     }
 
     /**
      * Compute the selected items, that will be displayed as pills.
      */
-    computeSelectedItems() {
+    _computeSelectedItems() {
         if (this.isList) {
-            this.computeSelectedListItems();
+            this._computeSelectedListItems();
         } else {
-            this.computeSelectedRange();
+            this._computeSelectedRange();
         }
     }
 
     /**
      * Use the value to compute the selected list items that will be displayed as pills.
      */
-    computeSelectedListItems() {
+    _computeSelectedListItems() {
         const selectedItems = [];
         this.value.forEach((v) => {
             const item = getItemByName(v, this.computedItems);
@@ -1438,7 +1438,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Use the value to compute the selected range that will be displayed as a pill.
      */
-    computeSelectedRange() {
+    _computeSelectedRange() {
         const selection = this.value.reduce((string, value) => {
             let normalizedValue = '';
             const date = new Date(value);
@@ -1487,16 +1487,16 @@ export default class FilterMenu extends LightningElement {
     /**
      * Close the dropdown menu.
      */
-    close() {
+    _close() {
         if (this.dropdownVisible) {
-            this.toggleMenuVisibility();
+            this._toggleMenuVisibility();
         }
     }
 
     /**
      * Set the focus on the dropdown menu of the horizontal variant.
      */
-    focusDropdown() {
+    _focusDropdown() {
         const isFocusableList =
             (this.isList && this.visibleItems.length) ||
             this.computedTypeAttributes.allowSearch;
@@ -1512,6 +1512,7 @@ export default class FilterMenu extends LightningElement {
                 if (focusTrap) {
                     this._dropdownIsFocused = true;
                     focusTrap.focus();
+                    this._dispatchFocus();
                 }
             });
         }
@@ -1523,7 +1524,7 @@ export default class FilterMenu extends LightningElement {
      * @param {number} currentIndex Index of the currently focused item.
      * @param {number} addedIndex Index to add to the current index. Valid values include 1 and -1. Defaults to 1.
      */
-    focusListItem(currentIndex, addedIndex = 1) {
+    _focusListItem(currentIndex, addedIndex = 1) {
         const items = this.template.querySelectorAll(
             '[data-element-id="a-list-item"]'
         );
@@ -1536,7 +1537,7 @@ export default class FilterMenu extends LightningElement {
         } else if (index >= items.length) {
             item = items[0];
         } else if (item && item.disabled) {
-            this.focusListItem(index, addedIndex);
+            this._focusListItem(index, addedIndex);
             return;
         }
 
@@ -1549,7 +1550,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Get only the item that are in the search scope or have children that are in the search scope.
      */
-    getVisibleItems(items = this.computedItems) {
+    _getVisibleItems(items = this.computedItems) {
         if (!this.searchTerm || typeof this.searchTerm !== 'string') {
             return items;
         }
@@ -1561,7 +1562,7 @@ export default class FilterMenu extends LightningElement {
                 filterValue: this.currentValue
             });
             if (Array.isArray(visibleItem.items)) {
-                visibleItem.items = this.getVisibleItems(visibleItem.items);
+                visibleItem.items = this._getVisibleItems(visibleItem.items);
                 if (visibleItem.items.length) {
                     visibleItem.expanded = true;
                     visibleItems.push(visibleItem);
@@ -1582,7 +1583,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the list items.
      */
-    normalizeTypeAttributes() {
+    _normalizeTypeAttributes() {
         const typeAttributes = {};
         Object.entries(this.typeAttributes).forEach(([key, value]) => {
             const allowedAttribute =
@@ -1593,25 +1594,25 @@ export default class FilterMenu extends LightningElement {
             }
         });
         this.computedTypeAttributes = typeAttributes;
-        this.supportDeprecatedAttributes();
-        this.computeListItems();
+        this._supportDeprecatedAttributes();
+        this._computeListItems();
     }
 
     /**
      * Observe the dropdown position if its position is automatically set.
      */
-    pollBoundingRect() {
+    _pollBoundingRect() {
         // only poll if the dropdown is auto aligned
         if (this.isAutoAlignment && this.dropdownVisible) {
             setTimeout(
                 () => {
                     if (this._connected) {
                         observePosition(this, 300, this._boundingRect, () => {
-                            this.close();
+                            this._close();
                         });
 
                         // continue polling
-                        this.pollBoundingRect();
+                        this._pollBoundingRect();
                     }
                 },
                 250 // check every 0.25 second
@@ -1624,7 +1625,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @param {number} order Order of the button menu in its siblings.
      */
-    setOrder(order) {
+    _setOrder(order) {
         this._order = order;
     }
 
@@ -1633,7 +1634,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @returns object dropdown menu positioning.
      */
-    startPositioning() {
+    _startPositioning() {
         if (!this.isAutoAlignment) {
             return Promise.resolve();
         }
@@ -1655,7 +1656,7 @@ export default class FilterMenu extends LightningElement {
 
         return animationFrame()
             .then(() => {
-                this.stopPositioning();
+                this._stopPositioning();
                 this._autoPosition = startPositioning(
                     this,
                     {
@@ -1692,7 +1693,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Stop menu positioning and animation.
      */
-    stopPositioning() {
+    _stopPositioning() {
         if (this._autoPosition) {
             stopPositioning(this._autoPosition);
             this._autoPosition = null;
@@ -1703,7 +1704,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Make sure the deprecated attributes used for the list type are still supported through the type attributes.
      */
-    supportDeprecatedAttributes() {
+    _supportDeprecatedAttributes() {
         if (!this.isList) {
             return;
         }
@@ -1741,29 +1742,29 @@ export default class FilterMenu extends LightningElement {
     /**
      * Toggle the visibility of the dropdown menu.
      */
-    toggleMenuVisibility() {
+    _toggleMenuVisibility() {
         if (!this.disabled) {
             this.dropdownVisible = !this.dropdownVisible;
             if (this.dropdownVisible) {
-                this.startPositioning();
-                this.dispatchOpen();
+                this._startPositioning();
+                this._dispatchOpen();
 
                 // update the bounding rect when the menu is toggled
                 this._boundingRect = this.getBoundingClientRect();
 
-                this.pollBoundingRect();
+                this._pollBoundingRect();
                 this.currentValue = [...this.value];
-                this.computeListItems();
-                this.focusDropdown();
+                this._computeListItems();
+                this._focusDropdown();
             } else {
-                this.stopPositioning();
-                this.dispatchClose();
+                this._stopPositioning();
+                this._dispatchClose();
                 this._previousScroll = undefined;
             }
         }
     }
 
-    toggleTreeItem(levelPath = [], action) {
+    _toggleTreeItem(levelPath = [], action) {
         const visibleItem = getTreeItemByLevelPath(
             levelPath,
             this.visibleItems
@@ -1790,16 +1791,27 @@ export default class FilterMenu extends LightningElement {
      */
     handleApply() {
         this.apply();
-        this.dispatchApply();
+        this._dispatchApply();
+    }
+
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
     }
 
     /**
      * Handle the blur of the button menu.
      */
-    handleButtonBlur() {
+    handleButtonBlur(event) {
+        this.handleBlur(event);
+
         if (this._allowBlur) {
-            this.dispatchEvent(new CustomEvent('blur'));
-            this.close();
+            this._close();
         }
     }
 
@@ -1808,7 +1820,7 @@ export default class FilterMenu extends LightningElement {
      */
     handleButtonClick() {
         if (!this._preventDropdownToggle) {
-            this.toggleMenuVisibility();
+            this._toggleMenuVisibility();
         }
         this._preventDropdownToggle = false;
     }
@@ -1818,7 +1830,7 @@ export default class FilterMenu extends LightningElement {
      */
     handleButtonFocus() {
         if (this._allowBlur) {
-            this.dispatchEvent(new CustomEvent('focus'));
+            this._dispatchFocus();
         } else {
             this._allowBlur = true;
 
@@ -1842,7 +1854,7 @@ export default class FilterMenu extends LightningElement {
         this.computedItems.forEach((item) => {
             item.checked = this.currentValue.includes(item.value);
         });
-        this.dispatchSelect();
+        this._dispatchSelect();
     }
 
     /**
@@ -1853,7 +1865,7 @@ export default class FilterMenu extends LightningElement {
     handleDateRangeChange(event) {
         const { startDate, endDate } = event.detail;
         this.currentValue = [startDate, endDate];
-        this.dispatchSelect();
+        this._dispatchSelect();
     }
 
     /**
@@ -1871,7 +1883,7 @@ export default class FilterMenu extends LightningElement {
 
         requestAnimationFrame(() => {
             if (!this._dropdownIsFocused) {
-                this.close();
+                this._close();
             }
         });
     }
@@ -1884,13 +1896,27 @@ export default class FilterMenu extends LightningElement {
     handleDropdownKeyUp(event) {
         const key = event.key;
         if (key === 'Escape') {
-            this.close();
+            this._close();
 
             requestAnimationFrame(() => {
                 // Set the focus on the button after render
                 this.focus();
             });
         }
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
+    }
+
+    handleFocusDropdown() {
+        this._focusDropdown();
     }
 
     /**
@@ -1917,9 +1943,9 @@ export default class FilterMenu extends LightningElement {
             }
             return item;
         });
-        this.visibleItems = this.getVisibleItems();
+        this.visibleItems = this._getVisibleItems();
 
-        this.dispatchSelect();
+        this._dispatchSelect();
     }
 
     /**
@@ -1933,11 +1959,11 @@ export default class FilterMenu extends LightningElement {
 
         switch (key) {
             case 'ArrowUp': {
-                this.focusListItem(index, -1);
+                this._focusListItem(index, -1);
                 break;
             }
             case 'ArrowDown': {
-                this.focusListItem(index);
+                this._focusListItem(index);
                 break;
             }
             case ' ':
@@ -1954,7 +1980,7 @@ export default class FilterMenu extends LightningElement {
      * Handle a click on the load more button.
      */
     handleLoadMore() {
-        this.dispatchLoadMore();
+        this._dispatchLoadMore();
     }
 
     /**
@@ -1964,7 +1990,7 @@ export default class FilterMenu extends LightningElement {
      */
     handleRangeChange(event) {
         this.currentValue = event.detail.value;
-        this.dispatchSelect();
+        this._dispatchSelect();
     }
 
     /**
@@ -2000,7 +2026,7 @@ export default class FilterMenu extends LightningElement {
             this.scrolledToEnd &&
             (!this._previousScroll || firstTimeReachingTheEnd)
         ) {
-            this.dispatchLoadMore();
+            this._dispatchLoadMore();
         }
         this._previousScroll = this.dropdownElement.scrollTop;
     }
@@ -2016,7 +2042,7 @@ export default class FilterMenu extends LightningElement {
 
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
-            this.visibleItems = this.getVisibleItems();
+            this.visibleItems = this._getVisibleItems();
 
             /**
              * The event fired when the search input value is changed.
@@ -2042,7 +2068,7 @@ export default class FilterMenu extends LightningElement {
                 !this.isLoading &&
                 this.noVisibleListItem
             ) {
-                this.dispatchLoadMore();
+                this._dispatchLoadMore();
             }
         }, 300);
     }
@@ -2067,8 +2093,8 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
-        this.computeListItems();
-        this.dispatchApply();
+        this._computeListItems();
+        this._dispatchApply();
     }
 
     /**
@@ -2096,7 +2122,20 @@ export default class FilterMenu extends LightningElement {
 
         this.currentValue = [start, end];
 
-        this.dispatchSelect();
+        this._dispatchSelect();
+    }
+
+    /**
+     * Section change status toggle.
+     */
+    handleToggleSection() {
+        this._closed = !this.closed;
+
+        if (this.closed) {
+            this._dispatchClose();
+        } else {
+            this._dispatchOpen();
+        }
     }
 
     handleTreeActionClick(event) {
@@ -2108,8 +2147,8 @@ export default class FilterMenu extends LightningElement {
         ) {
             return;
         }
-        this.toggleTreeItem(levelPath, name);
-        this.dispatchSelect();
+        this._toggleTreeItem(levelPath, name);
+        this._dispatchSelect();
     }
 
     /**
@@ -2121,7 +2160,7 @@ export default class FilterMenu extends LightningElement {
         const levelPath = event.detail.levelPath;
         const item = getTreeItemByLevelPath(levelPath, this.visibleItems);
         if (item) {
-            this.dispatchLoadMore(item);
+            this._dispatchLoadMore(item);
         }
     }
 
@@ -2135,19 +2174,25 @@ export default class FilterMenu extends LightningElement {
 
         const levelPath = event.detail.levelPath;
         if (levelPath) {
-            this.toggleTreeItem(levelPath);
+            this._toggleTreeItem(levelPath);
         } else {
             const value = deepCopy(event.detail.selectedItems);
             this.currentValue = value;
         }
 
-        this.dispatchSelect();
+        this._dispatchSelect();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Dispatch the apply event.
      */
-    dispatchApply() {
+    _dispatchApply() {
         /**
          * The event fired when the “Apply” button is clicked, or a pill removed from the selected items. If `hide-apply-reset-buttons` is `true`, the `apply` event is also fired when the user selects or unselects a value.
          *
@@ -2167,10 +2212,20 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the filter menu.
+         *
+         * @event
+         * @name blur
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
     /**
      * Dispatch the close event.
      */
-    dispatchClose() {
+    _dispatchClose() {
         /**
          * The event fired when the dropdown is closed (horizontal variant) or the section is closed (vertical variant).
          *
@@ -2182,12 +2237,22 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
     }
 
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the filter menu.
+         *
+         * @event
+         * @name focus
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
     /**
      * Dispatch the `loadmore` event.
      *
      * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
      */
-    dispatchLoadMore(item) {
+    _dispatchLoadMore(item) {
         /**
          * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user or by a nested item opening.
          *
@@ -2208,7 +2273,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Dispatch the open event.
      */
-    dispatchOpen() {
+    _dispatchOpen() {
         /**
          * The event fired when the dropdown is opened (horizontal variant) or the section is opened (vertical variant).
          *
@@ -2223,7 +2288,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Dispatch the select event.
      */
-    dispatchSelect() {
+    _dispatchSelect() {
         this.dispatchEvent(
             /**
              * TThe event fired when a user selects or unselects a value.
@@ -2245,25 +2310,12 @@ export default class FilterMenu extends LightningElement {
         if (this.hideApplyResetButtons) {
             // Save the selection immediately
             this._value = [...this.currentValue];
-            this.computeSelectedItems();
-            this.dispatchApply();
+            this._computeSelectedItems();
+            this._dispatchApply();
 
             if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
-                this.close();
+                this._close();
             }
-        }
-    }
-
-    /**
-     * Section change status toggle.
-     */
-    toggleSection() {
-        this._closed = !this._closed;
-
-        if (this._closed) {
-            this.dispatchClose();
-        } else {
-            this.dispatchOpen();
         }
     }
 }

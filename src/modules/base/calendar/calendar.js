@@ -1275,7 +1275,22 @@ export default class Calendar extends LightningElement {
     /**
      * Private blur handler.
      */
-    handleBlur() {
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        /**
+         * The event fired when the focus is removed from the calendar.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+
         /**
          * @event
          * @private
@@ -1307,12 +1322,29 @@ export default class Calendar extends LightningElement {
         if (focusDate) {
             this._focusDate = focusDate;
         }
+        this.handleFocus(event);
     }
 
     /**
      * Private focus handler.
      */
-    handleFocus() {
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
+        /**
+         * The event fired when the focus is set on the calendar.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+
         /**
          * @event
          * @private

@@ -107,6 +107,7 @@ export default class InputDateRange extends LightningElement {
     _required = false;
     _startDate;
     _timeStyle = DATE_STYLES.defaultTime;
+    _timezone;
     _type = DATE_TYPES.default;
     _variant = LABEL_VARIANTS.default;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
@@ -598,7 +599,9 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     focus() {
-        this.startDateInput.focus();
+        if (this.startDateInput) {
+            this.startDateInput.focus();
+        }
     }
 
     /**
@@ -854,6 +857,16 @@ export default class InputDateRange extends LightningElement {
      * ------------------------------------------------------------
      */
 
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
+    }
+
     /**
      * Listen for the escape key to escape the calendar
      *
@@ -957,7 +970,7 @@ export default class InputDateRange extends LightningElement {
                 }
                 this.showEndDate = true;
                 this.startPositioning('end');
-                this.dispatchChange();
+                this._dispatchChange();
                 return;
 
             case 'SELECT_END_EQUAL_START':
@@ -971,7 +984,7 @@ export default class InputDateRange extends LightningElement {
             default:
         }
 
-        this.dispatchChange();
+        this._dispatchChange();
 
         requestAnimationFrame(() => {
             this.showEndDate = false;
@@ -999,7 +1012,7 @@ export default class InputDateRange extends LightningElement {
             this.startTime = null;
             this.endTime = null;
         }
-        this.dispatchChange();
+        this._dispatchChange();
     }
 
     /**
@@ -1078,7 +1091,7 @@ export default class InputDateRange extends LightningElement {
                 }
                 this.showStartDate = true;
                 this.startPositioning('start');
-                this.dispatchChange();
+                this._dispatchChange();
                 return;
 
             case 'SELECT_START_EQUAL_END':
@@ -1092,7 +1105,7 @@ export default class InputDateRange extends LightningElement {
             default:
         }
 
-        this.dispatchChange();
+        this._dispatchChange();
         this.stopPositioning();
         this.showStartDate = false;
 
@@ -1121,7 +1134,7 @@ export default class InputDateRange extends LightningElement {
             this.startTime = null;
             this.endTime = null;
         }
-        this.dispatchChange();
+        this._dispatchChange();
     }
 
     /**
@@ -1187,7 +1200,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Handle a blur of the end date button icon. Close the calendar popover if the focus is really lost.
      */
-    handleBlurEndButtonIcon() {
+    handleBlurEndButtonIcon(event) {
         requestAnimationFrame(() => {
             if (!this.enteredEndCalendar) {
                 this.showEndDate = false;
@@ -1195,6 +1208,8 @@ export default class InputDateRange extends LightningElement {
             }
             this.enteredEndCalendar = false;
         });
+
+        this.handleBlur(event);
     }
 
     /**
@@ -1204,7 +1219,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.endDate) {
             this._endDate = null;
-            this.dispatchChange();
+            this._dispatchChange();
         }
 
         requestAnimationFrame(() => {
@@ -1220,12 +1235,14 @@ export default class InputDateRange extends LightningElement {
             }
             this.enteredEndCalendar = false;
         });
+
+        this.handleBlur(event);
     }
 
     /**
      * Handle a blur of the start date button icon. Close the calendar popover if the focus is really lost.
      */
-    handleBlurStartButtonIcon() {
+    handleBlurStartButtonIcon(event) {
         requestAnimationFrame(() => {
             if (!this.enteredStartCalendar) {
                 this.showStartDate = false;
@@ -1233,6 +1250,7 @@ export default class InputDateRange extends LightningElement {
             }
             this.enteredStartCalendar = false;
         });
+        this.handleBlur(event);
     }
 
     /**
@@ -1242,7 +1260,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.startDate) {
             this._startDate = null;
-            this.dispatchChange();
+            this._dispatchChange();
         }
 
         requestAnimationFrame(() => {
@@ -1258,6 +1276,7 @@ export default class InputDateRange extends LightningElement {
             }
             this.enteredStartCalendar = false;
         });
+        this.handleBlur(event);
     }
 
     /**
@@ -1289,6 +1308,16 @@ export default class InputDateRange extends LightningElement {
                 }
             }
         });
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
     }
 
     /**
@@ -1337,7 +1366,7 @@ export default class InputDateRange extends LightningElement {
             this._startDate = null;
         }
 
-        this.dispatchChange();
+        this._dispatchChange();
 
         requestAnimationFrame(() => {
             this.showEndDate = false;
@@ -1359,7 +1388,7 @@ export default class InputDateRange extends LightningElement {
 
         if (this._startDate > this._endDate) this._endDate = null;
 
-        this.dispatchChange();
+        this._dispatchChange();
         this.stopPositioning();
         this.showStartDate = false;
 
@@ -1406,10 +1435,27 @@ export default class InputDateRange extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the input date range.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
     /**
      * Dispatch changes from start-date input, end-date input, c-calendar for start-date and c-calendar for end-date.
      */
-    dispatchChange() {
+    _dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
 
@@ -1430,5 +1476,16 @@ export default class InputDateRange extends LightningElement {
                 }
             })
         );
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the input date range.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

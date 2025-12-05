@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import VisualPickerLink from 'c/visualPickerLink';
+import { createElement } from 'lwc';
 
 let element;
 describe('VisualPickerLink', () => {
@@ -228,7 +228,41 @@ describe('VisualPickerLink', () => {
         });
     });
 
+    describe('Methods', () => {
+        it('Focus', () => {
+            element.href = 'https://www.avonni.app/';
+
+            return Promise.resolve().then(() => {
+                const link = element.shadowRoot.querySelector(
+                    '[data-element-id="a"]'
+                );
+                const spy = jest.spyOn(link, 'focus');
+                element.focus();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
+    });
+
     describe('Events', () => {
+        it('Blur', () => {
+            element.href = 'https://www.avonni.app/';
+
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const link = element.shadowRoot.querySelector(
+                    '[data-element-id="a"]'
+                );
+                link.dispatchEvent(new CustomEvent('blur'));
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+        });
+
         it('Click', () => {
             const handler = jest.fn();
             element.addEventListener('click', handler);
@@ -242,6 +276,25 @@ describe('VisualPickerLink', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+
+        it('Focus', () => {
+            element.href = 'https://www.avonni.app/';
+
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const link = element.shadowRoot.querySelector(
+                    '[data-element-id="a"]'
+                );
+                link.focus();
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
         });
     });
 });

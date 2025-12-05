@@ -1340,6 +1340,25 @@ describe('Slider', () => {
     });
 
     describe('Events', () => {
+        describe('blur', () => {
+            it('Fired when the focus is removed from the input', () => {
+                const handler = jest.fn();
+                element.addEventListener('blur', handler);
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    input.dispatchEvent(new CustomEvent('blur'));
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+        });
+
         describe('change', () => {
             it('change event on input (single value)', () => {
                 const handler = jest.fn();
@@ -1382,6 +1401,25 @@ describe('Slider', () => {
                     expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                     expect(handler.mock.calls[0][0].composed).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                });
+            });
+        });
+
+        describe('focus', () => {
+            it('Fired when the focus is set on the input', () => {
+                const handler = jest.fn();
+                element.addEventListener('focus', handler);
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    );
+                    input.focus();
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
                 });
             });
         });

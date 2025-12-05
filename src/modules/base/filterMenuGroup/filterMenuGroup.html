@@ -6,6 +6,8 @@
             data-element-id="avonni-pill-container-vertical"
             data-group-name="focusable-element"
             onactionclick={handleSelectedItemRemove}
+            onblur={handleBlur}
+            onfocus={handleFocus}
         ></c-pill-container>
     </div>
     <ul
@@ -50,6 +52,8 @@
                     data-element-id="avonni-filter-menu"
                     data-group-name="focusable-element"
                     data-name={menu.name}
+                    onblur={handleBlur}
+                    onfocus={handleFocus}
                 ></c-filter-menu>
             </li>
         </template>
@@ -62,6 +66,8 @@
         data-element-id="avonni-pill-container-horizontal"
         data-group-name="focusable-element"
         onactionclick={handleSelectedItemRemove}
+        onblur={handleBlur}
+        onfocus={handleFocus}
     ></c-pill-container>
     <template if:true={showApplyResetButtons}>
         <lightning-button
@@ -71,7 +77,9 @@
             variant="base"
             data-element-id="lightning-button-reset"
             data-group-name="focusable-element"
+            onblur={handleBlur}
             onclick={handleResetClick}
+            onfocus={handleFocus}
         ></lightning-button>
         <lightning-button
             label={applyButtonLabel}
@@ -79,7 +87,9 @@
             variant="brand"
             data-element-id="lightning-button-apply"
             data-group-name="focusable-element"
+            onblur={handleBlur}
             onclick={handleApplyClick}
+            onfocus={handleFocus}
         ></lightning-button>
     </template>
 </template>

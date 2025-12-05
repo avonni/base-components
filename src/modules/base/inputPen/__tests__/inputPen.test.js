@@ -983,6 +983,21 @@ describe('Input pen', () => {
             });
         });
 
+        it('blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            const focusableElement =
+                element.shadowRoot.querySelector('[data-focusable]');
+            focusableElement.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+
         it('drawing on canvas should clear message if invalid', () => {
             element.required = true;
             const drawArea = element.shadowRoot.querySelector(
@@ -1209,6 +1224,21 @@ describe('Input pen', () => {
                 expect(handler).not.toHaveBeenCalled();
             });
         });
+
+        it('focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            const focusableElement =
+                element.shadowRoot.querySelector('[data-focusable]');
+            focusableElement.dispatchEvent(new CustomEvent('focus'));
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
     });
 
     describe('Other Public Methods', () => {
@@ -1229,6 +1259,14 @@ describe('Input pen', () => {
                     expect(clearSpy).toHaveBeenCalledTimes(4);
                     expect(element.value).toEqual(undefined);
                 });
+        });
+
+        it('focus', () => {
+            const focusableElement =
+                element.shadowRoot.querySelector('[data-focusable]');
+            const spy = jest.spyOn(focusableElement, 'focus');
+            element.focus();
+            expect(spy).toHaveBeenCalled();
         });
 
         it('undo on 3 actions should redraw those 2 previous actions (strokes)', () => {

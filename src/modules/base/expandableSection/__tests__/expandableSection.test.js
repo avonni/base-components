@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import ExpandableSection from 'c/expandableSection';
+import { createElement } from 'lwc';
 
 let element;
 describe('Expandable Section', () => {
@@ -200,7 +200,60 @@ describe('Expandable Section', () => {
         });
     });
 
+    describe('Methods', () => {
+        it('focus', () => {
+            element.title = 'Some title';
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                const spy = jest.spyOn(button, 'focus');
+                element.focus();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
+    });
+
     describe('Events', () => {
+        it('blur', () => {
+            element.title = 'Some title';
+
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.dispatchEvent(new CustomEvent('blur'));
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
+
+        it('focus', () => {
+            element.title = 'Some title';
+
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.focus();
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
+
         describe('toggle event', () => {
             it('Collapsible', () => {
                 element.collapsible = true;
