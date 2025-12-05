@@ -43,6 +43,11 @@
     font-size: 0.75rem;
 }
 
+.avonni-scheduler__calendar-cell_disabled,
+.avonni-scheduler__calendar-cell-multi-day[data-disabled='true'] {
+    background-color: var(--slds-g-color-neutral-base-90, #e5e5e5);
+}
+
 .avonni-scheduler__calendar-cell_outside-of-current-month {
     background-color: var(--lwc-colorBackground, #f3f3f3);
 }

@@ -186,6 +186,7 @@
                                                     avonni-scheduler__calendar-cell-multi-day
                                                     avonni-primitive-scheduler-calendar__inherit-height
                                                 "
+                                                data-disabled={cell.disabled}
                                                 data-element-id="div-cell"
                                                 data-end={cell.end}
                                                 data-start={cell.start}
@@ -299,6 +300,7 @@
                                                 <div
                                                     key={cell.key}
                                                     class={cell.computedClass}
+                                                    data-disabled={cell.disabled}
                                                     data-element-id="div-cell"
                                                     data-end={cell.end}
                                                     data-start={cell.start}
