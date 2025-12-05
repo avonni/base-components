@@ -53,7 +53,6 @@ describe('Slider', () => {
             expect(element.disableSwap).toEqual(false);
             expect(element.hideMinMaxValues).toEqual(false);
             expect(element.hideTrack).toEqual(false);
-            expect(element.isPercentage).toEqual(false);
             expect(element.label).toBeUndefined();
             expect(element.max).toBe(100);
             expect(element.messageWhenRangeOverflow).toBeUndefined();
@@ -231,24 +230,6 @@ describe('Slider', () => {
             });
         });
 
-        describe('isPercentage', () => {
-            it('false', () => {
-                element.isPercentage = false;
-
-                return Promise.resolve().then(() => {
-                    expect(element.isPercentage).toEqual(false);
-                });
-            });
-
-            it('true', () => {
-                element.isPercentage = true;
-
-                return Promise.resolve().then(() => {
-                    expect(element.isPercentage).toEqual(true);
-                });
-            });
-        });
-
         describe('label', () => {
             it('"test label"', () => {
                 element.label = 'test label';
@@ -311,10 +292,10 @@ describe('Slider', () => {
                 });
             });
 
-            it('Divided by 100 if ratio and percent', () => {
+            it('Divided by 100 if formatted', () => {
                 element.max = 1;
                 element.unit = 'percent';
-                element.isPercentage = true;
+                element.unitAttributes = { isFormatted: true };
 
                 return Promise.resolve().then(() => {
                     const max = element.shadowRoot.querySelector(
@@ -324,10 +305,10 @@ describe('Slider', () => {
                 });
             });
 
-            it('Not divided by 100 if ratio, but not percent', () => {
+            it('Not divided by 100 if not formatted', () => {
                 element.max = 1;
                 element.unit = 'decimal';
-                element.isPercentage = true;
+                element.unitAttributes = { isFormatted: false };
 
                 return Promise.resolve().then(() => {
                     const max = element.shadowRoot.querySelector(
@@ -383,10 +364,10 @@ describe('Slider', () => {
                 });
             });
 
-            it('Divided by 100 if ratio and percent', () => {
+            it('Divided by 100 if formatted', () => {
                 element.min = 1;
                 element.unit = 'percent';
-                element.isPercentage = true;
+                element.unitAttributes = { isFormatted: true };
 
                 return Promise.resolve().then(() => {
                     const min = element.shadowRoot.querySelector(
@@ -399,7 +380,7 @@ describe('Slider', () => {
             it('Not divided by 100 if ratio, but not percent', () => {
                 element.min = 1;
                 element.unit = 'decimal';
-                element.isPercentage = true;
+                element.unitAttributes = { isFormatted: true };
 
                 return Promise.resolve().then(() => {
                     const min = element.shadowRoot.querySelector(

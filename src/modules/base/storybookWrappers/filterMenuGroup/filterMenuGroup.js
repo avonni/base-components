@@ -107,7 +107,6 @@ export default class FilterMenuGroup extends LightningElement {
     @api hideApplyResetButtons;
     @api hideSelectedItems;
     @api resetButtonLabel;
-    @api showClearButton;
     @api singleLine;
     @api variant;
     @api weekStartDay;

@@ -15,8 +15,8 @@
             onclick={handleButtonClick}
             onfocus={handleButtonFocus}
         >
-            <div class="avonni-filter-menu__label-container">
-                <div class="avonni-filter-menu__label-left slds-truncate">
+            <div class="slds-grid avonni-filter-menu__allow-shrink-width">
+                <div class="slds-col slds-truncate">
                     <span class={computedMenuLabelClass}>{label}</span>
                     <span if:true={showFilterValue}
                         >&nbsp;{selectedFilterLabels}</span
@@ -25,7 +25,11 @@
 
                 <span
                     if:true={showCount}
-                    class="slds-badge avonni-filter-menu__button-count-selected"
+                    class="
+                        slds-badge
+                        avonni-filter-menu__button-count-selected
+                        slds-align_absolute-center
+                    "
                 >
                     {selectedItemCountLabel}
                 </span>
@@ -156,14 +160,15 @@
                                                 ></c-primitive-icon>
                                                 <span
                                                     class="
-                                                        slds-truncate
-                                                        avonni-filter-menu__item-label-container
+                                                        slds-truncate slds-grid
+                                                        avonni-filter-menu__allow-shrink-width
                                                     "
                                                 >
                                                     <lightning-formatted-rich-text
                                                         class="
                                                             slds-truncate
-                                                            avonni-filter-menu__item-label
+                                                            slds-shrink
+                                                            avonni-filter-menu__allow-shrink-width
                                                         "
                                                         disable-linkify
                                                         title={item.label}
@@ -174,7 +179,8 @@
                                                     <lightning-formatted-rich-text
                                                         if:true={item.countLabel}
                                                         class="
-                                                            avonni-filter-menu__count-label
+                                                            slds-shrink-none
+                                                            slds-m-left_xx-small
                                                         "
                                                         disable-linkify
                                                         title={item.countLabel}
@@ -236,7 +242,6 @@
                                 class="slds-show slds-m-around_small"
                                 disable-swap
                                 hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
-                                is-percentage={computedTypeAttributes.isPercentage}
                                 label={label}
                                 max={computedTypeAttributes.max}
                                 min={computedTypeAttributes.min}

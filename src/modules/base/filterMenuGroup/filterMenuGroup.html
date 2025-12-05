@@ -14,7 +14,6 @@
         onapply={handleApply}
         onclose={handleClose}
         onloadmore={handleLoadMore}
-        onloaditemcounts={handleLoadItemCounts}
         onloadtotalcount={handleLoadTotalCount}
         onopen={handleOpen}
         onreset={handleReset}
@@ -34,7 +33,7 @@
                     disabled={menu.disabled}
                     dropdown-alignment={menu.dropdownAlignment}
                     dropdown-nubbin={menu.dropdownNubbin}
-                    hide-apply-button={hideApplyButton}
+                    hide-apply-button={hideMenuApplyButtons}
                     hide-apply-reset-buttons={hideMenuApplyResetButtons}
                     hide-selected-items
                     icon-name={menu.iconName}
@@ -44,7 +43,7 @@
                     loading-state-alternative-text={menu.loadingStateAlternativeText}
                     name={menu.name}
                     reset-button-label={resetButtonLabel}
-                    show-clear-button={showClearButton}
+                    reset-button-position={menuResetButtonPosition}
                     title={menu.title}
                     type={menu.type}
                     type-attributes={menu.typeAttributes}
@@ -59,6 +58,7 @@
             </li>
         </template>
         <c-layout-item if:true={isOverflow} class="slds-text-align_right">
+            <!-- The title &#8203; is a blank character to force the close button to be on the top right -->
             <c-button-icon-popover
                 class={computedButtonIconPopoverClass}
                 icon-name="utility:filterList"
@@ -72,7 +72,7 @@
             >
                 <template for:each={hiddenMenus} for:item="menu">
                     <li class="slds-m-bottom_small" key={menu.name}>
-                        <avonni-filter-menu
+                        <c-filter-menu
                             access-key={menu.accessKey}
                             alternative-text={menu.alternativeText}
                             apply-button-label={applyButtonLabel}
@@ -82,8 +82,7 @@
                             disabled={menu.disabled}
                             dropdown-alignment={menu.dropdownAlignment}
                             dropdown-nubbin={menu.dropdownNubbin}
-                            hide-apply-button={hideHiddenMenuApplyResetButtons}
-                            hide-apply-reset-buttons={hideHiddenMenuApplyResetButtons}
+                            hide-apply-button={hideHiddenMenuApplyButton}
                             hide-selected-items
                             icon-name={menu.iconName}
                             icon-size={menu.iconSize}
@@ -91,8 +90,8 @@
                             label={menu.label}
                             loading-state-alternative-text={menu.loadingStateAlternativeText}
                             name={menu.name}
-                            reset-button-label={resetButtonLabel}
-                            show-clear-button={showClearButton}
+                            reset-button-label="Clear"
+                            reset-button-position="top"
                             title={menu.title}
                             type={menu.type}
                             type-attributes={menu.typeAttributes}
@@ -102,7 +101,7 @@
                             data-element-id="avonni-filter-menu-overflow"
                             data-group-name="focusable-element"
                             data-name={menu.name}
-                        ></avonni-filter-menu>
+                        ></c-filter-menu>
                     </li>
                 </template>
             </c-button-icon-popover>
@@ -119,17 +118,7 @@
             onactionclick={handleSelectedItemRemove}
         ></c-pill-container>
     </div>
-
     <template if:true={showApplyResetButtons}>
-        <lightning-button
-            class="slds-m-right_x-small"
-            label={resetButtonLabel}
-            title={resetButtonLabel}
-            variant="base"
-            data-element-id="lightning-button-reset"
-            data-group-name="focusable-element"
-            onclick={handleResetClick}
-        ></lightning-button>
         <lightning-button
             if:false={hideApplyButton}
             label={applyButtonLabel}

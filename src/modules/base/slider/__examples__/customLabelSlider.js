@@ -11,7 +11,6 @@ export const CustomLabelSlider = ({
     disableSwap,
     hideMinMaxValues,
     hideTrack,
-    isPercentage,
     label,
     max,
     messageWhenRangeOverflow,
@@ -36,7 +35,6 @@ export const CustomLabelSlider = ({
     element.disableSwap = disableSwap;
     element.hideMinMaxValues = hideMinMaxValues;
     element.hideTrack = hideTrack;
-    element.isPercentage = isPercentage;
     element.label = label;
     element.max = max;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;

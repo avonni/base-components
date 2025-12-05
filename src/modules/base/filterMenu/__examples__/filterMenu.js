@@ -25,7 +25,7 @@ export const FilterMenu = ({
     loadingStateAlternativeText,
     name,
     resetButtonLabel,
-    showClearButton,
+    resetButtonPosition,
     title,
     tooltip,
     type,
@@ -54,7 +54,7 @@ export const FilterMenu = ({
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
     element.resetButtonLabel = resetButtonLabel;
-    element.showClearButton = showClearButton;
+    element.resetButtonPosition = resetButtonPosition;
     element.title = title;
     element.tooltip = tooltip;
     element.type = type;

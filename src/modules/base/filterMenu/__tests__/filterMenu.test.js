@@ -96,8 +96,7 @@ describe('Filter Menu', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
-            expect(element.resetButtonLabel).toBe('Clear selection');
-            expect(element.showClearButton).toBeFalsy();
+            expect(element.resetButtonLabel).toBe('Reset');
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.type).toBe('list');
@@ -1584,34 +1583,6 @@ describe('Filter Menu', () => {
             });
         });
 
-        describe('Show Clear Button', () => {
-            it('showClearButton, true', () => {
-                element.showClearButton = true;
-                element.variant = 'vertical';
-                element.value = ITEMS;
-
-                return Promise.resolve().then(() => {
-                    const buttonClear = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-clear"]'
-                    );
-                    expect(buttonClear).toBeTruthy();
-                });
-            });
-
-            it('showClearButton, false', () => {
-                element.showClearButton = false;
-                element.variant = 'vertical';
-                element.value = ITEMS;
-
-                return Promise.resolve().then(() => {
-                    const buttonClear = element.shadowRoot.querySelector(
-                        '[data-element-id="span-menu-selected-labels"]'
-                    );
-                    expect(buttonClear).toBeFalsy();
-                });
-            });
-        });
-
         describe('Title', () => {
             it('title', () => {
                 element.title = 'A string title';
@@ -2289,7 +2260,6 @@ describe('Filter Menu', () => {
             it('typeAttributes for range', () => {
                 const typeAttributes = {
                     hideMinMaxValues: true,
-                    isPercentage: true,
                     max: 117,
                     min: -45,
                     showPin: true,
@@ -2313,7 +2283,6 @@ describe('Filter Menu', () => {
                         '[data-element-id="avonni-slider"]'
                     );
                     expect(slider.hideMinMaxValues).toBeTruthy();
-                    expect(slider.isPercentage).toBeTruthy();
                     expect(slider.max).toBe(117);
                     expect(slider.min).toBe(-45);
                     expect(slider.showPin).toBeTruthy();

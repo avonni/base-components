@@ -12,7 +12,7 @@ import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
-const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
+const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 const DEFAULT_WEEK_START_DAY = 0;
 const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -41,7 +41,6 @@ export default class FilterMenuGroup extends LightningElement {
     _menus = [];
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _singleLine = false;
-    _showClearButton = false;
     _value = {};
     _variant = MENU_VARIANTS.default;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
@@ -216,20 +215,6 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * If present, a clear button is displayed next to each menu in the vertical variant and the hidden menus in the horizontal variant.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showClearButton() {
-        return this._showClearButton;
-    }
-    set showClearButton(value) {
-        this._showClearButton = normalizeBoolean(value);
-    }
-
-    /**
      * If present, the menus are limited to one line. This attribute isn’t supported for the vertical variant.
      *
      * @type {boolean}
@@ -331,6 +316,15 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Position of the reset button
+     *
+     * @type {string}
+     */
+    get menuResetButtonPosition() {
+        return this.isVertical ? 'top' : 'bottom';
+    }
+
+    /**
      * Button Icon Popover Class Styling
      *
      * @type {string}
@@ -406,8 +400,21 @@ export default class FilterMenuGroup extends LightningElement {
      *
      * @type {boolean}
      */
+    get hideMenuApplyButtons() {
+        return (
+            this.hideApplyButton ||
+            this.hideApplyResetButtons ||
+            this.isVertical
+        );
+    }
+
+    /**
+     * True if the apply and reset buttons should be hidden for each menu.
+     *
+     * @type {boolean}
+     */
     get hideMenuApplyResetButtons() {
-        return this.isVertical || this.hideApplyResetButtons;
+        return !this.isVertical && this.hideApplyResetButtons;
     }
 
     /**
@@ -415,7 +422,7 @@ export default class FilterMenuGroup extends LightningElement {
      *
      * @type {boolean}
      */
-    get hideHiddenMenuApplyResetButtons() {
+    get hideHiddenMenuApplyButton() {
         return this.hideApplyButton || this.hideApplyResetButtons;
     }
 
@@ -887,7 +894,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleApply(event) {
         event.stopPropagation();
-        if (this.hideMenuApplyResetButtons || this.hideApplyButton) {
+        if (this.hideMenuApplyButtons) {
             // The apply and select events are fired at the same time
             return;
         }
@@ -934,30 +941,6 @@ export default class FilterMenuGroup extends LightningElement {
                 detail: {
                     name: menuName
                 }
-            })
-        );
-    }
-
-    /**
-     * Handle the loaditemcounts event.
-     *
-     * @param {Event} event `loaditemcounts` event fired by the menu.
-     */
-    handleLoadItemCounts(event) {
-        event.stopPropagation();
-        const menuName = event.target.dataset.name;
-
-        /**
-         * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
-         *
-         * @event
-         * @name loaditemcounts
-         * @param {string} name Name of the menu that triggered the event.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('loaditemcounts', {
-                detail: { name: menuName }
             })
         );
     }
@@ -1088,7 +1071,7 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Handle a click on a "Reset" button, in the horizontal variant or a "Clear" button in the vertical variant.
+     * Handle a click on a "Reset" button, in the horizontal variant or the vertical variant.
      *
      * @param {Event} event `reset` event fired by the menu.
      */
@@ -1101,39 +1084,12 @@ export default class FilterMenuGroup extends LightningElement {
         const shouldSaveImmediately =
             this.hideApplyButton || this.hideApplyResetButtons;
 
-        // Reset Fired from a Vertical Menu Clear Button
-        if (this.isVertical && this.showClearButton) {
-            delete this._selectedValue[menuName];
-            this.dispatchReset(menuName);
-            // Save the reset immediately
-            if (shouldSaveImmediately) {
-                this.apply();
-                this.dispatchApply();
-            }
-        } else if (!this.isVertical) {
-            delete this._selectedValue[menuName];
-            this.dispatchReset(menuName);
-            // Save the reset immediately
-            if (shouldSaveImmediately) {
-                this.apply();
-                this.dispatchApply();
-            }
-        }
-    }
-
-    /**
-     * Handle a click on the "Reset" button, in the vertical variant.
-     */
-    handleResetClick() {
-        if (!this.isVertical) {
-            return;
-        }
-        this.reset();
-        this.dispatchReset();
+        delete this._selectedValue[menuName];
+        this.dispatchReset(menuName);
         // Save the reset immediately
-        if (this.hideApplyButton) {
+        if (shouldSaveImmediately) {
             this.apply();
-            this.dispatchApply();
+            this.dispatchApply(menuName);
         }
     }
 

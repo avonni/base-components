@@ -156,14 +156,26 @@
                                                             slds-m-right_x-small
                                                         "
                                                     >
-                                                        <lightning-formatted-rich-text
-                                                            if:true={option.displayLabel}
-                                                            class={computedOptionLabelClass}
-                                                            disable-linkify
-                                                            title={option.label}
-                                                            value={option.label}
-                                                            data-element-id="lightning-formatted-rich-text-option-label"
-                                                        ></lightning-formatted-rich-text>
+                                                        <div class="slds-grid">
+                                                            <lightning-formatted-rich-text
+                                                                if:true={option.displayLabel}
+                                                                class={computedOptionLabelClass}
+                                                                disable-linkify
+                                                                title={option.label}
+                                                                value={option.label}
+                                                                data-element-id="lightning-formatted-rich-text-option-label"
+                                                            ></lightning-formatted-rich-text>
+                                                            <lightning-formatted-rich-text
+                                                                if:true={option.displayAdditionalLabel}
+                                                                class="
+                                                                    slds-order_2
+                                                                    slds-m-left_xxx-small
+                                                                "
+                                                                disable-linkify
+                                                                title={option.additionalLabel}
+                                                                value={option.additionalLabel}
+                                                            ></lightning-formatted-rich-text>
+                                                        </div>
                                                     </div>
                                                     <lightning-icon
                                                         if:true={option.iconName}

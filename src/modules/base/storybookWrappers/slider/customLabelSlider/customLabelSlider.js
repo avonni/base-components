@@ -6,7 +6,6 @@ export default class CustomLabelSlider extends LightningElement {
     @api disableSwap;
     @api hideMinMaxValues;
     @api hideTrack;
-    @api isPercentage;
     @api label;
     @api max;
     @api min;

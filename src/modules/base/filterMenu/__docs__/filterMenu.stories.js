@@ -246,17 +246,17 @@ export default {
                 category: 'Button'
             }
         },
-        showClearButton: {
-            name: 'show-clear-button',
+        resetButtonPosition: {
+            name: 'reset-button-position',
             control: {
-                type: 'boolean'
+                type: 'select'
             },
+            options: ['top', 'bottom'],
             description:
-                'If present, a clear button is displayed next to each filter.',
+                'The position of the reset button. This attribute is only supported by the vertical variant.',
             table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Button'
+                type: { summary: 'string' },
+                defaultValue: { summary: 'bottom' }
             }
         },
         title: {
@@ -349,8 +349,8 @@ export default {
         iconSize: 'medium',
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
-        resetButtonLabel: 'Clear selection',
-        showClearButton: false,
+        resetButtonLabel: 'Reset',
+        resetButtonPosition: 'bottom',
         type: 'list',
         variant: 'horizontal',
         weekStartDay: 0

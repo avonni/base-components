@@ -14,43 +14,16 @@
     );
 }
 
-.avonni-filter-menu__item-label-container {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-}
-
-.avonni-filter-menu__item-label {
-    flex-shrink: 1;
-    min-width: 0;
-}
-
-.avonni-filter-menu__count-label {
-    flex-shrink: 0;
-    margin-left: var(--lwc-spacingXxSmall, 0.125rem);
-}
-
 .avonni-filter-menu__button {
     max-width: 250px;
-    min-width: 0;
-}
-
-.avonni-filter-menu__label-container {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-}
-
-.avonni-filter-menu__label-left {
-    flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 [data-element-id='input-time-range-container'] .slds-form-element {
     padding-right: var(--lwc-spacingXSmall, 0.5rem);
     padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);
     min-width: 150px;
+}
+
+.avonni-filter-menu__allow-shrink-width {
+    min-width: 0;
 }

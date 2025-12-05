@@ -92,7 +92,6 @@ export default class Slider extends LightningElement {
     _minimumDistance = DEFAULT_MINIMUM_DISTANCE;
     _hideTrack = false;
     _hideMinMaxValues = false;
-    _isPercentage = false;
     _pin = false;
     _showTickMarks = false;
     _size = SLIDER_SIZES.default;
@@ -117,6 +116,7 @@ export default class Slider extends LightningElement {
     _domModified = false;
     _focusedInputIndex;
     _initMax;
+    _isFormatted = false;
     _moveEventWait = false;
     _pinLocked = false;
     _previousScalingFactor = 1;
@@ -216,23 +216,6 @@ export default class Slider extends LightningElement {
     }
     set disableSwap(value) {
         this._disableSwap = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the values in percent unit are treated as already in percentage.
-     * For example, 1 as value is treated as 1% in percentage.
-     * Otherwise, 1 as value is treated as 100% in percentage.
-     *
-     * @type {Boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get isPercentage() {
-        return this._isPercentage;
-    }
-    set isPercentage(value) {
-        this._isPercentage = normalizeBoolean(value);
     }
 
     /**
@@ -489,7 +472,7 @@ export default class Slider extends LightningElement {
             this.customLabels = normalizeArray(value.customLabels, 'object');
             this._domModified = true;
         }
-        this._unitAttributes = normalizeObject(value);
+
         const normalized = normalizeObject(value);
         const clean = {};
         Object.entries(normalized).forEach(([key, val]) => {
@@ -498,7 +481,12 @@ export default class Slider extends LightningElement {
             }
         });
 
+        if (equal(this._unitAttributes, clean)) {
+            return;
+        }
+
         this._unitAttributes = clean;
+        this._isFormatted = normalizeBoolean(this._unitAttributes.isFormatted);
     }
 
     /**
@@ -664,7 +652,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedMaxDisplay() {
-        return this.isPercentage &&
+        return this._isFormatted &&
             !isNaN(this.computedMax) &&
             this._unit === 'percent'
             ? this.computedMax / PERCENT_SCALING_FACTOR
@@ -677,7 +665,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedMinDisplay() {
-        return this.isPercentage &&
+        return this._isFormatted &&
             !isNaN(this.computedMin) &&
             this._unit === 'percent'
             ? this.computedMin / PERCENT_SCALING_FACTOR
@@ -784,7 +772,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedVerticalMaxDisplay() {
-        return this.isPercentage && !isNaN(this.max) && this._unit === 'percent'
+        return this._isFormatted && !isNaN(this.max) && this._unit === 'percent'
             ? this.max / PERCENT_SCALING_FACTOR
             : this.max;
     }
@@ -795,7 +783,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     get computedVerticalMinDisplay() {
-        return this.isPercentage && !isNaN(this.min) && this._unit === 'percent'
+        return this._isFormatted && !isNaN(this.min) && this._unit === 'percent'
             ? this.min / PERCENT_SCALING_FACTOR
             : this.min;
     }
@@ -1703,7 +1691,7 @@ export default class Slider extends LightningElement {
         );
         let transformedValue = this._computedValues[pinIndex];
         if (
-            this.isPercentage &&
+            this._isFormatted &&
             !isNaN(transformedValue) &&
             this._unit === 'percent'
         ) {

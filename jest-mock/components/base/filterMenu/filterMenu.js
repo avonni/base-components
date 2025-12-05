@@ -25,8 +25,8 @@ export default class FilterMenu extends LightningElement {
     @api loadingStateAlternativeText;
     @api name;
     @api resetButtonLabel;
+    @api resetButtonPosition;
     @api searchInputPlaceholder;
-    @api showClearButton;
     @api showSearchBox;
     @api title;
     @api tooltip;

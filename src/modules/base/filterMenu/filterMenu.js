@@ -52,8 +52,9 @@ const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
-const DEFAULT_RESET_BUTTON_LABEL = 'Clear selection';
+const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
+
 const DEFAULT_WEEK_START_DAY = 0;
 
 const i18n = {
@@ -91,6 +92,11 @@ const MENU_WIDTHS = {
     valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
 
+const RESET_BUTTON_POSITION = {
+    default: 'bottom',
+    valid: ['top', 'bottom']
+};
+
 const TYPE_ATTRIBUTES = {
     'date-range': [
         'dateStyle',
@@ -109,7 +115,6 @@ const TYPE_ATTRIBUTES = {
         'enableInfiniteLoading',
         'hasNestedItems',
         'isMultiSelect',
-        'itemCounts',
         'items',
         'noResultsMessage',
         'searchInputPlaceholder',
@@ -117,7 +122,6 @@ const TYPE_ATTRIBUTES = {
     ],
     range: [
         'hideMinMaxValues',
-        'isPercentage',
         'max',
         'min',
         'showPin',
@@ -199,8 +203,8 @@ export default class FilterMenu extends LightningElement {
     _items = [];
     _loadingStateAlternativeText = i18n.loading;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
+    _resetButtonPosition = RESET_BUTTON_POSITION.default;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
-    _showClearButton = false;
     _showSearchBox = false;
     _tooltip;
     _type = TYPES.default;
@@ -217,7 +221,6 @@ export default class FilterMenu extends LightningElement {
     _preventDropdownToggle = false;
     _searchTimeOut;
 
-    computedItemCounts = {};
     @track computedItems = [];
     computedTypeAttributes = {};
     @track currentValue = [];
@@ -236,7 +239,6 @@ export default class FilterMenu extends LightningElement {
 
     connectedCallback() {
         this.normalizeTypeAttributes();
-        this.computeItemCounts();
         this.computeListItems();
         this.computeSelectedItems();
         this._connected = true;
@@ -250,8 +252,6 @@ export default class FilterMenu extends LightningElement {
             // Fire the loadmore event without waiting for the user
             // to click on the load more button
             this.dispatchLoadMore();
-        } else if (!this.infiniteLoad && this.isList) {
-            this.dispatchLoadItemCounts();
         }
         this.dispatchLoadTotalCount();
     }
@@ -575,7 +575,7 @@ export default class FilterMenu extends LightningElement {
 
         this._isLoading = normalizedValue;
         if (!this._isLoading && this.isRange && this.dropdownVisible) {
-            this.focusRange();
+            this.focusDropdown();
         }
     }
 
@@ -620,7 +620,6 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.supportDeprecatedAttributes();
-            this.computeItemCounts();
             this.computeListItems();
         }
     }
@@ -660,6 +659,23 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * The position of the reset button. This attribute is only supported by the vertical variant.
+     *
+     * @type {string}
+     * @default bottom
+     */
+    @api
+    get resetButtonPosition() {
+        return this._resetButtonPosition;
+    }
+    set resetButtonPosition(value) {
+        this._resetButtonPosition = normalizeString(value, {
+            fallbackValue: RESET_BUTTON_POSITION.default,
+            validValues: RESET_BUTTON_POSITION.valid
+        });
+    }
+
+    /**
      * Deprecated. Set the search input placeholder in the type attributes.
      *
      * @type {string}
@@ -683,20 +699,6 @@ export default class FilterMenu extends LightningElement {
         if (this._connected) {
             this.supportDeprecatedAttributes();
         }
-    }
-
-    /**
-     * If present, a clear button is displayed. This attribute is only supported by the vertical variant.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showClearButton() {
-        return this._showClearButton;
-    }
-    set showClearButton(value) {
-        this._showClearButton = normalizeBoolean(value);
     }
 
     /**
@@ -827,7 +829,6 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = deepCopy(array);
 
         if (this._connected) {
-            this.computeItemCounts();
             this.computeListItems();
             this.computeSelectedItems();
         }
@@ -909,7 +910,7 @@ export default class FilterMenu extends LightningElement {
             this.buttonVariant === 'bare-inverse';
 
         const classes = classSet(
-            'slds-button slds-truncate avonni-filter-menu__button'
+            'slds-button slds-truncate avonni-filter-menu__button avonni-filter-menu__allow-shrink-width '
         );
         classes.add(buttonGroupOrderClass(this.groupOrder));
 
@@ -1163,6 +1164,18 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the bottom buttons should be hidden
+     *
+     * @type {boolean}
+     */
+    get hideBottomButtons() {
+        return (
+            this.hideApplyResetButtons ||
+            (this.hideApplyButton && this.resetButtonPosition === 'top')
+        );
+    }
+
+    /**
      * True if inifinite loading is enabled.
      *
      * @type {boolean}
@@ -1223,15 +1236,6 @@ export default class FilterMenu extends LightningElement {
      */
     get isVertical() {
         return this.variant === 'vertical';
-    }
-
-    /**
-     * True if the labels have a count.
-     *
-     * @type {boolean}
-     */
-    get hasCountLabel() {
-        return Object.keys(this.computedItemCounts).length > 0;
     }
 
     /**
@@ -1359,7 +1363,6 @@ export default class FilterMenu extends LightningElement {
      * @type {string[]}
      */
     get selectedItemLabels() {
-        const hasComputedItems = this.computedItems.length > 0;
         this.labelMap = this.dropdownVisible
             ? new Map(
                   this.computedItems.map((item) => [item.value, item.label])
@@ -1372,10 +1375,8 @@ export default class FilterMenu extends LightningElement {
         if (this.isDateRange || this.isRange) {
             return this.selectedItems.map((item) => item.label);
         }
-        const labels = hasComputedItems
-            ? this.selectedItems.map((item) => item.label)
-            : valueLabels;
-        return labels;
+
+        return valueLabels;
     }
 
     /**
@@ -1415,12 +1416,30 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * True if clear only section should be visible.
+     * True if the reset button should be visible.
      *
      * @type {boolean}
      */
-    get showClearSection() {
-        return this.showClearButton && this.currentValue.length > 0;
+    get showResetButton() {
+        return !this.hideApplyResetButtons && this.currentValue.length > 0;
+    }
+
+    /**
+     * True if the reset button bottom should be visible.
+     *
+     * @type {boolean}
+     */
+    get showResetButtonBottom() {
+        return this.showResetButton && this.resetButtonPosition === 'bottom';
+    }
+
+    /**
+     * True if the reset button top should be visible.
+     *
+     * @type {boolean}
+     */
+    get showResetButtonTop() {
+        return this.showResetButton && this.resetButtonPosition === 'top';
     }
 
     /**
@@ -1497,7 +1516,6 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
-        this.computeItemCounts();
         this.computeListItems();
         this.computeSelectedItems();
 
@@ -1561,7 +1579,6 @@ export default class FilterMenu extends LightningElement {
     reset() {
         this.currentValue = [];
         if (this.isList) {
-            this.computeItemCounts();
             this.computeListItems();
         }
     }
@@ -1582,19 +1599,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Create the computed item counts, based on the given items.
-     */
-    computeItemCounts() {
-        if (!this.isList || !this.computedTypeAttributes?.itemCounts) {
-            return;
-        }
-
-        this.computedItemCounts = deepCopy(
-            normalizeObject(this.computedTypeAttributes.itemCounts)
-        );
-    }
-
-    /**
      * Create the computed list items, based on the given items.
      */
     computeListItems() {
@@ -1605,7 +1609,9 @@ export default class FilterMenu extends LightningElement {
         const items = deepCopy(
             normalizeArray(this.computedTypeAttributes.items, 'object')
         );
-        const hasCountLabel = this.hasCountLabel;
+        const hasCountLabel = items.some(
+            (item) => item.count !== null && item.count !== undefined
+        );
 
         this.computedItems = items.map((item) => {
             let tabindex = '-1';
@@ -1613,7 +1619,7 @@ export default class FilterMenu extends LightningElement {
                 firstFocusableItem = true;
                 tabindex = '0';
             }
-            const numberRecords = this.computedItemCounts[item?.value] ?? 0;
+            const numberRecords = item.count || 0;
             if (hasCountLabel) {
                 item.countLabel = `(${numberRecords})`;
                 item.additionalLabel = `(${numberRecords})`;
@@ -1690,10 +1696,7 @@ export default class FilterMenu extends LightningElement {
                     style,
                     ...attributes
                 };
-                if (
-                    style === 'percent' &&
-                    this.computedTypeAttributes.isPercentage
-                ) {
+                if (style === 'percent' && attributes.isFormatted) {
                     value /= 100;
                 }
                 normalizedValue = value.toString();
@@ -1781,20 +1784,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Set the focus on the range.
-     */
-    focusRange() {
-        requestAnimationFrame(() => {
-            const range = this.template.querySelector(
-                '[data-element-id="avonni-slider"]'
-            );
-            if (range) {
-                range.focus();
-            }
-        });
-    }
-
-    /**
      * Get only the item that are in the search scope or have children that are in the search scope.
      */
     getVisibleItems(items = this.computedItems) {
@@ -1842,7 +1831,6 @@ export default class FilterMenu extends LightningElement {
         });
         this.computedTypeAttributes = typeAttributes;
         this.supportDeprecatedAttributes();
-        this.computeItemCounts();
         this.computeListItems();
     }
 
@@ -2002,7 +1990,6 @@ export default class FilterMenu extends LightningElement {
 
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
-                this.computeItemCounts();
                 this.computeListItems();
                 this.focusDropdown();
             } else {
@@ -2174,6 +2161,16 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [];
+        // Get the values not visible in the computed items due to a search+loadmore event
+        const itemValues = new Set(
+            this.computedItems.map((item) => item.value)
+        );
+
+        for (const v of this.value) {
+            if (!itemValues.has(v)) {
+                this.currentValue.push(v);
+            }
+        }
         this.computedItems = this.computedItems.map((item) => {
             if (item.value === value) {
                 item.checked = !item.checked;
@@ -2320,8 +2317,6 @@ export default class FilterMenu extends LightningElement {
                 this.noVisibleListItem
             ) {
                 this.dispatchLoadMore();
-            } else if (!this.infiniteLoad && this.isList) {
-                this.dispatchLoadItemCounts();
             }
             this.dispatchLoadTotalCount();
         }, 300);
@@ -2347,7 +2342,6 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
-        this.computeItemCounts();
         this.computeListItems();
         this.dispatchApply();
     }
@@ -2464,26 +2458,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dispatch the `loaditemcounts` event.
-     *
-     */
-    dispatchLoadItemCounts() {
-        /**
-         * The event fired when the number of records by item needs to be updated. It is only fired if type of the menu is a list and the`enableInfiniteLoading` type attribute is absent.
-         *
-         * @event
-         * @name loaditemcounts
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('loaditemcounts', {
-                bubbles: true
-            })
-        );
-    }
-
-    /**
      * Dispatch the `loadmore` event.
      *
      * @param {object} item Parent item that triggered the `loadmore` event, if the items are nested.
@@ -2510,8 +2484,11 @@ export default class FilterMenu extends LightningElement {
      * Dispatch the `loadtotalcount` event.
      */
     dispatchLoadTotalCount() {
+        if (!this.isList) {
+            return;
+        }
         /**
-         * The event fired when the list is is rendered or the search term is modified.
+         * The event fired when the list is rendered or the search term is modified.
          *
          * @event
          * @name loadtotalcount

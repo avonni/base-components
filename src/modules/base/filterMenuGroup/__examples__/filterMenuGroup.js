@@ -13,7 +13,6 @@ export const FilterMenuGroup = ({
     hideSelectedItems,
     menus,
     resetButtonLabel,
-    showClearButton,
     singleLine,
     value,
     variant,
@@ -27,7 +26,6 @@ export const FilterMenuGroup = ({
     element.hideSelectedItems = hideSelectedItems;
     element.menus = menus;
     element.resetButtonLabel = resetButtonLabel;
-    element.showClearButton = showClearButton;
     element.singleLine = singleLine;
     element.value = value;
     element.variant = variant;

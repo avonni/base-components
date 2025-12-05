@@ -38,8 +38,7 @@ describe('FilterMenuGroup', () => {
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.menus).toMatchObject([]);
-            expect(element.resetButtonLabel).toBe('Clear selection');
-            expect(element.showClearButton).toBeFalsy();
+            expect(element.resetButtonLabel).toBe('Reset');
             expect(element.singleLine).toBeFalsy();
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
@@ -330,34 +329,6 @@ describe('FilterMenuGroup', () => {
                         '[data-element-id="lightning-button-reset"]'
                     );
                     expect(button.label).toBe('Erase');
-                });
-            });
-        });
-
-        describe('showClearButton', () => {
-            it('Passed to the component as true', () => {
-                element.showClearButton = true;
-
-                return Promise.resolve().then(() => {
-                    const menus = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="avonni-filter-menu"]'
-                    );
-                    menus.forEach((menu) => {
-                        expect(menu.showClearButton).toBeTruthy();
-                    });
-                });
-            });
-
-            it('Passed to the component as false', () => {
-                element.showClearButton = false;
-
-                return Promise.resolve().then(() => {
-                    const menus = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="avonni-filter-menu"]'
-                    );
-                    menus.forEach((menu) => {
-                        expect(menu.showClearButton).toBeFalsy();
-                    });
                 });
             });
         });
@@ -1396,11 +1367,10 @@ describe('FilterMenuGroup', () => {
                 });
             });
 
-            it('reset event by vertical menu, showClearButton', () => {
+            it('reset event by vertical menu', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
                 element.variant = 'vertical';
-                element.showClearButton = true;
 
                 const handler = jest.fn();
                 element.addEventListener('reset', handler);
@@ -1424,12 +1394,11 @@ describe('FilterMenuGroup', () => {
                 });
             });
 
-            it('reset event by vertical menu, showClearButton, hideApplyButton', () => {
+            it('reset event by vertical menu, hideApplyButton', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
                 element.variant = 'vertical';
                 element.hideApplyButton = true;
-                element.showClearButton = true;
 
                 const handlerReset = jest.fn();
                 element.addEventListener('reset', handlerReset);
@@ -1457,12 +1426,11 @@ describe('FilterMenuGroup', () => {
                 });
             });
 
-            it('reset event by vertical menu, showClearButton, hideApplyResetButtons', () => {
+            it('reset event by vertical menu, hideApplyResetButtons', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
                 element.variant = 'vertical';
                 element.hideApplyResetButtons = true;
-                element.showClearButton = true;
 
                 const handlerReset = jest.fn();
                 element.addEventListener('reset', handlerReset);

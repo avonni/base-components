@@ -39,6 +39,7 @@
             <div
                 class="
                     avonni-filter-menu__label-container-collapsible
+                    avonni-filter-menu__allow-shrink-width
                     slds-truncate
                 "
                 title={label}
@@ -83,6 +84,7 @@
             <div
                 class="
                     avonni-filter-menu__label-container-non-collapsible
+                    avonni-filter-menu__allow-shrink-width
                     slds-truncate
                 "
                 title={label}
@@ -113,7 +115,11 @@
         <div class="avonni-filter-menu__search-wrapper">
             <lightning-input
                 if:true={computedTypeAttributes.allowSearch}
-                class="avonni-filter-menu__search-input slds-p-vertical_x-small"
+                class="
+                    slds-grow
+                    avonni-filter-menu__allow-shrink-width
+                    slds-p-vertical_x-small
+                "
                 disabled={disabled}
                 label={computedTypeAttributes.searchInputPlaceholder}
                 placeholder={computedTypeAttributes.searchInputPlaceholder}
@@ -125,13 +131,13 @@
                 onchange={handleSearch}
             ></lightning-input>
 
-            <template if:true={showClearSection}>
+            <template if:true={showResetButtonTop}>
                 <lightning-button
                     class="slds-m-left_x-small"
                     variant="base"
-                    label="Clear"
-                    title="Clear"
-                    data-element-id="lightning-button-clear"
+                    label={resetButtonLabel}
+                    title={resetButtonLabel}
+                    data-element-id="lightning-button-reset-top"
                     onclick={handleResetClick}
                     disabled={disabledOrLoading}
                 ></lightning-button>
@@ -231,7 +237,6 @@
                     class="slds-m-vertical_small"
                     disable-swap
                     hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
-                    is-percentage={computedTypeAttributes.isPercentage}
                     label={label}
                     max={computedTypeAttributes.max}
                     min={computedTypeAttributes.min}
@@ -301,10 +306,10 @@
 
     <!-- Reset and apply buttons -->
     <lightning-menu-divider
-        if:false={hideApplyResetButtons}
+        if:false={hideBottomButtons}
     ></lightning-menu-divider>
     <div
-        if:false={hideApplyResetButtons}
+        if:false={hideBottomButtons}
         class="
             slds-p-horizontal_small
             slds-p-bottom_x-small
@@ -312,11 +317,12 @@
         "
     >
         <lightning-button
+            if:true={showResetButtonBottom}
             class="slds-m-right_x-small"
             variant="base"
             label={resetButtonLabel}
             title={resetButtonLabel}
-            data-element-id="lightning-button-reset"
+            data-element-id="lightning-button-reset-bottom"
             onclick={handleResetClick}
             disabled={disabledOrLoading}
         ></lightning-button>

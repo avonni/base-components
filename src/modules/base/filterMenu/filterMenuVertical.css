@@ -3,11 +3,6 @@
     align-items: center;
 }
 
-.avonni-filter-menu__search-input {
-    flex: 1;
-    min-width: 0;
-}
-
 .avonni-filter-menu__title-button_base {
     background-color: var(
         --avonni-filter-menu-vertical-label-color-background,
@@ -78,13 +73,11 @@
 
 .avonni-filter-menu__label-container-collapsible {
     flex: 1 1 auto;
-    min-width: 0;
     overflow: hidden;
 }
 
 .avonni-filter-menu__label-container-non-collapsible {
     flex: 0 1 auto;
-    min-width: 0;
     overflow: hidden;
 }
 
@@ -98,4 +91,8 @@
     padding-right: var(--lwc-spacingXSmall, 0.5rem);
     padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);
     min-width: 150px;
+}
+
+.avonni-filter-menu__allow-shrink-width {
+    min-width: 0;
 }

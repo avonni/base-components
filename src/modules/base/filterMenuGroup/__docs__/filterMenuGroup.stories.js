@@ -81,18 +81,6 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        showClearButton: {
-            name: 'show-clear-button',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, a clear button is displayed next to each menu in the vertical variant and the hidden menus in the horizontal variant.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
         singleLine: {
             name: 'single-line',
             control: {
@@ -146,8 +134,7 @@ export default {
         hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
-        resetButtonLabel: 'Clear selection',
-        showClearButton: false,
+        resetButtonLabel: 'Reset',
         singleLine: false,
         variant: 'horizontal',
         weekStartDay: 0
