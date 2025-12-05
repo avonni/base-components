@@ -1,32 +1,147 @@
 import FilterMenuGroup from 'c/filterMenuGroup';
 import { createElement } from 'lwc';
 import { MENUS, VALUE } from './data';
+import { callObserver } from 'c/resizeObserver';
+import { deepCopy } from 'c/utils';
 
 let element;
 describe('FilterMenuGroup', () => {
+    async function flushPromises() {
+        jest.runAllTimers();
+        return new Promise(jest.requireActual('timers').setImmediate);
+    }
+
     afterEach(() => {
+        jest.clearAllTimers();
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-filter-menu-group', {
             is: FilterMenuGroup
         });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         document.body.appendChild(element);
     });
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.align).toBe('left');
             expect(element.applyButtonLabel).toBe('Apply');
+            expect(element.hideApplyButton).toBeFalsy();
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.menus).toMatchObject([]);
             expect(element.resetButtonLabel).toBe('Reset');
+            expect(element.singleLine).toBeFalsy();
             expect(element.value).toEqual({});
             expect(element.variant).toBe('horizontal');
             expect(element.weekStartDay).toBe(0);
+        });
+
+        describe('align', () => {
+            const horizontalClasses = [
+                'slds-grid',
+                'slds-wrap',
+                'slds-grid_vertical-align-center'
+            ];
+            it('align on left, with horizontal variant', () => {
+                element.align = 'left';
+                element.variant = 'horizontal';
+
+                return Promise.resolve().then(() => {
+                    const buttonGroupRow = element.shadowRoot.querySelector(
+                        '[data-element-id="ul"]'
+                    );
+                    horizontalClasses.forEach((cls) =>
+                        expect(buttonGroupRow.classList).toContain(cls)
+                    );
+                });
+            });
+            it('align on center, with horizontal variant', () => {
+                element.align = 'center';
+                element.variant = 'horizontal';
+
+                return Promise.resolve().then(() => {
+                    const buttonGroupRow = element.shadowRoot.querySelector(
+                        '[data-element-id="ul"]'
+                    );
+                    horizontalClasses.forEach((cls) =>
+                        expect(buttonGroupRow.classList).toContain(cls)
+                    );
+                    expect(buttonGroupRow.classList).toContain(
+                        'slds-grid_align-center'
+                    );
+                });
+            });
+            it('align on right, with horizontal variant', () => {
+                element.align = 'right';
+                element.variant = 'horizontal';
+
+                return Promise.resolve().then(() => {
+                    const buttonGroupRow = element.shadowRoot.querySelector(
+                        '[data-element-id="ul"]'
+                    );
+                    horizontalClasses.forEach((cls) =>
+                        expect(buttonGroupRow.classList).toContain(cls)
+                    );
+                    expect(buttonGroupRow.classList).toContain(
+                        'slds-grid_align-end'
+                    );
+                });
+            });
+
+            it('align on left, with vertical variant', () => {
+                element.align = 'left';
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttonGroupRow = element.shadowRoot.querySelector(
+                        '[data-element-id="ul"]'
+                    );
+                    horizontalClasses.forEach((cls) =>
+                        expect(buttonGroupRow.classList).not.toContain(cls)
+                    );
+                });
+            });
+            it('align on center, with vertical variant', () => {
+                element.align = 'center';
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttonGroupRow = element.shadowRoot.querySelector(
+                        '[data-element-id="ul"]'
+                    );
+                    horizontalClasses.forEach((cls) =>
+                        expect(buttonGroupRow.classList).not.toContain(cls)
+                    );
+                    expect(buttonGroupRow.classList).not.toContain(
+                        'slds-grid_align-center'
+                    );
+                });
+            });
+            it('align on right, with vertical variant', () => {
+                element.align = 'right';
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttonGroupRow = element.shadowRoot.querySelector(
+                        '[data-element-id="ul"]'
+                    );
+                    horizontalClasses.forEach((cls) =>
+                        expect(buttonGroupRow.classList).not.toContain(cls)
+                    );
+                    expect(buttonGroupRow.classList).not.toContain(
+                        'slds-grid_align-end'
+                    );
+                });
+            });
         });
 
         describe('applyButtonLabel', () => {
@@ -42,18 +157,6 @@ describe('FilterMenuGroup', () => {
                     menus.forEach((menu) => {
                         expect(menu.applyButtonLabel).toBe('Save');
                     });
-                });
-            });
-
-            it('applyButtonLabel, with vertical variant', () => {
-                element.applyButtonLabel = 'Save';
-                element.variant = 'vertical';
-
-                return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-apply"]'
-                    );
-                    expect(button.label).toBe('Save');
                 });
             });
         });
@@ -216,17 +319,118 @@ describe('FilterMenuGroup', () => {
                     });
                 });
             });
+        });
 
-            it('Passed to the component with vertical variant', () => {
-                element.resetButtonLabel = 'Erase';
-                element.variant = 'vertical';
+        describe('singleLine', () => {
+            it('Passed to the component', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
 
+                await flushPromises();
                 return Promise.resolve().then(() => {
-                    const button = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-button-reset"]'
+                    const moreFilter = element.shadowRoot.querySelector(
+                        '[data-element-id="filter-menu-group-button-icon-popover"]'
                     );
-                    expect(button.label).toBe('Erase');
+                    const menus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    const overflowMenus = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-filter-menu-overflow"]'
+                    );
+
+                    callObserver();
+
+                    expect(moreFilter).toBeTruthy();
+                    expect(menus.length).toBe(0);
+                    expect(overflowMenus.length).toBe(MENUS.length);
                 });
+            });
+
+            it('Defined menu widths and height', async () => {
+                const buttonGroupRow = element.shadowRoot.querySelector(
+                    '[data-element-id="ul"]'
+                );
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetWidth',
+                    'get'
+                ).mockImplementation(() => 120);
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetHeight',
+                    'get'
+                ).mockImplementation(() => 32);
+                element.menus = MENUS;
+
+                return Promise.resolve()
+                    .then(async () => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        menus.forEach((menu) => {
+                            menu.getBoundingClientRect = jest.fn(() => ({
+                                width: 40
+                            }));
+                            jest.spyOn(
+                                menu,
+                                'offsetHeight',
+                                'get'
+                            ).mockImplementation(() => 32);
+                        });
+                        element.singleLine = true;
+                    })
+                    .then(async () => {
+                        callObserver();
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        const overflowMenus =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-filter-menu-overflow"]'
+                            );
+                        expect(moreFilter).toBeTruthy();
+                        expect(menus.length).toBe(2);
+                        expect(overflowMenus.length).toBe(3);
+                    })
+                    .then(async () => {
+                        jest.spyOn(
+                            buttonGroupRow,
+                            'offsetHeight',
+                            'get'
+                        ).mockImplementation(() => 0);
+                        callObserver();
+                        await flushPromises();
+                    })
+                    .then(async () => {
+                        jest.spyOn(
+                            buttonGroupRow,
+                            'offsetWidth',
+                            'get'
+                        ).mockImplementation(() => 0);
+                        callObserver();
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        const overflowMenus =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-filter-menu-overflow"]'
+                            );
+                        expect(moreFilter).toBeTruthy();
+                        expect(menus.length).toBe(0);
+                        expect(overflowMenus.length).toBe(MENUS.length);
+                    });
             });
         });
 
@@ -288,7 +492,8 @@ describe('FilterMenuGroup', () => {
                         '[data-element-id^="avonni-filter-menu"]'
                     );
                     menus.forEach((menu) => {
-                        expect(menu.hideApplyResetButtons).toBeTruthy();
+                        expect(menu.hideApplyResetButtons).toBeFalsy();
+                        expect(menu.resetButtonPosition).toBe('top');
                     });
 
                     const buttonGroupRow = element.shadowRoot.querySelector(
@@ -299,7 +504,7 @@ describe('FilterMenuGroup', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
         });
@@ -484,15 +689,13 @@ describe('FilterMenuGroup', () => {
                                 bubbles: true
                             })
                         );
-
                         const applyButton = element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-apply"]'
                         );
                         applyButton.click();
 
                         expect(handler).toHaveBeenCalled();
-                        const detail = handler.mock.calls[0][0].detail;
-                        expect(detail.value).toEqual({
+                        expect(element.value).toEqual({
                             editions: ['professional', 'enterprise'],
                             contact: ['call'],
                             price: [2, 45],
@@ -501,7 +704,6 @@ describe('FilterMenuGroup', () => {
                                 '2019-01-31T13:40:00.000Z'
                             ]
                         });
-                        expect(detail.name).toBeUndefined();
                     })
                     .then(() => {
                         const pills = element.shadowRoot.querySelector(
@@ -557,9 +759,100 @@ describe('FilterMenuGroup', () => {
                     });
             });
 
+            it('apply event, hideApplyButton', () => {
+                element.menus = MENUS;
+                element.hideApplyButton = true;
+
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('select', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('apply', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        const detail = handler.mock.calls[0][0].detail;
+                        expect(detail.value).toEqual({
+                            contact: ['call']
+                        });
+                        expect(detail.name).toBe('contact');
+                    })
+                    .then(() => {
+                        const pills = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-pill-container-horizontal"]'
+                        );
+                        expect(pills.items).toHaveLength(1);
+                        expect(pills.items[0].name).toBe('contact.call');
+                    });
+            });
+
             it('apply event, hideApplyResetButtons with vertical variant', () => {
                 element.menus = MENUS;
                 element.hideApplyResetButtons = true;
+                element.variant = 'vertical';
+
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('select', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+                        menus[0].dispatchEvent(
+                            new CustomEvent('apply', {
+                                detail: {
+                                    value: ['call']
+                                },
+                                bubbles: true
+                            })
+                        );
+
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        const detail = handler.mock.calls[0][0].detail;
+                        expect(detail.value).toEqual({
+                            contact: ['call']
+                        });
+                        expect(detail.name).toBe('contact');
+                    })
+                    .then(() => {
+                        const pills = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-pill-container-vertical"]'
+                        );
+                        expect(pills.items).toHaveLength(1);
+                        expect(pills.items[0].name).toBe('contact.call');
+                    });
+            });
+
+            it('apply event, hideApplyButton with vertical variant', () => {
+                element.menus = MENUS;
+                element.hideApplyButton = true;
                 element.variant = 'vertical';
 
                 const handler = jest.fn();
@@ -671,6 +964,157 @@ describe('FilterMenuGroup', () => {
                     expect(call.cancelable).toBeFalsy();
                 });
             });
+
+            it('close event from a menu inside the more filters popover', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
+                const handler = jest.fn();
+                element.addEventListener('close', handler);
+
+                await flushPromises();
+                return Promise.resolve()
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-filter-menu-overflow"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('close', {
+                                bubbles: true
+                            })
+                        );
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.name).toBe(MENUS[0].name);
+                        expect(call.bubbles).toBeFalsy();
+                        expect(call.composed).toBeFalsy();
+                        expect(call.cancelable).toBeFalsy();
+                    });
+            });
+        });
+
+        describe('close & open', () => {
+            it('close and open event from more filters popover', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
+                const openHandler = jest.fn();
+                const closeHandler = jest.fn();
+                element.addEventListener('open', openHandler);
+                element.addEventListener('close', closeHandler);
+
+                await flushPromises();
+                return Promise.resolve()
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('open', {
+                                bubbles: true
+                            })
+                        );
+                        await flushPromises();
+                    })
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('close', {
+                                bubbles: true
+                            })
+                        );
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        expect(openHandler).not.toHaveBeenCalled();
+                        expect(closeHandler).not.toHaveBeenCalled();
+                    });
+            });
+
+            it('close and open event from more filters popover with changed value', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
+                element.value = VALUE;
+                const openHandler = jest.fn();
+                const closeHandler = jest.fn();
+                element.addEventListener('open', openHandler);
+                element.addEventListener('close', closeHandler);
+
+                await flushPromises();
+                return Promise.resolve()
+                    .then(async () => {
+                        callObserver();
+                        await flushPromises();
+                    })
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        const overflowMenus =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-filter-menu-overflow"]'
+                            );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('open', {
+                                bubbles: true
+                            })
+                        );
+
+                        expect(moreFilter).toBeTruthy();
+                        expect(menus.length).toBe(0);
+                        expect(overflowMenus.length).toBe(MENUS.length);
+                    })
+                    .then(async () => {
+                        element.reset();
+                        element.apply();
+                        await flushPromises();
+                    })
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('close', {
+                                bubbles: true
+                            })
+                        );
+                    })
+                    .then(async () => {
+                        const buttonGroupRow = element.shadowRoot.querySelector(
+                            '[data-element-id="ul"]'
+                        );
+                        jest.spyOn(
+                            buttonGroupRow,
+                            'offsetWidth',
+                            'get'
+                        ).mockImplementation(() => 100);
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="filter-menu-group-button-icon-popover"]'
+                        );
+                        const menus = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-filter-menu"]'
+                        );
+                        const overflowMenus =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-filter-menu-overflow"]'
+                            );
+
+                        expect(moreFilter).toBeFalsy();
+                        expect(menus.length).toBe(5);
+                        expect(overflowMenus.length).toBe(0);
+                        expect(openHandler).not.toHaveBeenCalled();
+                        expect(closeHandler).not.toHaveBeenCalled();
+                    });
+            });
         });
 
         describe('blur', () => {
@@ -748,6 +1192,36 @@ describe('FilterMenuGroup', () => {
             });
         });
 
+        describe('loadtotalcount', () => {
+            it('loadtotalcount event', () => {
+                element.menus = MENUS;
+
+                const handler = jest.fn();
+                element.addEventListener('loadtotalcount', handler);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('loadtotalcount', {
+                            detail: {
+                                name: MENUS[0].name
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.name).toBe(MENUS[0].name);
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                });
+            });
+        });
+
         describe('open', () => {
             it('open event', () => {
                 element.menus = MENUS;
@@ -776,10 +1250,39 @@ describe('FilterMenuGroup', () => {
                     expect(call.cancelable).toBeFalsy();
                 });
             });
+
+            it('open event from a menu inside the more filters popover', async () => {
+                element.singleLine = true;
+                element.menus = MENUS;
+                const handler = jest.fn();
+                element.addEventListener('open', handler);
+
+                await flushPromises();
+                return Promise.resolve()
+                    .then(async () => {
+                        const moreFilter = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-filter-menu-overflow"]'
+                        );
+                        moreFilter.dispatchEvent(
+                            new CustomEvent('open', {
+                                bubbles: true
+                            })
+                        );
+                        await flushPromises();
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.name).toBe(MENUS[0].name);
+                        expect(call.bubbles).toBeFalsy();
+                        expect(call.composed).toBeFalsy();
+                        expect(call.cancelable).toBeFalsy();
+                    });
+            });
         });
 
         describe('reset', () => {
-            it('reset event', () => {
+            it('reset event by horizontal menu', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
 
@@ -805,7 +1308,69 @@ describe('FilterMenuGroup', () => {
                 });
             });
 
-            it('reset event, vertical variant', () => {
+            it('reset event by horizontal menu, hideApplyButton = true', () => {
+                element.menus = MENUS;
+                element.value = VALUE;
+                element.hideApplyButton = true;
+
+                const handlerReset = jest.fn();
+                element.addEventListener('reset', handlerReset);
+                const handlerApply = jest.fn();
+                element.addEventListener('apply', handlerApply);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('reset', { bubbles: true })
+                    );
+                    const newValue = deepCopy(VALUE);
+                    delete newValue.contact;
+
+                    expect(handlerReset).toHaveBeenCalled();
+                    const call = handlerReset.mock.calls[0][0];
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+
+                    expect(element.value).toEqual(newValue);
+                });
+            });
+
+            it('reset event by horizontal menu, hideApplyResetButtons', () => {
+                element.menus = MENUS;
+                element.value = VALUE;
+                element.hideApplyResetButtons = true;
+
+                const handlerReset = jest.fn();
+                element.addEventListener('reset', handlerReset);
+                const handlerApply = jest.fn();
+                element.addEventListener('apply', handlerApply);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('reset', { bubbles: true })
+                    );
+                    const newValue = deepCopy(VALUE);
+                    delete newValue.contact;
+
+                    expect(handlerReset).toHaveBeenCalled();
+                    const call = handlerReset.mock.calls[0][0];
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+
+                    expect(element.value).toEqual(newValue);
+                });
+            });
+
+            it('reset event by vertical menu', () => {
                 element.menus = MENUS;
                 element.value = VALUE;
                 element.variant = 'vertical';
@@ -813,27 +1378,87 @@ describe('FilterMenuGroup', () => {
                 const handler = jest.fn();
                 element.addEventListener('reset', handler);
 
-                return Promise.resolve()
-                    .then(() => {
-                        const resetButton = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-button-reset"]'
-                        );
-                        resetButton.click();
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('reset', { bubbles: true })
+                    );
 
-                        expect(handler).toHaveBeenCalled();
-                        expect(
-                            handler.mock.calls[0][0].detail.name
-                        ).toBeUndefined();
-                    })
-                    .then(() => {
-                        const menus = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-filter-menu"]'
-                        );
-                        menus.forEach((menu) => {
-                            expect(menu.value).toEqual([]);
-                        });
-                        expect(element.value).toEqual(VALUE);
-                    });
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+
+                    expect(element.value).toEqual(VALUE);
+                });
+            });
+
+            it('reset event by vertical menu, hideApplyButton', () => {
+                element.menus = MENUS;
+                element.value = VALUE;
+                element.variant = 'vertical';
+                element.hideApplyButton = true;
+
+                const handlerReset = jest.fn();
+                element.addEventListener('reset', handlerReset);
+                const handlerApply = jest.fn();
+                element.addEventListener('apply', handlerApply);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('reset', { bubbles: true })
+                    );
+                    const newValue = deepCopy(VALUE);
+                    delete newValue.contact;
+
+                    expect(handlerReset).toHaveBeenCalled();
+                    const call = handlerReset.mock.calls[0][0];
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+
+                    expect(element.value).toEqual(newValue);
+                });
+            });
+
+            it('reset event by vertical menu, hideApplyResetButtons', () => {
+                element.menus = MENUS;
+                element.value = VALUE;
+                element.variant = 'vertical';
+                element.hideApplyResetButtons = true;
+
+                const handlerReset = jest.fn();
+                element.addEventListener('reset', handlerReset);
+                const handlerApply = jest.fn();
+                element.addEventListener('apply', handlerApply);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('reset', { bubbles: true })
+                    );
+                    const newValue = deepCopy(VALUE);
+                    delete newValue.contact;
+
+                    expect(handlerReset).toHaveBeenCalled();
+                    const call = handlerReset.mock.calls[0][0];
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+
+                    expect(element.value).toEqual(newValue);
+                });
             });
         });
 
@@ -896,6 +1521,37 @@ describe('FilterMenuGroup', () => {
                     expect(call.composed).toBeFalsy();
                     expect(call.cancelable).toBeFalsy();
                     expect(element.value).toEqual({});
+                });
+            });
+
+            it('select event, hideApplyButton', () => {
+                element.hideApplyButton = true;
+                element.menus = MENUS;
+
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve().then(() => {
+                    const menu = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-filter-menu"]'
+                    );
+                    menu.dispatchEvent(
+                        new CustomEvent('select', {
+                            detail: {
+                                value: ['call']
+                            },
+                            bubbles: true
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.value).toEqual(['call']);
+                    expect(call.detail.name).toBe('contact');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                    expect(element.value).toEqual({ contact: ['call'] });
                 });
             });
         });

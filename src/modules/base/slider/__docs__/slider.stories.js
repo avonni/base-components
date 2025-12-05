@@ -153,6 +153,7 @@ export default {
                 category: 'View'
             }
         },
+
         type: {
             control: {
                 type: 'select'

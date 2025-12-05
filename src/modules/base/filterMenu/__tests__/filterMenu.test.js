@@ -87,6 +87,7 @@ describe('Filter Menu', () => {
             expect(element.dropdownAlignment).toBe('left');
             expect(element.dropdownNubbin).toBeFalsy();
             expect(element.groupOrder).toBe('');
+            expect(element.hideApplyButton).toBeFalsy();
             expect(element.hideApplyResetButtons).toBeFalsy();
             expect(element.hideSelectedItems).toBeFalsy();
             expect(element.iconName).toBe('utility:down');
@@ -96,6 +97,7 @@ describe('Filter Menu', () => {
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.name).toBeUndefined();
             expect(element.resetButtonLabel).toBe('Reset');
+            expect(element.resetButtonPosition).toBe('bottom');
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.type).toBe('list');
@@ -151,6 +153,8 @@ describe('Filter Menu', () => {
 
         describe('Button Variant', () => {
             // Depends on iconName and label
+            const baseClass =
+                'slds-button slds-truncate avonni-filter-menu__button avonni-filter-menu__allow-shrink-width';
             it('border', () => {
                 element.buttonVariant = 'border';
 
@@ -159,7 +163,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border'
+                        `${baseClass} slds-button_icon-border`
                     );
                 });
             });
@@ -173,7 +177,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_neutral'
+                        `${baseClass} slds-button_neutral`
                     );
                 });
             });
@@ -187,7 +191,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-more'
+                        `${baseClass} slds-button_icon slds-button_icon-more`
                     );
                 });
             });
@@ -200,7 +204,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-bare'
+                        `${baseClass} slds-button_icon-bare`
                     );
                 });
             });
@@ -213,7 +217,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -226,7 +230,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
+                        `${baseClass} slds-button_icon slds-button_icon-bare slds-button_icon-more`
                     );
                 });
             });
@@ -239,7 +243,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-container'
+                        `${baseClass} slds-button_icon-container`
                     );
                 });
             });
@@ -252,7 +256,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -265,7 +269,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-container'
+                        `${baseClass} slds-button_icon-container`
                     );
                 });
             });
@@ -278,7 +282,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border-filled'
+                        `${baseClass} slds-button_icon-border-filled`
                     );
                 });
             });
@@ -291,7 +295,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -304,7 +308,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                        `${baseClass} slds-button_icon slds-button_icon-more slds-button_icon-border-filled`
                     );
                 });
             });
@@ -317,7 +321,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-bare slds-button_icon-inverse'
+                        `${baseClass} slds-button_icon-bare slds-button_icon-inverse`
                     );
                 });
             });
@@ -330,7 +334,7 @@ describe('Filter Menu', () => {
                     const button = element.shadowRoot.querySelector(
                         '[data-element-id="button"]'
                     );
-                    expect(button.classList.value).toBe('slds-button');
+                    expect(button.classList.value).toBe(`${baseClass}`);
                 });
             });
 
@@ -343,7 +347,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                        `${baseClass} slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse`
                     );
                 });
             });
@@ -356,7 +360,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border-inverse'
+                        `${baseClass} slds-button_icon-border-inverse`
                     );
                 });
             });
@@ -370,7 +374,7 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_inverse'
+                        `${baseClass} slds-button_inverse`
                     );
                 });
             });
@@ -384,7 +388,21 @@ describe('Filter Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.classList.value).toBe(
-                        'slds-button slds-button_icon-border-inverse'
+                        `${baseClass} slds-button_icon-border-inverse`
+                    );
+                });
+            });
+
+            it('outline-brand, with label', () => {
+                element.buttonVariant = 'outline-brand';
+                element.label = 'A string label';
+
+                return Promise.resolve().then(() => {
+                    const button = element.shadowRoot.querySelector(
+                        '[data-element-id="button"]'
+                    );
+                    expect(button.classList.value).toBe(
+                        `${baseClass} slds-button_outline-brand`
                     );
                 });
             });
@@ -890,6 +908,68 @@ describe('Filter Menu', () => {
             });
         });
 
+        describe('Hide Apply Button', () => {
+            // Depends on variant
+            it('false, with horizontal variant', () => {
+                element.hideApplyButton = false;
+                element.typeAttributes = { items: ITEMS };
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(2);
+                });
+            });
+
+            it('false, with vertical variant', () => {
+                element.hideApplyButton = false;
+                element.typeAttributes = { items: ITEMS };
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(1);
+                });
+            });
+
+            it('true, with horizontal variant', () => {
+                element.hideApplyButton = true;
+                element.typeAttributes = { items: ITEMS };
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(1);
+                });
+            });
+
+            it('true, with vertical variant', () => {
+                element.hideApplyButton = true;
+                element.variant = 'vertical';
+
+                return Promise.resolve().then(() => {
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button"]'
+                    );
+                    expect(buttons).toHaveLength(0);
+                });
+            });
+        });
+
         describe('Hide Apply Reset Buttons', () => {
             // Depends on variant
             it('false, with horizontal variant', () => {
@@ -918,7 +998,7 @@ describe('Filter Menu', () => {
                     const buttons = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-button"]'
                     );
-                    expect(buttons).toHaveLength(2);
+                    expect(buttons).toHaveLength(1);
                 });
             });
 
@@ -1203,12 +1283,146 @@ describe('Filter Menu', () => {
 
                     items.forEach((item, index) => {
                         const label = item.querySelector(
-                            '[data-element-id="lightning-formatted-rich-text"]'
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
                         );
                         const disabled = ITEMS[index].disabled ? 'true' : null;
                         expect(item.dataset.value).toBe(ITEMS[index].value);
                         expect(item.ariaDisabled).toBe(disabled);
                         expect(label.value).toBe(ITEMS[index].label);
+                    });
+
+                    const prefixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    const suffixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-suffix"]'
+                    );
+                    expect(prefixIcon).toBeTruthy();
+                    expect(suffixIcon).toBeTruthy();
+                    expect(items[1].tabIndex).toBe(0);
+
+                    [0, 2, 3, 4, 5].forEach((index) => {
+                        const prefix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-prefix"]'
+                        );
+                        const suffix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-suffix"]'
+                        );
+                        expect(prefix).toBeFalsy();
+                        expect(suffix).toBeFalsy();
+                        expect(items[index].tabIndex).toBe(-1);
+                    });
+                });
+            });
+
+            it('items, hide apply button', () => {
+                element.hideApplyButton = true;
+                element.typeAttributes = { items: ITEMS };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    const reset = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-reset"]'
+                    );
+                    const noResultMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-no-results-message"]'
+                    );
+
+                    expect(apply).toBeFalsy();
+                    expect(reset).toBeTruthy();
+                    expect(noResultMessage).toBeFalsy();
+                    expect(items).toHaveLength(6);
+
+                    items.forEach((item, index) => {
+                        const label = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
+                        );
+                        const disabled = ITEMS[index].disabled ? 'true' : null;
+                        expect(item.dataset.value).toBe(ITEMS[index].value);
+                        expect(item.ariaDisabled).toBe(disabled);
+                        expect(label.value).toBe(ITEMS[index].label);
+                    });
+
+                    const prefixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    const suffixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-suffix"]'
+                    );
+                    expect(prefixIcon).toBeTruthy();
+                    expect(suffixIcon).toBeTruthy();
+                    expect(items[1].tabIndex).toBe(0);
+
+                    [0, 2, 3, 4, 5].forEach((index) => {
+                        const prefix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-prefix"]'
+                        );
+                        const suffix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-suffix"]'
+                        );
+                        expect(prefix).toBeFalsy();
+                        expect(suffix).toBeFalsy();
+                        expect(items[index].tabIndex).toBe(-1);
+                    });
+                });
+            });
+
+            it('items with counts', () => {
+                const itemMap = ITEMS.reduce((acc, item, index) => {
+                    acc[item.value] = index;
+                    return acc;
+                }, {});
+                element.typeAttributes = {
+                    items: ITEMS.map((item) => ({
+                        ...item,
+                        count: itemMap[item.value]
+                    }))
+                };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    const reset = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-reset"]'
+                    );
+                    const noResultMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-no-results-message"]'
+                    );
+
+                    expect(apply).toBeTruthy();
+                    expect(reset).toBeTruthy();
+                    expect(noResultMessage).toBeFalsy();
+                    expect(items).toHaveLength(6);
+
+                    items.forEach((item, index) => {
+                        const label = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
+                        );
+                        const countLabel = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text-count-label"]'
+                        );
+                        const disabled = ITEMS[index].disabled ? 'true' : null;
+                        expect(item.dataset.value).toBe(ITEMS[index].value);
+                        expect(item.ariaDisabled).toBe(disabled);
+                        expect(label.value).toBe(`${ITEMS[index].label}`);
+                        expect(countLabel.value).toBe(`(${index})`);
                     });
 
                     const prefixIcon = items[1].querySelector(
@@ -1273,7 +1487,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="lightning-formatted-rich-text"]'
+                        '[data-element-id="lightning-formatted-rich-text-item-label"]'
                     );
                     const apply = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-apply"]'
@@ -1365,6 +1579,16 @@ describe('Filter Menu', () => {
                         '.slds-dropdown lightning-button:first-of-type'
                     );
                     expect(resetButton.label).toBe('A string label');
+                });
+            });
+        });
+
+        describe('Reset Button Position', () => {
+            it('resetButtonPosition', () => {
+                element.resetButtonPosition = 'top';
+
+                return Promise.resolve().then(() => {
+                    expect(element.resetButtonPosition).toBe('top');
                 });
             });
         });
@@ -1929,6 +2153,43 @@ describe('Filter Menu', () => {
                         expect(handler.mock.calls[0][0].detail.value).toEqual([
                             ITEMS[2].value
                         ]);
+                    })
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            '[data-element-id="a-list-item"][data-index="1"]'
+                        );
+                        item.click();
+                        expect(handler.mock.calls[1][0].detail.value).toEqual([
+                            ITEMS[1].value
+                        ]);
+                    });
+            });
+
+            it('typeAttributes for list, isMultiSelect = false, hideApplyButton = true', () => {
+                element.hideApplyButton = true;
+                element.typeAttributes = {
+                    items: ITEMS,
+                    isMultiSelect: false
+                };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+                const handler = jest.fn();
+                element.addEventListener('select', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            '[data-element-id="a-list-item"][data-index="2"]'
+                        );
+                        item.click();
+                        expect(handler.mock.calls[0][0].detail.value).toEqual([
+                            ITEMS[2].value
+                        ]);
+                    })
+                    .then(() => {
+                        button.click();
                     })
                     .then(() => {
                         const item = element.shadowRoot.querySelector(
@@ -2590,7 +2851,7 @@ describe('Filter Menu', () => {
                             }
                         })
                     );
-
+                    jest.runAllTimers();
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
                         startDate,
@@ -2799,6 +3060,47 @@ describe('Filter Menu', () => {
                     });
             });
 
+            it('apply event, hideApplyButton = true', () => {
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+                element.hideApplyButton = true;
+                element.typeAttributes = {
+                    items: ITEMS
+                };
+                element.value = VALUE;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        items[3].click();
+                        const applyButton = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-apply"]'
+                        );
+                        expect(applyButton).toBeFalsy();
+
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.value).toEqual([
+                            'item-4'
+                        ]);
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(element.value).toEqual(['item-4']);
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="div-dropdown"]'
+                        );
+                        expect(dropdown).toBeFalsy();
+                    });
+            });
+
             it('apply event on select, when hideapplyResetButtons is true', () => {
                 const handler = jest.fn();
                 element.addEventListener('apply', handler);
@@ -2881,6 +3183,39 @@ describe('Filter Menu', () => {
                         '[data-element-id="lightning-button-apply"]'
                     );
                     applyButton.click();
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toEqual([
+                        ...VALUE,
+                        'item-4'
+                    ]);
+                });
+            });
+            it('apply event, multi-select, hideApplyButton', () => {
+                const handler = jest.fn();
+                element.addEventListener('apply', handler);
+
+                element.hideApplyButton = true;
+                element.typeAttributes = {
+                    items: ITEMS,
+                    isMultiSelect: true
+                };
+                element.value = VALUE;
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="a-list-item"]'
+                    );
+                    items[3].click();
+                    const applyButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    expect(applyButton).toBeFalsy();
 
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
@@ -3295,7 +3630,7 @@ describe('Filter Menu', () => {
                         expect(dropdown).toBeTruthy();
 
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-formatted-rich-text"]'
+                            '[data-element-id="lightning-formatted-rich-text-item-label"]'
                         );
                         item.dispatchEvent(
                             new CustomEvent('privatefocus', {

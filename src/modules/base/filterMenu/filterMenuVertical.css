@@ -1,3 +1,8 @@
+.avonni-filter-menu__search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
 .avonni-filter-menu__title-button_base {
     background-color: var(
         --avonni-filter-menu-vertical-label-color-background,
@@ -60,12 +65,34 @@
 }
 
 .avonni-filter-menu__form-element-legend {
+    display: flex;
+    overflow: hidden;
     /* Avoid Salesforce Experience site styles affecting the section button */
     margin-bottom: 0;
+}
+
+.avonni-filter-menu__label-container-collapsible {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.avonni-filter-menu__label-container-non-collapsible {
+    flex: 0 1 auto;
+    overflow: hidden;
+}
+
+.avonni-filter-menu__label.slds-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 [data-element-id='input-time-range-container'] .slds-form-element {
     padding-right: var(--lwc-spacingXSmall, 0.5rem);
     padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);
     min-width: 150px;
+}
+
+.avonni-filter-menu__allow-shrink-width {
+    min-width: 0;
 }

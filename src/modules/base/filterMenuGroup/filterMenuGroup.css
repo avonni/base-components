@@ -1,0 +1,24 @@
+.avonni-filter-menu-group__button-icon-popover {
+    --avonni-button-icon-popover-sizing-max-height: 300px;
+    --slds-c-popover-position-zindex: 8001;
+}
+
+.avonni-filter-menu-group__button-icon-popover-selected {
+    --avonni-button-icon-popover-border-filled-color-background: var(
+        --avonni-filter-menu-group-horizontal-more-filter-button-color-background-selected,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
+}
+
+.avonni-filter-menu-visible {
+    --avonni-filter-menu-horizontal-button-color-background-selected: var(
+        --avonni-filter-menu-group-horizontal-menu-button-color-background-selected,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
+    --avonni-filter-menu-horizontal-button-count-background-color-selected: var(
+        --avonni-filter-menu-group-horizontal-menu-button-count-color-background-selected
+    );
+    --avonni-filter-menu-horizontal-button-count-text-color-selected: var(
+        --avonni-filter-menu-group-horizontal-menu-button-count-text-color-selected
+    );
+}
