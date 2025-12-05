@@ -1,4 +1,7 @@
-.slds-checkbox [type='checkbox'][disabled]+.slds-checkbox__label .slds-checkbox_faux {
+.slds-checkbox
+    [type='checkbox'][disabled]
+    + .slds-checkbox__label
+    .slds-checkbox_faux {
     background-color: #ffffff;
     margin-right: 0;
 }
@@ -16,7 +19,7 @@ span {
     color: var(--avonni-output-data-label-text-color, #444444);
     font-size: var(--avonni-output-data-label-font-size, 0.8125rem);
     font-style: var(--avonni-output-data-label-font-style, normal);
-    font-weight: var(--avonni-output-data-label-font-weight, 400);
+    font-weight: var(--avonni-output-data-label-font-weight, 600);
 }
 
 .avonni-output-data__label_inline {

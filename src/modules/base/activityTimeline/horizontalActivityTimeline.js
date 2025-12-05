@@ -32,7 +32,6 @@ const SCROLL_AXIS_RECTANGLES_G_ID =
     'avonni-horizontal-activity-timeline__scroll-axis-rectangles';
 const SCROLL_ITEM_RECTANGLE_HEIGHT = 3;
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
-const SCROLL_STEP = 10;
 const SPACE_BETWEEN_ICON_AND_TEXT = 5;
 const SVG_ICON_SIZE = 25;
 const TIMELINE_COLORS = {
@@ -59,7 +58,6 @@ const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_START_POSITION_TIMELINE_ITEM = 10;
-const ZOOM_STEP = 20;
 
 const BORDER_ITEM_HEIGHT = SVG_ICON_SIZE + AVATAR_MARGIN * 2;
 
@@ -93,7 +91,6 @@ export class HorizontalActivityTimeline {
     _timelineAxisDiv;
     _timelineItemsDiv;
     _timelineSVG;
-
     _focusedItem;
 
     constructor(activityTimeline, sortedItems) {
@@ -379,6 +376,17 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Calculates the step to scroll the timeline horizontally.
+     */
+    get scrollStep() {
+        const visibleTimeSpan = this._intervalMaxDate - this._intervalMinDate;
+        const step = visibleTimeSpan * 0.1;
+        const minStep = 24 * 3600 * 1000; // 1 day
+        const maxStep = 30 * 24 * 3600 * 1000; // 30 days
+        return Math.min(Math.max(step, minStep), maxStep);
+    }
+
+    /**
      * Calculates the time scale for the horizontal activity timeline's time scroll axis.
      * If we pass a date, it returns the corresponding x value. If we use invert, we can pass an x value to return date.
      */
@@ -419,6 +427,18 @@ export class HorizontalActivityTimeline {
                 this.findNextDate(this._intervalMaxDate, 1)
             ])
             .range([0, this._timelineWidth]);
+    }
+
+    /**
+     * Calculates the step to zoom the timeline horizontally.
+     */
+    get zoomStep() {
+        const visibleSpan = this._intervalMaxDate - this._intervalMinDate;
+        const zoomFraction = 0.2;
+        const step = visibleSpan * zoomFraction;
+        const minStep = 24 * 3600 * 1000; // 1 day
+        const maxStep = 365 * 24 * 3600 * 1000; // 1 year
+        return Math.min(Math.max(step, minStep), maxStep);
     }
 
     /*
@@ -1340,10 +1360,13 @@ export class HorizontalActivityTimeline {
             this.scrollTimeScale,
             position
         );
+        const newPositionX = this.scrollTimeScale(
+            new Date(this._intervalMinDate)
+        );
         this.setIntervalMaxDate();
 
         this._timeIntervalSelector
-            .attr('x', position)
+            .attr('x', newPositionX)
             .attr('width', this.intervalWidth)
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
@@ -1486,19 +1509,21 @@ export class HorizontalActivityTimeline {
      * Sets the interval's min date to the middle datetime value of all items
      */
     setDefaultIntervalDates() {
+        let intervalMinDate;
         if (this.isTimelineEmpty) {
-            this._intervalMinDate = this.findNextDate(
+            intervalMinDate = this.findNextDate(
                 new Date(),
                 Math.floor(DEFAULT_INTERVAL_DAYS_LENGTH)
             );
         } else {
             const middleIndex = Math.ceil(this._sortedItems.length / 2 - 1);
-            this._intervalMinDate = new Date(
+            intervalMinDate = new Date(
                 this._sortedItems[middleIndex].datetimeValue
             );
         }
 
-        this._intervalMinDate.setHours(0, 0, 0, 0);
+        intervalMinDate.setHours(0, 0, 0, 0);
+        this._intervalMinDate = intervalMinDate.getTime();
         this.setIntervalMaxDate();
     }
 
@@ -1597,6 +1622,37 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Sets new interval bounds (min and max date) based on new positions.
+     */
+    setIntervalBounds(xStartPosition, xEndPosition) {
+        // Lower bound interval
+        this._intervalMinDate = this.convertPositionToScaleDate(
+            this.scrollTimeScale,
+            xStartPosition
+        );
+
+        // Upper bound interval
+        this._intervalMaxDate = this.scrollTimeScale
+            .invert(xEndPosition)
+            .setHours(23, 59, 59, 999);
+
+        this._intervalDaysLength = this.calculateDaysBetweenDates(
+            this._intervalMinDate,
+            this._intervalMaxDate
+        );
+
+        const newXStart = this.scrollTimeScale(new Date(this._intervalMinDate));
+        const newXEnd = this.scrollTimeScale(new Date(this._intervalMaxDate));
+        this._timeIntervalSelector
+            .attr('x', newXStart)
+            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
+            .attr('width', newXEnd - newXStart);
+
+        this.resetAndRedrawScrollAxisRectangle();
+        this.moveTimelineDisplay();
+    }
+
+    /**
      * Sets the visibility of the interval bounds.
      */
     setIntervalBoundsState() {
@@ -1621,15 +1677,16 @@ export class HorizontalActivityTimeline {
      * Sets the max date of the interval
      */
     setIntervalMaxDate() {
-        this._intervalMaxDate = new Date(this._intervalMinDate);
-        this._intervalMaxDate.setDate(
-            this._intervalMaxDate.getDate() + this._intervalDaysLength
+        let intervalMaxDate = new Date(this._intervalMinDate);
+        intervalMaxDate.setDate(
+            intervalMaxDate.getDate() + this._intervalDaysLength
         );
-        this._intervalMaxDate.setHours(23, 59, 59, 999);
+        intervalMaxDate.setHours(23, 59, 59, 999);
 
-        if (this._intervalMaxDate > this.scrollAxisMaxDate) {
-            this._intervalMaxDate = this.scrollAxisMaxDate;
+        if (intervalMaxDate > this.scrollAxisMaxDate) {
+            intervalMaxDate = new Date(this.scrollAxisMaxDate);
         }
+        this._intervalMaxDate = intervalMaxDate.getTime();
     }
 
     /**
@@ -1870,10 +1927,12 @@ export class HorizontalActivityTimeline {
      */
     handleIntervalKeyboardScrollLeft() {
         this.handleMouseOutOfPopover();
-
-        const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
-        let position =
-            this.scrollTimeScale(this._intervalMinDate) - SCROLL_STEP;
+        const minXPosition = this.scrollTimeScale(
+            new Date(this.scrollAxisMinDate)
+        );
+        let position = this.scrollTimeScale(
+            new Date(this._intervalMinDate - this.scrollStep)
+        );
         if (position < minXPosition) {
             position = minXPosition;
         }
@@ -1886,11 +1945,14 @@ export class HorizontalActivityTimeline {
     handleIntervalKeyboardScrollRight() {
         this.handleMouseOutOfPopover();
 
-        const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
+        const maxXPosition = this.scrollTimeScale(
+            new Date(this.scrollAxisMaxDate)
+        );
         const width = Number(this._timeIntervalSelector.attr('width'));
         const startMaxXPosition = maxXPosition - width;
-        let position =
-            this.scrollTimeScale(this._intervalMinDate) + SCROLL_STEP;
+        let position = this.scrollTimeScale(
+            new Date(this._intervalMinDate + this.scrollStep)
+        );
         if (position > startMaxXPosition) {
             position = startMaxXPosition;
         }
@@ -1903,28 +1965,28 @@ export class HorizontalActivityTimeline {
     handleIntervalKeyboardZoomIn() {
         this.handleMouseOutOfPopover();
 
-        const lowerMinXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
-        let xStartPosition =
-            this.scrollTimeScale(this._intervalMinDate) - ZOOM_STEP;
+        const lowerMinXPosition = this.scrollTimeScale(
+            new Date(this.scrollAxisMinDate)
+        );
+        let xStartPosition = this.scrollTimeScale(
+            new Date(this._intervalMinDate - this.zoomStep)
+        );
         if (xStartPosition < lowerMinXPosition) {
             xStartPosition = lowerMinXPosition;
         }
-        const upperMaxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
-        let xEndPosition =
-            this.scrollTimeScale(this._intervalMaxDate) + ZOOM_STEP;
+        const upperMaxXPosition = this.scrollTimeScale(
+            new Date(this.scrollAxisMaxDate)
+        );
+
+        let xEndPosition = this.scrollTimeScale(
+            new Date(this._intervalMaxDate + this.zoomStep)
+        );
+
         if (xEndPosition > upperMaxXPosition) {
             xEndPosition = upperMaxXPosition;
         }
 
-        const newRectangleWidth = xEndPosition - xStartPosition;
-        this._timeIntervalSelector
-            .attr('x', xStartPosition)
-            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
-            .attr('width', newRectangleWidth);
-
-        this.handleLowerBoundIntervalChange();
-        this.handleUpperBoundIntervalChange();
-        this.endIntervalResizing();
+        this.setIntervalBounds(xStartPosition, xEndPosition);
     }
 
     /**
@@ -1934,21 +1996,26 @@ export class HorizontalActivityTimeline {
         this.handleMouseOutOfPopover();
 
         const width = Number(this._timeIntervalSelector.attr('width'));
-        if (width < ZOOM_STEP) {
+        if (width < MIN_INTERVAL_WIDTH) {
             return;
         }
 
         const lowerMaxXPosition =
-            this.scrollTimeScale(this._intervalMaxDate) - this.minIntervalWidth;
-        let xStartPosition =
-            this.scrollTimeScale(this._intervalMinDate) + ZOOM_STEP;
+            this.scrollTimeScale(new Date(this._intervalMaxDate)) -
+            this.minIntervalWidth;
+        let xStartPosition = this.scrollTimeScale(
+            new Date(this._intervalMinDate + this.zoomStep)
+        );
         if (xStartPosition > lowerMaxXPosition) {
             xStartPosition = lowerMaxXPosition;
         }
+
         const upperMinXPosition =
-            this.scrollTimeScale(this._intervalMinDate) + this.minIntervalWidth;
-        let xEndPosition =
-            this.scrollTimeScale(this._intervalMaxDate) - ZOOM_STEP;
+            this.scrollTimeScale(new Date(this._intervalMinDate)) +
+            this.minIntervalWidth;
+        let xEndPosition = this.scrollTimeScale(
+            new Date(this._intervalMaxDate - this.zoomStep)
+        );
         if (xEndPosition < upperMinXPosition) {
             xEndPosition = upperMinXPosition;
         }
@@ -1957,15 +2024,7 @@ export class HorizontalActivityTimeline {
         if (newRectangleWidth < MIN_INTERVAL_WIDTH) {
             return;
         }
-
-        this._timeIntervalSelector
-            .attr('x', xStartPosition)
-            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
-            .attr('width', newRectangleWidth);
-
-        this.handleLowerBoundIntervalChange();
-        this.handleUpperBoundIntervalChange();
-        this.endIntervalResizing();
+        this.setIntervalBounds(xStartPosition, xEndPosition);
     }
 
     /**
@@ -1990,6 +2049,14 @@ export class HorizontalActivityTimeline {
                             );
                         if (actionsMenu) {
                             actionsMenu.focus();
+                        } else {
+                            const closeButton =
+                                this._activityTimeline.template.querySelector(
+                                    '[data-element-id="lightning-button-icon-close-popover"]'
+                                );
+                            if (closeButton) {
+                                closeButton.focus();
+                            }
                         }
                     });
                 }
