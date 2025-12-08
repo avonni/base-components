@@ -764,8 +764,8 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Updates the internal recalculation flag based on the value of the first hidden menu.
-     * The flag is set to true if the menu value has changed since the last stored value.
+     * Updates the internal recalculation flag based on the changed value.
+     * The flag is set to true if any menu value has changed since the last stored value.
      * This flag is used to determine whether the visible menus needs to be updated after a value change.
      */
     updateRecalculationFlag() {
@@ -773,16 +773,13 @@ export default class FilterMenuGroup extends LightningElement {
             this._hasRecalculatedValue = false;
             return;
         }
-        const name = this.hiddenMenus[0]?.name;
-        if (!name) {
-            this._hasRecalculatedValue = false;
-            return;
-        }
 
-        const newValue = this._selectedValue[name] ?? [];
-        const oldValue = this._value[name] ?? [];
-
-        this._hasRecalculatedValue = !equal(newValue, oldValue);
+        this._hasRecalculatedValue = this.hiddenMenus.some((menu) => {
+            const name = menu.name;
+            const newValue = this._selectedValue[name] ?? [];
+            const oldValue = this._value[name] ?? [];
+            return !equal(newValue, oldValue);
+        });
     }
 
     /**
