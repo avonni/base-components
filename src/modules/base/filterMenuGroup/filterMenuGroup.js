@@ -813,14 +813,15 @@ export default class FilterMenuGroup extends LightningElement {
             this._itemsWidths[i] = width;
         });
 
-        let wrapperWidth = this.menuGroupWrapper.offsetWidth;
+        const wrapperWidth = this.menuGroupWrapper?.offsetWidth || 0;
+        const wrapperHeight = this.menuGroupWrapper?.offsetHeight || 0;
         let sliceIndex = this.computeSliceIndex(wrapperWidth);
 
         if (
             this._sliceIndex !== sliceIndex ||
-            this._containerMaxHeight !== this.menuGroupWrapper.offsetHeight
+            this._containerMaxHeight !== wrapperHeight
         ) {
-            this.updateVisibleMenus(this.menuGroupWrapper.offsetWidth);
+            this.updateVisibleMenus(wrapperWidth);
         }
     }
 
@@ -838,7 +839,8 @@ export default class FilterMenuGroup extends LightningElement {
         this._isCalculatingOverflow = true;
         // Waiting for the items to be rendered
         requestAnimationFrame(() => {
-            let wrapperWidth = maxWidth ?? this.menuGroupWrapper.offsetWidth;
+            let wrapperWidth =
+                (maxWidth ?? this.menuGroupWrapper?.offsetWidth) || 0;
             this.saveItemsWidths();
             let sliceIndex = this.computeSliceIndex(wrapperWidth);
             this.saveContainerMaxHeight(sliceIndex);
