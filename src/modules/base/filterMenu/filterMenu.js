@@ -2123,6 +2123,9 @@ export default class FilterMenu extends LightningElement {
                 }
                 this._dateRangeFrames[2] = requestAnimationFrame(() => {
                     this._dispatchSelect();
+                    if (!this.isVertical) {
+                        this._focusDropdown();
+                    }
                 });
             });
         });
