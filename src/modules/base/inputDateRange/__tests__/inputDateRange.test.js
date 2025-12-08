@@ -30,7 +30,6 @@ describe('Input Date Range', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.dateStyle).toBe('medium');
-            expect(element.disableAutoNextDate).toBeFalsy();
             expect(element.disabled).toBeFalsy();
             expect(element.endDate).toBeUndefined();
             expect(element.fieldLevelHelp).toBeUndefined();
@@ -368,16 +367,7 @@ describe('Input Date Range', () => {
             });
         });
 
-        describe.each([
-            {
-                disableAutoNextDate: false,
-                label: 'disableAutoNextDate = false'
-            },
-            { disableAutoNextDate: true, label: 'disableAutoNextDate = true' }
-        ])('Cases ($label)', ({ disableAutoNextDate }) => {
-            beforeEach(() => {
-                element.disableAutoNextDate = disableAutoNextDate;
-            });
+        describe('Cases', () => {
             it('SELECT_ONLY_START', () => {
                 return Promise.resolve()
                     .then(() => {
@@ -408,8 +398,7 @@ describe('Input Date Range', () => {
                         const endCalendar = element.shadowRoot.querySelector(
                             '[data-element-id="calendar-end-date"]'
                         );
-                        const shouldShowEndCalendar = !disableAutoNextDate;
-                        expect(!!endCalendar).toBe(shouldShowEndCalendar);
+                        expect(endCalendar).toBeTruthy();
                     });
             });
             it('SELECT_ONLY_END', () => {
@@ -442,8 +431,7 @@ describe('Input Date Range', () => {
                         const startCalendar = element.shadowRoot.querySelector(
                             '[data-element-id="calendar-start-date"]'
                         );
-                        const shouldStartCalendar = !disableAutoNextDate;
-                        expect(!!startCalendar).toBe(shouldStartCalendar);
+                        expect(startCalendar).toBeTruthy();
                         jest.runAllTimers();
                     })
                     .then(() => {
@@ -568,8 +556,7 @@ describe('Input Date Range', () => {
                         const endCalendar = element.shadowRoot.querySelector(
                             '[data-element-id="calendar-end-date"]'
                         );
-                        const shouldShowEndCalendar = !disableAutoNextDate;
-                        expect(!!endCalendar).toBe(shouldShowEndCalendar);
+                        expect(endCalendar).toBeTruthy();
                     });
             });
 
@@ -610,8 +597,7 @@ describe('Input Date Range', () => {
                         const startCalendar = element.shadowRoot.querySelector(
                             '[data-element-id="calendar-start-date"]'
                         );
-                        const shouldShowStartCalendar = !disableAutoNextDate;
-                        expect(!!startCalendar).toBe(shouldShowStartCalendar);
+                        expect(startCalendar).toBeTruthy();
                     });
             });
 

@@ -2105,17 +2105,17 @@ export default class FilterMenu extends LightningElement {
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
         this._dateRangeFrames = [];
 
-        // Give time for the calendar to actually close
+        // In the input date range, after the dispatch change,
+        // a request animation frame is used to show the next calendar.
+        // So we have to wait the 2 next frames to blur the date range.
         this._dateRangeFrames[0] = requestAnimationFrame(() => {
-            const dateRange = this.template.querySelector(
-                '[data-element-id="avonni-input-date-range"]'
-            );
-
-            if (dateRange) {
-                dateRange.blur();
-            }
-
             this._dateRangeFrames[1] = requestAnimationFrame(() => {
+                const dateRange = this.template.querySelector(
+                    '[data-element-id="avonni-input-date-range"]'
+                );
+                if (dateRange) {
+                    dateRange.blur();
+                }
                 this._dateRangeFrames[2] = requestAnimationFrame(() => {
                     this._dispatchSelect();
                 });

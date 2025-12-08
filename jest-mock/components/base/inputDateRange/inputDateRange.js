@@ -14,7 +14,6 @@ export default class InputDateRange extends LightningElement {
     @api dateStyle;
     @api timeStyle;
     @api type;
-    @api disableAutoNextDate;
     @api disabled;
     @api readOnly;
     @api required;

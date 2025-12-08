@@ -16,18 +16,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        disableAutoNextDate: {
-            name: 'disable-auto-next-date',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, disables the automatic display of the next date.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -244,7 +232,6 @@ export default {
     },
     args: {
         dateStyle: 'medium',
-        disableAutoNextDate: false,
         disabled: false,
         readOnly: false,
         required: false,
