@@ -140,9 +140,10 @@
             <template if:true={showResetButtonTop}>
                 <lightning-button
                     class="slds-m-left_x-small"
-                    variant="base"
+                    disabled={disabledOrLoading}
                     label={resetButtonLabel}
                     title={resetButtonLabel}
+                    variant="base"
                     data-element-id="lightning-button-reset-top"
                     onblur={handleBlur}
                     onclick={handleResetClick}
