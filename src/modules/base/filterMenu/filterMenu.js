@@ -2188,15 +2188,18 @@ export default class FilterMenu extends LightningElement {
 
         this.currentValue = [];
         // Get the values not visible in the computed items due to a search+loadmore event
-        const itemValues = new Set(
-            this.computedItems.map((item) => item.value)
-        );
+        if (this.computedTypeAttributes.isMultiSelect) {
+            const itemValues = new Set(
+                this.computedItems.map((item) => item.value)
+            );
 
-        for (const v of this.value) {
-            if (!itemValues.has(v)) {
-                this.currentValue.push(v);
+            for (const v of this.value) {
+                if (!itemValues.has(v)) {
+                    this.currentValue.push(v);
+                }
             }
         }
+
         this.computedItems = this.computedItems.map((item) => {
             if (item.value === value) {
                 item.checked = !item.checked;
