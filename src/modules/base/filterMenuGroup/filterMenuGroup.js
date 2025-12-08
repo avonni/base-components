@@ -330,9 +330,14 @@ export default class FilterMenuGroup extends LightningElement {
      * @type {string}
      */
     get computedButtonIconPopoverClass() {
-        const isInHiddenMenus = Object.keys(this.value || {}).some((key) =>
-            this.hiddenMenus?.some((menu) => menu.name === key)
-        );
+        const isInHiddenMenus = Object.keys(this.value || {}).some((key) => {
+            const val = this.value[key];
+            const belongsToHiddenMenu = this.hiddenMenus?.some(
+                (menu) => menu.name === key
+            );
+
+            return belongsToHiddenMenu && Array.isArray(val) && val.length > 0;
+        });
         return classSet(
             'slds-show_inline-block slds-text-align_left avonni-filter-menu-group__button-icon-popover'
         )
@@ -846,6 +851,7 @@ export default class FilterMenuGroup extends LightningElement {
         // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
         const adjustOverflowStep = () => {
             if (
+                this.menuGroupWrapper &&
                 this._containerMaxHeight !==
                     this.menuGroupWrapper.offsetHeight &&
                 this._sliceIndex > 0

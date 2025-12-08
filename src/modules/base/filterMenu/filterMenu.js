@@ -1363,11 +1363,13 @@ export default class FilterMenu extends LightningElement {
      * @type {string[]}
      */
     get selectedItemLabels() {
-        this.labelMap = this.dropdownVisible
-            ? new Map(
-                  this.computedItems.map((item) => [item.value, item.label])
-              )
-            : this.labelMap;
+        if (this.value.length === 0) {
+            this.labelMap.clear();
+        } else {
+            for (const item of this.computedItems) {
+                this.labelMap.set(item.value, item.label);
+            }
+        }
 
         const valueLabels = this.value.map(
             (value) => this.labelMap.get(value) || value
@@ -2113,6 +2115,9 @@ export default class FilterMenu extends LightningElement {
                 const dateRange = this.template.querySelector(
                     '[data-element-id="avonni-input-date-range"]'
                 );
+                if (!this.isVertical) {
+                    this._focusDropdown();
+                }
                 if (dateRange) {
                     dateRange.blur();
                 }
@@ -2186,6 +2191,8 @@ export default class FilterMenu extends LightningElement {
             return;
         }
 
+        const currentValues = deepCopy(this.currentValue);
+
         this.currentValue = [];
         // Get the values not visible in the computed items due to a search+loadmore event
         if (this.computedTypeAttributes.isMultiSelect) {
@@ -2193,7 +2200,7 @@ export default class FilterMenu extends LightningElement {
                 this.computedItems.map((item) => item.value)
             );
 
-            for (const v of this.value) {
+            for (const v of currentValues) {
                 if (!itemValues.has(v)) {
                     this.currentValue.push(v);
                 }
