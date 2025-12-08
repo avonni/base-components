@@ -659,7 +659,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * The position of the reset button. This attribute is only supported by the vertical variant.
+     * The position of the reset button. Valid values include top and bottom. Default to bottom. This attribute is only supported by the vertical variant.
      *
      * @type {string}
      * @default bottom

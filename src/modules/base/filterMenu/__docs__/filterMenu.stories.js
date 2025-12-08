@@ -253,7 +253,7 @@ export default {
             },
             options: ['top', 'bottom'],
             description:
-                'The position of the reset button. This attribute is only supported by the vertical variant.',
+                'The position of the reset button. Valid values include top and bottom. Default to bottom. This attribute is only supported by the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'bottom' }
