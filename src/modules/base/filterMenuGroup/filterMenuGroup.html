@@ -71,10 +71,10 @@
                 title="&#8203;"
                 variant="border-filled"
                 data-element-id="filter-menu-group-button-icon-popover"
-                onopen={handleMoreFiltersOpen}
-                onclose={handleMoreFiltersClose}
                 onblur={handleBlur}
+                onclose={handleMoreFiltersClose}
                 onfocus={handleFocus}
+                onopen={handleMoreFiltersOpen}
             >
                 <template for:each={hiddenMenus} for:item="menu">
                     <li class="slds-m-bottom_small" key={menu.name}>
@@ -89,6 +89,7 @@
                             dropdown-alignment={menu.dropdownAlignment}
                             dropdown-nubbin={menu.dropdownNubbin}
                             hide-apply-button={hideHiddenMenuApplyButton}
+                            hide-apply-reset-buttons={hideApplyResetButtons}
                             hide-selected-items
                             icon-name={menu.iconName}
                             icon-size={menu.iconSize}
