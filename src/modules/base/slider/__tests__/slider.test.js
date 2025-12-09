@@ -291,6 +291,32 @@ describe('Slider', () => {
                     expect(max.value).toBe(9);
                 });
             });
+
+            it('Divided by 100 if formatted', () => {
+                element.max = 1;
+                element.unit = 'percent';
+                element.unitAttributes = { isFormatted: true };
+
+                return Promise.resolve().then(() => {
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(max.value).toBe(0.01);
+                });
+            });
+
+            it('Not divided by 100 if not formatted', () => {
+                element.max = 1;
+                element.unit = 'decimal';
+                element.unitAttributes = { isFormatted: false };
+
+                return Promise.resolve().then(() => {
+                    const max = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-max"]'
+                    );
+                    expect(max.value).toBe(1);
+                });
+            });
         });
 
         describe('Min', () => {
@@ -335,6 +361,32 @@ describe('Slider', () => {
                     );
                     expect(input.min).toBe('-9');
                     expect(min.value).toBe(-9);
+                });
+            });
+
+            it('Divided by 100 if formatted', () => {
+                element.min = 1;
+                element.unit = 'percent';
+                element.unitAttributes = { isFormatted: true };
+
+                return Promise.resolve().then(() => {
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(min.value).toBe(0.01);
+                });
+            });
+
+            it('Not divided by 100 if ratio, but not percent', () => {
+                element.min = 1;
+                element.unit = 'decimal';
+                element.unitAttributes = { isFormatted: true };
+
+                return Promise.resolve().then(() => {
+                    const min = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-number-min"]'
+                    );
+                    expect(min.value).toBe(1);
                 });
             });
         });
