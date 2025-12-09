@@ -1363,14 +1363,6 @@ export default class FilterMenu extends LightningElement {
      * @type {string[]}
      */
     get selectedItemLabels() {
-        if (this.value.length === 0) {
-            this.labelMap.clear();
-        } else {
-            for (const item of this.computedItems) {
-                this.labelMap.set(item.value, item.label);
-            }
-        }
-
         const valueLabels = this.value.map(
             (value) => this.labelMap.get(value) || value
         );
@@ -1650,6 +1642,20 @@ export default class FilterMenu extends LightningElement {
             this._computeSelectedListItems();
         } else {
             this._computeSelectedRange();
+        }
+        this._computeSelectedLabels();
+    }
+
+    /**
+     * Compute the selected labels displayed on the dropdown.
+     */
+    _computeSelectedLabels() {
+        if (this.value.length === 0) {
+            this.labelMap.clear();
+        } else {
+            for (const item of this.computedItems) {
+                this.labelMap.set(item.value, item.label);
+            }
         }
     }
 
