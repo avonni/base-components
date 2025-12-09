@@ -1,21 +1,5 @@
-import { api, track } from 'lwc';
-import { equal } from 'c/utilsPrivate';
-import {
-    classSet,
-    deepCopy,
-    normalizeArray,
-    normalizeString,
-    normalizeBoolean
-} from 'c/utils';
 import { addToDate } from 'c/luxonDateTimeUtils';
-import {
-    DEFAULT_START_DATE,
-    HEADERS,
-    PRESET_HEADERS,
-    UNITS,
-    ORIENTATIONS
-} from './defaults';
-import SchedulerResource from './resource';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     DEFAULT_ACTION_NAMES,
     getElementOnXAxis,
@@ -24,7 +8,23 @@ import {
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
+import {
+    classSet,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { api, track } from 'lwc';
+import {
+    DEFAULT_START_DATE,
+    HEADERS,
+    ORIENTATIONS,
+    PRESET_HEADERS,
+    UNITS
+} from './defaults';
+import SchedulerResource from './resource';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 
@@ -48,6 +48,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _rowsHeight = [];
     _updateOccurrencesLength = false;
 
+    cellHeight = 0;
     cellWidth = 0;
     @track computedEvents = [];
     computedHeaders = [];
