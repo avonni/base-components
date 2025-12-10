@@ -423,6 +423,16 @@ export default class FilterMenuGroup extends LightningElement {
         this.dispatchApply();
     }
 
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this.dispatchBlur();
+    }
+
     /**
      * Handle the closing of a menu popover.
      *
@@ -447,6 +457,16 @@ export default class FilterMenuGroup extends LightningElement {
                 }
             })
         );
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this.dispatchFocus();
     }
 
     /**
@@ -619,6 +639,12 @@ export default class FilterMenuGroup extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Dispatch the apply event.
      *
@@ -644,6 +670,27 @@ export default class FilterMenuGroup extends LightningElement {
         );
     }
 
+    dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the filter menu group.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the filter menu group.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
     /**
      * Dispatch the reset event.
      *

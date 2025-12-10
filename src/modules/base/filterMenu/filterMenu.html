@@ -38,7 +38,8 @@
             class={computedDropdownClass}
             tabindex="0"
             data-element-id="div-dropdown"
-            onfocus={focusDropdown}
+            onblur={handleBlur}
+            onfocus={handleFocusDropdown}
             onfocusin={handleDropdownFocusIn}
             onfocusout={handleDropdownFocusOut}
             onkeyup={handleDropdownKeyUp}
@@ -57,7 +58,9 @@
                         autocomplete="off"
                         data-element-id="lightning-input"
                         data-is-focusable
+                        onblur={handleBlur}
                         onchange={handleSearch}
+                        onfocus={handleFocus}
                     ></lightning-input>
                     <p
                         if:true={showNoResultsMessage}
@@ -83,6 +86,8 @@
                                 selected-items={currentValue}
                                 data-element-id="avonni-tree"
                                 onactionclick={handleTreeActionClick}
+                                onblur={handleBlur}
+                                onfocus={handleFocus}
                                 onloadmore={handleTreeLoadMore}
                                 onselect={handleTreeSelect}
                             ></c-tree>
@@ -109,7 +114,9 @@
                                             data-element-id="a-list-item"
                                             data-index={index}
                                             data-value={item.value}
+                                            onblur={handleBlur}
                                             onclick={handleListItemClick}
+                                            onfocus={handleFocus}
                                             onkeydown={handleListItemKeyDown}
                                         >
                                             <span class="slds-truncate">
@@ -188,7 +195,9 @@
                                 week-start-day={weekStartDay}
                                 data-element-id="avonni-input-date-range"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleDateRangeChange}
+                                onfocus={handleFocus}
                             ></c-input-date-range>
                             <!-- Range -->
                             <c-slider
@@ -209,8 +218,62 @@
                                 variant="label-hidden"
                                 data-element-id="avonni-slider"
                                 data-is-focusable
+                                onblur={handleBlur}
                                 onchange={handleRangeChange}
+                                onfocus={handleFocus}
                             ></c-slider>
+                            <!-- Time Range -->
+                            <div
+                                if:true={isTimeRange}
+                                class="slds-grid slds-wrap slds-p-left_small"
+                                data-element-id="input-time-range-container"
+                            >
+                                <div class="slds-form-element">
+                                    <label
+                                        if:true={computedTypeAttributes.labelStartTime}
+                                        class="slds-form-element__label"
+                                        for="start-time"
+                                        data-element-id="label-start-time"
+                                        >{computedTypeAttributes.labelStartTime}
+                                    </label>
+                                    <lightning-input
+                                        label="start-time"
+                                        name="start-time"
+                                        time-style={computedTypeAttributes.timeStyle}
+                                        type="time"
+                                        value={timeRangeStartTime}
+                                        variant="label-hidden"
+                                        data-is-focusable
+                                        data-element-id="lightning-input-start-time"
+                                        onblur={handleBlur}
+                                        onchange={handleTimeRangeChange}
+                                        onfocus={handleFocus}
+                                    ></lightning-input>
+                                </div>
+
+                                <div class="slds-form-element">
+                                    <label
+                                        if:true={computedTypeAttributes.labelEndTime}
+                                        class="slds-form-element__label"
+                                        for="end-time"
+                                        data-element-id="label-end-time"
+                                        >{computedTypeAttributes.labelEndTime}
+                                    </label>
+                                    <lightning-input
+                                        label="end-time"
+                                        name="end-time"
+                                        time-style={computedTypeAttributes.timeStyle}
+                                        type="time"
+                                        value={timeRangeEndTime}
+                                        variant="label-hidden"
+                                        data-is-focusable
+                                        data-element-id="lightning-input-end-time"
+                                        onblur={handleBlur}
+                                        onchange={handleTimeRangeChange}
+                                        onfocus={handleFocus}
+                                    ></lightning-input>
+                                </div>
+                            </div>
                         </template>
                     </div>
                     <!-- Reset and apply buttons -->
@@ -233,7 +296,9 @@
                             variant="base"
                             data-element-id="lightning-button-reset"
                             data-is-focusable
+                            onblur={handleBlur}
                             onclick={handleResetClick}
+                            onfocus={handleFocus}
                         ></lightning-button>
                         <lightning-button
                             disabled={isLoading}
@@ -242,7 +307,9 @@
                             variant="brand"
                             data-element-id="lightning-button-apply"
                             data-is-focusable
+                            onblur={handleBlur}
                             onclick={handleApply}
+                            onfocus={handleFocus}
                         ></lightning-button>
                     </div>
                 </div>
@@ -255,6 +322,8 @@
             items={selectedItems}
             data-element-id="avonni-pill-container"
             onactionclick={handleSelectedItemRemove}
+            onblur={handleBlur}
+            onfocus={handleFocus}
         ></c-pill-container>
     </div>
 </template>

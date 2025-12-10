@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
+import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellCounter extends LightningElement {
     @api colKeyValue;
@@ -84,15 +84,14 @@ export default class PrimitiveCellCounter extends LightningElement {
      * Handles the edit button click and dispatches the event.
      */
     handleEditButtonClick() {
-        const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
             new CustomEvent('editbuttonclickcustom', {
                 bubbles: true,
                 composed: true,
                 detail: {
-                    rowKeyValue,
-                    colKeyValue,
-                    state
+                    rowKeyValue: this.rowKeyValue,
+                    colKeyValue: this.colKeyValue,
+                    state: this.state
                 }
             })
         );

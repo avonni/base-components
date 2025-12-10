@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import Carousel from 'c/carousel';
+import { createElement } from 'lwc';
 
 // Not tested:
 // * scroll duration,
@@ -795,6 +795,16 @@ describe('Carousel', () => {
     });
 
     describe('Methods', () => {
+        it('focus', () => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-previous"]'
+            );
+            const focusSpy = jest.spyOn(button, 'focus');
+
+            element.focus();
+            expect(focusSpy).toHaveBeenCalled();
+        });
+
         it('next & previous', () => {
             element.items = items;
             element.hideIndicator = false;
@@ -1001,6 +1011,20 @@ describe('Carousel', () => {
             });
         });
 
+        it('blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-previous"]'
+            );
+            button.dispatchEvent(new CustomEvent('blur'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+
         it('currentpanelchange', () => {
             element.items = items;
 
@@ -1021,6 +1045,20 @@ describe('Carousel', () => {
                 expect(call.composed).toBeFalsy();
                 expect(call.cancelable).toBeFalsy();
             });
+        });
+
+        it('focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-previous"]'
+            );
+            button.dispatchEvent(new CustomEvent('focus'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
 
         it('item click', () => {

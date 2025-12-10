@@ -1,0 +1,120 @@
+<template>
+    <div
+        class="
+            slds-is-relative
+            avonni-primitive-scrollable-container__width-100
+        "
+    >
+        <!-- Left scroll button -->
+        <div
+            if:true={computedShowScrollButtons}
+            class="
+                slds-is-absolute slds-grid
+                slds-p-right_large
+                slds-p-left_x-small
+                avonni-primitive-scrollable-container__scroll-button
+                avonni-primitive-scrollable-container__scroll-left-button
+                slds-hide
+            "
+            data-element-id="div-scroll-left-button"
+        >
+            <lightning-button-icon
+                class="slds-align-middle"
+                alternative-text={scrollLeftButtonAlternativeText}
+                aria-hidden="true"
+                disabled={disabled}
+                icon-name="utility:chevronleft"
+                size="small"
+                title={scrollLeftButtonAlternativeText}
+                variant="border-filled"
+                data-direction="left"
+                data-element-id="lightning-button-icon-left"
+                onclick={handleScrollButtonClick}
+            ></lightning-button-icon>
+        </div>
+
+        <!-- Main content -->
+        <div
+            class={computedMainWrapperClass}
+            data-element-id="div-main"
+            onscroll={handleScroll}
+        >
+            <div
+                class={computedMainContentClass}
+                data-element-id="div-main-content"
+            >
+                <slot></slot>
+            </div>
+
+            <lightning-button
+                if:true={showMenu}
+                class="
+                    slds-show
+                    slds-m-left_medium
+                    slds-shrink-none
+                    slds-text-align_center
+                    avonni-primitive-scrollable-container__menu-button
+                "
+                disabled={disabled}
+                icon-name="utility:chevrondown"
+                icon-position="right"
+                label="More"
+                title="Show more content"
+                variant={menuVariant}
+                data-element-id="lightning-button-show-more"
+                onclick={handleShowMoreClick}
+            ></lightning-button>
+
+            <div
+                class="
+                    slds-hide slds-dropdown slds-dropdown_length-7
+                    slds-p-vertical_none
+                    slds-p-horizontal_xx-small
+                    slds-dropdown_right
+                "
+                data-element-id="div-hidden-content"
+                onfocusin={handleHiddenContentFocusIn}
+                onfocusout={handleHiddenContentFocusOut}
+                onkeyup={handleHiddenContentKeyUp}
+            >
+                <span
+                    lwc:dom="manual"
+                    class="slds-assistive-text"
+                    aria-live="polite"
+                    data-element-id="span-instructions"
+                ></span>
+                <c-focus-trap data-element-id="avonni-focus-trap">
+                    <slot name="menu-content"></slot>
+                </c-focus-trap>
+            </div>
+        </div>
+
+        <!-- Right scroll button -->
+        <div
+            if:true={computedShowScrollButtons}
+            class="
+                slds-is-absolute slds-grid
+                slds-p-left_large
+                slds-p-right_x-small
+                avonni-primitive-scrollable-container__scroll-button
+                avonni-primitive-scrollable-container__scroll-right-button
+                slds-hide
+            "
+            data-element-id="div-scroll-right-button"
+        >
+            <lightning-button-icon
+                class="slds-align-middle"
+                alternative-text={scrollRightButtonAlternativeText}
+                aria-hidden="true"
+                disabled={disabled}
+                icon-name="utility:chevronright"
+                size="small"
+                title={scrollRightButtonAlternativeText}
+                variant="border-filled"
+                data-direction="right"
+                data-element-id="lightning-button-icon-right"
+                onclick={handleScrollButtonClick}
+            ></lightning-button-icon>
+        </div>
+    </div>
+</template>

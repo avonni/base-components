@@ -1,5 +1,6 @@
 import { createElement } from 'lwc';
 import ChipContainer from '../chipContainer';
+import { callObserver } from 'c/resizeObserver';
 
 const ITEMS = [
     {
@@ -166,6 +167,65 @@ describe('Chip Container', () => {
                             '[data-element-id="li-item"]'
                         );
                         expect(items).toHaveLength(ITEMS.length);
+                    });
+            });
+        });
+
+        describe('isCollapsible does not recompute against small changes of wrapper width', () => {
+            it('Passed to the component', () => {
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-wrapper"]'
+                );
+                jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(
+                    () => 200
+                );
+                element.items = ITEMS;
+                element.showMoreButtonAlternativeText = 'Show mores';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const allItems = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
+                        );
+                        allItems.forEach((it) => {
+                            jest.spyOn(
+                                it,
+                                'offsetWidth',
+                                'get'
+                            ).mockImplementation(() => 100);
+                        });
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-show-more"]'
+                        );
+                        expect(button).toBeFalsy();
+                        expect(items).toHaveLength(ITEMS.length);
+
+                        element.isCollapsible = true;
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-button-show-more"]'
+                        );
+                        expect(button).toBeTruthy();
+                        expect(button.title).toEqual('Show mores');
+                        expect(items).toHaveLength(1);
+                    })
+                    .then(() => {
+                        window.requestAnimationFrame.mockClear();
+                        callObserver();
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        expect(
+                            window.requestAnimationFrame.mock.calls.length
+                        ).toBe(1);
                     });
             });
         });

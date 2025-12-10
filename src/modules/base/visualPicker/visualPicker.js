@@ -1490,8 +1490,15 @@ export default class VisualPicker extends LightningElement {
     /**
      * Handles the blur event.
      */
-    handleBlur() {
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
         this.interactingState.leave();
+        this._dispatchBlur();
     }
 
     /**
@@ -1564,8 +1571,15 @@ export default class VisualPicker extends LightningElement {
     /**
      * Dispatches the focus event.
      */
-    handleFocus() {
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
         this.interactingState.enter();
+        this._dispatchFocus();
     }
 
     /**
@@ -1687,5 +1701,33 @@ export default class VisualPicker extends LightningElement {
         if (!event.defaultPrevented) {
             this._isCollapsed = !this._isCollapsed;
         }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the visual picker.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the visual picker.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

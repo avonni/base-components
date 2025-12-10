@@ -35,12 +35,13 @@ export default class InputChoiceOption {
         this.value = option.value;
         this.displayLabel = this.label && !this.hideLabel;
         this.type = parent.type;
-        this.width = parent.width;
+        this.fixedWidth = parent.fixedWidth;
         this.isChecked = Array.isArray(parent.value)
             ? parent.value.includes(option.value)
             : parent.value === option.value;
         this.labelClass = parent.labelClass;
         this.alternativeText = option.alternativeText;
+        this.width = undefined;
     }
 
     get computedButtonLabelStyle() {
@@ -150,6 +151,10 @@ export default class InputChoiceOption {
         ).add({
             'slds-grid_vertical': this.isIconTopOrBottom
         });
+    }
+
+    get computedStyle() {
+        return this.fixedWidth ? `width: ${this.fixedWidth}px;` : '';
     }
 
     /**

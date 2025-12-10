@@ -1126,7 +1126,7 @@ describe('Calendar', () => {
                 );
 
                 previousButton.dispatchEvent(
-                    new CustomEvent('focusin', { bubbles: true })
+                    new CustomEvent('focus', { bubbles: true })
                 );
                 expect(handler).toHaveBeenCalled();
                 expect(handler.mock.calls[0][0].bubbles).toBeTruthy();

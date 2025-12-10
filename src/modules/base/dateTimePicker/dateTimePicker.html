@@ -119,13 +119,19 @@
                                         variant="border-filled"
                                         data-direction="previous"
                                         data-element-id="lightning-button-icon-previous"
+                                        data-focusable
+                                        onblur={handleBlur}
                                         onclick={handlePrevNextClick}
+                                        onfocus={handleFocus}
                                     ></lightning-button-icon>
                                     <lightning-button
                                         label={todayButtonLabel}
                                         title={todayButtonLabel}
                                         data-element-id="lightning-button-today"
+                                        data-focusable
+                                        onblur={handleBlur}
                                         onclick={handleTodayClick}
+                                        onfocus={handleFocus}
                                     ></lightning-button>
                                     <lightning-button-icon
                                         alternative-text={nextDatesButtonAlternativeText}
@@ -135,7 +141,10 @@
                                         variant="border-filled"
                                         data-direction="next"
                                         data-element-id="lightning-button-icon-next"
+                                        data-focusable
+                                        onblur={handleBlur}
                                         onclick={handlePrevNextClick}
+                                        onfocus={handleFocus}
                                     ></lightning-button-icon>
                                 </lightning-button-group>
                             </c-layout-item>
@@ -158,7 +167,10 @@
                                         value={datePickerValue}
                                         variant="label-hidden"
                                         data-element-id="lightning-input"
+                                        data-focusable
+                                        onblur={handleBlur}
                                         onchange={handleDateChange}
+                                        onfocus={handleFocus}
                                     ></lightning-input>
                                 </c-layout-item>
                             </template>
@@ -197,7 +209,9 @@
                                 title={previousWeekButtonAlternativeText}
                                 variant="bare"
                                 data-element-id="lightning-button-icon-previous-week"
+                                onblur={handleBlur}
                                 onclick={handleInlineDatePickerPrevClick}
+                                onfocus={handleFocus}
                             ></lightning-button-icon>
 
                             <!-- Weekday labels -->
@@ -260,7 +274,9 @@
                                             type="button"
                                             data-date={day.date.ts}
                                             data-element-id="button-inline-date-picker"
+                                            onblur={handleBlur}
                                             onclick={handleInlineDatePickerClick}
+                                            onfocus={handleFocus}
                                         >
                                             <span
                                                 class="
@@ -289,7 +305,9 @@
                                 title={nextWeekButtonAlternativeText}
                                 variant="bare"
                                 data-element-id="lightning-button-icon-next-week"
+                                onblur={handleBlur}
                                 onclick={handleInlineDatePickerNextClick}
+                                onfocus={handleFocus}
                             ></lightning-button-icon>
                         </div>
                     </c-layout-item>
@@ -315,7 +333,10 @@
                         value={firstWeekDayToString}
                         week-start-day={weekStartDay}
                         data-element-id="avonni-calendar"
+                        data-focusable
+                        onblur={handleBlur}
                         onchange={handleDateChange}
+                        onfocus={handleFocus}
                         onnavigate={handleCalendarNavigate}
                     ></c-calendar>
                 </c-layout-item>
@@ -416,6 +437,7 @@
                                                                     aria-pressed={timelineTime.selected}
                                                                     disabled={timelineTime.disabled}
                                                                     type="button"
+                                                                    data-focusable
                                                                     onblur={handleValueBlur}
                                                                     onclick={handleTimeSlotClick}
                                                                     onfocus={handleValueFocus}
@@ -475,6 +497,7 @@
                                                     disabled={time.disabled}
                                                     type="button"
                                                     data-element-id="button-default"
+                                                    data-focusable
                                                     data-time={time.startTimeISO}
                                                     onblur={handleValueBlur}
                                                     onclick={handleTimeSlotClick}

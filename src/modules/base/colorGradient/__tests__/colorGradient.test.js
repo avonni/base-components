@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import ColorGradient from 'avonni/colorGradient';
+import { createElement } from 'lwc';
 
 // not tested
 // message when bad input
@@ -125,47 +125,16 @@ describe('Color Gradient', () => {
             });
         });
     });
+
     describe('Methods', () => {
-        describe('private focus', () => {
-            it('Passed to the component', () => {
-                let focusEvent = false;
+        describe('focus', () => {
+            it('Set the focus on the first input', () => {
                 const input = element.shadowRoot.querySelector(
                     '[data-element-id="input"]'
                 );
-
-                element.addEventListener('privatefocus', (event) => {
-                    focusEvent = true;
-                    expect(event.bubbles).toBeTruthy();
-                    expect(event.cancelable).toBeTruthy();
-                    expect(event.composed).toBeFalsy();
-                });
-
-                input.focus();
-                return Promise.resolve().then(() => {
-                    expect(focusEvent).toBeTruthy();
-                });
-            });
-        });
-
-        describe('private blur', () => {
-            it('Passed to the component', () => {
-                let blurEvent = false;
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="input"]'
-                );
-
-                element.addEventListener('privateblur', (event) => {
-                    blurEvent = true;
-                    expect(event.bubbles).toBeTruthy();
-                    expect(event.cancelable).toBeTruthy();
-                    expect(event.composed).toBeTruthy();
-                });
-
-                input.focus();
-                input.blur();
-                return Promise.resolve().then(() => {
-                    expect(blurEvent).toBeTruthy();
-                });
+                const focusSpy = jest.spyOn(input, 'focus');
+                element.focus();
+                expect(focusSpy).toHaveBeenCalled();
             });
         });
 
@@ -196,7 +165,7 @@ describe('Color Gradient', () => {
     });
 
     describe('Events', () => {
-        it('change event', () => {
+        it('Change', () => {
             element.value = '#ffffff';
 
             const handler = jest.fn();
@@ -220,6 +189,39 @@ describe('Color Gradient', () => {
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             });
+        });
+
+        it('Private blur', () => {
+            const handler = jest.fn();
+            element.addEventListener('privateblur', handler);
+
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            input.focus();
+            input.blur();
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeTruthy();
+            expect(call.cancelable).toBeFalsy();
+        });
+
+        it('Private focus', () => {
+            const handler = jest.fn();
+            element.addEventListener('privatefocus', handler);
+
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            input.focus();
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 });

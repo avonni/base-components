@@ -9,7 +9,6 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import {
     classSet,
-    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -48,6 +47,8 @@ const ORIENTATION_ATTRIBUTES = {
     vertical: [],
     horizontal: [
         'cols',
+        'scrollable',
+        'showScrollButtons',
         'smallContainerCols',
         'mediumContainerCols',
         'largeContainerCols',
@@ -134,14 +135,17 @@ export default class InputChoiceSet extends LightningElement {
     _value = [];
     _variant;
 
+    computedOptions = [];
     computedOrientationAttributes = {};
     computedTypeAttributes = {};
-    computedWidth;
+    displayShowMoreMenu = false;
     helpMessage;
-    transformedOptions = [];
+    overflowingOptions = [];
+    visibleOptions = [];
 
     _connected = false;
     _containerWidth;
+    _fixedOptionWidth;
     _rendered = false;
     _resizeObserver;
     _tooltip;
@@ -152,6 +156,7 @@ export default class InputChoiceSet extends LightningElement {
             this.initOrientationAttributes();
         }
 
+        this.normalizeTypeAttributes();
         this.classList.add('slds-form-element');
         this.updateClassList();
         this.interactingState = new InteractingState();
@@ -167,7 +172,7 @@ export default class InputChoiceSet extends LightningElement {
         }
 
         if (!this._rendered) {
-            this.setWidth();
+            this.setFixedOptionWidth();
             this.updateLabelsStyle();
         }
         this._rendered = true;
@@ -204,7 +209,9 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: CHECK_POSITIONS.default,
             validValues: CHECK_POSITIONS.valid
         });
-        this.setWidth();
+        if (this._connected) {
+            this.setFixedOptionWidth();
+        }
     }
 
     /**
@@ -254,9 +261,9 @@ export default class InputChoiceSet extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
-        this.setWidth();
 
         if (this._connected) {
+            this.setFixedOptionWidth();
             this.initOptions();
         }
     }
@@ -298,7 +305,8 @@ export default class InputChoiceSet extends LightningElement {
         });
         if (this._connected) {
             this.initOrientationAttributes();
-            this.setWidth();
+            this.initOptions();
+            this.setFixedOptionWidth();
             this.destroyTooltip();
         }
     }
@@ -315,11 +323,11 @@ export default class InputChoiceSet extends LightningElement {
     }
     set orientationAttributes(value) {
         this._orientationAttributes = normalizeObject(value);
-        this.normalizeOrientationAttributes();
 
         if (this._connected) {
             this.initOrientationAttributes();
-            this.setWidth();
+            this.initOptions();
+            this.setFixedOptionWidth();
         }
     }
 
@@ -390,6 +398,7 @@ export default class InputChoiceSet extends LightningElement {
             validValues: INPUT_CHOICE_TYPES.valid
         });
         if (this._connected) {
+            this.normalizeTypeAttributes();
             this.initOptions();
             this.destroyTooltip();
         }
@@ -407,8 +416,8 @@ export default class InputChoiceSet extends LightningElement {
     }
     set typeAttributes(value) {
         this._typeAttributes = normalizeObject(value);
-        this.normalizeTypeAttributes();
         if (this._connected) {
+            this.normalizeTypeAttributes();
             this.destroyTooltip();
         }
     }
@@ -485,9 +494,17 @@ export default class InputChoiceSet extends LightningElement {
      * @type {HTMLElement[]}
      */
     get checkboxes() {
-        return this.toggleVariant
-            ? this.template.querySelectorAll('[data-element-id="input-toggle"]')
-            : this.template.querySelectorAll('[data-element-id="input"]');
+        const id = this.toggleVariant ? 'input-toggle' : 'input';
+        const visibleElements = this.template.querySelectorAll(
+            `[data-element-id="${id}"]`
+        );
+        const overflowingCheckboxes = this.template.querySelectorAll(
+            '[data-element-id="input-overflowing-option"]'
+        );
+        return [
+            ...Array.from(visibleElements),
+            ...Array.from(overflowingCheckboxes)
+        ];
     }
 
     /**
@@ -644,8 +661,8 @@ export default class InputChoiceSet extends LightningElement {
     get computedInputContainerClass() {
         const checkboxClass = this.isMultiSelect
             ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
-            : `slds-radio avonni-input-choice-set__${this.orientation}`;
-        const toggleClass = `slds-checkbox_toggle slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__${this.orientation}`;
+            : `slds-radio slds-is-relative avonni-input-choice-set__${this.orientation}`;
+        const toggleClass = `slds-checkbox_toggle slds-is-relative slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__${this.orientation}`;
 
         if (this.checkboxVariant) {
             return checkboxClass;
@@ -716,6 +733,17 @@ export default class InputChoiceSet extends LightningElement {
             .toString();
     }
 
+    get computedOptionLabelClass() {
+        return classSet(
+            'slds-order_1 avonni-input-choice-set__option-label_line-clamp'
+        )
+            .add({
+                'avonni-input-choice-set__option-label_line-clamp-vertical':
+                    !this.isHorizontal
+            })
+            .toString();
+    }
+
     /**
      * Get element unique help ID.
      *
@@ -765,6 +793,14 @@ export default class InputChoiceSet extends LightningElement {
         );
     }
 
+    get horizontalOverflowIsDisabled() {
+        return (
+            !this.isHorizontal ||
+            this.computedOrientationAttributes.multipleRows ||
+            this.computedTypeAttributes.stretch
+        );
+    }
+
     /**
      * True if orientation is horizontal.
      *
@@ -772,6 +808,10 @@ export default class InputChoiceSet extends LightningElement {
      */
     get isHorizontal() {
         return this.orientation === 'horizontal';
+    }
+
+    get showMoreMenuVariant() {
+        return this.buttonVariant ? 'neutral' : 'base';
     }
 
     /**
@@ -870,15 +910,33 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Make sure only the authorized attributes for the given orientation are kept.
+     *
+     * @returns {object} The normalized orientation attributes.
+     */
+    getNormalizedOrientationAttributes() {
+        const orientationAttributes = {};
+        Object.entries(this.orientationAttributes).forEach(([key, value]) => {
+            const allowedAttribute =
+                ORIENTATION_ATTRIBUTES[this.orientation] &&
+                ORIENTATION_ATTRIBUTES[this.orientation].includes(key);
+            if (allowedAttribute) {
+                orientationAttributes[key] = value;
+            }
+        });
+        return orientationAttributes;
+    }
+
+    /**
      * Handles the checking for the change event.
      *
      * @param {string} value Value of the checkbox.
      * @param {HTMLElement} target event target.
      * @param {boolean} isInput If the target is an input.
      */
-    handleChecking(value, target, isInput) {
+    handleChecking({ value, target, isInput, isOverflowing }) {
         const isSingleToggle =
-            this.type === 'toggle' && this.checkboxes.length === 1;
+            this.toggleVariant && this.checkboxes.length === 1;
         if (this.isMultiSelect || isSingleToggle) {
             if (this.toggleVariant) {
                 const checked = target.checked;
@@ -892,8 +950,16 @@ export default class InputChoiceSet extends LightningElement {
             } else {
                 target.dataset.checked = target.checked;
             }
+            const option = this.computedOptions.find(
+                (opt) => opt.value === value
+            );
+            if (option) {
+                option.isChecked = target.checked;
+            }
         } else {
-            if (this.toggleVariant) {
+            if (isOverflowing) {
+                target.dataset.checked = target.checked;
+            } else if (this.toggleVariant) {
                 target.checked = true;
                 target.dataset.checked = 'true';
             }
@@ -911,7 +977,14 @@ export default class InputChoiceSet extends LightningElement {
                 checkbox.checked = false;
                 checkbox.dataset.checked = 'false';
             });
+            const optionsToUncheck = this.computedOptions.filter(
+                (opt) => opt.value !== value
+            );
+            optionsToUncheck.forEach((option) => {
+                option.isChecked = false;
+            });
         }
+
         this._value = this.valueChangeHandler();
         this._dispatchChangeEvent();
     }
@@ -920,7 +993,8 @@ export default class InputChoiceSet extends LightningElement {
      * Initialize the options.
      */
     initOptions() {
-        this.transformedOptions = Array.isArray(this.options)
+        this.displayShowMoreMenu = false;
+        this.computedOptions = Array.isArray(this.options)
             ? this.options.map((option) => {
                   return new InputChoiceOption(option, {
                       disabled: this.disabled,
@@ -928,17 +1002,31 @@ export default class InputChoiceSet extends LightningElement {
                       labelClass: this.computedLabelClass,
                       type: this.type,
                       value: this.value,
-                      width: this.computedWidth
+                      fixedWidth: this._fixedOptionWidth
                   });
               })
             : [];
+        this.visibleOptions = this.computedOptions;
+        this.overflowingOptions = [];
+
+        requestAnimationFrame(() => {
+            this.setOptionWidth();
+        });
     }
 
     /**
      * Initialize the orientation attributes.
      */
     initOrientationAttributes() {
-        const attributes = deepCopy(this.orientationAttributes);
+        const attributes = this.getNormalizedOrientationAttributes();
+
+        if (
+            attributes.scrollable ||
+            (this.isHorizontal && !attributes.multipleRows)
+        ) {
+            this.computedOrientationAttributes = attributes;
+            return;
+        }
         const small = this.normalizeHorizontalColumns(
             attributes.smallContainerCols
         );
@@ -982,7 +1070,7 @@ export default class InputChoiceSet extends LightningElement {
 
         this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
             this._containerWidth = wrapper.getBoundingClientRect().width;
-            this.setWidth();
+            this.setFixedOptionWidth();
             this.destroyTooltip();
         });
     }
@@ -1013,22 +1101,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Create the computed orientation attributes. Make sure only the authorized attributes for the given orientation are kept.
-     */
-    normalizeOrientationAttributes() {
-        const orientationAttributes = {};
-        Object.entries(this._orientationAttributes).forEach(([key, value]) => {
-            const allowedAttribute =
-                ORIENTATION_ATTRIBUTES[this.orientation] &&
-                ORIENTATION_ATTRIBUTES[this.orientation].includes(key);
-            if (allowedAttribute) {
-                orientationAttributes[key] = value;
-            }
-        });
-        this._orientationAttributes = orientationAttributes;
-    }
-
-    /**
      * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated
      * attributes and compute the input choice set.
      */
@@ -1049,7 +1121,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Set the width of the label icon container when check position is right and orientation vertical.
      */
-    setWidth() {
+    setFixedOptionWidth() {
         const labelIconContainers = this.template.querySelectorAll(
             '[data-element-id="label-icon-container"]'
         );
@@ -1075,7 +1147,16 @@ export default class InputChoiceSet extends LightningElement {
                     : maxWidth;
             labelIconContainer.style.width = `${maxWidth + 4}px`;
         });
-        this.computedWidth = `width: ${maxWidth + 4}px;`;
+        this._fixedOptionWidth = maxWidth + 4;
+    }
+
+    setOptionWidth() {
+        this.computedOptions.forEach((option) => {
+            const optionElement = this.template.querySelector(
+                `[data-element-id="span-checkbox-container"][data-value="${option.value}"]`
+            );
+            option.width = optionElement?.offsetWidth || 0;
+        });
     }
 
     showTooltip(tooltipValue, target) {
@@ -1248,15 +1329,26 @@ export default class InputChoiceSet extends LightningElement {
         let target = event.currentTarget;
         const value = target.value || target.name;
         const isInput = target.dataset.elementId === 'input';
+        const isOverflowing =
+            target.dataset.elementId === 'input-overflowing-option';
 
         // When toggle variant, if we press on the label we need to get the target input-toggle
-        if (this.toggleVariant && isInput) {
+        if (!isOverflowing && this.toggleVariant && isInput) {
             target = this.template.querySelector(
                 `[data-element-id="input-toggle"][data-value="${value}"]`
             );
         }
-        this.handleChecking(value, target, isInput);
+        this.handleChecking({ value, target, isInput, isOverflowing });
         this.updateLabelsStyle();
+
+        if (isOverflowing && !this.isMultiSelect) {
+            const scrollableContainer = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scrollable-container"]'
+            );
+            if (scrollableContainer) {
+                scrollableContainer.closeMenu();
+            }
+        }
     }
 
     /**
@@ -1333,6 +1425,33 @@ export default class InputChoiceSet extends LightningElement {
     handleKeyUp(event) {
         if (event.key !== 'Enter') return;
         event.currentTarget.click();
+    }
+
+    handleWidthChange(event) {
+        const allowShowMoreMenu =
+            this.isHorizontal &&
+            !this.computedOrientationAttributes.scrollable &&
+            !this.horizontalOverflowIsDisabled;
+        if (!allowShowMoreMenu) {
+            return;
+        }
+        let availableWidth = event.detail.availableWidth;
+        let firstHiddenIndex = this.computedOptions.length;
+
+        for (let i = 0; i < this.computedOptions.length; i++) {
+            availableWidth -= this.computedOptions[i].width;
+            // Allow for 5px to overflow the container,
+            // to avoid displaying the "show more" menu
+            // when only a tiny bit of space is missing
+            if (availableWidth <= -5) {
+                firstHiddenIndex = i;
+                break;
+            }
+        }
+
+        this.visibleOptions = this.computedOptions.slice(0, firstHiddenIndex);
+        this.overflowingOptions = this.computedOptions.slice(firstHiddenIndex);
+        this.displayShowMoreMenu = this.overflowingOptions.length > 0;
     }
 
     /**

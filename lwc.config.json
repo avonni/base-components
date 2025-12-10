@@ -531,6 +531,10 @@
             "path": "src/modules/base/primitiveSchedulerTimeline/primitiveSchedulerTimeline.js"
         },
         {
+            "name": "c/primitiveScrollableContainer",
+            "path": "src/modules/base/primitiveScrollableContainer/primitiveScrollableContainer.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
@@ -589,6 +593,10 @@
         {
             "name": "c/slider",
             "path": "src/modules/base/slider/slider.js"
+        },
+        {
+            "name": "c/status",
+            "path": "src/modules/base/status/status.js"
         },
         {
             "name": "c/rating",
@@ -995,6 +1003,10 @@
             "path": "src/modules/base/splitterPane/splitterPane.js"
         },
         {
+            "name": "avonni/status",
+            "path": "src/modules/base/status/status.js"
+        },
+        {
             "name": "avonni/submenu",
             "path": "src/modules/base/submenu/submenu.js"
         },
@@ -1123,6 +1135,7 @@
         "avonni/slider",
         "avonni/splitter",
         "avonni/splitterPane",
+        "avonni/status",
         "avonni/submenu",
         "avonni/summaryDetail",
         "avonni/tabBar",

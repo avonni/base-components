@@ -48,7 +48,34 @@ describe('Alert', () => {
                             '[data-element-id="div"]'
                         );
                         expect(div).toBeFalsy();
-                        expect(mockCallBack.mock.calls.length).toEqual(1);
+                        expect(mockCallBack).toHaveBeenCalled();
+                    });
+            });
+
+            it('Ignored if event is cancelled', () => {
+                element.isDismissible = true;
+                const mockCallBack = jest.fn();
+                element.closeAction = mockCallBack;
+
+                const handler = jest.fn((event) => {
+                    event.preventDefault();
+                });
+                element.addEventListener('close', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const lightningButtonIcon =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="lightning-button-icon"]'
+                            );
+                        lightningButtonIcon.click();
+                    })
+                    .then(() => {
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div"]'
+                        );
+                        expect(div).toBeTruthy();
+                        expect(mockCallBack).not.toHaveBeenCalled();
                     });
             });
         });
@@ -252,6 +279,78 @@ describe('Alert', () => {
                     expect(div.classList).not.toContain('avonni-alert_offline');
                     expect(div.classList).toContain('avonni-alert_warning');
                 });
+            });
+        });
+    });
+
+    describe('Methods', () => {
+        it('focus', () => {
+            element.isDismissible = true;
+
+            return Promise.resolve().then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                const spy = jest.spyOn(button, 'focus');
+                element.focus();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('Events', () => {
+        it('blur', () => {
+            element.isDismissible = true;
+            const handler = jest.fn();
+            element.addEventListener('blur', handler);
+
+            return Promise.resolve().then(() => {
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                lightningButtonIcon.dispatchEvent(new CustomEvent('blur'));
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        it('close', () => {
+            element.isDismissible = true;
+            const handler = jest.fn();
+            element.addEventListener('close', handler);
+
+            return Promise.resolve().then(() => {
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                lightningButtonIcon.click();
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeTruthy();
+                expect(call.composed).toBeFalsy();
+            });
+        });
+
+        it('focus', () => {
+            element.isDismissible = true;
+            const handler = jest.fn();
+            element.addEventListener('focus', handler);
+
+            return Promise.resolve().then(() => {
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                lightningButtonIcon.dispatchEvent(new CustomEvent('focus'));
+
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             });
         });
     });

@@ -1,5 +1,5 @@
 import { dateTimeObjectFrom, getWeekNumber } from 'c/luxonDateTimeUtils';
-import { classSet, normalizeArray } from 'c/utils';
+import { classSet, normalizeArray, normalizeBoolean } from 'c/utils';
 
 /**
  * Cell of the scheduler.
@@ -14,6 +14,7 @@ import { classSet, normalizeArray } from 'c/utils';
 export default class SchedulerCell {
     constructor(props) {
         this.currentMonth = props.currentMonth;
+        this.disabled = normalizeBoolean(props.disabled);
         this.start = props.start;
         this.end = props.end;
         this.events = normalizeArray(props.events);
@@ -56,6 +57,7 @@ export default class SchedulerCell {
             'avonni-scheduler__calendar-cell_outside-of-current-month':
                 this.currentMonth && this.currentMonth !== this.month,
             'avonni-scheduler__calendar-cell_today': this.isToday,
+            'avonni-scheduler__calendar-cell_disabled': this.disabled,
             'slds-theme_shade slds-theme_alert-texture':
                 this.removedByTimeChange
         });

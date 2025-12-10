@@ -4,7 +4,7 @@
         tabindex="-1"
         data-element-id="avonni-calendar__container"
         onblur={handleBlur}
-        onfocusin={handleFocus}
+        onfocus={handleFocus}
         onkeydown={handleKeyDown}
     >
         <div
@@ -33,7 +33,9 @@
                                 title={previousMonthButtonAlternativeText}
                                 variant="container"
                                 data-element-id="previous-lightning-button-icon"
+                                onblur={handleBlur}
                                 onclick={handlerPreviousMonth}
+                                onfocus={handleFocus}
                             ></lightning-button-icon>
                         </div>
                         <h2
@@ -53,7 +55,9 @@
                                 title={nextMonthButtonAlternativeText}
                                 variant="container"
                                 data-element-id="next-lightning-button-icon"
+                                onblur={handleBlur}
                                 onclick={handlerNextMonth}
+                                onfocus={handleFocus}
                             ></lightning-button-icon>
                         </div>
                     </div>
@@ -73,7 +77,9 @@
                             "
                             disabled={disabled}
                             data-element-id="select-year"
+                            onblur={handleBlur}
                             onchange={handleYearChange}
+                            onfocus={handleFocus}
                         >
                             <template for:each={yearsList} for:item="year">
                                 <option
@@ -153,6 +159,7 @@
                                         data-full-date={day.ts}
                                         data-selected={day.appearsSelected}
                                         data-today={day.isToday}
+                                        onblur={handleBlur}
                                         onfocus={handleDateFocus}
                                         onmouseout={handleMouseOut}
                                         onmouseover={handleMouseOver}

@@ -227,7 +227,13 @@ export default {
 };
 
 const Template = (args) => InputChoiceSet(args);
-
+const longOptions = [];
+for (let i = 1; i <= 100; i++) {
+    longOptions.push({
+        label: `Option ${i}`,
+        value: `option-${i}`
+    });
+}
 const optionsWithIcon = [
     {
         label: 'Left',
@@ -284,6 +290,17 @@ RadioButtons.args = {
     options: optionsWithoutIcon,
     value: dayValue,
     fieldLevelHelp: 'Input choice set with radio buttons'
+};
+
+export const RadioButtonsHorizontalScrollable = Template.bind({});
+RadioButtonsHorizontalScrollable.args = {
+    label: 'Please select a value',
+    orientation: 'horizontal',
+    orientationAttributes: {
+        scrollable: true,
+        showScrollButtons: true
+    },
+    options: longOptions
 };
 
 export const Checkboxes = Template.bind({});
@@ -365,6 +382,14 @@ CheckboxesWithLongLabelOptions.args = {
     value: dayValue
 };
 
+export const CheckboxesHorizontalLongOptions = Template.bind({});
+CheckboxesHorizontalLongOptions.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    orientation: 'horizontal',
+    options: longOptions
+};
+
 export const Buttons = Template.bind({});
 Buttons.args = {
     label: 'Please select a value',
@@ -433,6 +458,29 @@ buttonsHorizontalStretchCols.args = {
         stretch: true
     },
     value: dayValue
+};
+
+export const ButtonsHorizontalLongOptions = Template.bind({});
+ButtonsHorizontalLongOptions.args = {
+    label: 'Please select a value',
+    orientation: 'horizontal',
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true
+    },
+    options: longOptions
+};
+
+export const ButtonsHorizontalScrollable = Template.bind({});
+ButtonsHorizontalScrollable.args = {
+    label: 'Please select a value',
+    type: 'button',
+    orientation: 'horizontal',
+    orientationAttributes: {
+        scrollable: true,
+        showScrollButtons: true
+    },
+    options: longOptions
 };
 
 export const ButtonsWithLabelInline = Template.bind({});
@@ -513,6 +561,28 @@ ToggleHorizontal.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue
+};
+
+export const ToggleHorizontalLongOptions = Template.bind({});
+ToggleHorizontalLongOptions.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    messageWhenValueMissing: 'Value missing',
+    options: longOptions
+};
+
+export const ToggleHorizontalScrollable = Template.bind({});
+ToggleHorizontalScrollable.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    orientationAttributes: {
+        scrollable: true,
+        showScrollButtons: true
+    },
+    messageWhenValueMissing: 'Value missing',
+    options: longOptions
 };
 
 export const ToggleHorizontalCols = Template.bind({});

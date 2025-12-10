@@ -1,7 +1,7 @@
-import { LightningElement, api } from 'lwc';
-import { classListMutation } from 'c/utilsPrivate';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { classListMutation } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 import {
     formatNumber,
     hasValidNumberSymbol,
@@ -655,8 +655,14 @@ export default class InputCounter extends LightningElement {
     /**
      * Handle a blur of the input.
      */
-    handleBlur() {
-        this.updateDisplayedValue();
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
         /**
          * The event fired when the focus is removed from the input counter.
          *
@@ -691,7 +697,13 @@ export default class InputCounter extends LightningElement {
      * Handle a focus on the input.
      */
     handleFocus(event) {
-        event.currentTarget.value = this.value || '';
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
         /**
          * The event fired when the input counter receives focus.
          *
@@ -708,6 +720,16 @@ export default class InputCounter extends LightningElement {
     handleIncrement() {
         this.incrementValue(1);
         this.updateDisplayedValue();
+    }
+
+    handleInputBlur(event) {
+        this.updateDisplayedValue();
+        this.handleBlur(event);
+    }
+
+    handleInputFocus(event) {
+        event.currentTarget.value = this.value || '';
+        this.handleFocus(event);
     }
 
     /**

@@ -46,7 +46,10 @@
                                         variant="border-filled"
                                         data-group-name="button"
                                         data-element-id="draw-tool"
+                                        data-focusable
+                                        onblur={handleBlur}
                                         onclick={setDraw}
+                                        onfocus={handleFocus}
                                     ></lightning-button-icon-stateful>
                                 </li>
                                 <li if:true={showPaint}>
@@ -59,7 +62,10 @@
                                         variant="border-filled"
                                         data-group-name="button"
                                         data-element-id="paint-tool"
+                                        data-focusable
+                                        onblur={handleBlur}
                                         onclick={setPaint}
+                                        onfocus={handleFocus}
                                     ></lightning-button-icon-stateful>
                                 </li>
                                 <li if:true={showInk}>
@@ -73,8 +79,11 @@
                                         disabled={disabled}
                                         title={inkButtonAlternativeText}
                                         data-element-id="ink-tool"
+                                        data-focusable
                                         data-group-name="button"
+                                        onblur={handleBlur}
                                         onclick={setInk}
+                                        onfocus={handleFocus}
                                     >
                                         <c-primitive-svg-icon
                                             name="inkPen"
@@ -93,8 +102,11 @@
                                         disabled={disabled}
                                         title={eraseButtonAlternativeText}
                                         data-element-id="erase-tool"
+                                        data-focusable
                                         data-group-name="button"
+                                        onblur={handleBlur}
                                         onclick={setErase}
+                                        onfocus={handleFocus}
                                     >
                                         <c-primitive-svg-icon
                                             name="eraser"
@@ -119,9 +131,12 @@
                                 options={sizeList}
                                 value={size}
                                 variant="label-hidden"
-                                data-group-name="button"
                                 data-element-id="size-picker"
+                                data-focusable
+                                data-group-name="button"
+                                onblur={handleBlur}
                                 onchange={handleSizeChange}
+                                onfocus={handleFocus}
                             >
                             </c-combobox>
                         </li>
@@ -137,7 +152,10 @@
                                 value={color}
                                 variant="label-hidden"
                                 data-element-id="color-picker"
+                                data-focusable
+                                onblur={handleBlur}
                                 onchange={handleColorChange}
+                                onfocus={handleFocus}
                             >
                             </c-color-picker>
                         </li>
@@ -157,8 +175,11 @@
                                 value={backgroundColor}
                                 variant="label-hidden"
                                 data-element-id="background-color-picker"
+                                data-focusable
                                 data-group-name="button"
+                                onblur={handleBlur}
                                 onchange={handleBackgroundColorChange}
+                                onfocus={handleFocus}
                             >
                             </c-color-picker>
                         </li>
@@ -180,8 +201,11 @@
                                         icon-name="utility:download"
                                         variant="container"
                                         data-element-id="download-button"
+                                        data-focusable
                                         data-group-name="button"
+                                        onblur={handleBlur}
                                         onclick={handleDownload}
+                                        onfocus={handleFocus}
                                     >
                                     </lightning-button-icon>
                                 </li>
@@ -199,8 +223,11 @@
                                                 icon-name="utility:undo"
                                                 variant="base"
                                                 data-element-id="undo-button"
+                                                data-focusable
                                                 data-group-name="button"
+                                                onblur={handleBlur}
                                                 onclick={handleUndo}
+                                                onfocus={handleFocus}
                                             >
                                             </lightning-button-icon>
                                         </li>
@@ -211,8 +238,11 @@
                                                 icon-name="utility:redo"
                                                 variant="base"
                                                 data-element-id="redo-button"
+                                                data-focusable
                                                 data-group-name="button"
+                                                onblur={handleBlur}
                                                 onclick={handleRedo}
+                                                onfocus={handleFocus}
                                             >
                                             </lightning-button-icon>
                                         </li>
@@ -239,7 +269,10 @@
                         size="large"
                         variant="bare"
                         data-element-id="clear-button"
+                        data-focusable
                         data-group-name="button"
+                        onblur={handleBlur}
+                        onfocus={handleFocus}
                         onkeydown={handleClearButtonKeyDown}
                         onmousedown={handleReset}
                         onmouseenter={hideDrawCursor}

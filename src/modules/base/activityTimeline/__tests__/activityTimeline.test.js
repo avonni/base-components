@@ -2773,12 +2773,12 @@ describe('Activity Timeline', () => {
                                 element.shadowRoot.querySelector(
                                     '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                                 );
-                            // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition - SCROLL_STEP (= 10) set hours to 0,0,0,0
+                            // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition - SCROLL_STEP set hours to 0,0,0,0
                             expect(
                                 Math.floor(
                                     Number(intervalRectangle.getAttribute('x'))
                                 )
-                            ).toBe(592);
+                            ).toBe(577);
                         });
                 });
 
@@ -2823,12 +2823,12 @@ describe('Activity Timeline', () => {
                                 element.shadowRoot.querySelector(
                                     '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                                 );
-                            // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition + SCROLL_STEP (= 10) set hours to 0,0,0,0
+                            // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition + SCROLL_STEP set hours to 0,0,0,0
                             expect(
                                 Math.floor(
                                     Number(intervalRectangle.getAttribute('x'))
                                 )
-                            ).toBe(612);
+                            ).toBe(614);
                         });
                 });
             });

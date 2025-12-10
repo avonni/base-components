@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const DEFAULT_CLOSED_ICON_ALTERNATIVE_TEXT = 'Closed';
 const DEFAULT_OPENED_ICON_ALTERNATIVE_TEXT = 'Opened';
@@ -196,6 +196,27 @@ export default class ExpandableSection extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set the focus on the collapse button.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="button"]'
+        );
+        if (button) {
+            button.focus();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
@@ -224,5 +245,45 @@ export default class ExpandableSection extends LightningElement {
                 }
             })
         );
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    handleBlur() {
+        this._dispatchBlur();
+    }
+
+    handleFocus() {
+        this._dispatchFocus();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the expandable section.
+         *
+         * @event
+         * @name blur
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the expandable section.
+         *
+         * @event
+         * @name focus
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

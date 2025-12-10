@@ -1,4 +1,9 @@
-import { classSet, normalizeArray, normalizeBoolean, normalizeString } from 'c/utils';
+import {
+    classSet,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
 import { LightningElement, api } from 'lwc';
 import noTag from './noTag.html';
 import tag from './tag.html';
@@ -262,7 +267,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
             `slds-carousel__panel-action avonni-carousel__panel-action avonni-carousel__image-${this.imagePosition}`
         ).add({
             'slds-text-link_reset': normalizeBoolean(this.href),
-            'avonni-carousel__panel-action_with-content': this.displayContentContainer
+            'avonni-carousel__panel-action_with-content':
+                this.displayContentContainer
         });
     }
 
@@ -392,6 +398,26 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set the focus on the first focusable element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const focusableElement =
+            this.template.querySelector('[data-focusable]');
+        if (focusableElement) {
+            focusableElement.focus();
+        }
+    }
+
+    /*
      * -------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
@@ -409,6 +435,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this._dispatchActionClick(actionName);
     }
 
+    handleBlur() {
+        this._dispatchBlur();
+    }
+
     /**
      * Prevent the default event browser behavior and stop the event propagation.
      *
@@ -417,6 +447,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     handleButtonMenuClick(event) {
         event.stopPropagation();
         event.preventDefault();
+    }
+
+    handleFocus() {
+        this._dispatchFocus();
     }
 
     /**
@@ -456,20 +490,16 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this._dispatchActionClick(actionName);
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Action click event dispatcher.
      */
     _dispatchActionClick(actionName) {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when a user clicks on an action.
          *
@@ -484,33 +514,45 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 detail: {
                     name: actionName,
                     item: {
-                        title,
-                        description,
-                        name,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText
+                        title: this.title,
+                        description: this.description,
+                        name: this.name,
+                        src: this.src,
+                        href: this.href,
+                        actions: this.actions,
+                        imageAssistiveText: this.imageAssistiveText
                     }
                 }
             })
         );
     }
 
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from an element of the item.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on an element of the item.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
     /**
      * Item click event dispatcher.
      */
     _dispatchItemClick() {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when an item is clicked.
          *
@@ -523,13 +565,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
             new CustomEvent('itemclick', {
                 detail: {
                     item: {
-                        title,
-                        description,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText,
-                        name
+                        title: this.title,
+                        description: this.description,
+                        src: this.src,
+                        href: this.href,
+                        actions: this.actions,
+                        imageAssistiveText: this.imageAssistiveText,
+                        name: this.name
                     }
                 }
             })

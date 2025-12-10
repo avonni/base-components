@@ -113,17 +113,93 @@ export default class Alert extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE METHODS
+     *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
 
     /**
+     * Set the focus on the close button, if present
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="lightning-button-icon"]'
+        );
+        if (button) {
+            button.focus();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
+
+    handleBlur() {
+        this._dispatchBlur();
+    }
+
+    /**
      * Hide the alert and execute the close action.
      */
-    closeAlert() {
+    handleClose() {
+        const cancelled = this._dispatchClose();
+        if (cancelled) {
+            return;
+        }
         this.hideAlert = true;
         if (typeof this.closeAction === 'function') {
             this.closeAction();
         }
+    }
+
+    handleFocus() {
+        this._dispatchFocus();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the close button.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    _dispatchClose() {
+        const event = new CustomEvent('close', { cancelable: true });
+
+        /**
+         * The event fired when the alert is closed.
+         *
+         * @event
+         * @name close
+         * @public
+         * @cancelable
+         */
+        this.dispatchEvent(event);
+        return event.defaultPrevented;
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the close button.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

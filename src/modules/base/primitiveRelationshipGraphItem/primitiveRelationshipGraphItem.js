@@ -210,6 +210,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
+        event.stopPropagation();
         const href = event.currentTarget.href;
         if (
             // eslint-disable-next-line no-script-url

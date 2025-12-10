@@ -764,7 +764,7 @@ export default class IconPicker extends LightningElement {
     clearIconInput() {
         this.template.querySelector('[data-element-id="input"]').value = null;
         this._value = null;
-        this.dispatchChange(null);
+        this._dispatchChange(null);
         this.reportValidity();
     }
 
@@ -996,31 +996,18 @@ export default class IconPicker extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  EVENTS HANDLERS && DISPATCHERS
+     *  EVENTS HANDLERS
      * -------------------------------------------------------------
      */
 
-    /**
-     * Dispatches the new icon.
-     *
-     * @param {string} icon The name of the icon.
-     */
-    dispatchChange(icon) {
-        /**
-         * The event fired when the icon changes.
-         *
-         * @event
-         * @name change
-         * @param {string} value Value of the selected icon.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: icon
-                }
-            })
-        );
+    handleBlur(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchBlur();
     }
 
     /**
@@ -1057,12 +1044,22 @@ export default class IconPicker extends LightningElement {
 
         if (this.newValue) {
             this._value = this.newValue;
-            this.dispatchChange(this.newValue);
+            this._dispatchChange(this.newValue);
             this.newValue = null;
             this.isInvalidInput = false;
         }
 
         this.toggleMenuVisibility();
+    }
+
+    handleFocus(event) {
+        if (
+            event.relatedTarget &&
+            this.template.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+        this._dispatchFocus();
     }
 
     /**
@@ -1086,8 +1083,9 @@ export default class IconPicker extends LightningElement {
         this.reportValidity();
         if (!this.showError && this._allowBlur) {
             this._allowBlur = false;
-            this.dispatchChange(event.currentTarget.value || null);
+            this._dispatchChange(event.currentTarget.value || null);
         }
+        this.handleBlur(event);
     }
 
     /**
@@ -1239,5 +1237,56 @@ export default class IconPicker extends LightningElement {
             );
             tabBar.focus();
         });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    _dispatchBlur() {
+        /**
+         * The event fired when the focus is removed from the icon picker.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    /**
+     * Dispatches the new icon.
+     *
+     * @param {string} icon The name of the icon.
+     */
+    _dispatchChange(icon) {
+        /**
+         * The event fired when the icon changes.
+         *
+         * @event
+         * @name change
+         * @param {string} value Value of the selected icon.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: icon
+                }
+            })
+        );
+    }
+
+    _dispatchFocus() {
+        /**
+         * The event fired when the focus is set on the icon picker.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
