@@ -22,20 +22,6 @@
     font-size: var(--avonni-alert-font-size, 1em);
     font-style: var(--avonni-alert-font-style, normal);
     text-align: center;
-    background-image: var(
-        --avonni-alert-image-background,
-        linear-gradient(
-            45deg,
-            rgba(24, 24, 24, 0.1) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(24, 24, 24, 0.1) 50%,
-            rgba(24, 24, 24, 0.1) 75%,
-            transparent 75%,
-            transparent
-        )
-    );
-    background-size: var(--avonni-alert-size-background, 64px 64px);
     border-width: var(--avonni-alert-sizing-border, 1px);
     border-style: var(--avonni-alert-styling-border, solid);
     border-color: var(--avonni-alert-color-border, transparent);
@@ -61,10 +47,25 @@
 }
 
 .avonni-alert_base {
-    background-color: var(
-        --avonni-alert-base-color-background,
-        var(--slds-g-color-info-container-1, #747474)
-    );
+    background: var(
+            --avonni-alert-image-background,
+            linear-gradient(
+                45deg,
+                rgba(24, 24, 24, 0.1) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(24, 24, 24, 0.1) 50%,
+                rgba(24, 24, 24, 0.1) 75%,
+                transparent 75%,
+                transparent
+            )
+        ),
+        var(
+            --avonni-alert-base-color-background,
+            var(--slds-g-color-info-container-1, #747474)
+        );
+    background-size: var(--avonni-alert-size-background, 64px 64px), auto;
+    background-clip: padding-box; /* Clip the textured background to prevent it from showing under the border */
     color: var(
         --avonni-alert-base-text-color,
         var(--slds-g-color-on-info-1, #ffffff)
@@ -113,10 +114,25 @@
 }
 
 .avonni-alert_warning {
-    background-color: var(
-        --avonni-alert-warning-color-background,
-        var(--slds-g-color-warning-container-1, #dd7a01)
-    );
+    background: var(
+            --avonni-alert-image-background,
+            linear-gradient(
+                45deg,
+                rgba(24, 24, 24, 0.1) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(24, 24, 24, 0.1) 50%,
+                rgba(24, 24, 24, 0.1) 75%,
+                transparent 75%,
+                transparent
+            )
+        ),
+        var(
+            --avonni-alert-warning-color-background,
+            var(--slds-g-color-warning-container-1, #dd7a01)
+        );
+    background-size: var(--avonni-alert-size-background, 64px 64px), auto;
+    background-clip: padding-box; /* Clip the textured background to prevent it from showing under the border */
     color: var(
         --avonni-alert-warning-text-color,
         var(--slds-g-color-on-warning-1, #080707)
@@ -165,10 +181,25 @@
 }
 
 .avonni-alert_error {
-    background-color: var(
-        --avonni-alert-error-color-background,
-        var(--slds-g-color-error-container-1, #ba0517)
-    );
+    background: var(
+            --avonni-alert-image-background,
+            linear-gradient(
+                45deg,
+                rgba(24, 24, 24, 0.1) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(24, 24, 24, 0.1) 50%,
+                rgba(24, 24, 24, 0.1) 75%,
+                transparent 75%,
+                transparent
+            )
+        ),
+        var(
+            --avonni-alert-error-color-background,
+            var(--slds-g-color-error-container-1, #ba0517)
+        );
+    background-size: var(--avonni-alert-size-background, 64px 64px), auto;
+    background-clip: padding-box; /* Clip the textured background to prevent it from showing under the border */
     color: var(
         --avonni-alert-error-text-color,
         var(--slds-g-color-on-error-1, #ffffff)
@@ -217,10 +248,25 @@
 }
 
 .avonni-alert_offline {
-    background-color: var(
-        --avonni-alert-offline-color-background,
-        var(--slds-g-color-neutral-base-30, #444)
-    );
+    background: var(
+            --avonni-alert-image-background,
+            linear-gradient(
+                45deg,
+                rgba(24, 24, 24, 0.1) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(24, 24, 24, 0.1) 50%,
+                rgba(24, 24, 24, 0.1) 75%,
+                transparent 75%,
+                transparent
+            )
+        ),
+        var(
+            --avonni-alert-offline-color-background,
+            var(--slds-g-color-neutral-base-30, #444)
+        );
+    background-size: var(--avonni-alert-size-background, 64px 64px), auto;
+    background-clip: padding-box; /* Clip the textured background to prevent it from showing under the border */
     color: var(
         --avonni-alert-offline-text-color,
         var(--slds-g-color-neutral-base-100, #ffffff)
