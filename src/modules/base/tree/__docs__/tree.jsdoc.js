@@ -151,3 +151,9 @@
  * @type color
  * @default #dddbda
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-metatext-line-clamp
+ * @type number
+ * @default 2
+ */
