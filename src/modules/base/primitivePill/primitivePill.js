@@ -93,6 +93,20 @@ export default class PrimitivePill extends LightningElement {
     }
 
     /**
+     * Text to display in a tooltip on hover. If not provided, the label value will be used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get tooltipText() {
+        return this._tooltipText || this.label;
+    }
+    set tooltipText(value) {
+        this._tooltipText = value;
+    }
+
+    /**
      * Variant of the pill. Valid values include base and list.
      *
      * @type {string}

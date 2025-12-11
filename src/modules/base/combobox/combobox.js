@@ -793,7 +793,11 @@ export default class Combobox extends LightningElement {
      */
     get normalizedSelectedOptions() {
         return deepCopy(this.selectedOptions).map((opt) => {
-            const normalizedOpt = { ...opt, name: opt.value };
+            const normalizedOpt = {
+                ...opt,
+                name: opt.value,
+                tooltipText: opt.value
+            };
             if (this.hideAvatarInSelectedOptions) {
                 delete normalizedOpt.avatar;
             }
