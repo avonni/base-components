@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { getFormattedDate } from 'c/dateTimeUtils';
 import { computeSldsClass, createAvatar } from 'c/iconUtils';
+import { convertHTMLToPlainText } from 'c/utils';
 import { keyValues } from 'c/utilsPrivate';
 
 const AXIS_LABEL_WIDTH = 50.05;
@@ -1805,6 +1806,7 @@ export class HorizontalActivityTimeline {
         // Sets all items with startPosition as yPosition and sort them by date
         let dataToDisplay = items.map((element) => ({
             ...element,
+            descriptionTitle: convertHTMLToPlainText(element.description),
             yPosition: yStartPosition,
             xMinPosition: this.viewTimeScale(new Date(element.datetimeValue)),
             xMaxPosition:
