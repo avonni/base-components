@@ -525,7 +525,10 @@ export default class InputChoiceSet extends LightningElement {
         const { stretch, displayAsRow } = this.computedTypeAttributes;
         return classSet(`avonni-input-choice-set__${this.orientation}`).add({
             'slds-size_full': this.isHorizontal && !this.buttonVariant,
-            'slds-checkbox_button-group': this.buttonVariant && !displayAsRow,
+            'slds-checkbox_button-group':
+                this.buttonVariant && !displayAsRow && this.isMultiSelect,
+            'slds-radio_button-group':
+                this.buttonVariant && !displayAsRow && !this.isMultiSelect,
             'avonni-input-choice-set__button_stretch': stretch
         });
     }
@@ -539,11 +542,12 @@ export default class InputChoiceSet extends LightningElement {
         const { displayAsRow, stretch } = this.computedTypeAttributes;
         return classSet('slds-button')
             .add({
-                'slds-checkbox_button': !displayAsRow,
+                'slds-checkbox_button': !displayAsRow && this.isMultiSelect,
+                'slds-radio_button': !displayAsRow && !this.isMultiSelect,
                 'avonni-input-choice-set__button__row': displayAsRow,
                 'avonni-input-choice-set__horizontal':
                     this.isHorizontal && !displayAsRow && !stretch,
-                'slds-grow': stretch,
+                'slds-grow': stretch && displayAsRow,
                 'slds-grid': stretch && this.isHorizontal && displayAsRow
             })
             .toString();
@@ -674,9 +678,10 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedInputType() {
-        return this.isMultiSelect || !this.checkboxVariant
-            ? 'checkbox'
-            : 'radio';
+        if (this.buttonVariant || this.checkboxVariant) {
+            return this.isMultiSelect ? 'checkbox' : 'radio';
+        }
+        return 'checkbox';
     }
 
     /**
@@ -690,8 +695,10 @@ export default class InputChoiceSet extends LightningElement {
             label = 'slds-checkbox__label';
         } else if (this.checkboxVariant) {
             label = 'slds-radio__label';
-        } else if (this.buttonVariant) {
+        } else if (this.buttonVariant && this.isMultiSelect) {
             label = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
+        } else if (this.buttonVariant) {
+            label = `slds-radio_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
         }
         return label;
     }
@@ -991,6 +998,7 @@ export default class InputChoiceSet extends LightningElement {
             ? this.options.map((option) => {
                   return new InputChoiceOption(option, {
                       disabled: this.disabled,
+                      isMultiSelect: this.isMultiSelect,
                       labelClass: this.computedLabelClass,
                       type: this.type,
                       value: this.value,

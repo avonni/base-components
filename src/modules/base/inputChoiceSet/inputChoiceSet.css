@@ -21,7 +21,8 @@
     display: inline-flex;
 }
 
-.slds-checkbox_faux {
+.avonni-input-choice-set__option-button-label.slds-checkbox_faux,
+.avonni-input-choice-set__option-button-label.slds-radio_faux {
     padding: 0;
 }
 
@@ -72,7 +73,36 @@
     min-height: 30px;
 }
 
-.avonni-input-choice-set__option-button-label {
+.avonni-input-choice-set__vertical.slds-radio_button-group
+    .slds-radio_button:not(:last-child)
+    .slds-radio_button__label,
+.avonni-input-choice-set__vertical.slds-checkbox_button-group
+    .slds-checkbox_button:not(:last-child)
+    .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical .slds-checkbox_button {
+    border-bottom: none;
+}
+
+.avonni-input-choice-set__horizontal.slds-checkbox_button-group
+    .slds-checkbox_button:not(:last-child)
+    .slds-checkbox_button__label,
+.avonni-input-choice-set__horizontal.slds-radio_button-group
+    .slds-radio_button:not(:last-child)
+    .slds-radio_button__label {
+    border-right: none;
+}
+
+.avonni-input-choice-set__horizontal .slds-checkbox_button,
+.avonni-input-choice-set__horizontal .slds-radio_button,
+.avonni-input-choice-set__vertical .slds-radio_button + .slds-radio_button,
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button
+    + .slds-checkbox_button {
+    border-left: none !important;
+}
+
+.slds-checkbox_button__label.avonni-input-choice-set__option-label,
+.slds-radio_button__label.avonni-input-choice-set__option-label {
     font-size: var(
         --avonni-input-choice-set-option-button-label-font-size,
         0.8125rem
@@ -83,60 +113,36 @@
     );
     font-weight: var(
         --avonni-input-choice-set-option-button-label-font-weight,
-        400
+        var(--slds-c-button-font-weight, var(--slds-g-font-weight-4))
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border,
+        #747474
+    );
+    border-style: var(
+        --avonni-input-choice-set-option-button-styling-border,
+        solid
+    );
+    border-width: var(
+        --avonni-input-choice-set-option-button-sizing-border,
+        1px
     );
 }
 
-.slds-checkbox_button {
-    box-shadow: none;
-}
-
-.slds-checkbox_button.avonni-input-choice-set__horizontal {
-    border-bottom: none;
-}
-
-.slds-checkbox_button-group.avonni-input-choice-set__vertical {
+.slds-checkbox_button-group.avonni-input-choice-set__vertical,
+.slds-radio_button-group.avonni-input-choice-set__vertical {
     flex-direction: column;
 }
 
-.slds-checkbox_button__label.avonni-input-choice-set__vertical {
+.slds-checkbox_button__label.avonni-input-choice-set__vertical,
+.slds-radio_button__label.avonni-input-choice-set__vertical {
     width: 100%;
     border-radius: 0;
 }
 
-.slds-checkbox_button__label.avonni-input-choice-set__horizontal {
+.slds-checkbox_button__label.avonni-input-choice-set__horizontal,
+.slds-radio_button__label.avonni-input-choice-set__horizontal {
     height: 100%;
-}
-
-.slds-checkbox_button {
-    border-left: none !important;
-    border-bottom-color: var(
-        --avonni-input-choice-set-option-button-color-border,
-        #747474
-    );
-    border-bottom-style: var(
-        --avonni-input-choice-set-option-button-styling-border,
-        solid
-    );
-    border-bottom-width: var(
-        --avonni-input-choice-set-option-button-sizing-border,
-        1px
-    );
-}
-
-.slds-checkbox_button.avonni-input-choice-set__horizontal:not(:last-child) {
-    border-right-color: var(
-        --avonni-input-choice-set-option-button-color-border,
-        #747474
-    );
-    border-right-style: var(
-        --avonni-input-choice-set-option-button-styling-border,
-        solid
-    );
-    border-right-width: var(
-        --avonni-input-choice-set-option-button-sizing-border,
-        1px
-    );
 }
 
 .avonni-input-choice-set__button_stretch {
@@ -145,12 +151,10 @@
     width: 100%;
 }
 
-.avonni-input-choice-set__button_stretch.avonni-input-choice-set__vertical {
-    flex-direction: column;
-}
-
 .avonni-input-choice-set__button_stretch .slds-checkbox_button,
+.avonni-input-choice-set__button_stretch .slds-radio_button,
 .avonni-input-choice-set__button_stretch .slds-checkbox_button__label,
+.avonni-input-choice-set__button_stretch .slds-radio_button__label,
 .avonni-input-choice-set__button_stretch .slds-checkbox,
 .avonni-input-choice-set__button_stretch .slds-radio {
     flex-grow: 1;
@@ -165,12 +169,17 @@
 .avonni-input-choice-set__button__row
     .avonni-input-choice-set__option-default[type='checkbox'],
 .avonni-input-choice-set__button__row
-    .avonni-input-choice-set__option-toggle[type='checkbox'] {
+    .avonni-input-choice-set__option-default[type='radio'],
+.avonni-input-choice-set__button__row
+    .avonni-input-choice-set__option-toggle[type='checkbox'],
+.avonni-input-choice-set__button__row
+    .avonni-input-choice-set__option-toggle[type='radio'] {
     width: 1px;
     height: 1px;
 }
 
 .avonni-input-choice-set__button__row [type='checkbox'],
+.avonni-input-choice-set__button__row [type='radio'],
 .avonni-input-choice-set__overflowing-option-input {
     border: 0;
     clip: rect(0 0 0 0);
@@ -194,22 +203,7 @@
 }
 
 .avonni-input-choice-set__horizontal.slds-checkbox_button-group,
-.avonni-input-choice-set__vertical.slds-checkbox_button-group {
-    border-color: var(
-        --avonni-input-choice-set-option-button-color-border,
-        #747474
-    );
-    border-style: var(
-        --avonni-input-choice-set-option-button-styling-border,
-        solid
-    );
-    border-width: var(
-        --avonni-input-choice-set-option-button-sizing-border,
-        1px
-    );
-}
-
-.avonni-input-choice-set__horizontal.slds-checkbox_button-group {
+.avonni-input-choice-set__horizontal.slds-radio_button-group {
     /* Add 1px so there is no gap */
     border-radius: calc(
         var(
@@ -217,9 +211,11 @@
                 var(--slds-s-button-radius-border, 0.25rem)
             ) + 1px
     );
+    border: none;
 }
 
-.avonni-input-choice-set__vertical.slds-checkbox_button-group {
+.avonni-input-choice-set__vertical.slds-checkbox_button-group,
+.avonni-input-choice-set__vertical.slds-radio_button-group {
     /* Add 1px so there is no gap */
     border-radius: calc(
         var(
@@ -227,6 +223,7 @@
                 var(--slds-s-input-radius-border, 0.25rem)
             ) + 1px
     );
+    border: none;
 }
 
 .avonni-input-choice-set__horizontal
@@ -234,7 +231,13 @@
     + .slds-checkbox_button__label,
 .avonni-input-choice-set__vertical
     [type='checkbox']:not(:disabled)
-    + .slds-checkbox_button__label {
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__horizontal
+    [type='radio']:not(:disabled)
+    + .slds-radio_button__label,
+.avonni-input-choice-set__vertical
+    [type='radio']:not(:disabled)
+    + .slds-radio_button__label {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background,
         var(--slds-g-color-neutral-base-100, #ffffff)
@@ -250,18 +253,58 @@
 }
 
 .avonni-input-choice-set__horizontal
+    [type='checkbox']:disabled
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical
+    [type='checkbox']:disabled
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__horizontal
+    [type='radio']:disabled
+    + .slds-radio_button__label,
+.avonni-input-choice-set__vertical
+    [type='radio']:disabled
+    + .slds-radio_button__label {
+    background-color: var(
+        --avonni-input-choice-set-option-button-color-background-disabled,
+        var(--slds-g-color-neutral-base-100, #ffffff)
+    );
+    border-color: var(
+        --avonni-input-choice-set-option-button-color-border-disabled,
+        #747474
+    );
+    border-style: var(
+        --avonni-input-choice-set-option-button-styling-border-disabled,
+        solid
+    );
+    border-width: var(
+        --avonni-input-choice-set-option-button-sizing-border-disabled,
+        1px
+    );
+    color: var(
+        --avonni-input-choice-set-option-button-label-text-color-disabled,
+        var(--slds-g-color-neutral-base-80, #c9c9c9)
+    );
+}
+
+.avonni-input-choice-set__horizontal
     [type='checkbox']:checked:not(:disabled)
     + .slds-checkbox_button__label:hover,
 .avonni-input-choice-set__vertical
     [type='checkbox']:checked:not(:disabled)
-    + .slds-checkbox_button__label:hover {
+    + .slds-checkbox_button__label:hover,
+.avonni-input-choice-set__horizontal
+    [type='radio']:checked:not(:disabled)
+    + .slds-radio_button__label:hover,
+.avonni-input-choice-set__vertical
+    [type='radio']:checked:not(:disabled)
+    + .slds-radio_button__label:hover {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background-checked-hover,
         var(--lwc-brandAccessibleActive, #014486)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border-checked-hover,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-border-2, #5c5c5c)
     );
     color: var(
         --avonni-input-choice-set-option-button-label-text-color-checked-hover,
@@ -278,7 +321,13 @@
     + .slds-checkbox_button__label:hover,
 .avonni-input-choice-set__vertical
     [type='checkbox']:not(:disabled):not(:checked)
-    + .slds-checkbox_button__label:hover {
+    + .slds-checkbox_button__label:hover,
+.avonni-input-choice-set__horizontal
+    [type='radio']:not(:disabled):not(:checked)
+    + .slds-radio_button__label:hover,
+.avonni-input-choice-set__vertical
+    [type='radio']:not(:disabled):not(:checked)
+    + .slds-radio_button__label:hover {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background-hover,
         var(--slds-g-color-neutral-base-95, #f3f3f3)
@@ -301,14 +350,20 @@
     + .slds-checkbox_button__label,
 .avonni-input-choice-set__vertical
     [type='checkbox']:not(:disabled):checked
-    + .slds-checkbox_button__label {
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__horizontal
+    [type='radio']:not(:disabled):checked
+    + .slds-radio_button__label,
+.avonni-input-choice-set__vertical
+    [type='radio']:not(:disabled):checked
+    + .slds-radio_button__label {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background-checked,
         var(--lwc-brandAccessible, #0176d3)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border-checked,
-        var(--lwc-brandAccessible, #0176d3)
+        var(--slds-g-color-border-2, #5c5c5c)
     );
     color: var(
         --avonni-input-choice-set-option-button-label-text-color-checked,
@@ -322,7 +377,10 @@
 
 .avonni-input-choice-set__button__row
     [type='checkbox']
-    + .slds-checkbox_button__label {
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__button__row
+    [type='radio']
+    + .slds-radio_button__label {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background,
         var(--slds-g-color-neutral-base-100, #ffffff)
@@ -347,14 +405,17 @@
 
 .avonni-input-choice-set__button__row
     [type='checkbox']:checked
-    + .slds-checkbox_button__label {
+    + .slds-checkbox_button__label,
+.avonni-input-choice-set__button__row
+    [type='radio']:checked
+    + .slds-radio_button__label {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background-checked,
         var(--lwc-brandAccessible, #0176d3)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border-checked,
-        var(--lwc-brandAccessible, #0176d3)
+        var(--slds-g-color-border-2, #5c5c5c)
     );
     border-style: var(
         --avonni-input-choice-set-option-button-styling-border,
@@ -372,31 +433,23 @@
 
 .avonni-input-choice-set__button__row
     [type='checkbox']:checked
-    + .slds-checkbox_button__label:hover {
+    + .slds-checkbox_button__label:hover,
+.avonni-input-choice-set__button__row
+    [type='radio']:checked
+    + .slds-radio_button__label:hover {
     background-color: var(
         --avonni-input-choice-set-option-button-color-background-checked-hover,
         var(--lwc-brandAccessibleActive, #014486)
     );
     border-color: var(
         --avonni-input-choice-set-option-button-color-border-checked-hover,
-        var(--lwc-brandAccessibleActive, #014486)
+        var(--slds-g-color-border-2, #5c5c5c)
     );
 }
 
-.avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
-    .slds-checkbox_button:not(:last-child) {
-    border-right-color: var(
-        --avonni-input-choice-set-option-button-color-border,
-        #747474
-    );
-    border-right-style: var(
-        --avonni-input-choice-set-option-button-styling-border,
-        solid
-    );
-    border-right-width: var(
-        --avonni-input-choice-set-option-button-sizing-border,
-        1px
-    );
+.avonni-input-choice-set__vertical .slds-radio_button__label,
+.avonni-input-choice-set__vertical .slds-checkbox_button__label {
+    margin-inline-start: 0 !important;
 }
 
 .avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
@@ -408,8 +461,13 @@
 .avonni-input-choice-set__vertical
     .slds-checkbox_button:last-child:not(:only-child),
 .avonni-input-choice-set__vertical
+    .slds-radio_button:last-child:not(:only-child),
+.avonni-input-choice-set__vertical
     .slds-checkbox_button:last-child:not(:only-child)
-    > .slds-checkbox_button__label {
+    > .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical
+    .slds-radio_button:last-child:not(:only-child)
+    > .slds-radio_button__label {
     border-radius: 0 0 var(--slds-s-input-radius-border, 0.25rem)
         var(--slds-s-input-radius-border, 0.25rem);
 }
@@ -417,16 +475,25 @@
 .avonni-input-choice-set__vertical
     .slds-checkbox_button:first-child:not(:only-child),
 .avonni-input-choice-set__vertical
+    .slds-radio_button:first-child:not(:only-child),
+.avonni-input-choice-set__vertical
     .slds-checkbox_button:first-child:not(:only-child)
-    > .slds-checkbox_button__label {
+    > .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical
+    .slds-radio_button:first-child:not(:only-child)
+    > .slds-radio_button__label {
     border-radius: var(--slds-s-input-radius-border, 0.25rem)
         var(--slds-s-input-radius-border, 0.25rem) 0 0;
 }
 
 .avonni-input-choice-set__vertical .slds-checkbox_button:only-child,
+.avonni-input-choice-set__vertical .slds-radio_button:only-child,
 .avonni-input-choice-set__vertical
     .slds-checkbox_button:only-child
-    > .slds-checkbox_button__label {
+    > .slds-checkbox_button__label,
+.avonni-input-choice-set__vertical
+    .slds-radio_button:only-child
+    > .slds-radio_button__label {
     border-radius: var(
         --avonni-input-choice-set-option-button-radius-border,
         var(--slds-s-input-radius-border, 0.25rem)
@@ -434,9 +501,13 @@
 }
 
 .avonni-input-choice-set__horizontal .slds-checkbox_button:only-child,
+.avonni-input-choice-set__horizontal .slds-radio_button:only-child,
 .avonni-input-choice-set__horizontal
     .slds-checkbox_button:only-child
-    > .slds-checkbox_button__label {
+    > .slds-checkbox_button__label,
+.avonni-input-choice-set__horizontal
+    .slds-radio_button:only-child
+    > .slds-radio_button__label {
     border-radius: var(
         --avonni-input-choice-set-option-button-radius-border,
         var(--slds-s-button-radius-border, 0.25rem)
