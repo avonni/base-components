@@ -41,6 +41,7 @@ describe('Primitive Pill', () => {
             expect(element.href).toBeUndefined();
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
+            expect(element.tooltipText).toBeUndefined();
             expect(element.variant).toBe('base');
         });
 
@@ -169,6 +170,69 @@ describe('Primitive Pill', () => {
                             'avonni-primitive-pill__action'
                         );
                     });
+            });
+        });
+
+        describe('tooltipText', () => {
+            it('Passed to the component', () => {
+                element.label = 'Some label';
+                element.tooltipText = 'Some tooltip text';
+
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text"]'
+                    );
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a-label"]'
+                    );
+                    expect(label).toBeTruthy();
+                    expect(label.title).toBe('Some tooltip text');
+                    expect(link).toBeFalsy();
+
+                    element.href = 'https://avonni.app/';
+
+                    return Promise.resolve().then(() => {
+                        const label2 = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text"]'
+                        );
+                        const link2 = element.shadowRoot.querySelector(
+                            '[data-element-id="a-label"]'
+                        );
+                        expect(link2).toBeTruthy();
+                        expect(link2.title).toBe('Some tooltip text');
+                        expect(label2).toBeFalsy();
+                    });
+                });
+            });
+
+            it('Defaults to label when not provided', () => {
+                element.label = 'Some label';
+
+                return Promise.resolve().then(() => {
+                    const label = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-formatted-rich-text"]'
+                    );
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a-label"]'
+                    );
+                    expect(label).toBeTruthy();
+                    expect(label.title).toBe('Some label');
+                    expect(link).toBeFalsy();
+
+                    element.href = 'https://avonni.app/';
+
+                    return Promise.resolve().then(() => {
+                        const label2 = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text"]'
+                        );
+                        const link2 = element.shadowRoot.querySelector(
+                            '[data-element-id="a-label"]'
+                        );
+                        expect(link2).toBeTruthy();
+                        expect(link2.title).toBe('Some label');
+                        expect(label2).toBeFalsy();
+                    });
+                });
             });
         });
 
