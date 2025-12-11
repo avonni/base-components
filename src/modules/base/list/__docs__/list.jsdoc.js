@@ -14,6 +14,7 @@
  * - href: string
  * @property {string} label Required. Label of the item.
  * @property {string} name Name to identify the item in the list.
+ * @property {string} tooltipText Tooltip text displayed when hovering over the item label.
  */
 /**
  * @typedef {Object} ListAction
