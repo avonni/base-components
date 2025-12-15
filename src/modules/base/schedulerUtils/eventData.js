@@ -1,14 +1,14 @@
 import {
-    numberOfUnitsBetweenDates,
     addToDate,
     dateTimeObjectFrom,
-    intervalFrom
+    intervalFrom,
+    numberOfUnitsBetweenDates
 } from 'c/luxonDateTimeUtils';
 import { deepCopy, normalizeArray } from 'c/utils';
+import { spansOnMoreThanOneDay } from './dateComputations';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
-import { spansOnMoreThanOneDay } from './dateComputations';
 
 /**
  * Events data of the scheduler.
@@ -370,6 +370,8 @@ export default class SchedulerEventData {
                     second: 59,
                     millisecond: 999
                 });
+            } else if (event.allDay && from.ts === to.ts) {
+                to = addToDate(to, 'millisecond', 1);
             }
 
             const eventInterval = intervalFrom(from, to);

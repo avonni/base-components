@@ -865,6 +865,75 @@ describe('Primitive Scheduler Calendar', () => {
                     });
             });
 
+            it('End date is optional in all-day events', () => {
+                element.events = [
+                    {
+                        name: 'no-end-date',
+                        allDay: true,
+                        resourceNames: ['resource-1'],
+                        from: new Date(2022, 8, 19, 10)
+                    }
+                ];
+                element.selectedResources = ALL_RESOURCES;
+                element.resources = RESOURCES;
+                element.selectedDate = SELECTED_DATE;
+
+                return Promise.resolve()
+                    .then(() => {
+                        // Wait for the visible interval to be set
+                    })
+                    .then(() => {
+                        const multiDayEvents =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]'
+                            );
+                        expect(multiDayEvents).toHaveLength(1);
+                        const from = DateTime.fromJSDate(
+                            new Date(2022, 8, 19)
+                        ).ts;
+                        expect(multiDayEvents[0].from.ts).toBe(from);
+                        const to = DateTime.fromJSDate(
+                            new Date(2022, 8, 19, 23, 59, 59, 999)
+                        ).ts;
+                        expect(multiDayEvents[0].to.ts).toBe(to);
+                    });
+            });
+
+            it('End date can be equal to start date in all-day events', () => {
+                element.events = [
+                    {
+                        name: 'no-end-date',
+                        allDay: true,
+                        resourceNames: ['resource-1'],
+                        from: new Date(2022, 8, 19, 10),
+                        to: new Date(2022, 8, 19, 10)
+                    }
+                ];
+                element.selectedResources = ALL_RESOURCES;
+                element.resources = RESOURCES;
+                element.selectedDate = SELECTED_DATE;
+
+                return Promise.resolve()
+                    .then(() => {
+                        // Wait for the visible interval to be set
+                    })
+                    .then(() => {
+                        const multiDayEvents =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]'
+                            );
+                        expect(multiDayEvents).toHaveLength(1);
+                        const from = DateTime.fromJSDate(
+                            new Date(2022, 8, 19)
+                        ).ts;
+                        const to = DateTime.fromJSDate(
+                            new Date(2022, 8, 19, 23, 59, 59, 999)
+                        ).ts;
+                        expect(multiDayEvents[0].from.ts).toBe(from);
+                        expect(multiDayEvents[0].to.ts).toBe(to);
+                    });
+            });
+
             it('One occurrence per resource is created', () => {
                 element.events = [
                     {
