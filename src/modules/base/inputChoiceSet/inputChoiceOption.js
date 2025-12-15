@@ -30,6 +30,7 @@ export default class InputChoiceOption {
         this.hidden = option.hidden;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition || POSITION_ICON.LEFT;
+        this.isMultiSelect = parent.isMultiSelect;
         this.hideLabel = option.hideLabel;
         this.label = option.label;
         this.tooltip = option.tooltip;
@@ -132,9 +133,13 @@ export default class InputChoiceOption {
      */
     get computedLabelButtonClass() {
         return classSet(
-            'slds-checkbox_faux slds-truncate avonni-input-choice-set__option-button-label'
+            'slds-truncate avonni-input-choice-set__option-button-label'
         )
-            .add({ 'slds-align_absolute-center': this.isIconTopOrBottom })
+            .add({
+                'slds-align_absolute-center': this.isIconTopOrBottom,
+                'slds-checkbox_faux': this.isMultiSelect,
+                'slds-radio_faux': !this.isMultiSelect
+            })
             .toString();
     }
 

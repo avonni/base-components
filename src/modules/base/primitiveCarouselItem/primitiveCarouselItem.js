@@ -1,5 +1,6 @@
 import {
     classSet,
+    convertHTMLToPlainText,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -34,7 +35,6 @@ const IMAGE_POSITIONS = {
 };
 
 export default class PrimitiveCarouselItem extends LightningElement {
-    @api description;
     @api href;
     @api imageAssistiveText;
     @api imageErrorLabel = DEFAULT_IMAGE_ERROR_LABEL;
@@ -49,11 +49,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actions = [];
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
+    _description;
     _cropFit = IMAGE_CROP_FIT.default;
     _imagePosition = IMAGE_POSITIONS.default;
     _isFocusable = false;
     _src;
 
+    descriptionTitle;
     displayImageError = false;
     illustrationTitle;
     illustrationVariant;
@@ -135,6 +137,21 @@ export default class PrimitiveCarouselItem extends LightningElement {
             fallbackValue: IMAGE_CROP_FIT.default,
             validValues: IMAGE_CROP_FIT.valid
         });
+    }
+
+    /**
+     * The description of the item.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get description() {
+        return this._description;
+    }
+    set description(description) {
+        this._description = description;
+        this.descriptionTitle = convertHTMLToPlainText(description);
     }
 
     /**

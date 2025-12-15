@@ -199,8 +199,7 @@
                 <!-- Metatext -->
                 <div
                     if:true={metatext}
-                    class="slds-truncate avonni-primitive-tree-item__metatext"
-                    title={metatext}
+                    class="avonni-primitive-tree-item__metatext"
                 >
                     <a
                         if:true={showLink}
@@ -208,11 +207,19 @@
                         href={href}
                         data-group-name="link"
                         onmousedown={handleLinkMouseDown}
-                        >{metatext}
+                    >
+                        <lightning-formatted-rich-text
+                            title={metatextTitle}
+                            value={metatext}
+                            data-element-id="lightning-formatted-rich-text-metatext-link"
+                        ></lightning-formatted-rich-text>
                     </a>
-                    <span if:false={showLink} data-element-id="span-metatext"
-                        >{metatext}
-                    </span>
+                    <lightning-formatted-rich-text
+                        if:false={showLink}
+                        title={metatextTitle}
+                        value={metatext}
+                        data-element-id="lightning-formatted-rich-text-metatext"
+                    ></lightning-formatted-rich-text>
                 </div>
 
                 <!-- Fields -->

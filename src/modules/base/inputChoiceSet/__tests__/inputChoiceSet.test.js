@@ -805,6 +805,7 @@ describe('Input choice set', () => {
                 element.options = options;
                 element.type = 'button';
                 element.orientation = 'vertical';
+                element.isMultiSelect = true;
 
                 return Promise.resolve().then(() => {
                     const inputs = element.shadowRoot.querySelectorAll(

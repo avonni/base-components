@@ -223,9 +223,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return super.availableTimeFrames;
     }
     set availableTimeFrames(value) {
+        const previousValue = this.availableTimeFrames;
         super.availableTimeFrames = value;
 
-        if (this._connected) {
+        if (
+            this._connected &&
+            !equal(previousValue, this.availableTimeFrames)
+        ) {
             this.initHeaders();
             this._dayHeadersLoading = false;
             this._hourHeadersLoading = false;
