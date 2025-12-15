@@ -1366,7 +1366,7 @@ export default class FilterMenu extends LightningElement {
         const valueLabels = this.value.map(
             (value) => this.labelMap.get(value) || value
         );
-        if (this.isDateRange || this.isRange) {
+        if (this.isDateRange || this.isRange || this.isTimeRange) {
             return this.selectedItems.map((item) => item.label);
         }
 
