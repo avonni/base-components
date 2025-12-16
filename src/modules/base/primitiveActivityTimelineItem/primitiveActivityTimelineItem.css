@@ -96,16 +96,12 @@
     margin-top: 0.2rem;
 }
 
-.avonni-primitive-activity-timeline-item__icon_medium {
-    margin-top: -0.15rem;
-}
-
 .avonni-primitive-activity-timeline-item__icon_xx-small:before {
     left: 1.95rem;
 }
 
 .avonni-primitive-activity-timeline-item__icon_x-small:before {
-    left: 2rem;
+    left: 2.125rem;
 }
 
 .avonni-primitive-activity-timeline-item__icon_small:before {
