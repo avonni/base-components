@@ -1,5 +1,29 @@
+.avonni-filter-menu__button-selected {
+    background-color: var(
+        --avonni-filter-menu-horizontal-button-color-background-selected,
+        var(--slds-g-color-palette-blue-95, #eef4ff)
+    );
+}
+
+.avonni-filter-menu__button-count-selected {
+    background-color: var(
+        --avonni-filter-menu-horizontal-button-count-background-color-selected
+    );
+    color: var(
+        --avonni-filter-menu-horizontal-button-count-text-color-selected
+    );
+}
+
+.avonni-filter-menu__button {
+    max-width: 250px;
+}
+
 [data-element-id='input-time-range-container'] .slds-form-element {
     padding-right: var(--lwc-spacingXSmall, 0.5rem);
     padding-bottom: var(--lwc-spacingXxSmall, 0.25rem);
     min-width: 150px;
+}
+
+.avonni-filter-menu__allow-shrink-width {
+    min-width: 0;
 }

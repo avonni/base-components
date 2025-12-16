@@ -50,10 +50,11 @@ export default {
                 'container',
                 'border-filled',
                 'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'outline-brand'
             ],
             description:
-                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
+                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, outline-brand, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' },
@@ -125,6 +126,18 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Dropdown menu'
+            }
+        },
+        hideApplyButton: {
+            name: 'hide-apply-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply button is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
             }
         },
         hideApplyResetButtons: {
@@ -233,6 +246,19 @@ export default {
                 category: 'Button'
             }
         },
+        resetButtonPosition: {
+            name: 'reset-button-position',
+            control: {
+                type: 'select'
+            },
+            options: ['top', 'bottom'],
+            description:
+                'The position of the reset button. Valid values include top and bottom. Default to bottom. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'bottom' }
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -317,12 +343,14 @@ export default {
         disabled: false,
         dropdownAlignment: 'left',
         dropdownNubbin: false,
+        hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         iconSize: 'medium',
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
         resetButtonLabel: 'Reset',
+        resetButtonPosition: 'bottom',
         type: 'list',
         variant: 'horizontal',
         weekStartDay: 0

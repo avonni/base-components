@@ -1051,7 +1051,8 @@ describe('OutputData', () => {
                             email ||
                             location ||
                             phone ||
-                            url
+                            url ||
+                            time
                     ).toBeFalsy();
                 });
             });

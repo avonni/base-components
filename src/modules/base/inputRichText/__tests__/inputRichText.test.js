@@ -39,6 +39,7 @@ describe('InputRichText', () => {
         describe('disabled', () => {
             it('Passed to the component', () => {
                 element.disabled = true;
+                element.formats = ['color'];
 
                 return Promise.resolve().then(() => {
                     const comboboxes = element.shadowRoot.querySelectorAll(
@@ -51,10 +52,7 @@ describe('InputRichText', () => {
                     const colorPicker = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-colorpicker-button"]'
                     );
-                    if (colorPicker) {
-                        expect(colorPicker.disabled).toBeTruthy();
-                    }
-
+                    expect(colorPicker.disabled).toBeTruthy();
                     const buttons = element.shadowRoot.querySelectorAll(
                         '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button'
                     );
@@ -66,6 +64,7 @@ describe('InputRichText', () => {
 
             it('false', () => {
                 element.disabled = false;
+                element.formats = ['color'];
 
                 return Promise.resolve().then(() => {
                     const comboboxes = element.shadowRoot.querySelectorAll(
@@ -78,17 +77,15 @@ describe('InputRichText', () => {
                     const colorPicker = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-colorpicker-button"]'
                     );
-                    if (colorPicker) expect(colorPicker.disabled).toBeFalsy();
+                    expect(colorPicker.disabled).toBeFalsy();
 
                     const buttons = element.shadowRoot.querySelectorAll(
                         '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button'
                     );
-                    buttons.forEach((button) => {
-                        if (button.classList.contains('ql-link')) {
-                            expect(button.disabled).toBeTruthy();
-                        } else {
-                            expect(button.disabled).toBeFalsy();
-                        }
+                    [...buttons].forEach((b) => {
+                        const shouldBeDisabled =
+                            b.classList.contains('ql-link');
+                        expect(b.disabled).toBe(shouldBeDisabled);
                     });
                 });
             });

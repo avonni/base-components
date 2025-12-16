@@ -10,6 +10,7 @@ const POSITION_ICON = {
 /**
  * Input choice set options
  * @class
+ * @param {string} additionalLabel Additional label of the option.
  * @param {string} alternativeText Alternative text of the option.
  * @param {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
  * @param {boolean} disabled If present, the option is disabled and it is not possible to select it.
@@ -23,6 +24,7 @@ const POSITION_ICON = {
  */
 export default class InputChoiceOption {
     constructor(option, parent) {
+        this.additionalLabel = option.additionalLabel;
         this.color = option.color;
         this.disabled = option.disabled || parent.disabled;
         this.hidden = option.hidden;
@@ -33,6 +35,7 @@ export default class InputChoiceOption {
         this.label = option.label;
         this.tooltip = option.tooltip;
         this.value = option.value;
+        this.displayAdditionalLabel = this.additionalLabel && !this.hideLabel;
         this.displayLabel = this.label && !this.hideLabel;
         this.type = parent.type;
         this.fixedWidth = parent.fixedWidth;

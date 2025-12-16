@@ -13,6 +13,19 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        align: {
+            name: 'align',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'center', 'right'],
+            description:
+                'Alignment of the menu group. Valid values include left, center, right. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
         applyButtonLabel: {
             name: 'apply-button-label',
             control: {
@@ -35,6 +48,17 @@ export default {
                 defaultValue: { summary: 'Reset' }
             }
         },
+        hideApplyButton: {
+            name: 'hide-apply-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply button is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         hideApplyResetButtons: {
             name: 'hide-apply-reset-buttons',
             control: {
@@ -52,6 +76,18 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        singleLine: {
+            name: 'single-line',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the menus are limited to one line for the horizontal variant.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -93,10 +129,13 @@ export default {
         }
     },
     args: {
+        align: 'left',
         applyButtonLabel: 'Apply',
+        hideApplyButton: false,
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         resetButtonLabel: 'Reset',
+        singleLine: false,
         variant: 'horizontal',
         weekStartDay: 0
     }

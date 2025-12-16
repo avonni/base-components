@@ -16,14 +16,16 @@
         onapply={handleApply}
         onclose={handleClose}
         onloadmore={handleLoadMore}
+        onloadtotalcount={handleLoadTotalCount}
         onopen={handleOpen}
         onreset={handleReset}
         onsearch={handleSearch}
         onselect={handleSelect}
     >
-        <template for:each={computedMenus} for:item="menu">
+        <template for:each={visibleMenus} for:item="menu">
             <li class={computedFiltersClass} key={menu.name}>
                 <c-filter-menu
+                    class="avonni-filter-menu-visible"
                     access-key={menu.accessKey}
                     alternative-text={menu.alternativeText}
                     apply-button-label={applyButtonLabel}
@@ -33,6 +35,7 @@
                     disabled={menu.disabled}
                     dropdown-alignment={menu.dropdownAlignment}
                     dropdown-nubbin={menu.dropdownNubbin}
+                    hide-apply-button={hideMenuApplyButtons}
                     hide-apply-reset-buttons={hideMenuApplyResetButtons}
                     hide-selected-items
                     icon-name={menu.iconName}
@@ -42,6 +45,7 @@
                     loading-state-alternative-text={menu.loadingStateAlternativeText}
                     name={menu.name}
                     reset-button-label={resetButtonLabel}
+                    reset-button-position={menuResetButtonPosition}
                     title={menu.title}
                     type={menu.type}
                     type-attributes={menu.typeAttributes}
@@ -57,31 +61,78 @@
                 ></c-filter-menu>
             </li>
         </template>
+        <c-layout-item if:true={isOverflow} class="slds-text-align_right">
+            <!-- The title &#8203; is a blank character to force the close button to be on the top right -->
+            <c-button-icon-popover
+                class={computedButtonIconPopoverClass}
+                icon-name="utility:filterList"
+                placement={buttonPopoverPlacement}
+                popover-size="large"
+                title="&#8203;"
+                variant="border-filled"
+                data-element-id="filter-menu-group-button-icon-popover"
+                onblur={handleBlur}
+                onclose={handleMoreFiltersClose}
+                onfocus={handleFocus}
+                onopen={handleMoreFiltersOpen}
+            >
+                <template for:each={hiddenMenus} for:item="menu">
+                    <li class="slds-m-bottom_small" key={menu.name}>
+                        <c-filter-menu
+                            access-key={menu.accessKey}
+                            alternative-text={menu.alternativeText}
+                            apply-button-label={applyButtonLabel}
+                            button-variant={menu.buttonVariant}
+                            closed={menu.closed}
+                            collapsible={menu.collapsible}
+                            disabled={menu.disabled}
+                            dropdown-alignment={menu.dropdownAlignment}
+                            dropdown-nubbin={menu.dropdownNubbin}
+                            hide-apply-button={hideHiddenMenuApplyButton}
+                            hide-apply-reset-buttons={hideApplyResetButtons}
+                            hide-selected-items
+                            icon-name={menu.iconName}
+                            icon-size={menu.iconSize}
+                            is-loading={menu.isLoading}
+                            label={menu.label}
+                            loading-state-alternative-text={menu.loadingStateAlternativeText}
+                            name={menu.name}
+                            reset-button-label={resetButtonLabel}
+                            reset-button-position="top"
+                            title={menu.title}
+                            type={menu.type}
+                            type-attributes={menu.typeAttributes}
+                            tooltip={menu.tooltip}
+                            value={menu.value}
+                            variant="vertical"
+                            week-start-day={weekStartDay}
+                            data-element-id="avonni-filter-menu-overflow"
+                            data-group-name="focusable-element"
+                            data-name={menu.name}
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
+                        ></c-filter-menu>
+                    </li>
+                </template>
+            </c-button-icon-popover>
+        </c-layout-item>
     </ul>
-    <c-pill-container
-        if:true={showHorizontalSelectedItems}
-        class="slds-m-top_x-small slds-show"
-        actions={pillActions}
-        items={selectedPills}
-        data-element-id="avonni-pill-container-horizontal"
-        data-group-name="focusable-element"
-        onactionclick={handleSelectedItemRemove}
-        onblur={handleBlur}
-        onfocus={handleFocus}
-    ></c-pill-container>
+    <div class={computedHorizontalSelectedItemsWrapperClass}>
+        <c-pill-container
+            if:true={showHorizontalSelectedItems}
+            class="slds-m-top_x-small slds-show"
+            actions={pillActions}
+            items={selectedPills}
+            data-element-id="avonni-pill-container-horizontal"
+            data-group-name="focusable-element"
+            onactionclick={handleSelectedItemRemove}
+            onblur={handleBlur}
+            onfocus={handleFocus}
+        ></c-pill-container>
+    </div>
     <template if:true={showApplyResetButtons}>
         <lightning-button
-            class="slds-m-right_x-small"
-            label={resetButtonLabel}
-            title={resetButtonLabel}
-            variant="base"
-            data-element-id="lightning-button-reset"
-            data-group-name="focusable-element"
-            onblur={handleBlur}
-            onclick={handleResetClick}
-            onfocus={handleFocus}
-        ></lightning-button>
-        <lightning-button
+            if:false={hideApplyButton}
             label={applyButtonLabel}
             title={applyButtonLabel}
             variant="brand"

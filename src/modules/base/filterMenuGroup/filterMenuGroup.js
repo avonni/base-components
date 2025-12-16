@@ -1,3 +1,4 @@
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     classSet,
     deepCopy,
@@ -6,6 +7,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Menu from './menu';
 
@@ -16,6 +18,13 @@ const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
+const FILTER_MENU_MARGIN = 4;
+const FILTER_MENU_POPOVER_BUTTON_SIZE = 32;
+
+const MENU_GROUP_ALIGNS = {
+    valid: ['left', 'center', 'right'],
+    default: 'left'
+};
 
 /**
  * @class
@@ -25,18 +34,33 @@ const MENU_VARIANTS = {
  */
 export default class FilterMenuGroup extends LightningElement {
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
+    _align = MENU_GROUP_ALIGNS.default;
+    _hideApplyButton = false;
     _hideApplyResetButtons = false;
     _hideSelectedItems = false;
     _menus = [];
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
+    _singleLine = false;
     _value = {};
     _variant = MENU_VARIANTS.default;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     computedMenus = [];
     selectedPills = [];
+    _computedMenusWhenLastOverflow = [];
     _connected = false;
+    _containerMaxHeight = 0;
+    _hasCalculatedOverflow = false;
+    _hasRecalculatedValue = false;
+    _hiddenMenusLength = 0;
+    _isCalculatingOverflow = false;
+    _isPopoverOpen = false;
+    _itemsWidths = [];
+    _itemsWidthsTotal = 0;
+    _openedMenuCount = 0;
+    _resizeObserver;
     _selectedValue = {};
+    _sliceIndex = 0;
 
     /*
      * ------------------------------------------------------------
@@ -49,11 +73,44 @@ export default class FilterMenuGroup extends LightningElement {
         this._connected = true;
     }
 
+    renderedCallback() {
+        if (!this._resizeObserver && this.showSingleLine) {
+            this._resizeObserver = this.initResizeObserver();
+        } else if (this._resizeObserver && !this.showSingleLine) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Alignment of the menu group. Valid values include left, center, right. This attribute isn’t supported for the vertical variant.
+     *
+     * @type {string}
+     * @public
+     * @default left
+     */
+    @api
+    get align() {
+        return this._align;
+    }
+    set align(align) {
+        this._align = normalizeString(align, {
+            fallbackValue: MENU_GROUP_ALIGNS.default,
+            validValues: MENU_GROUP_ALIGNS.valid
+        });
+    }
 
     /**
      * Label of the apply button.
@@ -71,6 +128,21 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_APPLY_BUTTON_LABEL;
+    }
+
+    /**
+     * If present, the apply button is hidden and the value is immediately saved every time the selection changes.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideApplyButton() {
+        return this._hideApplyButton;
+    }
+    set hideApplyButton(value) {
+        this._hideApplyButton = normalizeBoolean(value);
     }
 
     /**
@@ -143,6 +215,23 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * If present, the menus are limited to one line. This attribute isn’t supported for the vertical variant.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get singleLine() {
+        return this._singleLine;
+    }
+    set singleLine(value) {
+        this._singleLine = normalizeBoolean(value);
+        if (this._connected && !this._resizeObserver && this.showSingleLine) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+    }
+
+    /**
      * Value of the menus. The object follows the structure `{ menuName: menuValue }`.
      * Depending on the menu type, its value will have a different type:
      * * `list`: selected item’s value, or array of selected items' values.
@@ -180,6 +269,9 @@ export default class FilterMenuGroup extends LightningElement {
             fallbackValue: MENU_VARIANTS.default,
             validValues: MENU_VARIANTS.valid
         });
+        if (this._connected && !this._resizeObserver && this.showSingleLine) {
+            this._resizeObserver = this.initResizeObserver();
+        }
     }
 
     /**
@@ -208,6 +300,51 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Placement of the popover.
+     *
+     * @type {string}
+     */
+    get buttonPopoverPlacement() {
+        if (!this.moreFilterElement) {
+            return 'auto';
+        }
+        const rect = this.moreFilterElement.getBoundingClientRect();
+        const elementCenterX = rect.left + rect.width / 2;
+        const viewportCenterX = window.innerWidth / 2;
+        const horizontal = elementCenterX < viewportCenterX ? 'left' : 'right';
+        return horizontal;
+    }
+
+    /**
+     * Position of the reset button
+     *
+     * @type {string}
+     */
+    get menuResetButtonPosition() {
+        return this.isVertical ? 'top' : 'bottom';
+    }
+
+    /**
+     * Button Icon Popover Class Styling
+     *
+     * @type {string}
+     */
+    get computedButtonIconPopoverClass() {
+        const hasSelectedPopover = (this.hiddenMenus || []).some((menu) => {
+            const val = this._value[menu.name];
+            return Array.isArray(val) && val.length > 0;
+        });
+        return classSet(
+            'slds-show_inline-block slds-text-align_left avonni-filter-menu-group__button-icon-popover'
+        )
+            .add({
+                'avonni-filter-menu-group__button-icon-popover-selected':
+                    hasSelectedPopover
+            })
+            .toString();
+    }
+
+    /**
      * Filters class styling
      *
      * @type {string}
@@ -226,8 +363,50 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get computedFiltersWrapperClass() {
         return classSet({
-            'slds-grid': !this.isVertical
-        });
+            'slds-grid': !this.isVertical,
+            'slds-grid_align-center':
+                !this.isVertical && this.align === 'center',
+            'slds-grid_align-end': !this.isVertical && this.align === 'right',
+            'slds-wrap': !this.isVertical,
+            'slds-grid_vertical-align-center': !this.isVertical,
+            'slds-hidden': this._isCalculatingOverflow && this.showSingleLine
+        }).toString();
+    }
+
+    /**
+     * Selected items class wrapper styling for the horizontal variant
+     *
+     * @type {string}
+     */
+    get computedHorizontalSelectedItemsWrapperClass() {
+        return classSet('slds-grid')
+            .add({
+                'slds-grid_align-end': this.align === 'right',
+                'slds-grid_align-center': this.align === 'center'
+            })
+            .toString();
+    }
+
+    /**
+     * Dynamically compute the hidden menus based on the slice index.
+     *
+     * @type {object[]}
+     */
+    get hiddenMenus() {
+        return this.computedMenus.slice(this._sliceIndex);
+    }
+
+    /**
+     * True if the apply and reset buttons should be hidden for each menu.
+     *
+     * @type {boolean}
+     */
+    get hideMenuApplyButtons() {
+        return (
+            this.hideApplyButton ||
+            this.hideApplyResetButtons ||
+            this.isVertical
+        );
     }
 
     /**
@@ -236,7 +415,25 @@ export default class FilterMenuGroup extends LightningElement {
      * @type {boolean}
      */
     get hideMenuApplyResetButtons() {
-        return this.isVertical || this.hideApplyResetButtons;
+        return !this.isVertical && this.hideApplyResetButtons;
+    }
+
+    /**
+     * True if the apply and reset buttons should be hidden for each hidden menu.
+     *
+     * @type {boolean}
+     */
+    get hideHiddenMenuApplyButton() {
+        return this.hideApplyButton || this.hideApplyResetButtons;
+    }
+
+    /**
+     * True if the menu group shows a single line
+     *
+     * @type {boolean}
+     */
+    get showSingleLine() {
+        return !this.isVertical && this.singleLine;
     }
 
     /**
@@ -246,6 +443,46 @@ export default class FilterMenuGroup extends LightningElement {
      */
     get isVertical() {
         return this.variant === 'vertical';
+    }
+
+    /**
+     * Check if there is an overflow from the visible menus.
+     *
+     * @type {boolean}
+     */
+    get isOverflow() {
+        return this._hiddenMenusLength > 0 && this.showSingleLine;
+    }
+
+    /**
+     * Returns the list of filter menu elements.
+     *
+     * @type {NodeListOf<HTMLElement>}
+     */
+    get listMenus() {
+        return this.template.querySelectorAll(
+            '[data-element-id="avonni-filter-menu"]'
+        );
+    }
+
+    /**
+     * Return the menu group wrapper.
+     *
+     * @type {Element}
+     */
+    get menuGroupWrapper() {
+        return this.template.querySelector('[data-element-id="ul"]');
+    }
+
+    /**
+     * Return the button icon popover.
+     *
+     * @type {Element}
+     */
+    get moreFilterElement() {
+        return this.template.querySelector(
+            '[data-element-id="filter-menu-group-button-icon-popover"]'
+        );
     }
 
     /**
@@ -298,6 +535,17 @@ export default class FilterMenuGroup extends LightningElement {
         );
     }
 
+    /**
+     * Dynamically compute the visible menus based on the slice index.
+     *
+     * @type {object[]}
+     */
+    get visibleMenus() {
+        return this.showSingleLine
+            ? this.computedMenus.slice(0, this._sliceIndex)
+            : this.computedMenus;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -311,6 +559,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     @api
     apply() {
+        this.updateRecalculationFlag();
         this._value = deepCopy(this._selectedValue);
         this.computeValue();
     }
@@ -380,6 +629,46 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Checks if a computation of the visible menus is allowed.
+     *
+     * @returns {boolean} True if a computation of the visible menus is allowed.
+     */
+    allowVisibleMenusComputation() {
+        return (
+            this._connected &&
+            this.menuGroupWrapper &&
+            this.showSingleLine &&
+            this._openedMenuCount === 0 &&
+            !this._isCalculatingOverflow &&
+            !this._isPopoverOpen
+        );
+    }
+
+    /**
+     * Compute the slice index for the hidden menus.
+     *
+     * @param {number} wrapperWidth Width of the menu group wrapper.
+     * @returns {number} Slice index
+     */
+    computeSliceIndex(wrapperWidth) {
+        let sliceIndex =
+            this._itemsWidthsTotal < wrapperWidth
+                ? this.computedMenus.length
+                : 0;
+
+        if (sliceIndex !== this.computedMenus.length) {
+            let totalWidth = FILTER_MENU_POPOVER_BUTTON_SIZE;
+            sliceIndex = 0;
+            for (const menuWidth of this._itemsWidths) {
+                if (totalWidth + menuWidth > wrapperWidth) break;
+                totalWidth += menuWidth;
+                sliceIndex++;
+            }
+        }
+        return sliceIndex;
+    }
+
+    /**
      * Set the value in each computed menu.
      */
     computeValue() {
@@ -390,6 +679,207 @@ export default class FilterMenuGroup extends LightningElement {
         });
         this.selectedPills = pills.flat();
         this._selectedValue = deepCopy(this.value);
+        // Make sure the visible menus are all displayed.
+        if (this._hiddenMenusLength === 0) {
+            this._sliceIndex = this.computedMenus.length;
+        }
+        if (this.isDifferentComputedMenu()) {
+            this.updateVisibleMenus();
+        }
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.menuGroupWrapper) {
+            return null;
+        }
+        return new AvonniResizeObserver(this.menuGroupWrapper, () => {
+            this.updateVisibleMenusOnResize();
+        });
+    }
+
+    /**
+     * Check if the menus have changed since the last overflow calculation.
+     *
+     * @returns {boolean} True if the menus have changed since the last overflow calculation.
+     */
+    isDifferentComputedMenu() {
+        const currentMenusState = this.computedMenus.map((menu) => ({
+            name: menu.name,
+            label: menu.label
+        }));
+
+        return !equal(currentMenusState, this._computedMenusWhenLastOverflow);
+    }
+
+    /**
+     * Save all items widths, to compute their visibility later.
+     */
+    saveItemsWidths() {
+        this._itemsWidths = [];
+        this._itemsWidthsTotal = 0;
+
+        for (const listMenu of this.listMenus) {
+            const width =
+                listMenu.getBoundingClientRect().width + FILTER_MENU_MARGIN;
+            this._itemsWidths.push(width);
+            this._itemsWidthsTotal += width;
+        }
+    }
+
+    /**
+     * Save the container max height, to compute their visibility later.
+     *
+     * @param {number} sliceIndex The index at which the menus appear in the popover.
+     */
+    saveContainerMaxHeight(sliceIndex) {
+        const childHeights = Array.from(this.listMenus).map(
+            (el) => el.offsetHeight
+        );
+        const maxChildHeight = childHeights.length
+            ? Math.max(...childHeights)
+            : 0;
+
+        let tallestChildHeight;
+
+        if (sliceIndex === 0) {
+            tallestChildHeight = FILTER_MENU_POPOVER_BUTTON_SIZE;
+        } else if (sliceIndex === this.computedMenus.length) {
+            tallestChildHeight = maxChildHeight;
+        } else {
+            tallestChildHeight = Math.max(
+                FILTER_MENU_POPOVER_BUTTON_SIZE,
+                maxChildHeight
+            );
+        }
+        this._containerMaxHeight = tallestChildHeight;
+    }
+
+    /**
+     * Updates the internal recalculation flag based on the changed value.
+     * The flag is set to true if any menu value has changed since the last stored value.
+     * This flag is used to determine whether the visible menus needs to be updated after a value change.
+     */
+    updateRecalculationFlag() {
+        if (!this.showSingleLine || !this._isPopoverOpen) {
+            this._hasRecalculatedValue = false;
+            return;
+        }
+
+        this._hasRecalculatedValue = this.hiddenMenus.some((menu) => {
+            const name = menu.name;
+            const newValue = this._selectedValue[name] ?? [];
+            const oldValue = this._value[name] ?? [];
+            return !equal(newValue, oldValue);
+        });
+    }
+
+    /**
+     * Re-evaluates and updates the visible menus when the component is resized.
+     */
+    updateVisibleMenusOnResize() {
+        if (!this.allowVisibleMenusComputation()) {
+            this._hasCalculatedOverflow = false;
+            return;
+        }
+
+        if (
+            this._containerMaxHeight === this.menuGroupWrapper.offsetHeight &&
+            this._hasCalculatedOverflow
+        ) {
+            this._hasCalculatedOverflow = false;
+            return;
+        }
+
+        if (!this._itemsWidthsTotal) {
+            this.saveItemsWidths();
+            this.saveContainerMaxHeight(this._sliceIndex);
+        }
+
+        this.listMenus.forEach((listMenu, i) => {
+            const width =
+                listMenu.getBoundingClientRect().width + FILTER_MENU_MARGIN;
+
+            const oldWidth = this._itemsWidths[i] || 0;
+            this._itemsWidthsTotal += width - oldWidth;
+            this._itemsWidths[i] = width;
+        });
+
+        const wrapperWidth = this.menuGroupWrapper?.offsetWidth || 0;
+        const wrapperHeight = this.menuGroupWrapper?.offsetHeight || 0;
+        let sliceIndex = this.computeSliceIndex(wrapperWidth);
+
+        if (
+            this._sliceIndex !== sliceIndex ||
+            this._containerMaxHeight !== wrapperHeight
+        ) {
+            this.updateVisibleMenus(wrapperWidth);
+        }
+    }
+
+    /**
+     * Update the visible items.
+     *
+     * @param {number} maxWidth Max width of the menu group wrapper.
+     */
+    updateVisibleMenus(maxWidth) {
+        if (!this.allowVisibleMenusComputation()) {
+            this._hasCalculatedOverflow = false;
+            return;
+        }
+        this._sliceIndex = this.computedMenus.length;
+        this._isCalculatingOverflow = true;
+        // Waiting for the items to be rendered
+        requestAnimationFrame(() => {
+            let wrapperWidth =
+                (maxWidth ?? this.menuGroupWrapper?.offsetWidth) || 0;
+            this.saveItemsWidths();
+            let sliceIndex = this.computeSliceIndex(wrapperWidth);
+            this.saveContainerMaxHeight(sliceIndex);
+            this.updateVisibleState(sliceIndex);
+        });
+
+        // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
+        const adjustOverflowStep = () => {
+            if (
+                this.menuGroupWrapper &&
+                this._containerMaxHeight !==
+                    this.menuGroupWrapper.offsetHeight &&
+                this._sliceIndex > 0
+            ) {
+                const sliceIndex = Math.max(0, this._sliceIndex - 1);
+                this.updateVisibleState(sliceIndex);
+                requestAnimationFrame(adjustOverflowStep);
+            } else {
+                this._isCalculatingOverflow = false;
+                this._hasCalculatedOverflow = true; // Prevents infinite loops of resize
+            }
+        };
+
+        requestAnimationFrame(adjustOverflowStep);
+    }
+
+    /**
+     * Update the visible state based on the index at which menus appear in the popover.
+     *
+     * @param {number} sliceIndex The index at which the menus appear in the popover.
+     */
+    updateVisibleState(sliceIndex) {
+        this._sliceIndex = sliceIndex;
+        this.saveContainerMaxHeight(sliceIndex);
+        this._hiddenMenusLength = this.hiddenMenus.length;
+        this._computedMenusWhenLastOverflow = this.computedMenus.map(
+            (menu) => ({
+                name: menu.name,
+                label: menu.label
+            })
+        );
+        this._openedMenuCount = 0;
+        this._hasRecalculatedValue = false;
     }
 
     /*
@@ -405,7 +895,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleApply(event) {
         event.stopPropagation();
-        if (this.hideMenuApplyResetButtons) {
+        if (this.hideMenuApplyButtons) {
             // The apply and select events are fired at the same time
             return;
         }
@@ -441,6 +931,13 @@ export default class FilterMenuGroup extends LightningElement {
     handleClose(event) {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
+        const isVisibleMenu = this.visibleMenus.find(
+            (m) => m.name === menuName
+        );
+        if (isVisibleMenu) {
+            this._openedMenuCount = Math.max(0, this._openedMenuCount - 1);
+            this.updateVisibleMenusOnResize();
+        }
 
         /**
          * The event fired when a dropdown is closed (horizontal variant) or a section is closed (vertical variant).
@@ -495,6 +992,77 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Handle the nb filter items event.
+     *
+     * @param {Event} event `loadtotalcount` event fired by the menu.
+     */
+    handleLoadTotalCount(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when the list is opened or the search term is modified.
+         *
+         * @event
+         * @name loadtotalcount
+         * @param {string} name Name of the menu that triggered the event.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadtotalcount', {
+                detail: { name: menuName }
+            })
+        );
+    }
+
+    /**
+     * Handle the opening of the more filters button.
+     *
+     * @param {Event} event open event fired by the popover.
+     */
+    handleMoreFiltersOpen(event) {
+        event.stopPropagation();
+        const elementId = event.target.dataset.elementId;
+        if (elementId === 'filter-menu-group-button-icon-popover') {
+            if (this.moreFilterElement) {
+                this._hasRecalculatedValue = false;
+                this._isPopoverOpen = true;
+            }
+            return;
+        }
+        this.handleOpen(event);
+    }
+
+    /**
+     * Handle the closing of the more filters button.
+     *
+     * @param {Event} event close event fired by the popover.
+     */
+    handleMoreFiltersClose(event) {
+        event.stopPropagation();
+        const elementId = event.target.dataset.elementId;
+        if (elementId === 'filter-menu-group-button-icon-popover') {
+            requestAnimationFrame(() => {
+                const isAllClosed =
+                    !this.moreFilterElement?.classList.contains(
+                        'slds-is-open'
+                    ) && this._openedMenuCount === 0;
+                if (isAllClosed) {
+                    this._isPopoverOpen = false;
+                    if (this._hasRecalculatedValue) {
+                        this._hasRecalculatedValue = false;
+                        this.updateVisibleMenus();
+                    } else {
+                        this.updateVisibleMenusOnResize();
+                    }
+                }
+            });
+            return;
+        }
+        this.handleClose(event);
+    }
+
+    /**
      * Handle the opening of a menu popover.
      *
      * @param {Event} event open event fired by the menu.
@@ -502,6 +1070,9 @@ export default class FilterMenuGroup extends LightningElement {
     handleOpen(event) {
         event.stopPropagation();
         const menuName = event.target.dataset.name;
+        if (this.visibleMenus.find((m) => m.name === menuName)) {
+            this._openedMenuCount = Math.max(0, this._openedMenuCount + 1);
+        }
 
         /**
          * The event fired when a dropdown is opened (horizontal variant) or a section is opened (vertical variant).
@@ -521,29 +1092,26 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Handle a click on a "Reset" button, in the horizontal variant.
+     * Handle a click on a "Reset" button, in the horizontal variant or the vertical variant.
      *
      * @param {Event} event `reset` event fired by the menu.
      */
     handleReset(event) {
         event.stopPropagation();
-        if (this.isVertical) {
-            return;
-        }
         const menuName = event.target.dataset.name;
+
+        // A reset can be send in the horizontal variant from the hidden menus
+        // even if hideApplyResetButtons is true.
+        const shouldSaveImmediately =
+            this.hideApplyButton || this.hideApplyResetButtons;
+
         delete this._selectedValue[menuName];
         this.dispatchReset(menuName);
-    }
-
-    /**
-     * Handle a click on the "Reset" button, in the vertical variant.
-     */
-    handleResetClick() {
-        if (!this.isVertical) {
-            return;
+        // Save the reset immediately
+        if (shouldSaveImmediately) {
+            this.apply();
+            this.dispatchApply(menuName);
         }
-        this.reset();
-        this.dispatchReset();
     }
 
     /**
@@ -595,6 +1163,7 @@ export default class FilterMenuGroup extends LightningElement {
             delete this.value[menuName];
         }
         this.computeValue();
+        this.updateVisibleMenus();
         this.dispatchApply();
     }
 
@@ -632,8 +1201,8 @@ export default class FilterMenuGroup extends LightningElement {
             })
         );
 
-        if (this.hideApplyResetButtons) {
-            // Save the selection immediately
+        // Save the selection immediately
+        if (this.hideApplyButton || this.hideApplyResetButtons) {
             this.apply();
             this.dispatchApply(menuName);
         }
