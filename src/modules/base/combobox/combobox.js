@@ -173,6 +173,7 @@ export default class Combobox extends LightningElement {
     _scopesGroups = [];
     _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
     _selectedOptionsDirection = SELECTED_OPTIONS_DIRECTIONS.default;
+    _showSelectedOptionsSecondaryText = false;
     _sortableSelectedOptions = false;
     _value = [];
     _variant = VARIANTS.default;
@@ -654,6 +655,21 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * If present, the secondary text of the selected options is displayed.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get showSelectedOptionsSecondaryText() {
+        return this._showSelectedOptionsSecondaryText;
+    }
+    set showSelectedOptionsSecondaryText(value) {
+        this._showSelectedOptionsSecondaryText = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the selected options are sortable.
      *
      * @type {boolean}
@@ -796,6 +812,9 @@ export default class Combobox extends LightningElement {
             const normalizedOpt = { ...opt, name: opt.value };
             if (this.hideAvatarInSelectedOptions) {
                 delete normalizedOpt.avatar;
+            }
+            if (this.showSelectedOptionsSecondaryText) {
+                normalizedOpt.description = opt?.secondaryText;
             }
             return normalizedOpt;
         });
