@@ -571,6 +571,7 @@ export default {
         requiredAlternativeText: 'Required',
         selectedOptionsAriaLabel: 'Selected Options',
         selectedOptionsDirection: 'horizontal',
+        //showSelectedOptionsSecondaryText: false,
         sortableSelectedOptions: false,
         variant: 'standard'
     }
@@ -626,6 +627,7 @@ VerticalSelectedOptions.args = {
     dropdownLength: '5-items',
     actions,
     selectedOptionsDirection: 'vertical',
+    showSelectedOptionsSecondaryText: true,
     sortableSelectedOptions: true,
     sortableSelectedOptionsIconName: 'utility:drag_and_drop',
     value: ['tyrell', 'oil-sla', 'dickenson']
