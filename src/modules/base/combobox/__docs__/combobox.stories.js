@@ -571,7 +571,7 @@ export default {
         requiredAlternativeText: 'Required',
         selectedOptionsAriaLabel: 'Selected Options',
         selectedOptionsDirection: 'horizontal',
-        //showSelectedOptionsSecondaryText: false,
+        showSelectedOptionsSecondaryText: false,
         sortableSelectedOptions: false,
         variant: 'standard'
     }
