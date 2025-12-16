@@ -31,8 +31,7 @@ const ITEMS = [
     {
         label: 'First pill',
         name: 'first',
-        href: '#first-pill',
-        tooltipText: 'This is the first pill'
+        href: '#first-pill'
     },
     {
         label: 'Second pill',

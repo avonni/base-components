@@ -60,8 +60,7 @@ export const items = [
         label: 'Item 1',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        name: 'name-item-1',
-        tooltipText: 'Tooltip for Item 1'
+        name: 'name-item-1'
     },
     {
         label: 'Item 2',

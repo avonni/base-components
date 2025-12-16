@@ -46,7 +46,6 @@ export default class Item {
         this.imagePosition = value.imagePosition;
         this.label = value.label;
         this.name = value.name;
-        this.tooltipText = value.tooltipText || value.label;
     }
 
     /**

@@ -703,43 +703,6 @@ describe('List', () => {
                 });
             });
 
-            describe('Tooltip Text', () => {
-                it('Defaults to label if not provided', () => {
-                    element.items = [
-                        {
-                            label: 'Item without tooltipText',
-                            name: 'item-without-tooltip'
-                        }
-                    ];
-
-                    return Promise.resolve().then(() => {
-                        const itemTooltip = element.shadowRoot.querySelector(
-                            '[data-element-id="div-item-tooltip"]'
-                        );
-                        expect(itemTooltip.title).toBe(
-                            'Item without tooltipText'
-                        );
-                    });
-                });
-
-                it('Uses provided tooltipText', () => {
-                    element.items = [
-                        {
-                            label: 'Item with tooltipText',
-                            name: 'item-with-tooltip',
-                            tooltipText: 'Custom tooltip text'
-                        }
-                    ];
-
-                    return Promise.resolve().then(() => {
-                        const itemTooltip = element.shadowRoot.querySelector(
-                            '[data-element-id="div-item-tooltip"]'
-                        );
-                        expect(itemTooltip.title).toBe('Custom tooltip text');
-                    });
-                });
-            });
-
             it('Description', () => {
                 element.items = [
                     {

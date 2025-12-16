@@ -325,11 +325,7 @@ describe('Combobox', () => {
                         );
                         expect(pillContainer).toBeTruthy();
                         const items = options.map((option) => {
-                            return {
-                                ...option,
-                                name: option.value,
-                                tooltipText: option.value
-                            };
+                            return { ...option, name: option.value };
                         });
                         expect(pillContainer.items).toEqual(items);
                     });
