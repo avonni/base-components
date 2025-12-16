@@ -57,6 +57,7 @@ describe('Combobox', () => {
             expect(element.requiredAlternativeText).toBe('Required');
             expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
             expect(element.selectedOptionsDirection).toBe('horizontal');
+            expect(element.showSelectedOptionsSecondaryText).toBeFalsy();
             expect(element.sortableSelectedOptions).toBeFalsy();
             expect(element.sortableSelectedOptionsIconName).toBeUndefined();
             expect(element.scopes).toMatchObject([]);
@@ -720,6 +721,38 @@ describe('Combobox', () => {
                         );
                         expect(pillContainer).toBeFalsy();
                         expect(list).toBeTruthy();
+                    });
+            });
+
+            // Depends on selectedOptionsDirection and isMultiSelect
+            it('ShowSelectedOptionsSecondaryText', () => {
+                element.options = options;
+                element.isMultiSelect = true;
+                element.showSelectedOptionsSecondaryText = true;
+                element.selectedOptionsDirection = 'vertical';
+
+                return Promise.resolve()
+                    .then(() => {
+                        const combobox = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-main"]'
+                        );
+                        combobox.dispatchEvent(
+                            new CustomEvent('privateselect', {
+                                detail: {
+                                    selectedOptions: options
+                                }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const list = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-list"]'
+                        );
+                        list.items.forEach((item, index) => {
+                            expect(item.description).toBe(
+                                options[index].secondaryText
+                            );
+                        });
                     });
             });
 
