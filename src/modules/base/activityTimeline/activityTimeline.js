@@ -596,7 +596,9 @@ export default class ActivityTimeline extends LightningElement {
         });
         if (this._isConnected && this.isTimelineHorizontal) {
             this.requestRedrawTimeline();
-            this.renderedCallback();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
         }
     }
 
