@@ -594,7 +594,7 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: ICON_VARIANTS.default,
             validValues: ICON_VARIANTS.valid
         });
-        if (this.isTimelineHorizontal) {
+        if (this._isConnected && this.isTimelineHorizontal) {
             this.requestRedrawTimeline();
             this.renderedCallback();
         }
