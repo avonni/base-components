@@ -611,7 +611,7 @@ describe('Activity Timeline', () => {
 
             it('circle', () => {
                 element.iconName = 'standard:case';
-                element.itemIconVariant = 'square';
+                element.itemIconVariant = 'circle';
 
                 return Promise.resolve().then(() => {
                     const timelinesItems = element.shadowRoot.querySelectorAll(
