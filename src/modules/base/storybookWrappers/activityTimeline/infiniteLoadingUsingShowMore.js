@@ -173,6 +173,7 @@ export default class InfiniteLoadingUsingShowMoreActivityTimeline extends Lightn
     @api iconSize;
     @api itemDateFormat;
     @api itemIconSize;
+    @api itemIconVariant;
     @api loadMoreOffset;
     @api locale;
     @api orientation;

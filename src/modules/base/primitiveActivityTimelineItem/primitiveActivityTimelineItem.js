@@ -35,6 +35,11 @@ const ICON_SIZES = {
     default: 'small'
 };
 
+const ICON_VARIANTS = {
+    valid: ['circle', 'square'],
+    default: 'square'
+};
+
 /**
  * @class
  * @descriptor c-primitive-activity-timeline-item
@@ -121,6 +126,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hideVerticalBar = false;
     _iconName;
     _iconSize = ICON_SIZES.default;
+    _iconVariant = ICON_VARIANTS.default;
     _isActive = false;
     _isLoading = false;
     _timezone;
@@ -451,6 +457,24 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * The shape of the item's icon. Valid values include circle and square.
+     *
+     * @public
+     * @type {string}
+     * @default square
+     */
+    @api
+    get iconVariant() {
+        return this._iconVariant;
+    }
+    set iconVariant(value) {
+        this._iconVariant = normalizeString(value, {
+            fallbackValue: ICON_VARIANTS.default,
+            validValues: ICON_VARIANTS.valid
+        });
+    }
+
+    /**
      * If present, this item gets a blue bullet incase it has no icon.
      *
      * @public
@@ -511,34 +535,10 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     get avatarToDisplay() {
         return (
-            (this.avatar?.src ||
-                this.avatar?.initials ||
-                this.avatar?.fallbackIconName) &&
-            !this.hideVerticalBar
+            this.avatar?.src ||
+            this.avatar?.initials ||
+            this.avatar?.fallbackIconName
         );
-    }
-
-    /**
-     * Computed styling class for item without vertical bar.
-     *
-     * @type {string}
-     */
-    get computedbodyClass() {
-        return classSet('slds-media__body')
-            .add({
-                'avonni-primitive-activity-timeline-item___no-vertical-bar-margin':
-                    this.hideVerticalBar
-            })
-            .toString();
-    }
-
-    /**
-     * Styling class for item with fields without vertical bar.
-     *
-     * @type {string}
-     */
-    get computedChevronIconClass() {
-        return this.hideVerticalBar ? 'slds-m-top_x-small' : '';
     }
 
     /**
@@ -627,9 +627,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @public
      */
     get timelineItemBulletClass() {
-        if (this.hideVerticalBar) {
-            return '';
-        }
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
                 'avonni-timeline-item__active-bullet': this.isActive
@@ -741,7 +738,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         if (!icon || !container) return;
 
         let color = '';
-        if (this.avatarToDisplay) {
+        if (this.hideVerticalBar) {
+            color = 'transparent';
+        } else if (this.avatarToDisplay) {
             color =
                 this.avatar.fallbackIconName || this.avatar.initials
                     ? icon.getBackgroundColor()

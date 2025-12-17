@@ -2,6 +2,7 @@ import { getPathPrefix, getToken } from 'lightning/configProvider';
 import isIframeInEdge from './isIframeInEdge';
 import { IconSVGCreator } from './iconSVGCreator';
 export { fetchIconLibrary, hasIconLibrary, getIconLibrary } from './fetch';
+import { classSet } from 'c/utils';
 
 const validNameRe = /^([a-zA-Z]+):([a-zA-Z]\w*)$/;
 const underscoreRe = /_/g;
@@ -145,9 +146,11 @@ export const createSVGIcon = (
  * @returns {object} Foreign object that will contain the avatar initials
  */
 export const createAvatarInitials = (iconInformation, foreignObjectForIcon) => {
+    const styleClass = classSet(iconInformation.styleClass);
+    styleClass.add(iconInformation.iconVariantClass);
     foreignObjectForIcon
         .append('xhtml:abbr')
-        .attr('class', iconInformation.styleClass)
+        .attr('class', styleClass)
         .html(`${iconInformation.initials}`);
 
     return foreignObjectForIcon;
@@ -160,9 +163,11 @@ export const createAvatarInitials = (iconInformation, foreignObjectForIcon) => {
  * @returns {object} Foreign object that will contain the image
  */
 export const createImage = (iconInformation, foreignObjectForIcon) => {
+    const styleClass = classSet(iconInformation.styleClass);
+    styleClass.add(iconInformation.iconVariantClass);
     foreignObjectForIcon
         .append('xhtml:img')
-        .attr('class', iconInformation.styleClass)
+        .attr('class', styleClass)
         .attr('src', `${iconInformation.src}`);
 
     return foreignObjectForIcon;

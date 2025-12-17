@@ -1,5 +1,5 @@
 import { fetchIconLibrary, getIconLibrary } from './fetch';
-
+import { classSet } from 'c/utils';
 const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
 const DEFAULT_ICON_PATH = '/assets';
@@ -114,13 +114,12 @@ export class IconSVGCreator {
      *  Create icon from one of the default path.
      */
     createIconFromDefaultPath(foreignObjectForIcon, iconInformation) {
+        const styleClass = classSet('slds-icon slds-icon_container');
+        styleClass.add(iconInformation.categoryIconClass);
+        styleClass.add(iconInformation.iconVariantClass);
         const iconContainer = foreignObjectForIcon
             .append('xhtml:span')
-            .attr(
-                'class',
-                'slds-icon slds-icon_container ' +
-                    iconInformation.categoryIconClass
-            )
+            .attr('class', styleClass)
 
             .html(
                 '<svg class="slds-icon"><use xlink:href=' +
@@ -147,15 +146,14 @@ export class IconSVGCreator {
         const elementsToCreateIcon =
             this.extractElementsFromIconTemplate(iconInformation);
         const svgAttributes = elementsToCreateIcon.svg;
+        const styleClass = classSet('slds-icon slds-icon_container');
+        styleClass.add(iconInformation.categoryIconClass);
+        styleClass.add(iconInformation.iconVariantClass);
 
         // Create svg to contain icon
         const iconSVG = foreignObjectForIcon
             .append('xhtml:span')
-            .attr(
-                'class',
-                'slds-icon slds-icon_container ' +
-                    iconInformation.categoryIconClass
-            )
+            .attr('class', styleClass)
             .append('svg')
             .attr('width', SVG_ICON_SIZE)
             .attr('height', SVG_ICON_SIZE)

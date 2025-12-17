@@ -274,6 +274,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        itemIconVariant: {
+            name: 'item-icon-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['circle', 'square'],
+            description:
+                "The shape of all the items' icon. Valid values include circle and square.",
+            table: {
+                defaultValue: { summary: 'square' },
+                type: { summary: 'string' }
+            }
+        },
         items: {
             control: {
                 type: 'object'
@@ -403,6 +416,7 @@ export default {
         iconSize: 'medium',
         isLoading: false,
         itemIconSize: 'small',
+        itemIconVariant: 'square',
         loadMoreOffset: 20,
         loadingStateAlternativeText: 'Loading...',
         locale: 'en-GB',

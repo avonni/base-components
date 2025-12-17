@@ -28,6 +28,7 @@ export const InfiniteLoadingUsingShowMoreActivityTimeline = ({
     isLoading,
     itemDateFormat,
     itemIconSize,
+    itemIconVariant,
     items,
     loadMoreOffset,
     loadingStateAlternativeText,
@@ -62,6 +63,7 @@ export const InfiniteLoadingUsingShowMoreActivityTimeline = ({
     element.isLoading = isLoading;
     element.itemDateFormat = itemDateFormat;
     element.itemIconSize = itemIconSize;
+    element.iconVariant = itemIconVariant;
     element.items = items;
     element.intervalDaysLength = intervalDaysLength;
     element.loadMoreOffset = loadMoreOffset;

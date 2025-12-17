@@ -64,6 +64,11 @@ const ICON_SIZES = {
     default: 'medium'
 };
 
+const ICON_VARIANTS = {
+    valid: ['circle', 'square'],
+    default: 'square'
+};
+
 const ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
@@ -160,6 +165,7 @@ export default class ActivityTimeline extends LightningElement {
     _isLoading = false;
     _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
+    _itemIconVariant = ICON_VARIANTS.default;
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _locale = DEFAULT_LOCALE;
@@ -570,6 +576,28 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: DEFAULT_ITEM_ICON_SIZE,
             validValues: ICON_SIZES.valid
         });
+    }
+
+    /**
+     * The shape of all the items' icon. Valid values include circle and square.
+     *
+     * @public
+     * @type {string}
+     * @default square
+     */
+    @api
+    get itemIconVariant() {
+        return this._itemIconVariant;
+    }
+    set itemIconVariant(value) {
+        this._itemIconVariant = normalizeString(value, {
+            fallbackValue: ICON_VARIANTS.default,
+            validValues: ICON_VARIANTS.valid
+        });
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            this.renderedCallback();
+        }
     }
 
     /**

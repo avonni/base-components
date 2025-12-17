@@ -64,6 +64,7 @@ describe('Activity Timeline', () => {
             expect(element.isLoading).toBeFalsy();
             expect(element.itemDateFormat).toBe('LLLL dd, yyyy, t');
             expect(element.itemIconSize).toBe('small');
+            expect(element.itemIconVariant).toBe('square');
             expect(element.items).toMatchObject([]);
             expect(element.loadMoreOffset).toBe(20);
             expect(element.loadingStateAlternativeText).toBe('Loading...');
@@ -588,6 +589,36 @@ describe('Activity Timeline', () => {
                     );
                     timelinesItems.forEach((item) =>
                         expect(item.iconSize).toBe('large')
+                    );
+                });
+            });
+        });
+
+        describe('itemIconVariant', () => {
+            it('square', () => {
+                element.iconName = 'standard:case';
+                element.itemIconVariant = 'square';
+
+                return Promise.resolve().then(() => {
+                    const timelinesItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                    );
+                    timelinesItems.forEach((item) =>
+                        expect(item.iconVariant).toBe('square')
+                    );
+                });
+            });
+
+            it('circle', () => {
+                element.iconName = 'standard:case';
+                element.itemIconVariant = 'square';
+
+                return Promise.resolve().then(() => {
+                    const timelinesItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                    );
+                    timelinesItems.forEach((item) =>
+                        expect(item.iconVariant).toBe('circle')
                     );
                 });
             });

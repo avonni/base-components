@@ -1501,6 +1501,7 @@ export class HorizontalActivityTimeline {
     setDefaultIconInformation() {
         return {
             iconName: DEFAULT_ICON_NAME,
+            iconVariantClass: `avonni-activity-timeline__horizontal-timeline-avatar__${this._activityTimeline.itemIconVariant}`,
             category: DEFAULT_ICON_CATEGORY,
             categoryIconClass: `slds-icon-${DEFAULT_ICON_CATEGORY}-${DEFAULT_ICON_NAME} slds-icon_small`
         };
@@ -1592,6 +1593,7 @@ export class HorizontalActivityTimeline {
             );
             iconInformations = {
                 iconName: nameOfIcon,
+                iconVariantClass: `avonni-activity-timeline__horizontal-timeline-avatar__${this._activityTimeline.itemIconVariant}`,
                 category: iconCategory,
                 categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
                     /_/g,

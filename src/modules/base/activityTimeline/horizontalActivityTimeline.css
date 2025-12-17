@@ -96,6 +96,15 @@
     border-radius: 0.25rem;
 }
 
+/* Make sure the avatar respects the shape of circle */
+.avonni-activity-timeline__horizontal-timeline-avatar__circle {
+    border-radius: 50% !important;
+}
+/* Make sure the avatar respects the shape of square */
+.avonni-activity-timeline__horizontal-timeline-avatar__square {
+    border-radius: 0.25rem !important;
+}
+
 .avonni-activity-timeline__horizontal-timeline-avatar__initials {
     color: #ffffff;
     font-size: 0.625rem;

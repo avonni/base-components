@@ -198,6 +198,8 @@ describe('Horizontal Activity Timeline', () => {
                 ];
                 const expectedIconInformation = {
                     iconName: 'empty',
+                    iconVariantClass:
+                        'avonni-activity-timeline__horizontal-timeline-avatar__square',
                     category: 'standard',
                     categoryIconClass:
                         'slds-icon-standard-empty slds-icon_small'

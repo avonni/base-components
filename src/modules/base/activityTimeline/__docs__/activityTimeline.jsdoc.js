@@ -31,6 +31,7 @@
  * @property {string} href URL to use as a link for the title.
  * @property {string} iconName (Deprecated) Use `avatar` instead. The Lightning Design System name of the icon displayed in the item header, before the title. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
  * @property {string} iconSize The size of the item's icon. Valid values are xx-small, x-small, small, medium and large. Defaults to small.
+ * @property {string} iconVariant The shape of the item's icon. Valid values include circle and square. Defaults to square.
  * @property {string[]} icons Array of icon names to display after the title.
  * @property {boolean} isActive If present, and the item has no icon, a blue circle will replace the default gray bullet. Defaults to false.
  * @property {boolean} isLoading If present, the detail section is in a loading state and shows a spinner. Defaults to false.
