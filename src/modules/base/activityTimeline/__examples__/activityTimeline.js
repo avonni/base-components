@@ -28,6 +28,7 @@ export const ActivityTimeline = ({
     isLoading,
     itemDateFormat,
     itemIconSize,
+    itemIconVariant,
     items,
     loadMoreOffset,
     loadingStateAlternativeText,
@@ -60,6 +61,7 @@ export const ActivityTimeline = ({
     element.isLoading = isLoading;
     element.itemDateFormat = itemDateFormat;
     element.itemIconSize = itemIconSize;
+    element.itemIconVariant = itemIconVariant;
     element.items = items;
     element.intervalDaysLength = intervalDaysLength;
     element.loadMoreOffset = loadMoreOffset;

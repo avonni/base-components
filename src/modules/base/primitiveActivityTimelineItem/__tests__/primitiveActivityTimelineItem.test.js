@@ -88,6 +88,7 @@ describe('Primitive Activity Timeline Item', () => {
             expect(element.icons).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSize).toBe('small');
+            expect(element.iconVariant).toBe('square');
             expect(element.isActive).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.loadingStateAlternativeText).toBe('Loading');
@@ -572,13 +573,25 @@ describe('Primitive Activity Timeline Item', () => {
 
         describe('hideVerticalBar', () => {
             it('Passed to the component', () => {
+                element.avatar = {
+                    initials: 'AB',
+                    fallbackIconName: 'standard:case',
+                    src: 'image.png',
+                    presence: 'online'
+                };
                 element.hideVerticalBar = true;
+                jest.runAllTimers();
 
                 return Promise.resolve().then(() => {
-                    const verticalBar = element.shadowRoot.querySelector(
-                        '.slds-timeline__icon'
+                    const timelineItem = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-timeline-item"]'
                     );
-                    expect(verticalBar).toBeFalsy();
+                    const styles = getComputedStyle(timelineItem);
+                    const lineColor = styles
+                        .getPropertyValue('--line-color')
+                        .trim();
+
+                    expect(lineColor).toBe('transparent');
                 });
             });
         });
@@ -654,6 +667,32 @@ describe('Primitive Activity Timeline Item', () => {
                         '[data-element-id="item-marker"]'
                     );
                     expect(icon.size).toBe('large');
+                });
+            });
+        });
+
+        describe('iconVariant', () => {
+            it('square', () => {
+                element.avatar = { fallbackIconName: 'standard:case' };
+                element.iconVariant = 'square';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="item-marker"]'
+                    );
+                    expect(icon.variant).toBe('square');
+                });
+            });
+
+            it('circle', () => {
+                element.avatar = { fallbackIconName: 'standard:case' };
+                element.iconVariant = 'circle';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="item-marker"]'
+                    );
+                    expect(icon.variant).toBe('circle');
                 });
             });
         });

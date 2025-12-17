@@ -8,7 +8,6 @@
                 <lightning-button-icon
                     if:true={hasFields}
                     aria-expanded={isOpen}
-                    icon-class={computedChevronIconClass}
                     icon-name={computedChevronIconName}
                     size="medium"
                     variant="bare"
@@ -23,6 +22,7 @@
                     presence={avatar.presence}
                     size={iconSize}
                     src={avatar.src}
+                    variant={iconVariant}
                     data-element-id="item-marker"
                 ></c-primitive-avatar>
                 <div
@@ -31,7 +31,7 @@
                     data-element-id="item-marker"
                 ></div>
             </div>
-            <div class={computedbodyClass}>
+            <div class="slds-media__body">
                 <div
                     class="
                         slds-grid slds-grid_align-spread
