@@ -16,7 +16,8 @@
 }
 
 .avonni-scheduler__main-section {
-    flex: 1 1 0;
+    border-top-left-radius: calc(var(--slds-g-sizing-border-4) * 2);
+    border-bottom-left-radius: calc(var(--slds-g-sizing-border-4) * 2);
 }
 
 .avonni-scheduler__agenda-month-header {

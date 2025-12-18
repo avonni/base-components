@@ -1,17 +1,17 @@
-import { api } from 'lwc';
-import { addToDate } from 'c/luxonDateTimeUtils';
 import { Interval } from 'c/luxon';
+import { addToDate } from 'c/luxonDateTimeUtils';
 import {
     getElementOnYAxis,
     isAllDay,
     isAllowedDay,
     nextAllowedDay,
     nextAllowedMonth,
-    spansOnMoreThanOneDay,
-    ScheduleBase
+    ScheduleBase,
+    spansOnMoreThanOneDay
 } from 'c/schedulerUtils';
-import DayGroup from './dayGroup';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import { api } from 'lwc';
+import DayGroup from './dayGroup';
 
 const DEFAULT_LABEL_NO_EVENTS_FOUND = 'No events for the selected date.';
 const DEFAULT_SELECTED_DATE = new Date();
@@ -310,7 +310,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
     get computedMainSectionClass() {
         return classSet(
-            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
+            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section avonni-scheduler__second-col slds-scrollable'
         )
             .add({
                 'avonni-scheduler__main-border_left':

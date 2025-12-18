@@ -16,6 +16,7 @@
 
 .avonni-scheduler__main-section {
     flex: 1 1 0;
+    border-radius: calc(var(--slds-g-sizing-border-4) * 2);
 }
 
 .avonni-scheduler-calendar__visible-scrollbar {
@@ -107,8 +108,8 @@
 }
 
 .avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell {
-    border-right-color: var(--lwc-colorBorder, #e5e5e5);
-    border-bottom-color: #747474;
+    border-right-color: var(--slds-g-color-border-1, #c9c9c9);
+    border-bottom-color: var(--slds-g-color-border-1, #c9c9c9);
 }
 
 .avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell_today {
