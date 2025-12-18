@@ -253,7 +253,10 @@ export default class FilterMenu extends LightningElement {
             // to click on the load more button
             this._dispatchLoadMore();
         }
-        this._dispatchLoadTotalCount();
+
+        if (this.isList && !this.computedTypeAttributes.totalCount) {
+            this._dispatchLoadTotalCount();
+        }
     }
 
     disconnectedCallback() {
@@ -2566,11 +2569,8 @@ export default class FilterMenu extends LightningElement {
      * Dispatch the `loadtotalcount` event.
      */
     _dispatchLoadTotalCount() {
-        if (!this.isList) {
-            return;
-        }
         /**
-         * The event fired when the list is rendered or the search term is modified.
+         * The event fired when the total count of the list items is unknown.
          *
          * @event
          * @name loadtotalcount
