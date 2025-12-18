@@ -634,13 +634,15 @@ export default class FilterMenuGroup extends LightningElement {
      * @returns {boolean} True if a computation of the visible menus is allowed.
      */
     allowVisibleMenusComputation() {
+        // An offset height of 0 means the component is not fully rendered yet
         return (
             this._connected &&
             this.menuGroupWrapper &&
             this.showSingleLine &&
             this._openedMenuCount === 0 &&
             !this._isCalculatingOverflow &&
-            !this._isPopoverOpen
+            !this._isPopoverOpen &&
+            this.menuGroupWrapper.offsetHeight > 0
         );
     }
 
