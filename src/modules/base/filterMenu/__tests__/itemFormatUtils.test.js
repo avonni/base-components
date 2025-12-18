@@ -1,5 +1,14 @@
 import { formatDateFromStyle, formatTimeString } from '../itemFormatUtils';
 
+const DEFAULT_LANGUAGE = 'en-CA';
+jest.mock('c/dateTimeUtils', () => {
+    const actualConstants = jest.requireActual('c/dateTimeUtils');
+    return {
+        DEFAULT_LANGUAGE: DEFAULT_LANGUAGE, // Make sure the tests language is always the same
+        DATE_FORMAT_PRESETS: actualConstants.DATE_FORMAT_PRESETS
+    };
+});
+
 describe('Filter Menu: Item Format Utils', () => {
     describe('formatDateFromStyle()', () => {
         it('Date should be formatted', () => {
@@ -10,7 +19,7 @@ describe('Filter Menu: Item Format Utils', () => {
                 timeZone: 'America/Toronto',
                 dateStyle: 'long'
             });
-            expect(result).toBe('January 1, 2020 at 12:00:00 AM EST');
+            expect(result).toBe('January 1, 2020 at 12:00:00 a.m. EST');
         });
 
         it('Date should be formatted with short date style by default', () => {
@@ -43,7 +52,7 @@ describe('Filter Menu: Item Format Utils', () => {
     describe('formatTimeString()', () => {
         it('Time string in HH:mm:ss.SSS format should be formatted', () => {
             const result = formatTimeString('08:30:00.000');
-            expect(result).toBe('8:30 AM');
+            expect(result).toBe('8:30 a.m.');
         });
 
         it('Invalid DateTime should return empty string', () => {
