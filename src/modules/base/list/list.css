@@ -346,7 +346,7 @@ a.avonni-list__item-info-link:active {
 .avonni-list__item-divider_around {
     --avonni-card-radius-border: var(
         --avonni-list-item-around-border-radius,
-        0.25rem
+        var(--slds-s-container-radius-border, 0.25rem)
     );
     --avonni-card-sizing-border: var(--avonni-list-item-sizing-border, 1px);
     --avonni-card-styling-border: var(--avonni-list-item-styling-border, solid);
