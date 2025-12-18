@@ -254,7 +254,7 @@ export default class FilterMenu extends LightningElement {
             this._dispatchLoadMore();
         }
 
-        if (this.isList && !this.computedTypeAttributes.totalCount) {
+        if (this.isList && isNaN(this.computedTypeAttributes.totalCount)) {
             this._dispatchLoadTotalCount();
         }
     }
