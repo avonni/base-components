@@ -1284,6 +1284,18 @@ export default class List extends LightningElement {
         this.setItemProperties();
     }
 
+    /**
+     * Scroll the list to the top.
+     *
+     * @public
+     */
+    @api
+    scrollToTop() {
+        if (this.listContainer) {
+            this.listContainer.scrollTop = 0;
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
