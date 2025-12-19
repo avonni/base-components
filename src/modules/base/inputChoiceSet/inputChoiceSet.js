@@ -1072,6 +1072,16 @@ export default class InputChoiceSet extends LightningElement {
             this._containerWidth = wrapper.getBoundingClientRect().width;
             this.setFixedOptionWidth();
             this.destroyTooltip();
+
+            if (this._containerWidth === 0) {
+                // Corner case when the choice set is hidden
+                // (for example when it is inside a tabbed container).
+                // We reinitialize the options to make sure the hidden options
+                // are reset properly if the choice set is shown again.
+                this.initOptions();
+            } else {
+                this.setOptionWidth();
+            }
         });
     }
 
