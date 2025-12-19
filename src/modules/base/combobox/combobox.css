@@ -41,3 +41,10 @@
         0.25rem
     );
 }
+
+.avonni-combobox__list {
+    --avonni-list-item-description-font-size: var(
+        --slds-g-font-scale-neg-1,
+        0.75rem
+    );
+}

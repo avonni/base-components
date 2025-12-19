@@ -41,6 +41,7 @@ export const Combobox = ({
     search,
     selectedOptionsAriaLabel,
     selectedOptionsDirection,
+    showSelectedOptionsSecondaryText,
     sortableSelectedOptions,
     sortableSelectedOptionsIconName,
     value,
@@ -85,6 +86,7 @@ export const Combobox = ({
     element.search = search;
     element.selectedOptionsAriaLabel = selectedOptionsAriaLabel;
     element.selectedOptionsDirection = selectedOptionsDirection;
+    element.showSelectedOptionsSecondaryText = showSelectedOptionsSecondaryText;
     element.sortableSelectedOptions = sortableSelectedOptions;
     element.sortableSelectedOptionsIconName = sortableSelectedOptionsIconName;
     element.value = value;

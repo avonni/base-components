@@ -39,6 +39,7 @@ export default class Combobox extends LightningElement {
     @api search;
     @api selectedOptionsAriaLabel;
     @api selectedOptionsDirection;
+    @api showSelectedOptionsSecondaryText;
     @api sortableSelectedOptions;
     @api sortableSelectedOptionsIconName;
     @api value;

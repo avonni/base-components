@@ -166,6 +166,8 @@
                                         slds-grid
                                         slds-grid_vertical-align-center
                                     "
+                                    title={item.label}
+                                    data-element-id="div-item-tooltip"
                                 >
                                     <lightning-icon
                                         if:true={showSortIconLeftOfContent}
@@ -249,7 +251,6 @@
                                                         slds-truncate
                                                         avonni-list__item-header_font
                                                     "
-                                                    title={item.label}
                                                     data-element-id="div-item-label"
                                                 >
                                                     <a
