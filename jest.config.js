@@ -21,6 +21,7 @@ module.exports = {
         '^c/(layoutItem)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(outputData)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(positionLibrary)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveAvatar)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveCombobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitivePill)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveSchedulerAgenda)$':

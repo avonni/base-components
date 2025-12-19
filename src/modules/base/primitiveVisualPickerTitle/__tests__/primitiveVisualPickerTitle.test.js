@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import PrimitiveVisualPickerTitle from 'c/primitiveVisualPickerTitle';
+import { createElement } from 'lwc';
 
 let element;
 describe('PrimitiveVisualPickerTitle', () => {
@@ -35,7 +35,7 @@ describe('PrimitiveVisualPickerTitle', () => {
             const avatar =
                 element.shadowRoot.querySelector('c-primitive-avatar');
             expect(avatar.fallbackIconName).toBe('custom:custom68');
-            expect(avatar.size).toBe('medium');
+            expect(avatar.size).toBeUndefined();
             expect(avatar.classList).toContain('slds-m-right_x-small');
         });
     });
@@ -51,7 +51,7 @@ describe('PrimitiveVisualPickerTitle', () => {
             const avatar =
                 element.shadowRoot.querySelector('c-primitive-avatar');
             expect(avatar.fallbackIconName).toBe('custom:custom68');
-            expect(avatar.size).toBe('medium');
+            expect(avatar.size).toBeUndefined();
             expect(avatar.classList).toContain('slds-m-left_x-small');
         });
     });

@@ -205,9 +205,7 @@ describe('Vertical Visual Picker', () => {
                         expect(figureAvatar[index].iconName).toBe(
                             item.iconName
                         );
-                        expect(figureAvatar[index].size).toBe(
-                            item.iconSize || 'medium'
-                        );
+                        expect(figureAvatar[index].size).toBe(item.iconSize);
                         expect(figureTitles[index].textContent).toBe(
                             item.title
                         );

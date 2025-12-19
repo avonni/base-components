@@ -1,5 +1,5 @@
+import { DATE_FORMAT_PRESETS, DEFAULT_LANGUAGE } from 'c/dateTimeUtils';
 import { DateTime } from 'c/luxon';
-import { DATE_FORMAT_PRESETS } from 'c/dateTimeUtils';
 
 import { isValidISOTimeString, STANDARD_TIME_FORMAT } from 'c/iso8601Utils';
 
@@ -33,7 +33,7 @@ export function formatDateFromStyle(
         timeZone
     };
 
-    return new Intl.DateTimeFormat('default', options).format(date);
+    return new Intl.DateTimeFormat(DEFAULT_LANGUAGE, options).format(date);
 }
 
 /**
@@ -46,7 +46,7 @@ export function formatDateFromStyle(
 export function formatTimeString(value) {
     if (!isValidISOTimeString(value)) return '';
     const time = DateTime.fromFormat(value, STANDARD_TIME_FORMAT, {
-        locale: 'default'
+        locale: DEFAULT_LANGUAGE
     });
 
     return time.isValid
