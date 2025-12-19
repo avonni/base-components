@@ -95,14 +95,104 @@
                                 onchange={handleChangeStartDate}
                                 onfocus={handleFocus}
                             ></c-calendar>
-                            <div class="slds-align_absolute-center">
+                            <div
+                                class="
+                                    avonni-input-date-range__button-container
+                                "
+                            >
                                 <lightning-button
                                     label={todayButtonLabel}
                                     variant="base"
                                     data-element-id="select-start-today-button"
                                     data-is-focusable
                                     onblur={handleBlur}
-                                    onclick={handleSelectStartToday}
+                                    onclick={handleSelectToday}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Yesderday"
+                                    variant="base"
+                                    data-element-id="select-start-yesterday-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectYesterday}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="This week"
+                                    variant="base"
+                                    data-element-id="select-start-this-week-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisWeek}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Last week"
+                                    variant="base"
+                                    data-element-id="select-start-last-week-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastWeek}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="This month"
+                                    variant="base"
+                                    data-element-id="select-start-this-month-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisMonth}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="Last month"
+                                    variant="base"
+                                    data-element-id="select-start-last-month-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastMonth}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="This quarter"
+                                    variant="base"
+                                    data-element-id="select-start-this-quarter-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisQuarter}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="Last quarter"
+                                    variant="base"
+                                    data-element-id="select-start-last-quarter-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastQuarter}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="This year"
+                                    variant="base"
+                                    data-element-id="select-start-this-year-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisYear}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="Last year"
+                                    variant="base"
+                                    data-element-id="select-start-last-year-button"
+                                    data-is-focusable
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastYear}
                                     onfocus={handleFocus}
                                 ></lightning-button>
                             </div>
@@ -215,14 +305,114 @@
                                 onchange={handleChangeEndDate}
                                 onfocus={handleFocus}
                             ></c-calendar>
-                            <div class="slds-align_absolute-center">
+                            <div
+                                class="
+                                    avonni-input-date-range__button-container
+                                "
+                            >
                                 <lightning-button
                                     label={todayButtonLabel}
                                     variant="base"
                                     data-element-id="select-end-today-button"
                                     data-is-focusable
+                                    data-range-boundary="end"
                                     onblur={handleBlur}
-                                    onclick={handleSelectEndToday}
+                                    onclick={handleSelectToday}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Yesderday"
+                                    variant="base"
+                                    data-element-id="select-end-yesterday-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectYesterday}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="This week"
+                                    variant="base"
+                                    data-element-id="select-end-this-week-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisWeek}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Last week"
+                                    variant="base"
+                                    data-element-id="select-end-last-week-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastWeek}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="This month"
+                                    variant="base"
+                                    data-element-id="select-end-this-month-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisMonth}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="Last month"
+                                    variant="base"
+                                    data-element-id="select-end-last-month-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastMonth}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="This quarter"
+                                    variant="base"
+                                    data-element-id="select-end-this-quarter-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisQuarter}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="Last quarter"
+                                    variant="base"
+                                    data-element-id="select-end-last-quarter-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastQuarter}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="This year"
+                                    variant="base"
+                                    data-element-id="select-end-this-year-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectThisYear}
+                                    onfocus={handleFocus}
+                                ></lightning-button>
+
+                                <lightning-button
+                                    label="Last year"
+                                    variant="base"
+                                    data-element-id="select-end-last-year-button"
+                                    data-is-focusable
+                                    data-range-boundary="end"
+                                    onblur={handleBlur}
+                                    onclick={handleSelectLastYear}
                                     onfocus={handleFocus}
                                 ></lightning-button>
                             </div>

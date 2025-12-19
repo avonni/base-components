@@ -851,6 +851,86 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
+    setThisWeekRange() {
+        const d = new Date(new Date().setHours(0, 0, 0, 0));
+        const weekStartDay = this._weekStartDay;
+
+        const currentDay = d.getDay();
+
+        const diff = (currentDay - weekStartDay + 7) % 7;
+
+        const startOfWeek = new Date(d);
+        startOfWeek.setDate(d.getDate() - diff);
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfWeek;
+        this._endDate = endOfWeek;
+    }
+
+    setThisMonthRange() {
+        const d = new Date(new Date().setHours(0, 0, 0, 0));
+
+        const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+        endOfMonth.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfMonth;
+        this._endDate = endOfMonth;
+    }
+
+    setThisQuarterRange() {
+        const d = new Date(new Date().setHours(0, 0, 0, 0));
+
+        const quarter = Math.floor(d.getMonth() / 3);
+
+        const startMonth = quarter * 3;
+        const startOfQuarter = new Date(d.getFullYear(), startMonth, 1);
+        startOfQuarter.setHours(0, 0, 0, 0);
+
+        const endMonth = startMonth + 3;
+        const endOfQuarter = new Date(d.getFullYear(), endMonth, 0);
+        endOfQuarter.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfQuarter;
+        this._endDate = endOfQuarter;
+    }
+
+    setThisYearRange() {
+        const d = new Date(new Date().setHours(0, 0, 0, 0));
+
+        const startOfYear = new Date(d.getFullYear(), 0, 1);
+        startOfYear.setHours(0, 0, 0, 0);
+
+        const endOfYear = new Date(d.getFullYear(), 11, 31);
+        endOfYear.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfYear;
+        this._endDate = endOfYear;
+    }
+
+    setStartChange() {
+        this._dispatchChange();
+        this.stopPositioning();
+        this.showStartDate = false;
+
+        requestAnimationFrame(() => {
+            if (this.calendarKeyEvent === 'keyboard') {
+                this.startDateIcon.focus();
+            } else if (!this.endDate) {
+                this.setFocusDate(this._startDate, 'end');
+                this.showEndDate = true;
+                this.startPositioning('end');
+            }
+            this.calendarKeyEvent = null;
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS && DISPATCHERS
@@ -1105,20 +1185,7 @@ export default class InputDateRange extends LightningElement {
             default:
         }
 
-        this._dispatchChange();
-        this.stopPositioning();
-        this.showStartDate = false;
-
-        requestAnimationFrame(() => {
-            if (this.calendarKeyEvent === 'keyboard') {
-                this.startDateIcon.focus();
-            } else if (!this.endDate) {
-                this.setFocusDate(this._startDate, 'end');
-                this.showEndDate = true;
-                this.startPositioning('end');
-            }
-            this.calendarKeyEvent = null;
-        });
+        this.setStartChange();
     }
 
     /**
@@ -1381,27 +1448,132 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Click the today button on start calendar
+     * Click the today button on calendar range
      */
-    handleSelectStartToday() {
+    handleSelectToday() {
         this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        this.setStartChange();
+    }
+    /**
+     * Click the yesterday button on calendar range
+     */
+    handleSelectYesterday() {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(0, 0, 0, 0);
+        this._startDate = yesterday;
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the the current month button on calendar range
+     */
+    handleSelectThisMonth() {
+        this.setThisMonthRange();
 
         if (this._startDate > this._endDate) this._endDate = null;
 
-        this._dispatchChange();
-        this.stopPositioning();
-        this.showStartDate = false;
+        this.setStartChange();
+    }
 
-        requestAnimationFrame(() => {
-            if (this.calendarKeyEvent === 'keyboard') {
-                this.startDateIcon.focus();
-            } else if (!this.endDate) {
-                this.setFocusDate(this._startDate, 'end');
-                this.showEndDate = true;
-                this.startPositioning('end');
-            }
-            this.calendarKeyEvent = null;
-        });
+    /**
+     * Click the current week button on calendar range
+     */
+    handleSelectThisWeek() {
+        this.setThisWeekRange();
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the current quarter button on calendar range
+     */
+    handleSelectThisQuarter() {
+        this.setThisQuarterRange();
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the current year button on calendar range
+     */
+    handleSelectThisYear() {
+        this.setThisYearRange();
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the last week button on calendar range
+     */
+    handleSelectLastWeek() {
+        const lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 7);
+        lastWeek.setHours(0, 0, 0, 0);
+        this._startDate = lastWeek;
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the last month button on calendar range
+     */
+    handleSelectLastMonth() {
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        lastMonth.setHours(0, 0, 0, 0);
+
+        this._startDate = lastMonth;
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the last quarter button on calendar range
+     */
+    handleSelectLastQuarter() {
+        const lastQuarter = new Date();
+        lastQuarter.setMonth(lastQuarter.getMonth() - 3);
+        lastQuarter.setHours(0, 0, 0, 0);
+
+        this._startDate = lastQuarter;
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
+    }
+
+    /**
+     * Click the last year button on calendar range
+     */
+    handleSelectLastYear() {
+        const lastYear = new Date();
+        lastYear.setFullYear(lastYear.getFullYear() - 1);
+        lastYear.setHours(0, 0, 0, 0);
+
+        this._startDate = lastYear;
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.setStartChange();
     }
 
     /**

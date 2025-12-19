@@ -41,3 +41,17 @@
     font-style: var(--avonni-input-date-range-labels-font-style, normal);
     font-weight: var(--avonni-input-date-range-labels-font-weight, 400);
 }
+
+.avonni-input-date-range__button-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    gap: 0.5rem;
+}
+
+.avonni-input-date-range__button-container lightning-button {
+    flex: 0 0 auto;
+}
