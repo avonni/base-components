@@ -323,6 +323,14 @@ describe('FilterMenuGroup', () => {
 
         describe('singleLine', () => {
             it('Passed to the component', async () => {
+                const buttonGroupRow = element.shadowRoot.querySelector(
+                    '[data-element-id="ul"]'
+                );
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetHeight',
+                    'get'
+                ).mockImplementation(() => 32);
                 element.singleLine = true;
                 element.menus = MENUS;
 
@@ -403,7 +411,7 @@ describe('FilterMenuGroup', () => {
                             buttonGroupRow,
                             'offsetHeight',
                             'get'
-                        ).mockImplementation(() => 0);
+                        ).mockImplementation(() => 1);
                         callObserver();
                         await flushPromises();
                     })
@@ -966,6 +974,14 @@ describe('FilterMenuGroup', () => {
             });
 
             it('close event from a menu inside the more filters popover', async () => {
+                const buttonGroupRow = element.shadowRoot.querySelector(
+                    '[data-element-id="ul"]'
+                );
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetHeight',
+                    'get'
+                ).mockImplementation(() => 32);
                 element.singleLine = true;
                 element.menus = MENUS;
                 const handler = jest.fn();
@@ -997,6 +1013,14 @@ describe('FilterMenuGroup', () => {
 
         describe('close & open', () => {
             it('close and open event from more filters popover', async () => {
+                const buttonGroupRow = element.shadowRoot.querySelector(
+                    '[data-element-id="ul"]'
+                );
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetHeight',
+                    'get'
+                ).mockImplementation(() => 32);
                 element.singleLine = true;
                 element.menus = MENUS;
                 const openHandler = jest.fn();
@@ -1035,6 +1059,14 @@ describe('FilterMenuGroup', () => {
             });
 
             it('close and open event from more filters popover with changed value', async () => {
+                const buttonGroupRow = element.shadowRoot.querySelector(
+                    '[data-element-id="ul"]'
+                );
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetHeight',
+                    'get'
+                ).mockImplementation(() => 32);
                 element.singleLine = true;
                 element.menus = MENUS;
                 element.value = VALUE;
@@ -1085,17 +1117,6 @@ describe('FilterMenuGroup', () => {
                             })
                         );
                     })
-                    .then(async () => {
-                        const buttonGroupRow = element.shadowRoot.querySelector(
-                            '[data-element-id="ul"]'
-                        );
-                        jest.spyOn(
-                            buttonGroupRow,
-                            'offsetWidth',
-                            'get'
-                        ).mockImplementation(() => 100);
-                        await flushPromises();
-                    })
                     .then(() => {
                         const moreFilter = element.shadowRoot.querySelector(
                             '[data-element-id="filter-menu-group-button-icon-popover"]'
@@ -1108,9 +1129,9 @@ describe('FilterMenuGroup', () => {
                                 '[data-element-id="avonni-filter-menu-overflow"]'
                             );
 
-                        expect(moreFilter).toBeFalsy();
-                        expect(menus.length).toBe(5);
-                        expect(overflowMenus.length).toBe(0);
+                        expect(moreFilter).toBeTruthy();
+                        expect(menus.length).toBe(0);
+                        expect(overflowMenus.length).toBe(5);
                         expect(openHandler).not.toHaveBeenCalled();
                         expect(closeHandler).not.toHaveBeenCalled();
                     });
@@ -1252,6 +1273,14 @@ describe('FilterMenuGroup', () => {
             });
 
             it('open event from a menu inside the more filters popover', async () => {
+                const buttonGroupRow = element.shadowRoot.querySelector(
+                    '[data-element-id="ul"]'
+                );
+                jest.spyOn(
+                    buttonGroupRow,
+                    'offsetHeight',
+                    'get'
+                ).mockImplementation(() => 32);
                 element.singleLine = true;
                 element.menus = MENUS;
                 const handler = jest.fn();
