@@ -531,6 +531,19 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the schedule body.
+     *
+     * @type {string}
+     */
+    get computedScheduleBodyClass() {
+        return classSet('slds-is-relative slds-grid slds-theme_default')
+            .add({
+                'avonni-scheduler__border_left': !this.isMonth
+            })
+            .toString();
+    }
+
+    /**
      * Computed CSS classes for the schedule wrapper.
      *
      * @type {string}

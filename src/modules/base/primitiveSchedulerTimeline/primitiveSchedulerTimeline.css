@@ -6,6 +6,7 @@
 
 .avonni-scheduler__wrapper {
     max-height: 100%;
+    margin-bottom: -1px;
 }
 
 .avonni-scheduler__schedule-wrapper {
@@ -20,6 +21,8 @@
 }
 
 .avonni-scheduler__first-col {
+    border-top-left-radius: calc(var(--slds-g-sizing-border-4) * 2);
+    border-bottom-left-radius: calc(var(--slds-g-sizing-border-4) * 2);
     background-color: #f3f3f3;
     max-height: 100%;
 }
@@ -43,6 +46,8 @@
 }
 
 .avonni-scheduler__datatable {
+    --_slds-c-datatable-color-border: transparent;
+    --_slds-c-datatable-radius-border: 0;
     padding-top: 5px;
     width: 100%;
 }
