@@ -9,11 +9,11 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
-import { keyValues } from 'c/utilsPrivate';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
@@ -903,6 +903,17 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Get the scrollable container of the vertical timeline.
+     *
+     * @type {object}
+     */
+    get verticalTimelineScrollableContainer() {
+        return this.template.querySelector(
+            '[data-element-id="div-timeline-wrapper"]'
+        );
+    }
+
+    /**
      * Formatted date with requested format (item-date-format) of popover's item for horizontal activity timeline.
      *
      * @return {string}
@@ -942,6 +953,24 @@ export default class ActivityTimeline extends LightningElement {
             !this.isTimelineHorizontal
             ? items.splice(0, this.maxVisibleItems)
             : items;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Scroll the list to the top.
+     *
+     * @public
+     */
+    @api
+    scrollToTop() {
+        if (this.verticalTimelineScrollableContainer) {
+            this.verticalTimelineScrollableContainer.scrollTop = 0;
+        }
     }
 
     /*
@@ -1336,14 +1365,16 @@ export default class ActivityTimeline extends LightningElement {
      * Handle a scroll of the vertical timeline.
      */
     handleScroll() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-timeline-wrapper"]'
-        );
-        if (!this.enableInfiniteLoading || this.isLoading || !wrapper) {
+        if (
+            !this.enableInfiniteLoading ||
+            this.isLoading ||
+            !this.verticalTimelineScrollableContainer
+        ) {
             return;
         }
 
-        const { scrollTop, scrollHeight, clientHeight } = wrapper;
+        const { scrollTop, scrollHeight, clientHeight } =
+            this.verticalTimelineScrollableContainer;
         const offsetFromBottom = scrollHeight - scrollTop - clientHeight;
         const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
 
