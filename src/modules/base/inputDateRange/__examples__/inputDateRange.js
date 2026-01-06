@@ -13,13 +13,14 @@ export const InputDateRange = ({
     label,
     labelEndDate,
     labelEndTime,
+    labelRangeOptions,
     labelStartDate,
     labelStartTime,
     messageWhenValueMissing,
     readOnly,
     required,
     requiredAlternativeText,
-    showPredefinedRanges,
+    showRangeOptions,
     startDate,
     timeStyle,
     timezone,
@@ -36,13 +37,14 @@ export const InputDateRange = ({
     element.label = label;
     element.labelEndDate = labelEndDate;
     element.labelEndTime = labelEndTime;
+    element.labelRangeOptions = labelRangeOptions;
     element.labelStartDate = labelStartDate;
     element.labelStartTime = labelStartTime;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.readOnly = readOnly;
     element.required = required;
     element.requiredAlternativeText = requiredAlternativeText;
-    element.showPredefinedRanges = showPredefinedRanges;
+    element.showRangeOptions = showRangeOptions;
     element.startDate = startDate;
     element.timeStyle = timeStyle;
     element.timezone = timezone;

@@ -27,7 +27,7 @@ const LABEL_VARIANTS = {
     default: 'standard'
 };
 
-const PREDEFINED_RANGES = [
+const RANGES_OPTIONS = [
     {
         label: 'Today',
         value: 'today'
@@ -74,6 +74,20 @@ const PREDEFINED_RANGES = [
     }
 ];
 
+const RANGE_OPTIONS_LABELS_MAP = {
+    today: 'Today',
+    yesterday: 'Yesterday',
+    thisWeek: 'This week',
+    lastWeek: 'Last week',
+    thisMonth: 'This month',
+    lastMonth: 'Last month',
+    thisQuarter: 'This quarter',
+    lastQuarter: 'Last quarter',
+    thisYear: 'This year',
+    lastYear: 'Last year',
+    custom: 'Custom'
+};
+
 /**
  * @class
  * @public
@@ -111,6 +125,34 @@ export default class InputDateRange extends LightningElement {
      * @public
      */
     @api labelEndTime;
+    /**
+     * Labels for the range options.
+     *
+     * This object must be a map where:
+     * - the **key** is the range option `value`
+     * - the **value** is the label displayed to the user
+     *
+     * Expected format:
+     * {
+     *   today: 'Today',
+     *   yesterday: 'Yesterday',
+     *   thisWeek: 'This week',
+     *   lastWeek: 'Last week',
+     *   thisMonth: 'This month',
+     *   lastMonth: 'Last month',
+     *   thisQuarter: 'This quarter',
+     *   lastQuarter: 'Last quarter',
+     *   thisYear: 'This year',
+     *   lastYear: 'Last year',
+     *   custom: 'Custom'
+     * }
+     *
+     * Any missing key will fall back to the default label.
+     *
+     * @type {Object<string, string>}
+     * @public
+     */
+    @api labelRangeOptions = RANGE_OPTIONS_LABELS_MAP;
     /**
      * Text label for the start input.
      *
@@ -152,7 +194,7 @@ export default class InputDateRange extends LightningElement {
     _endDate;
     _readOnly = false;
     _required = false;
-    _showPredefinedRanges = false;
+    _showRangeOptions = false;
     _startDate;
     _timeStyle = DATE_STYLES.defaultTime;
     _timezone;
@@ -167,7 +209,7 @@ export default class InputDateRange extends LightningElement {
     isOpenEndDate = false;
     isOpenStartDate = false;
     helpMessage;
-    predefinedRange;
+    predefinedRangeValue = 'custom';
     savedFocus;
     showEndDate = false;
     showStartDate = false;
@@ -294,11 +336,11 @@ export default class InputDateRange extends LightningElement {
      * @public
      */
     @api
-    get showPredefinedRanges() {
-        return this._showPredefinedRanges;
+    get showRangeOptions() {
+        return this._showRangeOptions;
     }
-    set showPredefinedRanges(value) {
-        this._showPredefinedRanges = normalizeBoolean(value);
+    set showRangeOptions(value) {
+        this._showRangeOptions = normalizeBoolean(value);
     }
 
     /**
@@ -568,12 +610,20 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Predefined option ranges available.
+     * Range options available.
      *
-     * @type {boolean}
+     * @type {Array}
      */
-    get predefinedOptionRanges() {
-        return PREDEFINED_RANGES;
+    get rangeOptions() {
+        return RANGES_OPTIONS.map((option) => {
+            const customLabel = this.labelRangeOptions?.[option.value];
+
+            return {
+                ...option,
+                label:
+                    typeof customLabel === 'string' ? customLabel : option.label
+            };
+        });
     }
 
     /**
@@ -1109,6 +1159,8 @@ export default class InputDateRange extends LightningElement {
             state = 'DESELECT_END';
         }
 
+        this.predefinedRangeValue = 'custom';
+
         // Case execution
         switch (state) {
             case 'SELECT_ONLY_END':
@@ -1229,6 +1281,7 @@ export default class InputDateRange extends LightningElement {
         ) {
             state = 'DESELECT_START';
         }
+        this.predefinedRangeValue = 'custom';
 
         // Case execution
         switch (state) {
@@ -1440,11 +1493,11 @@ export default class InputDateRange extends LightningElement {
         this.handleBlur(event);
     }
 
-    handleChangePredefinedRange(event) {
-        // The focus on the date ranges needs to be blured to avoid sending setting one of the date to null
+    handleChangeRangeOption(event) {
+        // The focus on the date ranges needs to be blurred to avoid setting one of the dates to null
         this.blur();
         const range = event.detail.value;
-        this.predefinedRange = range;
+        this.predefinedRangeValue = range;
         switch (range) {
             case 'today':
                 this.setPredefinedTodayRange();
@@ -1477,8 +1530,7 @@ export default class InputDateRange extends LightningElement {
                 this.setPredefinedYearRange(0);
                 break;
             default:
-                this._startDate = null;
-                this._endDate = null;
+                return;
         }
         this._dispatchChange();
     }
@@ -1565,6 +1617,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectEndToday() {
         this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this.predefinedRangeValue = 'custom';
 
         if (this._endDate < this._startDate) {
             this._startDate = null;
@@ -1589,6 +1642,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectStartToday() {
         this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this.predefinedRangeValue = 'custom';
 
         if (this._startDate > this._endDate) this._endDate = null;
 

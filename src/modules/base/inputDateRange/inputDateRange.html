@@ -19,6 +19,23 @@
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
         </div>
+        <div
+            if:true={showRangeOptions}
+            class="slds-grid slds-wrap slds-m-bottom_x-small"
+        >
+            <c-combobox
+                disabled={disabled}
+                name="predefined-ranges"
+                options={rangeOptions}
+                readonly={readOnly}
+                value={predefinedRangeValue}
+                variant="label-hidden"
+                data-element-id="avonni-combobox__predefined-ranges"
+                onblur={handleBlur}
+                onchange={handleChangeRangeOption}
+                onfocus={handleFocus}
+            ></c-combobox>
+        </div>
         <div class="slds-grid slds-wrap">
             <div class="slds-grid slds-wrap">
                 <div
@@ -259,22 +276,6 @@
                     <p if:true={readOnly} data-element-id="end-time">
                         {endTimeString}
                     </p>
-                </div>
-            </div>
-
-            <div class="slds-grid slds-wrap">
-                <div if:true={showPredefinedRanges}>
-                    <c-combobox
-                        disabled={disabled}
-                        name="predefined-ranges"
-                        options={predefinedOptionRanges}
-                        value={predefinedRange}
-                        variant="label-hidden"
-                        data-element-id="avonni-combobox__predefined-ranges"
-                        onblur={handleBlur}
-                        onchange={handleChangePredefinedRange}
-                        onfocus={handleFocus}
-                    ></c-combobox>
                 </div>
             </div>
         </div>

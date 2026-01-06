@@ -1042,6 +1042,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleMoreFiltersClose(event) {
         event.stopPropagation();
+        this.moreFilterElement?.open();
         const elementId = event.target.dataset.elementId;
         if (elementId === 'filter-menu-group-button-icon-popover') {
             requestAnimationFrame(() => {
