@@ -19,6 +19,7 @@ export const InputDateRange = ({
     readOnly,
     required,
     requiredAlternativeText,
+    showPredefinedRanges,
     startDate,
     timeStyle,
     timezone,
@@ -41,6 +42,7 @@ export const InputDateRange = ({
     element.readOnly = readOnly;
     element.required = required;
     element.requiredAlternativeText = requiredAlternativeText;
+    element.showPredefinedRanges = showPredefinedRanges;
     element.startDate = startDate;
     element.timeStyle = timeStyle;
     element.timezone = timezone;

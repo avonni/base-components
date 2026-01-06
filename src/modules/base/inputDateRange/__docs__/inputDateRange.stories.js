@@ -152,6 +152,18 @@ export default {
                 defaultValue: { summary: 'Required' }
             }
         },
+        showPredefinedRanges: {
+            name: 'show-predefined-ranges',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a combobox for predefined date ranges is displayed.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         startDate: {
             name: 'start-date',
             control: {
@@ -236,6 +248,7 @@ export default {
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',
+        showPredefinedRanges: false,
         timeStyle: 'short',
         todayButtonLabel: 'Today',
         type: 'date',

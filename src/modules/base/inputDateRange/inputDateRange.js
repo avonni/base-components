@@ -27,6 +27,53 @@ const LABEL_VARIANTS = {
     default: 'standard'
 };
 
+const PREDEFINED_RANGES = [
+    {
+        label: 'Today',
+        value: 'today'
+    },
+    {
+        label: 'Yesterday',
+        value: 'yesterday'
+    },
+    {
+        label: 'This week',
+        value: 'thisWeek'
+    },
+    {
+        label: 'Last week',
+        value: 'lastWeek'
+    },
+    {
+        label: 'This month',
+        value: 'thisMonth'
+    },
+    {
+        label: 'Last month',
+        value: 'lastMonth'
+    },
+    {
+        label: 'This quarter',
+        value: 'thisQuarter'
+    },
+    {
+        label: 'Last quarter',
+        value: 'lastQuarter'
+    },
+    {
+        label: 'This year',
+        value: 'thisYear'
+    },
+    {
+        label: 'Last year',
+        value: 'lastYear'
+    },
+    {
+        label: 'Custom',
+        value: 'custom'
+    }
+];
+
 /**
  * @class
  * @public
@@ -105,6 +152,7 @@ export default class InputDateRange extends LightningElement {
     _endDate;
     _readOnly = false;
     _required = false;
+    _showPredefinedRanges = false;
     _startDate;
     _timeStyle = DATE_STYLES.defaultTime;
     _timezone;
@@ -119,6 +167,7 @@ export default class InputDateRange extends LightningElement {
     isOpenEndDate = false;
     isOpenStartDate = false;
     helpMessage;
+    predefinedRange;
     savedFocus;
     showEndDate = false;
     showStartDate = false;
@@ -235,6 +284,21 @@ export default class InputDateRange extends LightningElement {
     }
     set required(value) {
         this._required = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, a combobox for predefined date ranges is displayed.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get showPredefinedRanges() {
+        return this._showPredefinedRanges;
+    }
+    set showPredefinedRanges(value) {
+        this._showPredefinedRanges = normalizeBoolean(value);
     }
 
     /**
@@ -504,6 +568,15 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Predefined option ranges available.
+     *
+     * @type {boolean}
+     */
+    get predefinedOptionRanges() {
+        return PREDEFINED_RANGES;
+    }
+
+    /**
      * True if type is datetime.
      *
      * @type {boolean}
@@ -717,6 +790,94 @@ export default class InputDateRange extends LightningElement {
                 targetCalendar.focusDate(date);
             }
         });
+    }
+
+    setPredefinedTodayRange() {
+        this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+    }
+
+    setPredefinedWeekRange(offset = 0) {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+
+        d.setDate(d.getDate() + offset * 7);
+
+        const weekStartDay = this._weekStartDay;
+        const currentDay = d.getDay();
+
+        const diff = (currentDay - weekStartDay + 7) % 7;
+
+        const startOfWeek = new Date(d);
+        startOfWeek.setDate(d.getDate() - diff);
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfWeek;
+        this._endDate = endOfWeek;
+    }
+
+    setPredefinedMonthRange(offset = 0) {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+
+        d.setMonth(d.getMonth() + offset);
+
+        const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+        endOfMonth.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfMonth;
+        this._endDate = endOfMonth;
+    }
+
+    setPredefinedQuarterRange(offset = 0) {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+
+        d.setMonth(d.getMonth() + offset * 3);
+
+        const quarter = Math.floor(d.getMonth() / 3);
+
+        const startMonth = quarter * 3;
+        const startOfQuarter = new Date(d.getFullYear(), startMonth, 1);
+        startOfQuarter.setHours(0, 0, 0, 0);
+
+        const endMonth = startMonth + 3;
+        const endOfQuarter = new Date(d.getFullYear(), endMonth, 0);
+        endOfQuarter.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfQuarter;
+        this._endDate = endOfQuarter;
+    }
+
+    setPredefinedYearRange(offset = 0) {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+
+        d.setFullYear(d.getFullYear() + offset);
+
+        const startOfYear = new Date(d.getFullYear(), 0, 1);
+        startOfYear.setHours(0, 0, 0, 0);
+
+        const endOfYear = new Date(d.getFullYear(), 11, 31);
+        endOfYear.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfYear;
+        this._endDate = endOfYear;
+    }
+
+    setPredefinedYesterdayRange() {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(0, 0, 0, 0);
+        this._startDate = yesterday;
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
     }
 
     /**
@@ -1277,6 +1438,49 @@ export default class InputDateRange extends LightningElement {
             this.enteredStartCalendar = false;
         });
         this.handleBlur(event);
+    }
+
+    handleChangePredefinedRange(event) {
+        // The focus on the date ranges needs to be blured to avoid sending setting one of the date to null
+        this.blur();
+        const range = event.detail.value;
+        this.predefinedRange = range;
+        switch (range) {
+            case 'today':
+                this.setPredefinedTodayRange();
+                break;
+            case 'yesterday':
+                this.setPredefinedYesterdayRange();
+                break;
+            case 'lastWeek':
+                this.setPredefinedWeekRange(-1);
+                break;
+            case 'lastMonth':
+                this.setPredefinedMonthRange(-1);
+                break;
+            case 'lastQuarter':
+                this.setPredefinedQuarterRange(-1);
+                break;
+            case 'lastYear':
+                this.setPredefinedYearRange(-1);
+                break;
+            case 'thisWeek':
+                this.setPredefinedWeekRange(0);
+                break;
+            case 'thisMonth':
+                this.setPredefinedMonthRange(0);
+                break;
+            case 'thisQuarter':
+                this.setPredefinedQuarterRange(0);
+                break;
+            case 'thisYear':
+                this.setPredefinedYearRange(0);
+                break;
+            default:
+                this._startDate = null;
+                this._endDate = null;
+        }
+        this._dispatchChange();
     }
 
     /**

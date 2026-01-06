@@ -261,6 +261,22 @@
                     </p>
                 </div>
             </div>
+
+            <div class="slds-grid slds-wrap">
+                <div if:true={showPredefinedRanges}>
+                    <c-combobox
+                        disabled={disabled}
+                        name="predefined-ranges"
+                        options={predefinedOptionRanges}
+                        value={predefinedRange}
+                        variant="label-hidden"
+                        data-element-id="avonni-combobox__predefined-ranges"
+                        onblur={handleBlur}
+                        onchange={handleChangePredefinedRange}
+                        onfocus={handleFocus}
+                    ></c-combobox>
+                </div>
+            </div>
         </div>
     </div>
     <div if:true={helpMessage} class="slds-has-error">
