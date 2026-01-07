@@ -6,7 +6,7 @@ import {
     stopPositioning
 } from 'c/positionLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { animationFrame, keyValues, timeout } from 'c/utilsPrivate';
+import { animationFrame, keyValues, timeout, equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const DATE_STYLES = {
@@ -132,20 +132,7 @@ export default class InputDateRange extends LightningElement {
      * - the **key** is the range option `value`
      * - the **value** is the label displayed to the user
      *
-     * Expected format:
-     * {
-     *   today: 'Today',
-     *   yesterday: 'Yesterday',
-     *   thisWeek: 'This week',
-     *   lastWeek: 'Last week',
-     *   thisMonth: 'This month',
-     *   lastMonth: 'Last month',
-     *   thisQuarter: 'This quarter',
-     *   lastQuarter: 'Last quarter',
-     *   thisYear: 'This year',
-     *   lastYear: 'Last year',
-     *   custom: 'Custom'
-     * }
+     * Expected keys: today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, custom.
      *
      * Any missing key will fall back to the default label.
      *
@@ -209,7 +196,7 @@ export default class InputDateRange extends LightningElement {
     isOpenEndDate = false;
     isOpenStartDate = false;
     helpMessage;
-    predefinedRangeValue = 'custom';
+    optionRangeValue = 'custom';
     savedFocus;
     showEndDate = false;
     showStartDate = false;
@@ -290,6 +277,9 @@ export default class InputDateRange extends LightningElement {
     }
     set endDate(value) {
         const date = new Date(value);
+        if (!equal(this._endDate, date)) {
+            this.optionRangeValue = 'custom';
+        }
         this._endDate = !value || isNaN(date) ? null : date;
         this._initialEndDate = !this._endDate ? null : new Date(date);
 
@@ -355,6 +345,9 @@ export default class InputDateRange extends LightningElement {
     }
     set startDate(value) {
         const date = new Date(value);
+        if (!equal(this._startDate, date)) {
+            this.optionRangeValue = 'custom';
+        }
         this._startDate = !value || isNaN(date) ? null : date;
         this._initialStartDate = !this._startDate ? null : new Date(date);
 
@@ -1170,7 +1163,7 @@ export default class InputDateRange extends LightningElement {
             state = 'DESELECT_END';
         }
 
-        this.predefinedRangeValue = 'custom';
+        this.optionRangeValue = 'custom';
 
         // Case execution
         switch (state) {
@@ -1292,7 +1285,7 @@ export default class InputDateRange extends LightningElement {
         ) {
             state = 'DESELECT_START';
         }
-        this.predefinedRangeValue = 'custom';
+        this.optionRangeValue = 'custom';
 
         // Case execution
         switch (state) {
@@ -1508,7 +1501,7 @@ export default class InputDateRange extends LightningElement {
         // The focus on the date ranges needs to be blurred to avoid setting one of the dates to null
         this.blur();
         const range = event.detail.value;
-        this.predefinedRangeValue = range;
+        this.optionRangeValue = range;
         switch (range) {
             case 'today':
                 this.setPredefinedTodayRange();
@@ -1628,7 +1621,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectEndToday() {
         this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
-        this.predefinedRangeValue = 'custom';
+        this.optionRangeValue = 'custom';
 
         if (this._endDate < this._startDate) {
             this._startDate = null;
@@ -1653,7 +1646,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectStartToday() {
         this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
-        this.predefinedRangeValue = 'custom';
+        this.optionRangeValue = 'custom';
 
         if (this._startDate > this._endDate) this._endDate = null;
 
