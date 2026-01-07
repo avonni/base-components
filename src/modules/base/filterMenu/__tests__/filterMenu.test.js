@@ -1809,6 +1809,7 @@ describe('Filter Menu', () => {
                     labelStartDate: 'Start date',
                     labelStartTime: 'Start time',
                     labelEndTime: 'End time',
+                    showRangeOptions: true,
                     timeStyle: 'long',
                     timezone: 'Pacific/Noumea',
                     type: 'datetime'
@@ -1836,6 +1837,9 @@ describe('Filter Menu', () => {
                     );
                     expect(dateRange.labelStartTime).toBe(
                         typeAttributes.labelStartTime
+                    );
+                    expect(dateRange.showRangeOptions).toBe(
+                        typeAttributes.showRangeOptions
                     );
                     expect(dateRange.timeStyle).toBe(typeAttributes.timeStyle);
                     expect(dateRange.timezone).toBe(typeAttributes.timezone);

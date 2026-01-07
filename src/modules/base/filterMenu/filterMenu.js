@@ -105,6 +105,7 @@ const TYPE_ATTRIBUTES = {
         'labelRangeOptions',
         'labelStartDate',
         'labelStartTime',
+        'showRangeOptions',
         'timeStyle',
         'timezone',
         'type'
