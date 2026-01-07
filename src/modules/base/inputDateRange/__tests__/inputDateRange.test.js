@@ -860,7 +860,7 @@ describe('Input Date Range', () => {
                     );
                     expect(element.value).toMatchObject({
                         startDate: new Date(2024, 0, 14, 0, 0, 0, 0),
-                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                        endDate: new Date(2024, 0, 14, 0, 0, 0, 0)
                     });
                 });
             });

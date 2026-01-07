@@ -927,7 +927,7 @@ export default class InputDateRange extends LightningElement {
         yesterday.setDate(yesterday.getDate() - 1);
         yesterday.setHours(0, 0, 0, 0);
         this._startDate = yesterday;
-        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this._endDate = yesterday;
     }
 
     /**
