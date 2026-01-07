@@ -945,6 +945,62 @@ describe('Metric', () => {
                     expect(metric.value).toBe(16);
                 });
             });
+
+            it('Passed to the component, date', () => {
+                element.secondaryValue = '2025-01-01';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    // The setter of primitiveMetric converts it to a number
+                    expect(typeof metric.value).toBe('number');
+                });
+            });
+
+            it('Passed to the component, string', () => {
+                element.secondaryValue = '16';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, string, 0', () => {
+                element.secondaryValue = '0';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Passed to the component, number', () => {
+                element.secondaryValue = 16;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, number, 0', () => {
+                element.secondaryValue = 0;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
         });
 
         describe('secondaryValueIsLoading', () => {
@@ -1137,6 +1193,62 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.value).toBe(3);
+                });
+            });
+
+            it('Passed to the component, date', () => {
+                element.value = '2025-01-01';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    // The setter of primitiveMetric converts it to a number
+                    expect(typeof metric.value).toBe('number');
+                });
+            });
+
+            it('Passed to the component, string', () => {
+                element.value = '16';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, string, 0', () => {
+                element.value = '0';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Passed to the component, number', () => {
+                element.value = 16;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, number, 0', () => {
+                element.value = 0;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(0);
                 });
             });
         });
