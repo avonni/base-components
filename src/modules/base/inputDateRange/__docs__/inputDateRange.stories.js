@@ -235,8 +235,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['date', 'datetime'],
-            description: 'Valid types include date and datetime.',
+            options: ['date', 'datetime', 'date-expanded', 'datetime-expanded'],
+            description:
+                'Valid types include date, datetime, date-expanded, and datetime-expanded.',
             table: {
                 defaultValue: { summary: 'date' },
                 type: { summary: 'string' }

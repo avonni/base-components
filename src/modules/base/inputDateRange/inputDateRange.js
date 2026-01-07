@@ -7,6 +7,9 @@ import {
 } from 'c/positionLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { animationFrame, keyValues, timeout } from 'c/utilsPrivate';
+import inputDateRange from './inputDateRange.html';
+import expandedDateRange from './expandedDateRange.html';
+
 import { LightningElement, api } from 'lwc';
 
 const DATE_STYLES = {
@@ -15,7 +18,7 @@ const DATE_STYLES = {
     defaultTime: 'short'
 };
 const DATE_TYPES = {
-    valid: ['date', 'datetime'],
+    valid: ['date', 'datetime', 'date-expanded', 'datetime-expanded'],
     default: 'date'
 };
 const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
@@ -237,6 +240,16 @@ export default class InputDateRange extends LightningElement {
         this._connected = true;
     }
 
+    render() {
+        if (
+            this.type === 'datetime-expanded' ||
+            this.type === 'date-expanded'
+        ) {
+            return expandedDateRange;
+        }
+        return inputDateRange;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
@@ -402,7 +415,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Valid types include date and datetime.
+     * Valid types include date, datetime, date-expanded, and datetime-expanded.
      *
      * @type {string}
      * @default date

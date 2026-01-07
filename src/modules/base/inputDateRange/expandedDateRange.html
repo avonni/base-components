@@ -1,0 +1,52 @@
+<template>
+    <div
+        if:true={showOptions}
+        class="slds-grid slds-wrap slds-m-bottom_x-small"
+    >
+        <c-combobox
+            disabled={disabled}
+            name="predefined-ranges"
+            options={rangeOptions}
+            value={predefinedRangeValue}
+            variant="label-hidden"
+            data-element-id="avonni-input-date-range__combobox-range-options"
+            onblur={handleBlur}
+            onchange={handleChangeRangeOption}
+            onfocus={handleFocus}
+        ></c-combobox>
+    </div>
+    <c-calendar
+        aria-label="Start date input calendar"
+        selection-mode="interval"
+        timezone={timezone}
+        value={calendarValue}
+        week-start-day={weekStartDay}
+        data-element-id="calendar-start-date"
+        data-is-focusable
+        onblur={handleBlur}
+        onchange={handleChangeStartDate}
+        onfocus={handleFocus}
+    ></c-calendar>
+    <c-calendar
+        aria-label="End date input calendar"
+        selection-mode="interval"
+        timezone={timezone}
+        value={calendarValue}
+        week-start-day={weekStartDay}
+        data-element-id="calendar-end-date"
+        data-is-focusable
+        onblur={handleBlur}
+        onchange={handleChangeEndDate}
+        onfocus={handleFocus}
+    ></c-calendar>
+    <div if:true={helpMessage} class="slds-has-error">
+        <div
+            id="help-message"
+            class="slds-form-element__help"
+            data-help-message
+            role="alert"
+        >
+            {helpMessage}
+        </div>
+    </div>
+</template>
