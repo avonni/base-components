@@ -845,8 +845,10 @@ export default class InputDateRange extends LightningElement {
     }
 
     setPredefinedTodayRange() {
-        this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
-        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this._startDate = new Date(today);
+        this._endDate = new Date(today);
     }
 
     setPredefinedWeekRange(offset = 0) {
