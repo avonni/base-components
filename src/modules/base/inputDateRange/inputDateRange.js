@@ -1539,6 +1539,10 @@ export default class InputDateRange extends LightningElement {
             default:
                 return;
         }
+        if (this.type === 'datetime' && !this.isValidTimeRange) {
+            this.startTime = null;
+            this.endTime = null;
+        }
         this._dispatchChange();
     }
 
