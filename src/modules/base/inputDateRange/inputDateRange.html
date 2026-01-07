@@ -20,14 +20,13 @@
             ></lightning-helptext>
         </div>
         <div
-            if:true={showRangeOptions}
+            if:true={showOptions}
             class="slds-grid slds-wrap slds-m-bottom_x-small"
         >
             <c-combobox
                 disabled={disabled}
                 name="predefined-ranges"
                 options={rangeOptions}
-                readonly={readOnly}
                 value={predefinedRangeValue}
                 variant="label-hidden"
                 data-element-id="avonni-input-date-range__combobox-range-options"

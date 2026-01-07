@@ -627,6 +627,15 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * True if options should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showOptions() {
+        return this.showRangeOptions && !this.readOnly;
+    }
+
+    /**
      * True if type is datetime.
      *
      * @type {boolean}
