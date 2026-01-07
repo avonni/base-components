@@ -1280,7 +1280,9 @@ export default class Metric extends LightningElement {
         if (value === null || value === undefined || value === '') {
             normalizedNumber = undefined;
         } else if (!isNaN(Number(value))) {
-            normalizedNumber = Number(value);
+            const numValue = Number(value);
+            // Reject Infinity and -Infinity
+            normalizedNumber = isFinite(numValue) ? numValue : undefined;
         } else {
             const date = new Date(value);
             normalizedNumber = isNaN(date.getTime()) ? undefined : date;

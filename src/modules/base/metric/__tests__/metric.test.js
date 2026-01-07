@@ -953,8 +953,9 @@ describe('Metric', () => {
                     const metric = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-metric-secondary"]'
                     );
-                    // The setter of primitiveMetric converts it to a number
+                    // Date objects are converted to timestamps (numbers) in primitive-metric
                     expect(typeof metric.value).toBe('number');
+                    expect(metric.value).toBe(new Date('2025-01-01').getTime());
                 });
             });
 
@@ -999,6 +1000,30 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-secondary"]'
                     );
                     expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Rejects Infinity value and does not display secondary metric', () => {
+                element.secondaryValue = Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.secondaryValue).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric).toBeFalsy();
+                });
+            });
+
+            it('Rejects -Infinity value and does not display secondary metric', () => {
+                element.secondaryValue = -Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.secondaryValue).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric).toBeFalsy();
                 });
             });
         });
@@ -1203,8 +1228,9 @@ describe('Metric', () => {
                     const metric = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
-                    // The setter of primitiveMetric converts it to a number
+                    // Date objects are converted to timestamps (numbers) in primitive-metric
                     expect(typeof metric.value).toBe('number');
+                    expect(metric.value).toBe(new Date('2025-01-01').getTime());
                 });
             });
 
@@ -1249,6 +1275,30 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Rejects Infinity value', () => {
+                element.value = Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.value).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBeUndefined();
+                });
+            });
+
+            it('Rejects -Infinity value', () => {
+                element.value = -Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.value).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBeUndefined();
                 });
             });
         });
