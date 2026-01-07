@@ -1269,6 +1269,11 @@ export default class Metric extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Normalize the value to a number or a date.
+     * @param {string|number|date} value
+     * @returns {number|date|undefined}
+     */
     getNormalizedValue(value) {
         let normalizedNumber;
 
