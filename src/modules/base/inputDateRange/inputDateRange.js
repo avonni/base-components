@@ -696,8 +696,8 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     blur() {
-        this.startDateInput.blur();
-        this.endDateInput.blur();
+        this.startDateInput?.blur();
+        this.endDateInput?.blur();
         this.showStartDate = false;
         this.showEndDate = false;
         this.stopPositioning();
@@ -872,6 +872,7 @@ export default class InputDateRange extends LightningElement {
 
     setPredefinedMonthRange(offset = 0) {
         const d = new Date();
+        d.setDate(1);
         d.setHours(0, 0, 0, 0);
 
         d.setMonth(d.getMonth() + offset);
