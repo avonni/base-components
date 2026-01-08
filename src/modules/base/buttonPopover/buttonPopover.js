@@ -610,7 +610,10 @@ export default class ButtonPopover extends LightningElement {
      */
     handlePopoverBlur(event) {
         const isButtonReceivingFocus = this.button === event.relatedTarget;
-        if (this._cancelBlur) {
+        if (
+            this._cancelBlur ||
+            this.template.host.contains(event.relatedTarget)
+        ) {
             return;
         }
         if (this.isTriggerClick && !isButtonReceivingFocus) {
