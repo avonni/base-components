@@ -1273,8 +1273,9 @@ export default class InputDateRange extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
         this.endTime = event.target.value;
-        this.setValidTimeRange();
-        this.endTime = event.target.value;
+        if (!this.isValidTimeRange) {
+            this.startTime = null;
+        }
         this._dispatchChange();
     }
 
@@ -1391,8 +1392,9 @@ export default class InputDateRange extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
         this.startTime = event.target.value;
-        this.setValidTimeRange();
-        this.startTime = event.target.value;
+        if (!this.isValidTimeRange) {
+            this.endTime = null;
+        }
         this._dispatchChange();
     }
 
