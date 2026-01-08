@@ -18,7 +18,7 @@ const DATE_STYLES = {
     defaultTime: 'short'
 };
 const DATE_TYPES = {
-    valid: ['date', 'datetime', 'date-expanded', 'datetime-expanded'],
+    valid: ['date', 'datetime'],
     default: 'date'
 };
 const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
