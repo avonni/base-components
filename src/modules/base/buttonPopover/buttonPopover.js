@@ -128,10 +128,7 @@ export default class ButtonPopover extends LightningElement {
     _popoverVisible = false;
 
     connectedCallback() {
-        this.classList.add(
-            'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click'
-        );
+        this.classList.add('slds-dropdown-trigger');
         this._connected = true;
     }
 
