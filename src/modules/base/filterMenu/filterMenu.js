@@ -100,6 +100,7 @@ const RESET_BUTTON_POSITION = {
 const TYPE_ATTRIBUTES = {
     'date-range': [
         'dateStyle',
+        'isExpanded',
         'labelEndDate',
         'labelEndTime',
         'labelRangeOptions',
@@ -999,9 +1000,7 @@ export default class FilterMenu extends LightningElement {
         const alignment = this.dropdownAlignment;
         const nubbin = this.dropdownNubbin;
         const isDateTime = this.computedTypeAttributes.type === 'datetime';
-        const isExpanded =
-            this.computedTypeAttributes.type === 'datetime-expanded' ||
-            this.computedTypeAttributes.type === 'date-expanded';
+        const isExpanded = this.computedTypeAttributes.isExpanded;
         const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
 
         const classes = classSet('slds-dropdown slds-p-around_none').add({

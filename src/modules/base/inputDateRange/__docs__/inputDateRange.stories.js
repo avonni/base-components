@@ -61,6 +61,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isExpanded: {
+            name: 'is-expanded',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input is expanded to show the calendars.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -235,9 +247,8 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['date', 'datetime', 'date-expanded', 'datetime-expanded'],
-            description:
-                'Valid types include date, datetime, date-expanded, and datetime-expanded.',
+            options: ['date', 'datetime'],
+            description: 'Valid types include date and datetime.',
             table: {
                 defaultValue: { summary: 'date' },
                 type: { summary: 'string' }
@@ -269,10 +280,11 @@ export default {
     args: {
         dateStyle: 'medium',
         disabled: false,
+        isExpanded: false,
+        labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',
-        labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
         showRangeOptions: false,
         timeStyle: 'short',
         todayButtonLabel: 'Today',
@@ -331,7 +343,8 @@ DateTime.args = {
 export const dateExpanded = Template.bind({});
 dateExpanded.args = {
     label: 'Expanded date range input',
-    type: 'date-expanded',
+    isExpanded: true,
+    type: 'date',
     showRangeOptions: true
 };
 

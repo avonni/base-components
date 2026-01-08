@@ -182,6 +182,7 @@ export default class InputDateRange extends LightningElement {
     _dateStyle = DATE_STYLES.defaultDate;
     _disabled = false;
     _endDate;
+    _isExpanded = false;
     _readOnly = false;
     _required = false;
     _showRangeOptions = false;
@@ -228,10 +229,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     render() {
-        if (
-            this.type === 'datetime-expanded' ||
-            this.type === 'date-expanded'
-        ) {
+        if (this._isExpanded) {
             return expandedDateRange;
         }
         return inputDateRange;
@@ -299,6 +297,21 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initEndDate();
         }
+    }
+
+    /**
+     * If present, the input is expanded to show the calendars.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get isExpanded() {
+        return this._isExpanded;
+    }
+    set isExpanded(value) {
+        this._isExpanded = normalizeBoolean(value);
     }
 
     /**
@@ -408,7 +421,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Valid types include date, datetime, date-expanded, and datetime-expanded.
+     * Valid types include date and datetime.
      *
      * @type {string}
      * @default date
