@@ -328,6 +328,13 @@ DateTime.args = {
     dateStyle: 'short'
 };
 
+export const dateExpanded = Template.bind({});
+dateExpanded.args = {
+    label: 'Expanded date range input',
+    type: 'date-expanded',
+    showRangeOptions: true
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
     label: 'Disabled input',
