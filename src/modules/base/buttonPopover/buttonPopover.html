@@ -1,69 +1,71 @@
 <template>
-    <c-button
-        class="avonni-button-popover"
-        accesskey={accessKey}
-        aria-haspopup="true"
-        aria-expanded={computedAriaExpanded}
-        disabled={disabled}
-        group-order={groupOrder}
-        icon-name={iconName}
-        icon-position={iconPosition}
-        icon-size={iconSize}
-        icon-src={iconSrc}
-        is-button-loading={isButtonLoading}
-        label={label}
-        loading-state-alternative-text={loadingStateAlternativeText}
-        stretch={stretch}
-        variant={variant}
-        data-element-id="button"
-        onblur={handleBlur}
-        onclick={click}
-        onfocus={focus}
-        onmouseenter={handleMouseEnter}
-        onmouseleave={handleMouseLeave}
-    ></c-button>
-    <div
-        class={computedPopoverClass}
-        onmousedown={handlePopoverMouseDown}
-        onmouseup={handlePopoverMouseUp}
-        onmouseenter={handleMouseEnterBody}
-        onmouseleave={handleMouseLeaveBody}
-        onblur={handlePopoverBlur}
-        onkeydown={handlePopoverKeyDown}
-        tabindex="0"
-    >
-        <lightning-spinner
-            if:true={isLoading}
-            alternative-text={loadingStateAlternativeText}
-            size="small"
-            data-element-id="lightning-spinner"
-        ></lightning-spinner>
-        <template if:false={isLoading}>
-            <header class={computedPopoverHeaderClass}>
-                <template if:false={hasStringTitle}>
-                    <slot name="title" onclick={handleSlotClick}></slot>
-                </template>
-                <template if:true={hasStringTitle}>
-                    <h2 class="slds-text-heading_small">{title}</h2>
-                </template>
-                <lightning-button-icon
-                    if:false={hideCloseButton}
-                    icon-name="utility:close"
-                    size="medium"
-                    title="Close popover"
-                    variant="bare"
-                    data-element-id="lightning-button-icon"
-                    onclick={close}
-                ></lightning-button-icon>
-            </header>
-            <div class="slds-popover__body">
-                <slot onclick={handleSlotClick}></slot>
-            </div>
-            <template if:true={showFooter}>
-                <div class="slds-popover__footer">
-                    <slot name="footer" onclick={handleSlotClick}></slot>
+    <div class="slds-show_inline-block slds-is-relative">
+        <c-button
+            class="avonni-button-popover"
+            accesskey={accessKey}
+            aria-haspopup="true"
+            aria-expanded={computedAriaExpanded}
+            disabled={disabled}
+            group-order={groupOrder}
+            icon-name={iconName}
+            icon-position={iconPosition}
+            icon-size={iconSize}
+            icon-src={iconSrc}
+            is-button-loading={isButtonLoading}
+            label={label}
+            loading-state-alternative-text={loadingStateAlternativeText}
+            stretch={stretch}
+            variant={variant}
+            data-element-id="button"
+            onblur={handleBlur}
+            onclick={click}
+            onfocus={focus}
+            onmouseenter={handleMouseEnter}
+            onmouseleave={handleMouseLeave}
+        ></c-button>
+        <div
+            class={computedPopoverClass}
+            onmousedown={handlePopoverMouseDown}
+            onmouseup={handlePopoverMouseUp}
+            onmouseenter={handleMouseEnterBody}
+            onmouseleave={handleMouseLeaveBody}
+            onblur={handlePopoverBlur}
+            onkeydown={handlePopoverKeyDown}
+            tabindex="0"
+        >
+            <lightning-spinner
+                if:true={isLoading}
+                alternative-text={loadingStateAlternativeText}
+                size="small"
+                data-element-id="lightning-spinner"
+            ></lightning-spinner>
+            <template if:false={isLoading}>
+                <header class={computedPopoverHeaderClass}>
+                    <template if:false={hasStringTitle}>
+                        <slot name="title" onclick={handleSlotClick}></slot>
+                    </template>
+                    <template if:true={hasStringTitle}>
+                        <h2 class="slds-text-heading_small">{title}</h2>
+                    </template>
+                    <lightning-button-icon
+                        if:false={hideCloseButton}
+                        icon-name="utility:close"
+                        size="medium"
+                        title="Close popover"
+                        variant="bare"
+                        data-element-id="lightning-button-icon"
+                        onclick={close}
+                    ></lightning-button-icon>
+                </header>
+                <div class="slds-popover__body">
+                    <slot onclick={handleSlotClick}></slot>
                 </div>
+                <template if:true={showFooter}>
+                    <div class="slds-popover__footer">
+                        <slot name="footer" onclick={handleSlotClick}></slot>
+                    </div>
+                </template>
             </template>
-        </template>
+        </div>
     </div>
 </template>
