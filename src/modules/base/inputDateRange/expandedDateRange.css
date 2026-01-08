@@ -1,0 +1,38 @@
+.avonni-date-range__label-container {
+    display: flex;
+}
+
+.avonni-date-range__label-container p {
+    color: var(
+        --avonni-input-date-range-header-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
+    font-size: var(--avonni-input-date-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-input-date-range-header-font-style, normal);
+    font-weight: var(--avonni-input-date-range-header-font-weight, 400);
+    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
+    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
+.slds-button {
+    min-width: 150px;
+    min-height: 32px;
+    justify-content: center;
+}
+
+.avonni-input-date-range__button-container {
+    max-width: 250px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.avonni-input-date-range__labels {
+    color: var(
+        --avonni-input-date-range-labels-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
+    font-size: var(--avonni-input-date-range-labels-font-size, 0.75rem);
+    font-style: var(--avonni-input-date-range-labels-font-style, normal);
+    font-weight: var(--avonni-input-date-range-labels-font-weight, 400);
+}

@@ -640,6 +640,18 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Formatted range date string.
+     *
+     * @type {string}
+     */
+    get rangeDateString() {
+        if (!this.startDateString && !this.endDateString) {
+            return '-';
+        }
+        return `${this.startDateString} - ${this.endDateString}`;
+    }
+
+    /**
      * Range options available.
      *
      * @type {Array}
@@ -999,6 +1011,14 @@ export default class InputDateRange extends LightningElement {
 
         this._startDate = new Date(yesterday);
         this._endDate = new Date(yesterday);
+    }
+
+    /**
+     * Set the selection mode for the calendar
+     */
+    setSelectionMode() {
+        this.selectionModeStartDate = !this._endDate ? 'single' : 'interval';
+        this.selectionModeEndDate = !this._startDate ? 'single' : 'interval';
     }
 
     /**
@@ -1794,6 +1814,11 @@ export default class InputDateRange extends LightningElement {
     _dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
+        if (this.isExpanded) {
+            this.setSelectionMode();
+            this.interactingState.enter();
+            this.interactingState.leave();
+        }
 
         /**
          * The event fired when the value changed.

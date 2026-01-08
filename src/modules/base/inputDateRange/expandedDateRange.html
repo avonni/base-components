@@ -1,10 +1,25 @@
 <template>
+    <div class={computedLabelClass}>
+        <abbr
+            if:true={required}
+            class="slds-required"
+            title={requiredAlternativeText}
+        >
+            *
+        </abbr>
+        <p if:true={label} data-element-id="p-label">{label}</p>
+        <lightning-helptext
+            if:true={fieldLevelHelp}
+            content={fieldLevelHelp}
+            data-element-id="lightning-helptext"
+        ></lightning-helptext>
+    </div>
     <div
         if:true={showOptions}
         class="slds-grid slds-wrap slds-m-bottom_x-small"
     ></div>
     <div class="slds-grid slds-align-items-center">
-        <div class="slds-shrink">
+        <div>
             <c-input-choice-set
                 disabled={disabled}
                 name="predefined-ranges"
@@ -19,7 +34,7 @@
                 onfocus={handleFocus}
             ></c-input-choice-set>
         </div>
-        <div class="slds-shrink">
+        <div>
             <c-calendar
                 aria-label="Start date input calendar"
                 selection-mode={selectionModeStartDate}
@@ -32,9 +47,15 @@
                 onchange={handleChangeStartDate}
                 onfocus={handleFocus}
             ></c-calendar>
-            <div class="slds-align_absolute-center">
+            <div
+                class="
+                    slds-align_absolute-center
+                    avonni-input-date-range__button-container
+                "
+            >
                 <lightning-button
                     label={todayButtonLabel}
+                    title={todayButtonLabel}
                     variant="base"
                     data-element-id="select-start-today-button"
                     data-is-focusable
@@ -43,11 +64,20 @@
                     onfocus={handleFocus}
                 ></lightning-button>
             </div>
+            <div class="slds-form-element slds-align_absolute-center">
+                <span
+                    class="
+                        slds-button slds-button_neutral
+                        slds-text-color_default
+                    "
+                    >{startDateString}</span
+                >
+            </div>
         </div>
-        <div class="slds-shrink">
+        <div>
             <c-calendar
                 aria-label="End date input calendar"
-                selection-mode="interval"
+                selection-mode={selectionModeEndDate}
                 timezone={timezone}
                 value={calendarValue}
                 week-start-day={weekStartDay}
@@ -57,9 +87,15 @@
                 onchange={handleChangeEndDate}
                 onfocus={handleFocus}
             ></c-calendar>
-            <div class="slds-align_absolute-center">
+            <div
+                class="
+                    slds-align_absolute-center
+                    avonni-input-date-range__button-container
+                "
+            >
                 <lightning-button
                     label={todayButtonLabel}
+                    title={todayButtonLabel}
                     variant="base"
                     data-element-id="select-end-today-button"
                     data-is-focusable
@@ -67,6 +103,15 @@
                     onclick={handleSelectEndToday}
                     onfocus={handleFocus}
                 ></lightning-button>
+            </div>
+            <div class="slds-align_absolute-center">
+                <span
+                    class="
+                        slds-button slds-button_neutral
+                        slds-text-color_default
+                    "
+                    >{endDateString}</span
+                >
             </div>
         </div>
     </div>
