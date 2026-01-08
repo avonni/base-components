@@ -871,11 +871,11 @@ export default class Metric extends LightningElement {
         return this._secondaryValue;
     }
     set secondaryValue(value) {
-        const normalizedNumber =
-            value === null ? undefined : Number(value) || new Date(value);
+        const normalizedValue = this.getNormalizedValue(value);
         this._secondaryValue =
-            isFinite(normalizedNumber) || normalizedNumber instanceof Date
-                ? normalizedNumber
+            typeof normalizedValue === 'number' ||
+            normalizedValue instanceof Date
+                ? normalizedValue
                 : undefined;
     }
 
@@ -1056,11 +1056,11 @@ export default class Metric extends LightningElement {
         return this._value;
     }
     set value(value) {
-        const normalizedNumber =
-            value === null ? undefined : Number(value) || new Date(value);
+        const normalizedValue = this.getNormalizedValue(value);
         this._value =
-            isFinite(normalizedNumber) || normalizedNumber instanceof Date
-                ? normalizedNumber
+            typeof normalizedValue === 'number' ||
+            normalizedValue instanceof Date
+                ? normalizedValue
                 : undefined;
     }
 
@@ -1268,6 +1268,28 @@ export default class Metric extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Normalize the value to a number or a date.
+     * @param {string|number|date} value
+     * @returns {number|date|undefined}
+     */
+    getNormalizedValue(value) {
+        let normalizedNumber;
+
+        if (value === null || value === undefined || value === '') {
+            normalizedNumber = undefined;
+        } else if (!isNaN(Number(value))) {
+            const numValue = Number(value);
+            // Reject Infinity and -Infinity
+            normalizedNumber = isFinite(numValue) ? numValue : undefined;
+        } else {
+            const date = new Date(value);
+            normalizedNumber = isNaN(date.getTime()) ? undefined : date;
+        }
+
+        return normalizedNumber;
+    }
 
     /**
      * Initialize the tooltip.
