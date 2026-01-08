@@ -4,7 +4,7 @@
         class="slds-grid slds-wrap slds-m-bottom_x-small"
     ></div>
     <div class="slds-grid slds-align-items-center">
-        <div class="slds-col slds-shrink">
+        <div class="slds-shrink">
             <c-input-choice-set
                 disabled={disabled}
                 name="predefined-ranges"
@@ -19,10 +19,10 @@
                 onfocus={handleFocus}
             ></c-input-choice-set>
         </div>
-        <div class="slds-col slds-shrink">
+        <div class="slds-shrink">
             <c-calendar
                 aria-label="Start date input calendar"
-                selection-mode="interval"
+                selection-mode={selectionModeStartDate}
                 timezone={timezone}
                 value={calendarValue}
                 week-start-day={weekStartDay}
@@ -32,8 +32,19 @@
                 onchange={handleChangeStartDate}
                 onfocus={handleFocus}
             ></c-calendar>
+            <div class="slds-align_absolute-center">
+                <lightning-button
+                    label={todayButtonLabel}
+                    variant="base"
+                    data-element-id="select-start-today-button"
+                    data-is-focusable
+                    onblur={handleBlur}
+                    onclick={handleSelectStartToday}
+                    onfocus={handleFocus}
+                ></lightning-button>
+            </div>
         </div>
-        <div class="slds-col slds-shrink">
+        <div class="slds-shrink">
             <c-calendar
                 aria-label="End date input calendar"
                 selection-mode="interval"
@@ -46,6 +57,17 @@
                 onchange={handleChangeEndDate}
                 onfocus={handleFocus}
             ></c-calendar>
+            <div class="slds-align_absolute-center">
+                <lightning-button
+                    label={todayButtonLabel}
+                    variant="base"
+                    data-element-id="select-end-today-button"
+                    data-is-focusable
+                    onblur={handleBlur}
+                    onclick={handleSelectEndToday}
+                    onfocus={handleFocus}
+                ></lightning-button>
+            </div>
         </div>
     </div>
 

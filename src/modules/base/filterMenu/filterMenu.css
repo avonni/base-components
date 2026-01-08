@@ -27,3 +27,7 @@
 .avonni-filter-menu__allow-shrink-width {
     min-width: 0;
 }
+
+.slds-dropdown.avonni-filter-menu__dropdown-max-width {
+    max-width: 100%;
+}
