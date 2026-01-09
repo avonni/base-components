@@ -64,15 +64,6 @@
                     onfocus={handleFocus}
                 ></lightning-button>
             </div>
-            <div class="slds-form-element slds-align_absolute-center">
-                <span
-                    class="
-                        slds-button slds-button_neutral
-                        slds-text-color_default
-                    "
-                    >{startDateString}</span
-                >
-            </div>
         </div>
         <div>
             <c-calendar
@@ -104,14 +95,77 @@
                     onfocus={handleFocus}
                 ></lightning-button>
             </div>
-            <div class="slds-align_absolute-center">
-                <span
+        </div>
+    </div>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-form-element slds-grid slds-wrap">
+            <span
+                class="slds-button slds-button_neutral slds-text-color_default"
+                >{startDateString}</span
+            >
+            <div if:true={showTime} class="slds-form-element">
+                <label
+                    if:true={labelStartTime}
                     class="
-                        slds-button slds-button_neutral
-                        slds-text-color_default
+                        slds-form-element__label
+                        avonni-input-date-range__labels
                     "
-                    >{endDateString}</span
-                >
+                    for="start-time"
+                    >{labelStartTime}
+                </label>
+                <lightning-input
+                    if:false={readOnly}
+                    class="start-time"
+                    disabled={disabled}
+                    label="Start time"
+                    name="start-time"
+                    time-style={timeStyle}
+                    type="time"
+                    value={startTime}
+                    variant="label-hidden"
+                    data-element-id="lightning-input-start-time"
+                    onblur={handleBlur}
+                    onchange={handleChangeStartTime}
+                    onfocus={handleFocus}
+                ></lightning-input>
+                <p if:true={readOnly} data-element-id="start-time">
+                    {startTimeString}
+                </p>
+            </div>
+        </div>
+
+        <div class="slds-form-element slds-grid slds-wrap">
+            <span
+                class="slds-button slds-button_neutral slds-text-color_default"
+                >{endDateString}</span
+            >
+            <div if:true={showTime} class="slds-form-element">
+                <label
+                    if:true={labelEndTime}
+                    class="
+                        slds-form-element__label
+                        avonni-input-date-range__labels
+                    "
+                    for="end-time"
+                    >{labelEndTime}
+                </label>
+                <lightning-input
+                    if:false={readOnly}
+                    label="end time"
+                    name="end-time"
+                    time-style={timeStyle}
+                    type="time"
+                    value={endTime}
+                    variant="label-hidden"
+                    disabled={disabled}
+                    data-element-id="lightning-input-end-time"
+                    onblur={handleBlur}
+                    onchange={handleChangeEndTime}
+                    onfocus={handleFocus}
+                ></lightning-input>
+                <p if:true={readOnly} data-element-id="end-time">
+                    {endTimeString}
+                </p>
             </div>
         </div>
     </div>
