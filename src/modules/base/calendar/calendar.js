@@ -323,7 +323,7 @@ export default class Calendar extends LightningElement {
         return this._value;
     }
     set value(value) {
-        if (equal(value, this._value) || this.isEqualDate(value, this._value)) {
+        if (equal(value, this._value)) {
             return;
         }
         this._value = value;
@@ -925,8 +925,21 @@ export default class Calendar extends LightningElement {
      * Initialize the value to include the timezone, sort them and set them to the beginning of the day.
      */
     initValue() {
-        const normalizedComputedValues = this.normalizeDateValue(this.value);
-        this._computedValue = normalizedComputedValues;
+        const normalizedValue =
+            this.value && !Array.isArray(this.value)
+                ? [this.value]
+                : normalizeArray(this.value);
+        const computedValues = [];
+        normalizedValue.forEach((date) => {
+            if (!this.isInvalidDate(date)) {
+                const normalizedDate = this.startOfDay(
+                    this.getDateWithTimezone(date)
+                );
+                computedValues.push(normalizedDate);
+            }
+        });
+        computedValues.sort((a, b) => a.getTime() - b.getTime());
+        this._computedValue = computedValues;
     }
 
     /**
@@ -1022,17 +1035,6 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Returns true if the dates are equal.Dates can be a Date object, timestamp, or an ISO8601 formatted string.
-     * @param {string|string[]} oldValue -  The old value of the selected date(s).
-     * @param {string|string[]} newValue -  The old value of the selected date(s).
-     */
-    isEqualDate(value, newValue) {
-        const normalizedValue = this.normalizeDateValue(value);
-        const normalizedNewValue = this.normalizeDateValue(newValue);
-        return equal(normalizedValue, normalizedNewValue);
-    }
-
-    /**
      * Returns an array of dates base on the selection mode multiple.
      *
      * @param {object[]} array - array of dates
@@ -1067,27 +1069,6 @@ export default class Calendar extends LightningElement {
         });
 
         return dates;
-    }
-
-    /**
-     *
-     * @param {string|string[]} value -  The value of the selected date(s). Dates can be a Date object, timestamp, or an ISO8601 formatted string.
-     * @returns array of dates
-     */
-    normalizeDateValue(value) {
-        const normalizedValue =
-            value && !Array.isArray(value) ? [value] : normalizeArray(value);
-        const normalizedComputedValues = [];
-        normalizedValue.forEach((date) => {
-            if (!this.isInvalidDate(date)) {
-                const normalizedDate = this.startOfDay(
-                    this.getDateWithTimezone(date)
-                );
-                normalizedComputedValues.push(normalizedDate);
-            }
-        });
-        normalizedComputedValues.sort((a, b) => a.getTime() - b.getTime());
-        return normalizedComputedValues;
     }
 
     /**
@@ -1161,6 +1142,13 @@ export default class Calendar extends LightningElement {
         this.month = MONTHS[this.displayDate.getMonth()];
         this.day = this.displayDate.getDay();
         this.generateViewData();
+        // Make sure the selected year has this.year as value
+        const selectYear = this.template.querySelector(
+            '[data-element-id="select-year"]'
+        );
+        if (selectYear) {
+            selectYear.value = this.year;
+        }
     }
 
     /**

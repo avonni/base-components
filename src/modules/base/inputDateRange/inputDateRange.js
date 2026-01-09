@@ -585,6 +585,17 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * End Calendar
+     *
+     * @type {element}
+     */
+    get endCalendar() {
+        return this.template.querySelector(
+            '[data-element-id="calendar-end-date"]'
+        );
+    }
+
+    /**
      * End date input.
      *
      * @type {element}
@@ -655,18 +666,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Formatted range date string.
-     *
-     * @type {string}
-     */
-    get rangeDateString() {
-        if (!this.startDateString && !this.endDateString) {
-            return '-';
-        }
-        return `${this.startDateString} - ${this.endDateString}`;
-    }
-
-    /**
      * Range options available.
      *
      * @type {Array}
@@ -702,7 +701,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Calendar start date.
+     * Start Calendar
      *
      * @type {element}
      */
@@ -905,6 +904,18 @@ export default class InputDateRange extends LightningElement {
         if (this.type === 'datetime') {
             this.startTime = this.formatDate(this.startDate, 'TT.SSS');
             this.startTimeString = this.timeFormat(this.startDate);
+        }
+    }
+
+    /**
+     * Set the display date for each calendar when the input date range is expanded.
+     */
+    setDisplayDates() {
+        if (this.isExpanded) {
+            requestAnimationFrame(() => {
+                this.startCalendar?.goToDate(this._startDate);
+                this.endCalendar?.goToDate(this._endDate);
+            });
         }
     }
 
@@ -1345,6 +1356,7 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        this.setDisplayDates();
     }
 
     /**
@@ -1464,6 +1476,7 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        this.setDisplayDates();
     }
 
     /**
@@ -1680,6 +1693,9 @@ export default class InputDateRange extends LightningElement {
         }
         this.setValidTimeRange();
         this._dispatchChange();
+        if (this.isExpanded) {
+            this.setDisplayDates();
+        }
     }
 
     /**
@@ -1782,6 +1798,10 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        // might really need to focus the date properly to start date.
+        if (this.isExpanded) {
+            this.setDisplayDates();
+        }
     }
 
     /**
@@ -1807,6 +1827,10 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        // might really need to focus the date properly to start date.
+        if (this.isExpanded) {
+            this.setDisplayDates();
+        }
     }
 
     /**
