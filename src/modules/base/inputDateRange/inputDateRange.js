@@ -52,6 +52,10 @@ const RANGES_OPTIONS = [
         value: 'thisMonth'
     },
     {
+        label: 'Month-to-date',
+        value: 'monthToDate'
+    },
+    {
         label: 'Last month',
         value: 'lastMonth'
     },
@@ -60,12 +64,20 @@ const RANGES_OPTIONS = [
         value: 'thisQuarter'
     },
     {
+        label: 'Quarter-to-date',
+        value: 'quarterToDate'
+    },
+    {
         label: 'Last quarter',
         value: 'lastQuarter'
     },
     {
         label: 'This year',
         value: 'thisYear'
+    },
+    {
+        label: 'Year-to-date',
+        value: 'yearToDate'
     },
     {
         label: 'Last year',
@@ -83,10 +95,13 @@ const RANGE_OPTIONS_LABELS_MAP = {
     thisWeek: 'This week',
     lastWeek: 'Last week',
     thisMonth: 'This month',
+    monthToDate: 'Month-to-date',
     lastMonth: 'Last month',
     thisQuarter: 'This quarter',
+    quarterToDate: 'Quarter-to-date',
     lastQuarter: 'Last quarter',
     thisYear: 'This year',
+    yearToDate: 'Year-to-date',
     lastYear: 'Last year',
     custom: 'Custom'
 };
@@ -135,7 +150,7 @@ export default class InputDateRange extends LightningElement {
      * - the **key** is the range option `value`
      * - the **value** is the label displayed to the user
      *
-     * Expected keys: today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, custom.
+     * Expected keys: today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, monthToDate, quarterToDate, yearToDate and custom.
      *
      * Any missing key will fall back to the default label.
      *
@@ -949,8 +964,11 @@ export default class InputDateRange extends LightningElement {
      * Sets the date range to a full calendar month.
      *
      * @param {number} [offset=0] Number of months to offset from the current month.
+     * @param {boolean} [isToDate] If present, the end date should be today.
      */
-    setPredefinedMonthRange(offset = 0) {
+    setPredefinedMonthRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const d = new Date();
         d.setDate(1);
         d.setHours(0, 0, 0, 0);
@@ -964,15 +982,18 @@ export default class InputDateRange extends LightningElement {
         endOfMonth.setHours(0, 0, 0, 0);
 
         this._startDate = startOfMonth;
-        this._endDate = endOfMonth;
+        this._endDate = isToDate && offset <= 0 ? today : endOfMonth;
     }
 
     /**
      * Sets the date range to a full calendar quarter.
      *
      * @param {number} [offset=0] Number of quarters to offset from the current quarter.
+     * @param {boolean} [isToDate] If present, the end date should be today.
      */
-    setPredefinedQuarterRange(offset = 0) {
+    setPredefinedQuarterRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const d = new Date();
         d.setHours(0, 0, 0, 0);
         d.setDate(1);
@@ -990,15 +1011,18 @@ export default class InputDateRange extends LightningElement {
         endOfQuarter.setHours(0, 0, 0, 0);
 
         this._startDate = startOfQuarter;
-        this._endDate = endOfQuarter;
+        this._endDate = isToDate && offset <= 0 ? today : endOfQuarter;
     }
 
     /**
      * Sets the date range to a full calendar year.
      *
      * @param {number} [offset=0] Number of years to offset from the current year.
+     * @param {boolean} [isToDate] If present, the end date should be today.
      */
-    setPredefinedYearRange(offset = 0) {
+    setPredefinedYearRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const d = new Date();
         d.setHours(0, 0, 0, 0);
 
@@ -1011,7 +1035,7 @@ export default class InputDateRange extends LightningElement {
         endOfYear.setHours(0, 0, 0, 0);
 
         this._startDate = startOfYear;
-        this._endDate = endOfYear;
+        this._endDate = isToDate && offset <= 0 ? today : endOfYear;
     }
 
     /**
@@ -1641,6 +1665,15 @@ export default class InputDateRange extends LightningElement {
                 break;
             case 'thisYear':
                 this.setPredefinedYearRange(0);
+                break;
+            case 'monthToDate':
+                this.setPredefinedMonthRange(0, true);
+                break;
+            case 'quarterToDate':
+                this.setPredefinedQuarterRange(0, true);
+                break;
+            case 'yearToDate':
+                this.setPredefinedYearRange(0, true);
                 break;
             default:
                 return;
