@@ -687,6 +687,17 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Calendar start date.
+     *
+     * @type {element}
+     */
+    get startCalendar() {
+        return this.template.querySelector(
+            '[data-element-id="calendar-start-date"]'
+        );
+    }
+
+    /**
      * Start date input.
      *
      * @type {element}
@@ -768,14 +779,16 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Sets focus on the start date input.
+     * Sets focus on the start date input or the start calendar if is expanded.
      *
      * @public
      */
     @api
     focus() {
-        if (this.startDateInput) {
+        if (!this.isExpanded && this.startDateInput) {
             this.startDateInput.focus();
+        } else if (this.isExpanded && this.startCalendar) {
+            this.startCalendar.focus();
         }
     }
 
@@ -1589,9 +1602,12 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeRangeOption(event) {
+        event.stopPropagation();
         // The focus on the date ranges needs to be blurred to avoid setting one of the dates to null
-        this.startDateInput?.blur();
-        this.endDateInput?.blur();
+        if (!this.isExpanded) {
+            this.startDateInput?.blur();
+            this.endDateInput?.blur();
+        }
 
         const range = event.detail.value;
         this.optionRangeValue = range;
