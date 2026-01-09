@@ -46,3 +46,24 @@
 .avonni-input-date-range__input-pointer-events_none {
     pointer-events: none;
 }
+
+.avonni-input-date-range__input-choice-set-container {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.avonni-input-date-range__calendar-end-container {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.avonni-input-date-range__date-container
+    > .avonni-input-date-range__calendar-start-container:not(:first-child) {
+    border-radius: 0;
+}
+
+.avonni-input-date-range__date-container
+    > .avonni-input-date-range__calendar-start-container:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
