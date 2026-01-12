@@ -55,6 +55,10 @@
     color: var(--slds-c-input-text-color, var(--sds-c-input-text-color));
 }
 
+.avonni-date-range__input_error {
+    box-shadow: #ba0517 0 0 0 1px inset;
+}
+
 .avonni-input-date-range__input-choice-set-container {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;

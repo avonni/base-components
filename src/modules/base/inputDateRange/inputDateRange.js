@@ -1814,7 +1814,6 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
-        // might really need to focus the date properly to start date.
         if (this.isExpanded) {
             this.setDisplayDates();
         }
@@ -1843,7 +1842,6 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
-        // might really need to focus the date properly to start date.
         if (this.isExpanded) {
             this.setDisplayDates();
         }

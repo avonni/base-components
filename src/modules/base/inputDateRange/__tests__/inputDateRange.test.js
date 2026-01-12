@@ -51,6 +51,7 @@ describe('Input Date Range', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.endDate).toBeUndefined();
             expect(element.fieldLevelHelp).toBeUndefined();
+            expect(element.isExpanded).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.labelRangeOptions).toEqual(RANGE_OPTIONS_LABELS_MAP);
             expect(element.labelEndDate).toBeUndefined();
@@ -1120,6 +1121,48 @@ describe('Input Date Range', () => {
                     });
                 });
             });
+
+            it('today with isExpanded', async () => {
+                element.isExpanded = true;
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    const startCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-start-date"]'
+                    );
+                    const endCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-end-date"]'
+                    );
+
+                    // Spy & mock
+                    const startSpy = jest
+                        .spyOn(startCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+
+                    const endSpy = jest
+                        .spyOn(endCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'today'
+                            }
+                        })
+                    );
+
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 15, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                    });
+                    jest.runAllTimers();
+                    expect(startSpy).toHaveBeenCalled();
+                    expect(endSpy).toHaveBeenCalled();
+                });
+            });
         });
 
         describe('Timezone', () => {
@@ -1278,6 +1321,19 @@ describe('Input Date Range', () => {
             });
         });
 
+        it('method: focus, isExpanded', () => {
+            element.isExpanded = true;
+
+            return Promise.resolve().then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                const spy = jest.spyOn(calendar, 'focus');
+                element.focus();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
+
         // Input date range method blur
         it('method: blur', () => {
             let blurEvent = false;
@@ -1295,6 +1351,20 @@ describe('Input Date Range', () => {
 
             return Promise.resolve().then(() => {
                 expect(blurEvent).toBeTruthy();
+            });
+        });
+
+        it('method: blur, isExpanded', () => {
+            element.isExpanded = true;
+
+            return Promise.resolve().then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                const spy = jest.spyOn(input, 'blur');
+                element.blur();
+                jest.runAllTimers();
+                expect(spy).toHaveBeenCalled();
             });
         });
 
