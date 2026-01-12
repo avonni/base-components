@@ -43,8 +43,16 @@
     min-width: 150px;
 }
 
-.avonni-input-date-range__input-pointer-events_none {
+.avonni-input-date-range__input-container {
     pointer-events: none;
+    background-color: var(
+        --slds-c-input-color-background,
+        var(
+            --sds-c-input-color-background,
+            var(--slds-g-color-neutral-base-100, #fff)
+        )
+    );
+    color: var(--slds-c-input-text-color, var(--sds-c-input-text-color));
 }
 
 .avonni-input-date-range__input-choice-set-container {
