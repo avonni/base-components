@@ -224,6 +224,11 @@
     white-space: nowrap;
 }
 
+.avonni-date-time-picker__timeline
+    .avonni-date-time-picker__selected-time-button-with-next {
+    min-width: var(--lwc-sizeXxSmall, 6rem);
+}
+
 .avonni-date-time-picker__timeline-hour-col {
     min-width: var(--lwc-sizeXxSmall, 6rem);
     position: relative;
