@@ -585,6 +585,15 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Disabled or read-only.
+     *
+     * @type {boolean}
+     */
+    get disabledOrReadOnly() {
+        return this.disabled || this.readOnly;
+    }
+
+    /**
      * End Calendar
      *
      * @type {element}

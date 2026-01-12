@@ -28,7 +28,7 @@
             "
         >
             <div
-                if:true={showOptions}
+                if:true={showRangeOptions}
                 class="
                     avonni-input-date-range__input-choice-set-container
                     slds-box slds-box_x-small
@@ -39,6 +39,7 @@
                     name="predefined-ranges"
                     options={rangeOptions}
                     orientation="vertical"
+                    readonly={readOnly}
                     type="button"
                     value={optionRangeValue}
                     variant="label-hidden"
@@ -56,7 +57,7 @@
             >
                 <c-calendar
                     aria-label="Start date input calendar"
-                    disabled={disabled}
+                    disabled={disabledOrReadOnly}
                     selection-mode={selectionModeStartDate}
                     timezone={timezone}
                     value={calendarValue}
@@ -74,7 +75,7 @@
                     "
                 >
                     <lightning-button
-                        disabled={disabled}
+                        disabled={disabledOrReadOnly}
                         label={todayButtonLabel}
                         title={todayButtonLabel}
                         variant="base"
@@ -91,7 +92,7 @@
             >
                 <c-calendar
                     aria-label="End date input calendar"
-                    disabled={disabled}
+                    disabled={disabledOrReadOnly}
                     selection-mode={selectionModeEndDate}
                     timezone={timezone}
                     value={calendarValue}
@@ -109,7 +110,7 @@
                     "
                 >
                     <lightning-button
-                        disabled={disabled}
+                        disabled={disabledOrReadOnly}
                         label={todayButtonLabel}
                         title={todayButtonLabel}
                         variant="base"
@@ -180,6 +181,7 @@
                             >{labelStartTime}
                         </label>
                         <lightning-input
+                            if:false={readOnly}
                             class="start-time"
                             disabled={disabled}
                             label="Start time"
