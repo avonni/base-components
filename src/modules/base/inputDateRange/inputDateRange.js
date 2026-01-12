@@ -238,6 +238,7 @@ export default class InputDateRange extends LightningElement {
     connectedCallback() {
         this.initStartDate();
         this.initEndDate();
+        this.setSelectionModeExpanded();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
@@ -311,6 +312,7 @@ export default class InputDateRange extends LightningElement {
 
         if (this._connected) {
             this.initEndDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -327,6 +329,9 @@ export default class InputDateRange extends LightningElement {
     }
     set isExpanded(value) {
         this._isExpanded = normalizeBoolean(value);
+        if (this._connected) {
+            this.setSelectionModeExpanded();
+        }
     }
 
     /**
@@ -394,6 +399,7 @@ export default class InputDateRange extends LightningElement {
 
         if (this._connected) {
             this.initStartDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -432,6 +438,7 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initStartDate();
             this.initEndDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -455,6 +462,7 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initStartDate();
             this.initEndDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -922,8 +930,12 @@ export default class InputDateRange extends LightningElement {
     setDisplayDates() {
         if (this.isExpanded) {
             requestAnimationFrame(() => {
-                this.startCalendar?.goToDate(this._startDate);
-                this.endCalendar?.goToDate(this._endDate);
+                if (this.startDate) {
+                    this.startCalendar?.goToDate(this._startDate);
+                }
+                if (this.endDate) {
+                    this.endCalendar?.goToDate(this._endDate);
+                }
             });
         }
     }
@@ -1071,9 +1083,10 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Set the selection mode for the calendar
+     * Set the selection mode for the calendar if expanded
      */
-    setSelectionMode() {
+    setSelectionModeExpanded() {
+        if (!this.isExpanded) return;
         this.selectionModeStartDate = !this._endDate ? 'single' : 'interval';
         this.selectionModeEndDate = !this._startDate ? 'single' : 'interval';
     }
@@ -1901,9 +1914,7 @@ export default class InputDateRange extends LightningElement {
     _dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
-        if (this.isExpanded) {
-            this.setSelectionMode();
-        }
+        this.setSelectionModeExpanded();
 
         /**
          * The event fired when the value changed.
