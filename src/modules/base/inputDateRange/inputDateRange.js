@@ -1692,6 +1692,9 @@ export default class InputDateRange extends LightningElement {
                 return;
         }
         this.setValidTimeRange();
+        this.interactingState.enter();
+        this.updateClassListWhenError();
+        this.interactingState.leave();
         this._dispatchChange();
         if (this.isExpanded) {
             this.setDisplayDates();
@@ -1744,7 +1747,11 @@ export default class InputDateRange extends LightningElement {
      */
     handleFocusOut() {
         requestAnimationFrame(() => {
-            if (!(this.showEndDate || this.showStartDate)) {
+            if (!this.isExpanded && !(this.showEndDate || this.showStartDate)) {
+                this.updateClassListWhenError();
+                this.interactingState.leave();
+            } else if (this.isExpanded) {
+                this.interactingState.enter();
                 this.updateClassListWhenError();
                 this.interactingState.leave();
             }
@@ -1889,8 +1896,6 @@ export default class InputDateRange extends LightningElement {
         const endDate = this.toISOString(this.endDate, this.endTime);
         if (this.isExpanded) {
             this.setSelectionMode();
-            this.interactingState.enter();
-            this.interactingState.leave();
         }
 
         /**
