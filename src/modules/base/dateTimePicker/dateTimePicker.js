@@ -1873,12 +1873,12 @@ export default class DateTimePicker extends LightningElement {
                 show: !disabled || this.showDisabledDates,
                 computedAriaLabel: `${timeLabel}, ${dateLabel}`,
                 displayNextButton,
-                buttonClass: classSet('slds-theme_default').add({
+                buttonClass: classSet().add({
                     'avonni-date-time-picker__time-button': !displayNextButton,
                     'avonni-date-time-picker__selected-time-button-with-next':
                         displayNextButton,
                     'slds-p-around_medium': this.isTimeline,
-                    'slds-p-around_small': !this.isTimeline
+                    'slds-p-around_small slds-theme_default': !this.isTimeline
                 })
             };
 
