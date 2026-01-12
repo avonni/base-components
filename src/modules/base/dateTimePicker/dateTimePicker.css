@@ -159,6 +159,7 @@
     );
     width: 100%;
     height: 100%;
+    white-space: nowrap;
 }
 
 .avonni-date-time-picker__time-button:disabled {
@@ -196,6 +197,33 @@
     );
 }
 
+.avonni-date-time-picker__selected-time-button-with-next {
+    border-color: var(
+        --avonni-date-time-picker-button-color-border-selected,
+        var(--slds-g-color-neutral-base-40, #5c5c5c)
+    );
+    border-style: var(
+        --avonni-date-time-picker-button-styling-border-selected,
+        solid
+    );
+    border-width: var(
+        --avonni-date-time-picker-button-sizing-border-selected,
+        1px
+    );
+    border-radius: var(
+        --avonni-date-time-picker-button-radius-border,
+        var(--lwc-borderRadiusMedium, 0.25rem)
+    );
+    background-color: var(
+        --avonni-date-time-picker-button-color-background-selected,
+        var(--slds-g-color-neutral-base-50, #747474)
+    );
+    color: var(--avonni-date-time-picker-button-text-color-selected, #ffffff);
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+}
+
 .avonni-date-time-picker__timeline-hour-col {
     min-width: var(--lwc-sizeXxSmall, 6rem);
     position: relative;
@@ -217,4 +245,14 @@
 
 .avonni-date-time-picker__timeline .avonni-date-time-picker__time-button {
     min-width: var(--lwc-sizeXxSmall, 6rem);
+}
+
+.avonni-date-time-picker__next-button {
+    --slds-c-button-radius-border: var(
+        --avonni-date-time-picker-button-radius-border,
+        var(--lwc-borderRadiusMedium, 0.25rem)
+    );
+    width: 100%;
+    height: 100%;
+    display: flex;
 }

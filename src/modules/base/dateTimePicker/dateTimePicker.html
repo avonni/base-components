@@ -428,45 +428,73 @@
                                                                 style={computedTimeSlotStyle}
                                                                 data-element-id="avonni-layout-item-time-timeline"
                                                             >
-                                                                <button
+                                                                <div
                                                                     class="
-                                                                        avonni-date-time-picker__time-button
-                                                                        slds-p-around_medium
+                                                                        slds-grid
                                                                     "
-                                                                    aria-label={timelineTime.computedAriaLabel}
-                                                                    aria-pressed={timelineTime.selected}
-                                                                    disabled={timelineTime.disabled}
-                                                                    type="button"
-                                                                    data-focusable
-                                                                    onblur={handleValueBlur}
-                                                                    onclick={handleTimeSlotClick}
-                                                                    onfocus={handleValueFocus}
                                                                 >
-                                                                    <lightning-formatted-date-time
-                                                                        hour={timeFormatHour}
-                                                                        hour12={timeFormatHour12}
-                                                                        minute={timeFormatMinute}
-                                                                        second={timeFormatSecond}
-                                                                        time-zone={timezone}
-                                                                        value={timelineTime.startTimeISO}
-                                                                    ></lightning-formatted-date-time>
-                                                                    <template
-                                                                        if:true={showEndTime}
+                                                                    <div
+                                                                        class="
+                                                                            slds-col
+                                                                            slds-grow
+                                                                        "
                                                                     >
-                                                                        &nbsp;-&nbsp;
-                                                                        <lightning-formatted-date-time
+                                                                        <button
+                                                                            class={timelineTime.buttonClass}
+                                                                            aria-label={timelineTime.computedAriaLabel}
+                                                                            aria-pressed={timelineTime.selected}
+                                                                            disabled={timelineTime.disabled}
+                                                                            type="button"
+                                                                            data-focusable
+                                                                            onblur={handleValueBlur}
+                                                                            onclick={handleTimeSlotClick}
+                                                                            onfocus={handleValueFocus}
+                                                                        >
+                                                                            <lightning-formatted-date-time
+                                                                                hour={timeFormatHour}
+                                                                                hour12={timeFormatHour12}
+                                                                                minute={timeFormatMinute}
+                                                                                second={timeFormatSecond}
+                                                                                time-zone={timezone}
+                                                                                value={timelineTime.startTimeISO}
+                                                                            ></lightning-formatted-date-time>
+                                                                            <template
+                                                                                if:true={showEndTime}
+                                                                            >
+                                                                                &nbsp;-&nbsp;
+                                                                                <lightning-formatted-date-time
+                                                                                    class="
+                                                                                        date-time-picker__formatted-end-time
+                                                                                    "
+                                                                                    hour={timeFormatHour}
+                                                                                    hour12={timeFormatHour12}
+                                                                                    minute={timeFormatMinute}
+                                                                                    second={timeFormatSecond}
+                                                                                    time-zone={timezone}
+                                                                                    value={timelineTime.endTimeISO}
+                                                                                ></lightning-formatted-date-time>
+                                                                            </template>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div
+                                                                        if:true={timelineTime.displayNextButton}
+                                                                        class="
+                                                                            slds-col
+                                                                            slds-p-left_xx-small
+                                                                        "
+                                                                    >
+                                                                        <lightning-button
                                                                             class="
-                                                                                date-time-picker__formatted-end-time
+                                                                                avonni-date-time-picker__next-button
                                                                             "
-                                                                            hour={timeFormatHour}
-                                                                            hour12={timeFormatHour12}
-                                                                            minute={timeFormatMinute}
-                                                                            second={timeFormatSecond}
-                                                                            time-zone={timezone}
-                                                                            value={timelineTime.endTimeISO}
-                                                                        ></lightning-formatted-date-time>
-                                                                    </template>
-                                                                </button>
+                                                                            label="Next"
+                                                                            stretch
+                                                                            variant="brand"
+                                                                            data-element-id="lightning-button-next"
+                                                                            onclick={handleNextButtonClick}
+                                                                        ></lightning-button>
+                                                                    </div>
+                                                                </div>
                                                             </c-layout-item>
                                                         </template>
                                                     </c-layout>
@@ -486,50 +514,72 @@
                                                 small-container-size="calc(25% - 8px)"
                                                 data-element-id="avonni-layout-item-time"
                                             >
-                                                <button
-                                                    class="
-                                                        avonni-date-time-picker__time-button
-                                                        slds-p-around_small
-                                                        slds-theme_default
-                                                    "
-                                                    aria-label={time.computedAriaLabel}
-                                                    aria-pressed={time.selected}
-                                                    disabled={time.disabled}
-                                                    type="button"
-                                                    data-element-id="button-default"
-                                                    data-focusable
-                                                    data-time={time.startTimeISO}
-                                                    onblur={handleValueBlur}
-                                                    onclick={handleTimeSlotClick}
-                                                    onfocus={handleValueFocus}
-                                                >
-                                                    <lightning-formatted-date-time
-                                                        minute={timeFormatMinute}
-                                                        hour={timeFormatHour}
-                                                        hour12={timeFormatHour12}
-                                                        second={timeFormatSecond}
-                                                        time-zone={timezone}
-                                                        value={time.startTimeISO}
-                                                        data-element-id="lightning-formatted-date-time-default-start"
-                                                    ></lightning-formatted-date-time>
-                                                    <template
-                                                        if:true={showEndTime}
+                                                <div class="slds-grid">
+                                                    <div
+                                                        class="
+                                                            slds-col slds-grow
+                                                        "
                                                     >
-                                                        &nbsp;-&nbsp;
-                                                        <lightning-formatted-date-time
+                                                        <button
+                                                            class={time.buttonClass}
+                                                            aria-label={time.computedAriaLabel}
+                                                            aria-pressed={time.selected}
+                                                            disabled={time.disabled}
+                                                            type="button"
+                                                            data-element-id="button-default"
+                                                            data-focusable
+                                                            data-time={time.startTimeISO}
+                                                            onblur={handleValueBlur}
+                                                            onclick={handleTimeSlotClick}
+                                                            onfocus={handleValueFocus}
+                                                        >
+                                                            <lightning-formatted-date-time
+                                                                minute={timeFormatMinute}
+                                                                hour={timeFormatHour}
+                                                                hour12={timeFormatHour12}
+                                                                second={timeFormatSecond}
+                                                                time-zone={timezone}
+                                                                value={time.startTimeISO}
+                                                                data-element-id="lightning-formatted-date-time-default-start"
+                                                            ></lightning-formatted-date-time>
+                                                            <template
+                                                                if:true={showEndTime}
+                                                            >
+                                                                &nbsp;-&nbsp;
+                                                                <lightning-formatted-date-time
+                                                                    class="
+                                                                        date-time-picker__formatted-end-time
+                                                                    "
+                                                                    hour={timeFormatHour}
+                                                                    hour12={timeFormatHour12}
+                                                                    minute={timeFormatMinute}
+                                                                    second={timeFormatSecond}
+                                                                    time-zone={timezone}
+                                                                    value={time.endTimeISO}
+                                                                    data-element-id="lightning-formatted-date-time-default-end"
+                                                                ></lightning-formatted-date-time>
+                                                            </template>
+                                                        </button>
+                                                    </div>
+                                                    <div
+                                                        if:true={time.displayNextButton}
+                                                        class="
+                                                            slds-col
+                                                            slds-p-left_xx-small
+                                                        "
+                                                    >
+                                                        <lightning-button
                                                             class="
-                                                                date-time-picker__formatted-end-time
+                                                                avonni-date-time-picker__next-button
                                                             "
-                                                            hour={timeFormatHour}
-                                                            hour12={timeFormatHour12}
-                                                            minute={timeFormatMinute}
-                                                            second={timeFormatSecond}
-                                                            time-zone={timezone}
-                                                            value={time.endTimeISO}
-                                                            data-element-id="lightning-formatted-date-time-default-end"
-                                                        ></lightning-formatted-date-time>
-                                                    </template>
-                                                </button>
+                                                            label="Next"
+                                                            stretch
+                                                            variant="brand"
+                                                            data-element-id="lightning-button-next"
+                                                            onclick={handleNextButtonClick}
+                                                        ></lightning-button>
+                                                    </div>
+                                                </div>
                                             </c-layout-item>
                                         </template>
                                     </template>

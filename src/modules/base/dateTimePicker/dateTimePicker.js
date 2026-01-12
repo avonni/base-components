@@ -189,6 +189,7 @@ export default class DateTimePicker extends LightningElement {
     _datePickerVariant = DATE_PICKER_VARIANTS.default;
     _disabled = false;
     _disabledDateTimes = [];
+    _displayNextButton = false;
     _endTime = DEFAULT_END_TIME;
     _hideDateLabel = false;
     _hideDatePicker = false;
@@ -497,6 +498,21 @@ export default class DateTimePicker extends LightningElement {
                 this._queueRecompute();
             });
         }
+    }
+
+    /**
+     * If present, display a next button after selecting a time slot.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get displayNextButton() {
+        return this._displayNextButton;
+    }
+    set displayNextButton(value) {
+        this._displayNextButton = normalizeBoolean(value);
     }
 
     /**
@@ -1822,6 +1838,7 @@ export default class DateTimePicker extends LightningElement {
             if (selected) {
                 dayTime.selected = true;
             }
+            const displayNextButton = this.displayNextButton && selected;
             const startTimeLabel = day.toLocaleString({
                 hour: this.timeFormatHour,
                 minute: this.timeFormatMinute,
@@ -1850,7 +1867,15 @@ export default class DateTimePicker extends LightningElement {
                 disabled,
                 selected: selected || undefined,
                 show: !disabled || this.showDisabledDates,
-                computedAriaLabel: `${timeLabel}, ${dateLabel}`
+                computedAriaLabel: `${timeLabel}, ${dateLabel}`,
+                displayNextButton,
+                buttonClass: classSet('slds-theme_default').add({
+                    'avonni-date-time-picker__time-button': !displayNextButton,
+                    'avonni-date-time-picker__selected-time-button-with-next':
+                        displayNextButton,
+                    'slds-p-around_medium': this.isTimeline,
+                    'slds-p-around_small': !this.isTimeline
+                })
             };
 
             // If the variant is 'timeline', pushes a two-level deep object into dayTime.times
@@ -2190,6 +2215,13 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Handles the onclick event of the next button of a selected time slot.
+     */
+    handleNextButtonClick() {
+        this._dispatchNextButtonClick();
+    }
+
+    /**
      * Handles the onclick event of the button for time slots.
      */
     handleTimeSlotClick(event) {
@@ -2323,6 +2355,24 @@ export default class DateTimePicker extends LightningElement {
                 detail: {
                     date: this.firstWeekDay.toISO()
                 }
+            })
+        );
+    }
+
+    _dispatchNextButtonClick() {
+        /**
+         * The event fired when the user clicks on the next button of a selected time slot.
+         *
+         * @event
+         * @name nextbuttonclick
+         * @public
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('nextbuttonclick', {
+                bubbles: true,
+                composed: true
             })
         );
     }
