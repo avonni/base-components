@@ -513,6 +513,10 @@ export default class DateTimePicker extends LightningElement {
     }
     set displayNextButton(value) {
         this._displayNextButton = normalizeBoolean(value);
+
+        if (this._connected) {
+            this._generateTable();
+        }
     }
 
     /**
