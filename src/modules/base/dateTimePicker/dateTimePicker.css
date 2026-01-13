@@ -254,8 +254,48 @@
 
 .avonni-date-time-picker__next-button {
     --slds-c-button-radius-border: var(
-        --avonni-date-time-picker-button-radius-border,
+        --avonni-date-time-picker-next-button-radius-border,
         var(--lwc-borderRadiusMedium, 0.25rem)
+    );
+    --slds-c-button-brand-color-background: var(
+        --avonni-date-time-picker-next-button-color-background,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-button-brand-color-background-active: var(
+        --avonni-date-time-picker-next-button-color-background-active,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-button-brand-color-background-hover: var(
+        --avonni-date-time-picker-next-button-color-background-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-button-brand-text-color: var(
+        --avonni-date-time-picker-next-button-text-color,
+        #ffffff
+    );
+    --slds-c-button-brand-text-color-active: var(
+        --avonni-date-time-picker-next-button-text-color-active,
+        #ffffff
+    );
+    --slds-c-button-brand-text-color-hover: var(
+        --avonni-date-time-picker-next-button-text-color-hover,
+        #ffffff
+    );
+    --slds-c-button-brand-color-border: var(
+        --avonni-date-time-picker-next-button-color-border,
+        var(--lwc-brandAccessible, #0176d3)
+    );
+    --slds-c-button-brand-color-border-active: var(
+        --avonni-date-time-picker-next-button-color-border-active,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-button-brand-color-border-hover: var(
+        --avonni-date-time-picker-next-button-color-border-hover,
+        var(--lwc-brandAccessibleActive, #014486)
+    );
+    --slds-c-button-sizing-border: var(
+        --avonni-date-time-picker-next-button-sizing-border,
+        1px
     );
     width: 100%;
     height: 100%;
