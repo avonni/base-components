@@ -837,5 +837,62 @@ describe('Button Icon Popover', () => {
                     expect(closeHandler.mock.calls[0][0].composed).toBeFalsy();
                 });
         });
+
+        it('handlePopoverBlur dispatches close when clicking outside the popover', () => {
+            const closeHandler = jest.fn();
+            const openHandler = jest.fn();
+            element.addEventListener('close', closeHandler);
+            element.addEventListener('open', openHandler);
+
+            return Promise.resolve()
+                .then(() => {
+                    element.click();
+                    expect(openHandler).toHaveBeenCalled();
+                })
+                .then(() => {
+                    const divPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="div-popover"]'
+                    );
+                    divPopover.dispatchEvent(
+                        new FocusEvent('blur', {
+                            relatedTarget: undefined
+                        })
+                    );
+                    expect(closeHandler).toHaveBeenCalled();
+                });
+        });
+
+        it('handlePopoverBlur does not dispatch close when clicking inside the popover', () => {
+            const closeHandler = jest.fn();
+            const openHandler = jest.fn();
+            element.addEventListener('close', closeHandler);
+            element.addEventListener('open', openHandler);
+            const testDiv = document.createElement('div');
+            testDiv.setAttribute('data-element-id', 'div-in-slot');
+            testDiv.tabIndex = 0;
+
+            element.appendChild(testDiv);
+
+            return Promise.resolve()
+                .then(() => {
+                    element.click();
+                    expect(openHandler).toHaveBeenCalled();
+                })
+                .then(() => {
+                    const divPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="div-popover"]'
+                    );
+                    const divInSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="div-in-slot"]'
+                    );
+
+                    divPopover.dispatchEvent(
+                        new FocusEvent('blur', {
+                            relatedTarget: divInSlot
+                        })
+                    );
+                    expect(closeHandler).not.toHaveBeenCalled();
+                });
+        });
     });
 });

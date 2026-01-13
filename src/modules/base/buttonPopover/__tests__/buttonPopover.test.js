@@ -786,5 +786,55 @@ describe('Button Popover', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
+
+        it('handlePopoverBlur dispatches close when clicking outside the popover', () => {
+            element.open();
+            return Promise.resolve()
+                .then(() => {
+                    const divPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="div-popover"]'
+                    );
+                    divPopover.dispatchEvent(
+                        new FocusEvent('blur', {
+                            relatedTarget: undefined
+                        })
+                    );
+                })
+                .then(() => {
+                    const popover =
+                        element.shadowRoot.querySelector('.slds-popover');
+                    expect(popover.className).toContain('slds-hide');
+                });
+        });
+
+        it('handlePopoverBlur does not dispatch close when clicking inside the popover', () => {
+            const testDiv = document.createElement('div');
+            testDiv.setAttribute('data-element-id', 'div-in-slot');
+            testDiv.tabIndex = 0;
+
+            element.appendChild(testDiv);
+
+            element.open();
+            return Promise.resolve()
+                .then(() => {
+                    const divPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="div-popover"]'
+                    );
+                    const divInSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="div-in-slot"]'
+                    );
+
+                    divPopover.dispatchEvent(
+                        new FocusEvent('blur', {
+                            relatedTarget: divInSlot
+                        })
+                    );
+                })
+                .then(() => {
+                    const popover =
+                        element.shadowRoot.querySelector('.slds-popover');
+                    expect(popover.className).not.toContain('slds-hide');
+                });
+        });
     });
 });
