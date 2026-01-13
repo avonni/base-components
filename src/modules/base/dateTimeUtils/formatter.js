@@ -16,6 +16,29 @@ import {
 import { DateTime } from './dateTime';
 import { pad } from './utils';
 
+function _buildMonthMaps(locale) {
+    const shortMonths = {};
+    const longMonths = {};
+
+    for (let i = 0; i < 12; i++) {
+        const date = new Date(2000, i, 1);
+
+        const short = new Intl.DateTimeFormat(locale, { month: 'short' })
+            .format(date)
+            .replace('.', '')
+            .toLowerCase();
+
+        const long = new Intl.DateTimeFormat(locale, { month: 'long' })
+            .format(date)
+            .toLowerCase();
+
+        shortMonths[short] = i;
+        longMonths[long] = i;
+    }
+
+    return { shortMonths, longMonths };
+}
+
 function _parseCustomToken({ date, token, timeZone }) {
     const tzDate = new DateTime(date, timeZone);
 
@@ -283,4 +306,56 @@ function isISODateOnly(date) {
     );
 }
 
-export { getFormattedDate, isISODateOnly };
+function parseFormattedDateString(value, format, locale = DEFAULT_LANGUAGE) {
+    if (typeof value !== 'string') return null;
+
+    const { shortMonths, longMonths } = _buildMonthMaps(locale);
+
+    let year, month, day;
+
+    switch (format) {
+        case 'L/d/y': {
+            const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (!match) return null;
+
+            month = Number(match[1]) - 1;
+            day = Number(match[2]);
+            year = Number(match[3]);
+            break;
+        }
+
+        case 'LLL. d, y': {
+            const match = value.match(/^([\p{L}.]+)\s+(\d{1,2}),\s+(\d{4})$/u);
+            if (!match) return null;
+
+            const monthKey = match[1].replace('.', '').toLowerCase();
+            month = shortMonths[monthKey];
+            day = Number(match[2]);
+            year = Number(match[3]);
+            break;
+        }
+
+        case 'LLLL d, y': {
+            const match = value.match(/^([\p{L}]+)\s+(\d{1,2}),\s+(\d{4})$/u);
+            if (!match) return null;
+
+            const monthKey = match[1].toLowerCase();
+            month = longMonths[monthKey];
+            day = Number(match[2]);
+            year = Number(match[3]);
+            break;
+        }
+
+        default:
+            return null;
+    }
+
+    if (month == null || year == null || day == null) return null;
+
+    const date = new Date(year, month, day);
+    date.setHours(0, 0, 0, 0);
+
+    return isNaN(date.getTime()) ? null : date;
+}
+
+export { getFormattedDate, isISODateOnly, parseFormattedDateString };

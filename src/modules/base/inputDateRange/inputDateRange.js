@@ -1,4 +1,8 @@
-import { DateTime, getFormattedDate } from 'c/dateTimeUtils';
+import {
+    DateTime,
+    getFormattedDate,
+    parseFormattedDateString
+} from 'c/dateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     Direction,
@@ -1183,6 +1187,23 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Change the date format depending on date style.
+     *
+     * @param {date} value date object
+     * @returns {date} formatted date depending on the date style.
+     */
+    dateStringFormat(value) {
+        switch (this.dateStyle) {
+            case 'medium':
+                return parseFormattedDateString(value, 'LLL. d, y');
+            case 'long':
+                return parseFormattedDateString(value, 'LLLL d, y');
+            default:
+                return parseFormattedDateString(value, 'L/d/y');
+        }
+    }
+
+    /**
      * Convert a date object to an ISO8601 formatted string.
      *
      * @param {date} dateObject
@@ -1381,6 +1402,21 @@ export default class InputDateRange extends LightningElement {
         this.setDisplayDates();
     }
 
+    handleChangeEndDateInput(event) {
+        const value = event.target.value;
+        let parsedDate = this.dateStringFormat(value);
+        if (parsedDate && !isNaN(parsedDate.getTime())) {
+            parsedDate.setHours(0, 0, 0, 0);
+            const max = this.endCalendar?.max ?? new Date(2099, 11, 31);
+            max.setHours(0, 0, 0, 0);
+            this._endDate = parsedDate < max ? parsedDate : max;
+            this._dispatchChange();
+            this.setDisplayDates();
+        } else {
+            // Show Error
+        }
+    }
+
     /**
      * Handles the change of end-time.
      *
@@ -1499,6 +1535,21 @@ export default class InputDateRange extends LightningElement {
             this.calendarKeyEvent = null;
         });
         this.setDisplayDates();
+    }
+
+    handleChangeStartDateInput(event) {
+        const value = event.target.value;
+        const parsedDate = this.dateStringFormat(value);
+        if (parsedDate && !isNaN(parsedDate.getTime())) {
+            parsedDate.setHours(0, 0, 0, 0);
+            const min = this.startCalendar?.min ?? new Date(2099, 11, 31);
+            min.setHours(0, 0, 0, 0);
+            this._startDate = parsedDate > min ? parsedDate : min;
+            this._dispatchChange();
+            this.setDisplayDates();
+        } else {
+            // Show Error
+        }
     }
 
     /**

@@ -44,6 +44,7 @@
                     value={optionRangeValue}
                     variant="label-hidden"
                     data-element-id="avonni-input-date-range__combobox-range-options"
+                    data-is-focusable
                     onblur={handleBlur}
                     onchange={handleChangeRangeOption}
                     onfocus={handleFocus}
@@ -149,16 +150,15 @@
                             "
                         >
                             <input
-                                class="
-                                    avonni-input-date-range__input-container
-                                    slds-input
-                                "
+                                class="slds-input"
                                 autocomplete="off"
-                                disabled
+                                disabled={disabled}
+                                readonly={readonly}
                                 required={required}
                                 type="text"
                                 value={startDateString}
                                 data-element-id="input-start-date"
+                                onchange={handleChangeStartDateInput}
                             />
                             <lightning-button-icon
                                 class="slds-input__icon slds-input__icon_right"
@@ -225,16 +225,15 @@
                             "
                         >
                             <input
-                                class="
-                                    avonni-input-date-range__input-container
-                                    slds-input
-                                "
+                                class="slds-input"
                                 autocomplete="off"
-                                disabled
+                                disabled={disabled}
+                                readonly={readonly}
                                 required={required}
                                 type="text"
                                 value={endDateString}
                                 data-element-id="input-end-date"
+                                onchange={handleChangeEndDateInput}
                             />
                             <lightning-button-icon
                                 class="slds-input__icon slds-input__icon_right"
