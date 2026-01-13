@@ -2454,7 +2454,7 @@ export default class List extends LightningElement {
         }
 
         this.dispatchEvent(
-            new CustomEvent('privatelayoutconnected', {
+            new CustomEvent('privatefieldslayoutconnected', {
                 detail: {
                     name,
                     callbacks: {
@@ -2480,7 +2480,7 @@ export default class List extends LightningElement {
             });
         };
         this.dispatchEvent(
-            new CustomEvent('privatelayoutdisconnected', {
+            new CustomEvent('privatefieldslayoutdisconnected', {
                 detail: {
                     name: event.detail.name,
                     callbacks: {
