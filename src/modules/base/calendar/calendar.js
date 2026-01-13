@@ -12,7 +12,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { equal, keyValues } from 'c/utilsPrivate';
+import { equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import CalendarDate from './date';
 
@@ -94,10 +94,10 @@ export default class Calendar extends LightningElement {
     _computedMarkedDates = [];
     _computedMax;
     _computedMin;
-    _computedValue = [];
     _connected = false;
     _focusDate;
     calendarData;
+    computedValue = [];
     day;
     displayDate; // The calendar displays this date's month
     month;
@@ -330,8 +330,8 @@ export default class Calendar extends LightningElement {
 
         if (this._connected) {
             this.initValue();
-            if (this._computedValue[0]) {
-                this.displayDate = new Date(this._computedValue[0]);
+            if (this.computedValue[0]) {
+                this.displayDate = new Date(this.computedValue[0]);
             }
             this.validateCurrentDayValue();
             this.updateDateParameters();
@@ -394,7 +394,7 @@ export default class Calendar extends LightningElement {
      * @return {boolean}
      */
     get allValuesOutsideMinAndMax() {
-        return this._computedValue.every(
+        return this.computedValue.every(
             (value) => this.isBeforeMin(value) || this.isAfterMax(value)
         );
     }
@@ -473,6 +473,15 @@ export default class Calendar extends LightningElement {
             this.selectionMode === 'interval' ||
             this.selectionMode === 'multiple'
         );
+    }
+
+    /**
+     * Check if the calendar is labeled.
+     *
+     * @return {boolean}
+     */
+    get isLabeled() {
+        return this._dateLabels.length > 0;
     }
 
     /**
@@ -576,82 +585,87 @@ export default class Calendar extends LightningElement {
      */
     computeFocus(applyFocus) {
         // if a date was previously selected or focused, focus the same date in this month.
-        let selectedMonthDate, rovingDate;
-        if (this._focusDate) {
-            rovingDate = this._focusDate.getTime();
-            selectedMonthDate = setDate(
-                this.displayDate,
-                'date',
-                this._focusDate.getDate()
-            );
-        }
-        const firstOfMonthDate = this.startOfDay(
-            setDate(this.displayDate, 'date', 1)
-        ).getTime();
+        // let selectedMonthDate, rovingDate;
+        // if (this._focusDate) {
+        //     rovingDate = this._focusDate.getTime();
+        //     selectedMonthDate = setDate(
+        //         this.displayDate,
+        //         'date',
+        //         this._focusDate.getDate()
+        //     );
+        // }
+        // const firstOfMonthDate = this.startOfDay(
+        //     setDate(this.displayDate, 'date', 1)
+        // ).getTime();
 
-        requestAnimationFrame(() => {
-            const rovingFocusDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${rovingDate}"]`
-            );
-            const selectedDates = this.template.querySelectorAll(
-                '[data-selected="true"]'
-            );
-            const todaysDate = this.template.querySelector(
-                '[data-today="true"]'
-            );
-            const firstOfMonth = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
-            );
-            const rovingMonthDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
-            );
-            const firstValidDate = this.template.querySelector(
-                '[data-element-id="td"]:not([data-disabled="true"])'
-            );
+        // requestAnimationFrame(() => {
+        //     const rovingFocusDate = this.template.querySelector(
+        //         `[data-element-id="td"][data-full-date="${rovingDate}"]`
+        //     );
+        //     const selectedDates = this.template.querySelectorAll(
+        //         '[data-selected="true"]'
+        //     );
+        //     const todaysDate = this.template.querySelector(
+        //         '[data-today="true"]'
+        //     );
+        //     const firstOfMonth = this.template.querySelector(
+        //         `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
+        //     );
+        //     const rovingMonthDate = this.template.querySelector(
+        //         `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
+        //     );
+        //     const firstValidDate = this.template.querySelector(
+        //         '[data-element-id="td"]:not([data-disabled="true"])'
+        //     );
 
-            const focusTarget =
-                rovingFocusDate ||
-                selectedDates[0] ||
-                rovingMonthDate ||
-                todaysDate ||
-                firstOfMonth ||
-                firstValidDate;
+        //     const focusTarget =
+        //         rovingFocusDate ||
+        //         selectedDates[0] ||
+        //         rovingMonthDate ||
+        //         todaysDate ||
+        //         firstOfMonth ||
+        //         firstValidDate;
 
-            const existingFocusPoints = this.template.querySelectorAll(
-                '[data-element-id="td"][tabindex="0"]'
-            );
-            existingFocusPoints.forEach((focusPoint) => {
-                focusPoint.setAttribute('tabindex', '-1');
-            });
+        //     const existingFocusPoints = this.template.querySelectorAll(
+        //         '[data-element-id="td"][tabindex="0"]'
+        //     );
+        //     existingFocusPoints.forEach((focusPoint) => {
+        //         focusPoint.setAttribute('tabindex', '-1');
+        //     });
 
-            if (selectedDates.length) {
-                if (this.selectionMode === 'single') {
-                    selectedDates[0].setAttribute('tabindex', '0');
-                } else if (this.selectionMode === 'multiple') {
-                    selectedDates.forEach((target) => {
-                        target.setAttribute('tabindex', '0');
-                    });
-                } else if (this.selectionMode === 'interval') {
-                    selectedDates[0].setAttribute('tabindex', '0');
-                    selectedDates[selectedDates.length - 1].setAttribute(
-                        'tabindex',
-                        '0'
-                    );
-                }
-            }
+        //     if (selectedDates.length) {
+        //         if (this.selectionMode === 'single') {
+        //             selectedDates[0].setAttribute('tabindex', '0');
+        //         } else if (this.selectionMode === 'multiple') {
+        //             selectedDates.forEach((target) => {
+        //                 target.setAttribute('tabindex', '0');
+        //             });
+        //         } else if (this.selectionMode === 'interval') {
+        //             selectedDates[0].setAttribute('tabindex', '0');
+        //             selectedDates[selectedDates.length - 1].setAttribute(
+        //                 'tabindex',
+        //                 '0'
+        //             );
+        //         }
+        //     }
 
-            if (focusTarget) {
-                if (focusTarget.length > 0) {
-                    focusTarget[0].setAttribute('tabindex', '0');
-                    if (applyFocus) focusTarget[0].focus();
-                } else {
-                    focusTarget.setAttribute('tabindex', '0');
-                    if (applyFocus) {
-                        focusTarget.focus();
-                    }
-                }
-            }
-        });
+        //     if (focusTarget) {
+        //         if (focusTarget.length > 0) {
+        //             focusTarget[0].setAttribute('tabindex', '0');
+        //             if (applyFocus) focusTarget[0].focus();
+        //         } else {
+        //             focusTarget.setAttribute('tabindex', '0');
+        //             if (applyFocus) {
+        //                 focusTarget.focus();
+        //             }
+        //         }
+        //     }
+        // });
+        this.template
+            .querySelector(
+                '[data-element-id="avonni-calendar__primitive-calendar"]'
+            )
+            ?.focusDate(this._focusDate, this.displayDate, applyFocus);
     }
 
     /**
@@ -693,10 +707,10 @@ export default class Calendar extends LightningElement {
         let date = getStartOfWeek(firstDay, this.weekStartDay);
 
         const mode = this.selectionMode;
-        const firstValue = this._computedValue[0];
-        const lastValue = this._computedValue[this._computedValue.length - 1];
+        const firstValue = this.computedValue[0];
+        const lastValue = this.computedValue[this.computedValue.length - 1];
         const isInterval =
-            mode === 'interval' && this._computedValue.length >= 2;
+            mode === 'interval' && this.computedValue.length >= 2;
 
         // Add an array per week
         for (let i = 0; i < 6; i++) {
@@ -727,7 +741,7 @@ export default class Calendar extends LightningElement {
 
                 let selected;
                 if (this.isMultiSelect) {
-                    selected = this._computedValue.find((value) => {
+                    selected = this.computedValue.find((value) => {
                         return (
                             this.startOfDay(value).getTime() ===
                             this.startOfDay(time).getTime()
@@ -897,8 +911,8 @@ export default class Calendar extends LightningElement {
      */
     initDisplayDate() {
         let date = this.getDateWithTimezone(DEFAULT_DATE);
-        if (this._computedValue[0]) {
-            date = this._computedValue[0];
+        if (this.computedValue[0]) {
+            date = this.computedValue[0];
         } else if (date < this._computedMin) {
             date = this._computedMin;
         } else if (date > this._computedMax) {
@@ -939,7 +953,7 @@ export default class Calendar extends LightningElement {
             }
         });
         computedValues.sort((a, b) => a.getTime() - b.getTime());
-        this._computedValue = computedValues;
+        this.computedValue = computedValues;
     }
 
     /**
@@ -1075,7 +1089,7 @@ export default class Calendar extends LightningElement {
      * Remove invalid values, or values outside of min-max interval, from the computed value.
      */
     removeValuesOutsideRange() {
-        this._computedValue = this._computedValue.filter((date) => {
+        this.computedValue = this.computedValue.filter((date) => {
             return (
                 !this.isInvalidDate(date) &&
                 !this.isAfterMax(date) &&
@@ -1093,15 +1107,15 @@ export default class Calendar extends LightningElement {
     setIntervalWithOneValidValue(minValue, maxValue) {
         if (
             this.isBeforeMin(minValue) &&
-            minValue.getTime() < this._computedValue[0].getTime()
+            minValue.getTime() < this.computedValue[0].getTime()
         ) {
-            this._computedValue[1] = this._computedValue[0];
-            this._computedValue[0] = this._computedMin;
+            this.computedValue[1] = this.computedValue[0];
+            this.computedValue[0] = this._computedMin;
         } else if (
             this.isAfterMax(maxValue) &&
-            maxValue.getTime() > this._computedValue[0].getTime()
+            maxValue.getTime() > this.computedValue[0].getTime()
         ) {
-            this._computedValue[1] = this._computedMax;
+            this.computedValue[1] = this._computedMax;
         }
     }
 
@@ -1148,11 +1162,11 @@ export default class Calendar extends LightningElement {
      * Update the value with the current computed value.
      */
     updateValue() {
-        if (!this._computedValue.length) {
+        if (!this.computedValue.length) {
             this._value = this.selectionMode === 'single' ? null : [];
             return;
         }
-        const stringDates = this._computedValue.map((date) => {
+        const stringDates = this.computedValue.map((date) => {
             return this.toISO(date);
         });
         this._value =
@@ -1163,7 +1177,7 @@ export default class Calendar extends LightningElement {
      * If invalid current day, center calendar's current day to closest date in min-max interval
      */
     validateCurrentDayValue() {
-        if (!this._computedValue.length) {
+        if (!this.computedValue.length) {
             return;
         }
 
@@ -1185,28 +1199,28 @@ export default class Calendar extends LightningElement {
      * Validate values for interval selection mode.
      */
     validateValueIntervalMode() {
-        const minValue = this._computedValue[0];
-        const maxValue = this._computedValue[this._computedValue.length - 1];
+        const minValue = this.computedValue[0];
+        const maxValue = this.computedValue[this.computedValue.length - 1];
 
         if (this.allValuesOutsideMinAndMax) {
             if (this.isBeforeMin(minValue) && this.isAfterMax(maxValue)) {
-                this._computedValue[0] = new Date(this._computedMin);
-                this._computedValue[1] = new Date(this._computedMax);
+                this.computedValue[0] = new Date(this._computedMin);
+                this.computedValue[1] = new Date(this._computedMax);
                 this.displayDate = new Date(this._computedMin);
             } else {
-                this._computedValue = [];
+                this.computedValue = [];
                 this.displayDate = this.getCurrentDateOrMin();
             }
             this.updateDateParameters();
         } else {
             this.removeValuesOutsideRange();
 
-            if (this._computedValue.length) {
+            if (this.computedValue.length) {
                 // Check if previous min-max values saved were outside of range to create interval
-                if (this._computedValue.length === 1) {
+                if (this.computedValue.length === 1) {
                     this.setIntervalWithOneValidValue(minValue, maxValue);
                 }
-                this.displayDate = new Date(this._computedValue[0]);
+                this.displayDate = new Date(this.computedValue[0]);
                 this.updateDateParameters();
             }
         }
@@ -1218,8 +1232,8 @@ export default class Calendar extends LightningElement {
     validateValueMultipleMode() {
         this.removeValuesOutsideRange();
 
-        if (this._computedValue.length) {
-            this.displayDate = this._computedValue[0];
+        if (this.computedValue.length) {
+            this.displayDate = this.computedValue[0];
             this.updateDateParameters();
         }
     }
@@ -1229,19 +1243,19 @@ export default class Calendar extends LightningElement {
      */
     validateValueSingleMode() {
         // If multiple values are selected, we remove those outside range
-        if (this._computedValue && this._computedValue.length > 1) {
+        if (this.computedValue && this.computedValue.length > 1) {
             this.removeValuesOutsideRange();
         }
         // If one single value, we check if it's in interval and set to closest value if not
         else {
-            if (this.isInvalidDate(this._computedValue[0])) {
-                this._computedValue = [];
+            if (this.isInvalidDate(this.computedValue[0])) {
+                this.computedValue = [];
                 this.displayDate = this.getCurrentDateOrMin();
-            } else if (this.isAfterMax(this._computedValue[0])) {
-                this._computedValue = [];
+            } else if (this.isAfterMax(this.computedValue[0])) {
+                this.computedValue = [];
                 this.displayDate = new Date(this._computedMax);
-            } else if (this.isBeforeMin(this._computedValue[0])) {
-                this._computedValue = [];
+            } else if (this.isBeforeMin(this.computedValue[0])) {
+                this.computedValue = [];
                 this.displayDate = new Date(this._computedMin);
             }
             this.updateDateParameters();
@@ -1316,9 +1330,7 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        const focusDate = new Date(
-            Number(event.currentTarget.dataset.fullDate)
-        );
+        const focusDate = new Date(Number(event.detail.fullDate));
         if (focusDate) {
             this._focusDate = focusDate;
         }
@@ -1361,85 +1373,19 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Keyboard navigation handler.
+     * Keyboard date selection handler.
      *
      * @param {Event} event
      */
-    handleKeyDown(event) {
-        const fullDate = Number(event.target.dataset.fullDate);
-        if (!fullDate) {
+    handleKeyDate(event) {
+        const nextDate = event.detail.nextDate;
+        const fullDate = Number(event.detail.fullDate);
+        if (!nextDate || !fullDate) {
             return;
         }
-
         const initialDate = new Date(fullDate);
-        const day = initialDate.getDate();
         const month = initialDate.getMonth();
         const year = initialDate.getFullYear();
-        let nextDate;
-
-        if (event.altKey) {
-            if (event.key === keyValues.pageup) {
-                nextDate = setDate(initialDate, 'year', year - 1);
-            }
-            if (event.key === keyValues.pagedown) {
-                nextDate = setDate(initialDate, 'year', year + 1);
-            }
-        } else {
-            switch (event.key) {
-                case keyValues.left:
-                    nextDate = setDate(initialDate, 'date', day - 1);
-                    break;
-                case keyValues.right:
-                    nextDate = setDate(initialDate, 'date', day + 1);
-                    break;
-                case keyValues.up:
-                    nextDate = setDate(initialDate, 'date', day - 7);
-                    break;
-                case keyValues.down:
-                    nextDate = setDate(initialDate, 'date', day + 7);
-                    break;
-                case keyValues.home:
-                    nextDate = getStartOfWeek(initialDate, this.weekStartDay);
-                    break;
-                case keyValues.end: {
-                    const startOfWeek = getStartOfWeek(
-                        initialDate,
-                        this.weekStartDay
-                    );
-                    nextDate = setDate(
-                        startOfWeek,
-                        'date',
-                        startOfWeek.getDate() + 6
-                    );
-                    break;
-                }
-                case keyValues.pagedown:
-                    nextDate = setDate(initialDate, 'month', month - 1);
-                    break;
-                case keyValues.pageup:
-                    nextDate = setDate(initialDate, 'month', month + 1);
-                    break;
-                case keyValues.space:
-                case keyValues.spacebar:
-                case keyValues.enter:
-                    {
-                        const selectedDay = event.target.querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        if (selectedDay) {
-                            selectedDay.click();
-                        }
-                    }
-                    break;
-                default:
-            }
-        }
-
-        if (!nextDate) {
-            return;
-        }
-
-        event.preventDefault();
 
         if (
             nextDate &&
@@ -1468,7 +1414,7 @@ export default class Calendar extends LightningElement {
         const dayCell = this.template.querySelector(
             `[data-full-date="${day}"]`
         );
-        const timeArray = this._computedValue
+        const timeArray = this.computedValue
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
         if (this.selectionMode === 'interval' && !!day) {
@@ -1579,7 +1525,7 @@ export default class Calendar extends LightningElement {
     handleSelectDate(event) {
         this.handleDateFocus(event);
 
-        const { fullDate, disabled } = event.currentTarget.dataset;
+        const { bounds, fullDate, disabled } = event.detail;
         const date = new Date(Number(fullDate));
         if (this.isInvalidDate(date) || disabled === 'true') {
             return;
@@ -1587,22 +1533,22 @@ export default class Calendar extends LightningElement {
 
         switch (this.selectionMode) {
             case 'interval':
-                this._computedValue = this.isSelectedInterval(
-                    this._computedValue,
+                this.computedValue = this.isSelectedInterval(
+                    this.computedValue,
                     date
                 );
                 break;
             case 'multiple':
-                this._computedValue = this.isSelectedMultiple(
-                    this._computedValue,
+                this.computedValue = this.isSelectedMultiple(
+                    this.computedValue,
                     date
                 );
                 break;
             default: {
                 const unselect =
-                    this._computedValue.length &&
-                    this._computedValue[0].getTime() === date.getTime();
-                this._computedValue = unselect ? [] : [date];
+                    this.computedValue.length &&
+                    this.computedValue[0].getTime() === date.getTime();
+                this.computedValue = unselect ? [] : [date];
                 break;
             }
         }
@@ -1624,7 +1570,7 @@ export default class Calendar extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    bounds: event.currentTarget.getBoundingClientRect(),
+                    bounds: bounds,
                     value: this.value,
                     clickedDate
                 }
