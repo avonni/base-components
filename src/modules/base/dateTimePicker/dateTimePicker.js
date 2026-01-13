@@ -1842,7 +1842,8 @@ export default class DateTimePicker extends LightningElement {
             if (selected) {
                 dayTime.selected = true;
             }
-            const displayNextButton = this.displayNextButton && selected;
+            const displayNextButton =
+                this.displayNextButton && selected && this.type === 'radio';
             const startTimeLabel = day.toLocaleString({
                 hour: this.timeFormatHour,
                 minute: this.timeFormatMinute,
