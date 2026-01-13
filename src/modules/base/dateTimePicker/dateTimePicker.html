@@ -431,12 +431,13 @@
                                                                 <div
                                                                     class="
                                                                         slds-grid
+                                                                        slds-nowrap
                                                                     "
                                                                 >
                                                                     <div
                                                                         class="
+                                                                            avonni-date-time-picker__time-col
                                                                             slds-col
-                                                                            slds-grow
                                                                         "
                                                                     >
                                                                         <button
@@ -477,11 +478,8 @@
                                                                         </button>
                                                                     </div>
                                                                     <div
-                                                                        if:true={timelineTime.displayNextButton}
-                                                                        class="
-                                                                            slds-col
-                                                                            slds-p-left_xx-small
-                                                                        "
+                                                                        if:true={timelineTime.renderNextButton}
+                                                                        class={timelineTime.nextColClass}
                                                                     >
                                                                         <lightning-button
                                                                             class="
@@ -514,10 +512,15 @@
                                                 small-container-size="calc(25% - 8px)"
                                                 data-element-id="avonni-layout-item-time"
                                             >
-                                                <div class="slds-grid">
+                                                <div
+                                                    class="
+                                                        slds-grid slds-nowrap
+                                                    "
+                                                >
                                                     <div
                                                         class="
-                                                            slds-col slds-grow
+                                                            avonni-date-time-picker__time-col
+                                                            slds-col
                                                         "
                                                     >
                                                         <button
@@ -562,11 +565,8 @@
                                                         </button>
                                                     </div>
                                                     <div
-                                                        if:true={time.displayNextButton}
-                                                        class="
-                                                            slds-col
-                                                            slds-p-left_xx-small
-                                                        "
+                                                        if:true={time.renderNextButton}
+                                                        class={time.nextColClass}
                                                     >
                                                         <lightning-button
                                                             class="

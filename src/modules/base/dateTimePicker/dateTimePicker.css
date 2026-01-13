@@ -261,3 +261,25 @@
     height: 100%;
     display: flex;
 }
+
+.avonni-date-time-picker__time-col {
+    display: flex;
+    transition: flex 0.3s ease-in-out;
+}
+
+.avonni-date-time-picker__next-col {
+    transition: flex 0.3s ease-in-out;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.avonni-date-time-picker__next-col_hidden {
+    flex: 0 0 0;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+}
+
+.avonni-date-time-picker__next-col_visible {
+    opacity: 1;
+}

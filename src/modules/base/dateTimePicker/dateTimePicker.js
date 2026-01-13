@@ -1842,8 +1842,9 @@ export default class DateTimePicker extends LightningElement {
             if (selected) {
                 dayTime.selected = true;
             }
-            const displayNextButton =
-                this.displayNextButton && selected && this.type === 'radio';
+            const renderNextButton =
+                this.displayNextButton && this.type === 'radio';
+            const displayNextButton = renderNextButton && selected;
             const startTimeLabel = day.toLocaleString({
                 hour: this.timeFormatHour,
                 minute: this.timeFormatMinute,
@@ -1873,13 +1874,21 @@ export default class DateTimePicker extends LightningElement {
                 selected: selected || undefined,
                 show: !disabled || this.showDisabledDates,
                 computedAriaLabel: `${timeLabel}, ${dateLabel}`,
-                displayNextButton,
+                renderNextButton,
                 buttonClass: classSet().add({
                     'avonni-date-time-picker__time-button': !displayNextButton,
                     'avonni-date-time-picker__selected-time-button-with-next':
                         displayNextButton,
                     'slds-p-around_medium': this.isTimeline,
                     'slds-p-around_small slds-theme_default': !this.isTimeline
+                }),
+                nextColClass: classSet(
+                    'avonni-date-time-picker__next-col slds-p-left_xx-small slds-col'
+                ).add({
+                    'avonni-date-time-picker__next-col_hidden':
+                        !displayNextButton,
+                    'avonni-date-time-picker__next-col_visible':
+                        displayNextButton
                 })
             };
 
