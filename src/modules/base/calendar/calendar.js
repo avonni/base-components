@@ -83,6 +83,7 @@ export default class Calendar extends LightningElement {
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
+    _nextMonthCount = 0;
     _selectionMode = SELECTION_MODES.default;
     _timezone;
     _value;
@@ -267,6 +268,22 @@ export default class Calendar extends LightningElement {
             }
             this.updateDateParameters();
         }
+    }
+
+    /**
+     * Number of next month calendars to be displayed.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get nextMonthCount() {
+        return this._nextMonthCount;
+    }
+    set nextMonthCount(value) {
+        const number = parseInt(value, 10);
+        this._nextMonthCount = isNaN(number) || number < 0 ? 0 : number;
     }
 
     /**

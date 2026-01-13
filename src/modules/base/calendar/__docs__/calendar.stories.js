@@ -75,6 +75,17 @@ export default {
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
             }
         },
+        nextMonthCount: {
+            name: 'next-month-count',
+            control: {
+                type: 'number'
+            },
+            description: 'Number of next month calendars to be displayed.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '0' }
+            }
+        },
         nextMonthButtonAlternativeText: {
             name: 'next-month-button-alternative-text',
             control: {
@@ -170,6 +181,7 @@ export default {
         hideNavigation: false,
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
+        nextMonthCount: 0,
         nextMonthButtonAlternativeText: 'Next Month',
         previousMonthButtonAlternativeText: 'Previous Month',
         yearSelectAssistiveText: 'Pick a year',
@@ -234,6 +246,13 @@ MarkedDates.args = {
     value: '05/09/2022',
     disabledDates: [20, 'Sat'],
     markedDates: markedDates
+};
+
+export const NextMonthCount = Template.bind({});
+NextMonthCount.args = {
+    value: ['05/10/2022', '05/22/2022'],
+    selectionMode: 'interval',
+    nextMonthCount: 1
 };
 
 export const Labels = Template.bind({});
