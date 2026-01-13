@@ -1412,6 +1412,7 @@ export default class InputDateRange extends LightningElement {
             this._endDate = parsedDate < max ? parsedDate : max;
             this._dispatchChange();
             this.setDisplayDates();
+            // needs to use handle change end date input.
         } else {
             // Show Error
         }
@@ -1542,9 +1543,10 @@ export default class InputDateRange extends LightningElement {
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
             parsedDate.setHours(0, 0, 0, 0);
-            const min = this.startCalendar?.min ?? new Date(2099, 11, 31);
+            const min = this.startCalendar?.min ?? new Date(1900, 0, 1);
             min.setHours(0, 0, 0, 0);
             this._startDate = parsedDate > min ? parsedDate : min;
+            // needs to handle use handleChangeStartDate
             this._dispatchChange();
             this.setDisplayDates();
         } else {
