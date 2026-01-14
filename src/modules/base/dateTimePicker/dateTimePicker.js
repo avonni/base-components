@@ -43,6 +43,7 @@ const DEFAULT_END_TIME = '18:00';
 const DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS = 7;
 const DEFAULT_MAX = '2099-12-31';
 const DEFAULT_MIN = '1900-01-01';
+const DEFAULT_NEXT_BUTTON_LABEL = 'Next';
 const DEFAULT_NEXT_DATES_BUTTON_ALTERNATIVE_TEXT = 'Next dates';
 const DEFAULT_NEXT_WEEK_BUTTON_ALTERNATIVE_TEXT = 'Next week';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No available time slots for this period.';
@@ -104,6 +105,14 @@ export default class DateTimePicker extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * Label for the next button.
+     *
+     * @type {string}
+     * @public
+     * @default Next
+     */
+    @api nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
     /**
      * Alternative text for the next dates button.
      *

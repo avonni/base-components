@@ -538,6 +538,7 @@ export default {
         dateFormatWeekday: 'short',
         datePickerVariant: 'input',
         disabled: false,
+        displayNextButton: false,
         endTime: '18:00',
         hideDateLabel: false,
         hideDatePicker: false,
@@ -545,7 +546,12 @@ export default {
         hideNavigation: false,
         max: '2099-12-31',
         min: '1900-01-01',
+        nextButtonLabel: 'Next',
+        nextDatesButtonAlternativeText: 'Next dates',
+        nextWeekButtonAlternativeText: 'Next week',
         noResultsMessage: 'No available time slots for this period.',
+        previousDatesButtonAlternativeText: 'Previous dates',
+        previousWeekButtonAlternativeText: 'Previous week',
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',
@@ -562,8 +568,7 @@ export default {
         todayButtonLabel: 'Today',
         type: 'radio',
         variant: 'daily',
-        weekStartDay: 0,
-        displayNextButton: false
+        weekStartDay: 0
     }
 };
 

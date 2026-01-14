@@ -26,6 +26,7 @@ export const DateTimePicker = ({
     messageWhenValueMissing,
     min,
     name,
+    nextButtonLabel,
     nextDatesButtonAlternativeText,
     nextWeekButtonAlternativeText,
     noResultsMessage,
@@ -72,6 +73,7 @@ export const DateTimePicker = ({
     element.max = max;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.min = min;
+    element.nextButtonLabel = nextButtonLabel;
     element.nextDatesButtonAlternativeText = nextDatesButtonAlternativeText;
     element.nextWeekButtonAlternativeText = nextWeekButtonAlternativeText;
     element.noResultsMessage = noResultsMessage;

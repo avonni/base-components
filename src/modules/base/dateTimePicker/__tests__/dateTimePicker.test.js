@@ -50,6 +50,7 @@ describe('DateTimePicker', () => {
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.min).toBe('1900-01-01');
             expect(element.name).toBeUndefined();
+            expect(element.nextButtonLabel).toBe('Next');
             expect(element.nextDatesButtonAlternativeText).toBe('Next dates');
             expect(element.nextWeekButtonAlternativeText).toBe('Next week');
             expect(element.noResultsMessage).toBe(
@@ -630,36 +631,40 @@ describe('DateTimePicker', () => {
             });
         });
 
-        it('Display next button', () => {
-            element.displayNextButton = true;
+        describe('Display next button', () => {
+            it('true', () => {
+                element.displayNextButton = true;
+                element.nextButtonLabel = 'Next button label';
 
-            let buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="button-default"]'
-            );
-            expect(buttons.length).toBeGreaterThan(0);
-            buttons[0].click();
-
-            return Promise.resolve().then(() => {
-                const nextButtons = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="lightning-button-next"]'
-                );
-                expect(nextButtons.length).toBeGreaterThan(0);
-
-                buttons = element.shadowRoot.querySelectorAll(
+                let buttons = element.shadowRoot.querySelectorAll(
                     '[data-element-id="button-default"]'
                 );
-                expect(buttons[0].className).toContain(
-                    'avonni-date-time-picker__selected-time-button-with-next'
-                );
-                expect(buttons[0].className).not.toContain(
-                    'avonni-date-time-picker__time-button'
-                );
-                expect(buttons[1].className).toContain(
-                    'avonni-date-time-picker__time-button'
-                );
-                expect(buttons[1].className).not.toContain(
-                    'avonni-date-time-picker__selected-time-button-with-next'
-                );
+                expect(buttons.length).toBeGreaterThan(0);
+                buttons[0].click();
+
+                return Promise.resolve().then(() => {
+                    const nextButtons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="lightning-button-next"]'
+                    );
+                    expect(nextButtons.length).toBeGreaterThan(0);
+                    expect(nextButtons[0].label).toBe('Next button label');
+
+                    buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(buttons[0].className).toContain(
+                        'avonni-date-time-picker__selected-time-button-with-next'
+                    );
+                    expect(buttons[0].className).not.toContain(
+                        'avonni-date-time-picker__time-button'
+                    );
+                    expect(buttons[1].className).toContain(
+                        'avonni-date-time-picker__time-button'
+                    );
+                    expect(buttons[1].className).not.toContain(
+                        'avonni-date-time-picker__selected-time-button-with-next'
+                    );
+                });
             });
         });
 
