@@ -518,6 +518,18 @@ export default {
             table: {
                 type: { summary: 'number' }
             }
+        },
+        displayNextButton: {
+            name: 'display-next-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, display a next button after selecting a time slot.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -550,7 +562,8 @@ export default {
         todayButtonLabel: 'Today',
         type: 'radio',
         variant: 'daily',
-        weekStartDay: 0
+        weekStartDay: 0,
+        displayNextButton: false
     }
 };
 

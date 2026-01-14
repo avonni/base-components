@@ -14,6 +14,7 @@ export const DateTimePicker = ({
     datePickerVariant,
     disabled,
     disabledDateTimes,
+    displayNextButton,
     endTime,
     fieldLevelHelp,
     hideDateLabel,
@@ -60,6 +61,7 @@ export const DateTimePicker = ({
     element.datePickerVariant = datePickerVariant;
     element.disabled = disabled;
     element.disabledDateTimes = disabledDateTimes;
+    element.displayNextButton = displayNextButton;
     element.endTime = endTime;
     element.fieldLevelHelp = fieldLevelHelp;
     element.hideDateLabel = hideDateLabel;
