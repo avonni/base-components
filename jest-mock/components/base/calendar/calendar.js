@@ -8,7 +8,7 @@ export default class Calendar extends LightningElement {
     @api markedDates;
     @api max;
     @api min;
-    @api nextMonthCount;
+    @api nbMonthCalendars;
     @api selectionMode;
     @api timezone;
     @api value;

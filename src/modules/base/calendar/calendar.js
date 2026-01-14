@@ -83,6 +83,7 @@ export default class Calendar extends LightningElement {
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
+    _nbMonthCalendars = 1;
     _selectionMode = SELECTION_MODES.default;
     _timezone;
     _value;
@@ -96,7 +97,7 @@ export default class Calendar extends LightningElement {
     _computedMin;
     _connected = false;
     _focusDate;
-    calendarData;
+    calendarDataList = [];
     computedValue = [];
     day;
     displayDate; // The calendar displays this date's month
@@ -266,6 +267,25 @@ export default class Calendar extends LightningElement {
                 this.displayDate = new Date(this._computedMin);
             }
             this.updateDateParameters();
+        }
+    }
+
+    /**
+     * Number of month calendars to be displayed.
+     *
+     * @type {number}
+     * @default 1
+     * @public
+     */
+    @api
+    get nbMonthCalendars() {
+        return this._nbMonthCalendars;
+    }
+    set nbMonthCalendars(value) {
+        const number = parseInt(value, 10);
+        this._nbMonthCalendars = isNaN(number) || number < 1 ? 0 : number;
+        if (this._connected) {
+            this.generateViewData();
         }
     }
 
@@ -464,6 +484,15 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Check if the calendar is labeled.
+     *
+     * @return {boolean}
+     */
+    get isLabeled() {
+        return this._dateLabels.length > 0;
+    }
+
+    /**
      * Check if the calendar is in multi-select mode.
      *
      * @return {boolean}
@@ -476,12 +505,12 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Check if the calendar is labeled.
+     * Check if there are multiple month calendars.
      *
      * @return {boolean}
      */
-    get isLabeled() {
-        return this._dateLabels.length > 0;
+    get isMultiCalendars() {
+        return this._nbMonthCalendars > 1;
     }
 
     /**
@@ -583,89 +612,16 @@ export default class Calendar extends LightningElement {
      *
      * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
      */
-    computeFocus(applyFocus) {
-        // if a date was previously selected or focused, focus the same date in this month.
-        // let selectedMonthDate, rovingDate;
-        // if (this._focusDate) {
-        //     rovingDate = this._focusDate.getTime();
-        //     selectedMonthDate = setDate(
-        //         this.displayDate,
-        //         'date',
-        //         this._focusDate.getDate()
-        //     );
-        // }
-        // const firstOfMonthDate = this.startOfDay(
-        //     setDate(this.displayDate, 'date', 1)
-        // ).getTime();
-
-        // requestAnimationFrame(() => {
-        //     const rovingFocusDate = this.template.querySelector(
-        //         `[data-element-id="td"][data-full-date="${rovingDate}"]`
-        //     );
-        //     const selectedDates = this.template.querySelectorAll(
-        //         '[data-selected="true"]'
-        //     );
-        //     const todaysDate = this.template.querySelector(
-        //         '[data-today="true"]'
-        //     );
-        //     const firstOfMonth = this.template.querySelector(
-        //         `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
-        //     );
-        //     const rovingMonthDate = this.template.querySelector(
-        //         `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
-        //     );
-        //     const firstValidDate = this.template.querySelector(
-        //         '[data-element-id="td"]:not([data-disabled="true"])'
-        //     );
-
-        //     const focusTarget =
-        //         rovingFocusDate ||
-        //         selectedDates[0] ||
-        //         rovingMonthDate ||
-        //         todaysDate ||
-        //         firstOfMonth ||
-        //         firstValidDate;
-
-        //     const existingFocusPoints = this.template.querySelectorAll(
-        //         '[data-element-id="td"][tabindex="0"]'
-        //     );
-        //     existingFocusPoints.forEach((focusPoint) => {
-        //         focusPoint.setAttribute('tabindex', '-1');
-        //     });
-
-        //     if (selectedDates.length) {
-        //         if (this.selectionMode === 'single') {
-        //             selectedDates[0].setAttribute('tabindex', '0');
-        //         } else if (this.selectionMode === 'multiple') {
-        //             selectedDates.forEach((target) => {
-        //                 target.setAttribute('tabindex', '0');
-        //             });
-        //         } else if (this.selectionMode === 'interval') {
-        //             selectedDates[0].setAttribute('tabindex', '0');
-        //             selectedDates[selectedDates.length - 1].setAttribute(
-        //                 'tabindex',
-        //                 '0'
-        //             );
-        //         }
-        //     }
-
-        //     if (focusTarget) {
-        //         if (focusTarget.length > 0) {
-        //             focusTarget[0].setAttribute('tabindex', '0');
-        //             if (applyFocus) focusTarget[0].focus();
-        //         } else {
-        //             focusTarget.setAttribute('tabindex', '0');
-        //             if (applyFocus) {
-        //                 focusTarget.focus();
-        //             }
-        //         }
-        //     }
-        // });
-        this.template
-            .querySelector(
-                '[data-element-id="avonni-calendar__primitive-calendar"]'
-            )
-            ?.focusDate(this._focusDate, this.displayDate, applyFocus);
+    computeFocus(
+        applyFocus,
+        focusDate = this._focusDate,
+        displayDate = this.displayDate,
+        index = 0
+    ) {
+        const calendar = this.template.querySelector(
+            `[data-element-id="avonni-calendar__primitive-calendar"][data-index="${index}"]`
+        );
+        calendar?.focusDate(focusDate, displayDate, applyFocus);
     }
 
     /**
@@ -700,11 +656,8 @@ export default class Calendar extends LightningElement {
      * Generate the calendar data.
      */
     generateViewData() {
-        const calendarData = [];
+        const calendarDataList = [];
         const today = this.startOfDay(new Date());
-        const currentMonth = this.displayDate.getMonth();
-        const firstDay = setDate(this.displayDate, 'date', 1);
-        let date = getStartOfWeek(firstDay, this.weekStartDay);
 
         const mode = this.selectionMode;
         const firstValue = this.computedValue[0];
@@ -712,72 +665,107 @@ export default class Calendar extends LightningElement {
         const isInterval =
             mode === 'interval' && this.computedValue.length >= 2;
 
-        // Add an array per week
-        for (let i = 0; i < 6; i++) {
-            let weekData = [];
+        for (
+            let monthOffset = 0;
+            monthOffset < this._nbMonthCalendars;
+            monthOffset++
+        ) {
+            const calendarData = [];
 
-            if (this.weekNumber) {
-                // Week number
-                weekData.push(
-                    new CalendarDate({
-                        date,
-                        isWeekNumber: true
-                    })
-                );
-            }
+            const displayDate = new Date(this.displayDate);
+            displayDate.setDate(1);
+            displayDate.setMonth(displayDate.getMonth() + monthOffset);
 
-            // Add 7 days to each week array
-            for (let a = 0; a < 7; a++) {
-                const time = date.getTime();
-                const disabledDate = this.isDisabled(date);
-                const outsideOfMinMax =
-                    time < this._computedMin || time > this._computedMax;
-                const markers = this.getMarkers(date);
-                const label = this.getLabel(date);
-                const isPartOfInterval =
-                    isInterval &&
-                    firstValue.getTime() <= time &&
-                    lastValue.getTime() >= time;
+            const currentMonth = displayDate.getMonth();
+            const firstDay = setDate(displayDate, 'date', 1);
+            let date = getStartOfWeek(firstDay, this.weekStartDay);
+            const year = displayDate.getFullYear();
+            const monthIndex = displayDate.getMonth();
+            const month = MONTHS[monthIndex];
 
-                let selected;
-                if (this.isMultiSelect) {
-                    selected = this.computedValue.find((value) => {
-                        return (
-                            this.startOfDay(value).getTime() ===
-                            this.startOfDay(time).getTime()
-                        );
-                    });
-                } else if (firstValue) {
-                    selected =
-                        this.startOfDay(firstValue).getTime() ===
-                        this.startOfDay(time).getTime();
+            // Add an array per week
+            for (let i = 0; i < 6; i++) {
+                const weekData = [];
+
+                if (this.weekNumber) {
+                    // Week number
+                    weekData.push(
+                        new CalendarDate({
+                            date,
+                            isWeekNumber: true
+                        })
+                    );
                 }
 
-                weekData.push(
-                    new CalendarDate({
-                        adjacentMonth: date.getMonth() !== currentMonth,
-                        date,
-                        disabled:
-                            this.disabled || disabledDate || outsideOfMinMax,
-                        isPartOfInterval,
-                        isToday: today.getTime() === time,
-                        ...(isPartOfInterval
-                            ? {
-                                  isStartDate: firstValue.getTime() === time,
-                                  isEndDate: lastValue.getTime() === time
-                              }
-                            : {}),
-                        chip: label,
-                        markers,
-                        selected
-                    })
-                );
-                date = setDate(date, 'date', date.getDate() + 1);
-            }
-            calendarData.push(weekData);
-        }
+                // Add 7 days to each week
+                for (let a = 0; a < 7; a++) {
+                    const time = date.getTime();
+                    const disabledDate = this.isDisabled(date);
+                    const outsideOfMinMax =
+                        time < this._computedMin || time > this._computedMax;
 
-        this.calendarData = calendarData;
+                    const markers = this.getMarkers(date);
+                    const label = this.getLabel(date);
+
+                    const isPartOfInterval =
+                        isInterval &&
+                        firstValue.getTime() <= time &&
+                        lastValue.getTime() >= time;
+
+                    let selected;
+                    if (this.isMultiSelect) {
+                        selected = this.computedValue.find((value) => {
+                            return (
+                                this.startOfDay(value).getTime() ===
+                                this.startOfDay(time).getTime()
+                            );
+                        });
+                    } else if (firstValue) {
+                        selected =
+                            this.startOfDay(firstValue).getTime() ===
+                            this.startOfDay(time).getTime();
+                    }
+                    const isAdjacentMonth = date.getMonth() !== currentMonth;
+                    const isDateInvisible =
+                        this._nbMonthCalendars > 1 && isAdjacentMonth;
+                    weekData.push(
+                        new CalendarDate({
+                            adjacentMonth: isAdjacentMonth,
+                            date,
+                            disabled:
+                                this.disabled ||
+                                disabledDate ||
+                                outsideOfMinMax ||
+                                isDateInvisible,
+                            isDateInvisible: isDateInvisible,
+                            isPartOfInterval,
+                            isToday: today.getTime() === time,
+                            ...(isPartOfInterval && {
+                                isStartDate: firstValue.getTime() === time,
+                                isEndDate: lastValue.getTime() === time
+                            }),
+                            chip: label,
+                            markers,
+                            selected
+                        })
+                    );
+
+                    date = setDate(date, 'date', date.getDate() + 1);
+                }
+
+                calendarData.push(weekData);
+            }
+
+            // In this specific case, we use the index as a key because we want to keep the focus when changing months
+            calendarDataList.push({
+                id: `${monthOffset}`,
+                year,
+                month,
+                monthIndex,
+                calendarData
+            });
+        }
+        this.calendarDataList = calendarDataList;
     }
 
     /**
@@ -1380,127 +1368,87 @@ export default class Calendar extends LightningElement {
     handleKeyDate(event) {
         const nextDate = event.detail.nextDate;
         const fullDate = Number(event.detail.fullDate);
+        const dataIndex = Number(event.currentTarget.dataset.index);
         if (!nextDate || !fullDate) {
             return;
         }
         const initialDate = new Date(fullDate);
         const month = initialDate.getMonth();
         const year = initialDate.getFullYear();
+        const isNavigate =
+            month !== nextDate.getMonth() || year !== nextDate.getFullYear();
 
-        if (
-            nextDate &&
-            (month !== nextDate.getMonth() || year !== nextDate.getFullYear())
-        ) {
+        if (nextDate && isNavigate && !this.isMultiCalendars) {
             this.dispatchNavigateEvent(nextDate);
         }
-
+        let computedNextDate;
         if (nextDate.getTime() < this._computedMin.getTime()) {
-            this._focusDate = this._computedMin;
+            computedNextDate = this._computedMin;
         } else if (nextDate.getTime() > this._computedMax.getTime()) {
-            this._focusDate = this._computedMax;
+            computedNextDate = this._computedMax;
         } else {
-            this._focusDate = nextDate;
+            computedNextDate = nextDate;
         }
-        this.displayDate = this._focusDate;
+        this._focusDate = computedNextDate;
+
+        let computedIndex = dataIndex;
+        const firstDayOfMonth = setDate(this.displayDate, 'date', 1);
+        let currentMonth = firstDayOfMonth.getMonth();
+        const isDecalingCalendars = isNavigate && this.isMultiCalendars;
+        const isPreviousTime = nextDate.getTime() < initialDate.getTime();
+        const isNextTime = nextDate.getTime() > initialDate.getTime();
+        const isNextMonth =
+            isDecalingCalendars &&
+            dataIndex === this.nbMonthCalendars - 1 &&
+            isNextTime;
+        const isPreviousMonth =
+            isDecalingCalendars && dataIndex === 0 && isPreviousTime;
+        // We go to the next month from the latest calendar.
+        if (isNextMonth) {
+            computedIndex = dataIndex;
+            currentMonth += 1;
+            this.dispatchNavigateEvent(nextDate);
+            this.displayDate = setDate(firstDayOfMonth, 'month', currentMonth);
+        }
+        // We go to the previous month
+        else if (isPreviousMonth) {
+            computedIndex = dataIndex;
+            currentMonth -= 1;
+            this.dispatchNavigateEvent(nextDate);
+            this.displayDate = setDate(firstDayOfMonth, 'month', currentMonth);
+        }
+        // We go to the next calendar, but doesn't change the month
+        else if (isDecalingCalendars && isNextTime) {
+            computedIndex = dataIndex + 1;
+        }
+        // We go to the previous calendar, but doesn't change the month
+        else if (isDecalingCalendars && isPreviousTime) {
+            computedIndex = dataIndex - 1;
+        }
+
+        // If it has only a single calendar, we have to change the display date
+        if (!this.isMultiCalendars) {
+            this.displayDate = computedNextDate;
+        }
+
         this.updateDateParameters();
-        this.computeFocus(true);
-    }
-
-    /**
-     * Mouse over handler.
-     */
-    handleMouseOver(event) {
-        const day = event.target.getAttribute('data-full-date');
-        const dayCell = this.template.querySelector(
-            `[data-full-date="${day}"]`
+        this.computeFocus(
+            true,
+            computedNextDate,
+            computedNextDate,
+            computedIndex
         );
-        const timeArray = this.computedValue
-            .map((x) => x.getTime())
-            .sort((a, b) => a - b);
-        if (this.selectionMode === 'interval' && !!day) {
-            if (timeArray.length === 1) {
-                if (day > timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-right'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') >= timeArray[0] &&
-                            x.getAttribute('data-full-date') <= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-                if (day < timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-left'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') <= timeArray[0] &&
-                            x.getAttribute('data-full-date') >= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-            } else if (timeArray.length === 2) {
-                if (day > timeArray[1]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-right'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') >= timeArray[1] &&
-                            x.getAttribute('data-full-date') <= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-                if (day < timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-left'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') <= timeArray[0] &&
-                            x.getAttribute('data-full-date') >= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    /**
-     * Mouse out handler.
-     */
-    handleMouseOut() {
-        this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
-            x.classList.remove('avonni-calendar__cell_bordered-right');
-            x.classList.remove('avonni-calendar__cell_bordered-left');
-        });
     }
 
     /**
      * Next month handler.
      */
     handlerNextMonth() {
-        const month = this.displayDate.getMonth() + 1;
-        this.displayDate = setDate(this.displayDate, 'month', month);
+        // We have to get the first day of month.
+        // Otherwise, setDate will skip 2 months instead of 1 if the display date is the last day of the month
+        const firstDayOfMonth = setDate(this.displayDate, 'date', 1);
+        const month = firstDayOfMonth.getMonth() + 1;
+        this.displayDate = setDate(firstDayOfMonth, 'month', month);
         this.updateDateParameters();
         this.computeFocus(false);
         this.dispatchNavigateEvent(this.displayDate);
@@ -1510,8 +1458,11 @@ export default class Calendar extends LightningElement {
      * Previous month handler.
      */
     handlerPreviousMonth() {
-        const month = this.displayDate.getMonth() - 1;
-        this.displayDate = setDate(this.displayDate, 'month', month);
+        // We have to get the first day of month.
+        // Otherwise, setDate will skip 2 months instead of 1, if the display date is the last day of the month
+        const firstDayOfMonth = setDate(this.displayDate, 'date', 1);
+        const month = firstDayOfMonth.getMonth() - 1;
+        this.displayDate = setDate(firstDayOfMonth, 'month', month);
         this.updateDateParameters();
         this.computeFocus(false);
         this.dispatchNavigateEvent(this.displayDate);
@@ -1526,6 +1477,7 @@ export default class Calendar extends LightningElement {
         this.handleDateFocus(event);
 
         const { bounds, fullDate, disabled } = event.detail;
+        const dataIndex = Number(event.currentTarget.dataset.index);
         const date = new Date(Number(fullDate));
         if (this.isInvalidDate(date) || disabled === 'true') {
             return;
@@ -1553,7 +1505,7 @@ export default class Calendar extends LightningElement {
             }
         }
         const clickedDate = this.toISO(date);
-        this.displayDate = date;
+        this.displayDate = dataIndex > 0 ? this.displayDate : date;
         this.updateDateParameters();
         this.updateValue();
 
@@ -1577,7 +1529,7 @@ export default class Calendar extends LightningElement {
             })
         );
 
-        this.computeFocus(true);
+        this.computeFocus(true, date, date, dataIndex);
     }
 
     /**

@@ -53,6 +53,7 @@
                             onmouseover={handleMouseOver}
                         >
                             <span
+                                if:false={day.isDateInvisible}
                                 class="slds-assistive-text"
                                 data-element-id="day-label-assistive-text"
                             >
@@ -69,54 +70,60 @@
                             >
                                 {day.label}
                             </span>
-                            <div
-                                if:true={day.markers.length}
-                                class="slds-is-relative"
-                            >
-                                <div class="avonni-calendar__marker-container">
-                                    <template
-                                        for:each={day.markers}
-                                        for:item="marker"
+                            <template if:false={day.isDateInvisible}>
+                                <div
+                                    if:true={day.markers.length}
+                                    class="slds-is-relative"
+                                >
+                                    <div
+                                        class="
+                                            avonni-calendar__marker-container
+                                        "
                                     >
-                                        <div
-                                            key={generateKey}
-                                            style={marker}
-                                            class="
-                                                avonni-calendar__marked-cells
-                                            "
-                                            data-element-id="div-marked-cells"
-                                        ></div>
-                                    </template>
+                                        <template
+                                            for:each={day.markers}
+                                            for:item="marker"
+                                        >
+                                            <div
+                                                key={generateKey}
+                                                style={marker}
+                                                class="
+                                                    avonni-calendar__marked-cells
+                                                "
+                                                data-element-id="div-marked-cells"
+                                            ></div>
+                                        </template>
+                                    </div>
                                 </div>
-                            </div>
-                            <c-chip
-                                if:true={day.hasChip}
-                                class={day.chip.computedClass}
-                                label={day.chip.label}
-                                outline={day.chip.outline}
-                                variant={day.chip.variant}
-                                data-full-date={day.ts}
-                                data-element-id="chip-date-label"
-                            >
-                                <c-primitive-icon
-                                    if:true={day.chip.showLeftIcon}
-                                    class="avonni-calendar-chip-icon-left"
-                                    icon-name={day.chip.iconName}
-                                    slot="left"
-                                    size="xx-small"
-                                    variant={day.chip.iconVariant}
+                                <c-chip
+                                    if:true={day.hasChip}
+                                    class={day.chip.computedClass}
+                                    label={day.chip.label}
+                                    outline={day.chip.outline}
+                                    variant={day.chip.variant}
                                     data-full-date={day.ts}
-                                ></c-primitive-icon>
-                                <c-primitive-icon
-                                    if:true={day.chip.showRightIcon}
-                                    class="avonni-calendar-chip-icon-right"
-                                    icon-name={day.chip.iconName}
-                                    slot="right"
-                                    size="xx-small"
-                                    variant={day.chip.iconVariant}
-                                    data-full-date={day.ts}
-                                ></c-primitive-icon>
-                            </c-chip>
+                                    data-element-id="chip-date-label"
+                                >
+                                    <c-primitive-icon
+                                        if:true={day.chip.showLeftIcon}
+                                        class="avonni-calendar-chip-icon-left"
+                                        icon-name={day.chip.iconName}
+                                        slot="left"
+                                        size="xx-small"
+                                        variant={day.chip.iconVariant}
+                                        data-full-date={day.ts}
+                                    ></c-primitive-icon>
+                                    <c-primitive-icon
+                                        if:true={day.chip.showRightIcon}
+                                        class="avonni-calendar-chip-icon-right"
+                                        icon-name={day.chip.iconName}
+                                        slot="right"
+                                        size="xx-small"
+                                        variant={day.chip.iconVariant}
+                                        data-full-date={day.ts}
+                                    ></c-primitive-icon>
+                                </c-chip>
+                            </template>
                         </td>
                     </template>
                 </tr>

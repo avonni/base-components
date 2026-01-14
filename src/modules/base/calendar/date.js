@@ -13,6 +13,7 @@ export default class CalendarDate {
         this.date = props.date;
         this.disabled = normalizeBoolean(props.disabled);
         this.isEndDate = normalizeBoolean(props.isEndDate);
+        this.isDateInvisible = normalizeBoolean(props.isDateInvisible);
         this.isPartOfInterval = normalizeBoolean(props.isPartOfInterval);
         this.isStartDate = normalizeBoolean(props.isStartDate);
         this.isToday = normalizeBoolean(props.isToday);
@@ -27,7 +28,13 @@ export default class CalendarDate {
     }
 
     get appearsSelected() {
-        return this.selected || this.isPartOfInterval;
+        return (
+            (this.selected || this.isPartOfInterval) && !this.isDateInvisible
+        );
+    }
+
+    get appearsSelectedMulti() {
+        return !this.isDateInvisible && this.isPartOfInterval;
     }
 
     get ariaCurrent() {
@@ -66,6 +73,8 @@ export default class CalendarDate {
     get label() {
         if (this.isWeekNumber) {
             return this._dateTime.isoWeek;
+        } else if (this.isDateInvisible) {
+            return ' ';
         }
         return this.date.getDate();
     }
@@ -88,7 +97,7 @@ export default class CalendarDate {
             'slds-day_adjacent-month': this.adjacentMonth,
             'slds-is-today': this.isToday,
             'slds-is-selected': this.appearsSelected,
-            'slds-is-selected-multi': this.isPartOfInterval
+            'slds-is-selected-multi': this.appearsSelectedMulti
         }).toString();
     }
 }

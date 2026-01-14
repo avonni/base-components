@@ -75,15 +75,15 @@ export default {
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
             }
         },
-        nextMonthCount: {
-            name: 'next-month-count',
+        nbMonthCalendars: {
+            name: 'nb-month-calendars',
             control: {
                 type: 'number'
             },
-            description: 'Number of next month calendars to be displayed.',
+            description: 'Number of month calendars to be displayed.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '1' }
             }
         },
         nextMonthButtonAlternativeText: {
@@ -181,7 +181,7 @@ export default {
         hideNavigation: false,
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
-        nextMonthCount: 0,
+        nbMonthCalendars: 1,
         nextMonthButtonAlternativeText: 'Next Month',
         previousMonthButtonAlternativeText: 'Previous Month',
         yearSelectAssistiveText: 'Pick a year',
@@ -248,11 +248,11 @@ MarkedDates.args = {
     markedDates: markedDates
 };
 
-export const NextMonthCount = Template.bind({});
-NextMonthCount.args = {
+export const NumberOfMonthCalendars = Template.bind({});
+NumberOfMonthCalendars.args = {
     value: ['05/10/2022', '05/22/2022'],
     selectionMode: 'interval',
-    nextMonthCount: 1
+    nbMonthCalendars: 2
 };
 
 export const Labels = Template.bind({});

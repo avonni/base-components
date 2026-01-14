@@ -17,6 +17,7 @@ const SELECTION_MODES = {
 };
 
 export default class PrimitiveCalendar extends LightningElement {
+    static delegatesFocus = true;
     _calendarData = [];
     _isLabeled = false;
     _isMultiSelect = false;

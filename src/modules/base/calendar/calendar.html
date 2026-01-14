@@ -38,6 +38,7 @@
                             ></lightning-button-icon>
                         </div>
                         <h2
+                            if:false={isMultiCalendars}
                             class="
                                 slds-align-middle
                                 avonni-calendar__month_color
@@ -103,20 +104,50 @@
                     </label>
                 </div>
 
-                <c-primitive-calendar
-                    calendar-data={calendarData}
-                    is-labeled={isLabeled}
-                    is-multi-select={isMultiSelect}
-                    selection-mode={selectionMode}
-                    weekdays={weekdays}
-                    value={computedValue}
-                    onselectdate={handleSelectDate}
-                    onselectdatekey={handleKeyDate}
-                    onblur={handleBlur}
-                    onfocus={handleFocus}
-                    data-element-id="avonni-calendar__primitive-calendar"
-                >
-                </c-primitive-calendar>
+                <div class="slds-grid">
+                    <template
+                        for:each={calendarDataList}
+                        for:item="item"
+                        for:index="index"
+                    >
+                        <div
+                            key={item.id}
+                            class="
+                                slds-col slds-grow
+                                avonni-calendar__month-container
+                            "
+                        >
+                            <h2
+                                if:true={isMultiCalendars}
+                                class="
+                                    slds-text-align_center
+                                    slds-p-bottom_xx-small
+                                    avonni-calendar__month_color
+                                "
+                                data-element-id="h2"
+                                data-index={index}
+                            >
+                                {item.month}
+                            </h2>
+
+                            <c-primitive-calendar
+                                calendar-data={item.calendarData}
+                                is-labeled={isLabeled}
+                                is-multi-select={isMultiSelect}
+                                selection-mode={selectionMode}
+                                weekdays={weekdays}
+                                value={computedValue}
+                                onselectdate={handleSelectDate}
+                                onselectdatekey={handleKeyDate}
+                                onblur={handleBlur}
+                                onfocus={handleFocus}
+                                data-element-id="avonni-calendar__primitive-calendar"
+                                data-index={index}
+                            >
+                            </c-primitive-calendar>
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
     </div>
