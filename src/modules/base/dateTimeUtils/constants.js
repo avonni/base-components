@@ -143,6 +143,7 @@ const INTERVALS = {
 };
 
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}/;
+const NULL_DATE = new Date('12/31/1969').setHours(0, 0, 0, 0);
 
 export {
     DATE,
@@ -157,6 +158,7 @@ export {
     LONG,
     MONTH,
     NARROW,
+    NULL_DATE,
     NUMERIC,
     SHORT,
     TIME_ZONE_NAME,

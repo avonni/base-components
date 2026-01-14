@@ -6,10 +6,14 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utils';
-import { setDate, getStartOfWeek } from 'c/dateTimeUtils';
+import {
+    setDate,
+    getStartOfWeek,
+    isInvalidDate,
+    startOfDay
+} from 'c/dateTimeUtils';
 import { keyValues } from 'c/utilsPrivate';
 const DEFAULT_WEEK_START_DAY = 0;
-const NULL_DATE = new Date('12/31/1969').setHours(0, 0, 0, 0);
 
 const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
@@ -189,7 +193,7 @@ export default class PrimitiveCalendar extends LightningElement {
      */
     @api
     focusDate(focusDate, displayDate, applyFocus) {
-        if (this.isInvalidDate(focusDate)) {
+        if (isInvalidDate(focusDate)) {
             return;
         }
 
@@ -203,7 +207,7 @@ export default class PrimitiveCalendar extends LightningElement {
                 focusDate.getDate()
             );
         }
-        const firstOfMonthDate = this.startOfDay(
+        const firstOfMonthDate = startOfDay(
             setDate(displayDate, 'date', 1)
         ).getTime();
 
@@ -270,87 +274,6 @@ export default class PrimitiveCalendar extends LightningElement {
                 }
             }
         });
-    }
-
-    /*
-     * ------------------------------------------------------------
-     *  PRIVATE METHODS
-     * -------------------------------------------------------------
-     */
-
-    /**
-     * Returns an array of dates based on the selection mode interval.
-     *
-     * @param {object[]} array - array of dates
-     * @param {string | Date} newDate - new date
-     * @returns array of dates
-     */
-    isSelectedInterval(array, newDate) {
-        const timestamp = newDate.getTime();
-        const timestamps = array.map((x) => x.getTime()).sort((a, b) => a - b);
-
-        if (timestamps.includes(timestamp)) {
-            timestamps.splice(timestamps.indexOf(timestamp), 1);
-        } else {
-            if (timestamps.length === 0) {
-                timestamps.push(timestamp);
-            } else if (timestamps.length === 1) {
-                if (timestamp > timestamps[0]) {
-                    timestamps.push(timestamp);
-                } else {
-                    timestamps.splice(0, 0, timestamp);
-                }
-            } else {
-                if (timestamp > timestamps[0]) {
-                    timestamps.splice(1, 1, timestamp);
-                } else {
-                    timestamps.splice(0, 1, timestamp);
-                }
-            }
-        }
-
-        return timestamps.map((x) => new Date(x));
-    }
-
-    /**
-     * Returns an array of dates base on the selection mode multiple.
-     *
-     * @param {object[]} array - array of dates
-     * @param {string | Date} newDate - new date
-     * @returns array of dates
-     */
-    isSelectedMultiple(array, newDate) {
-        const timestamp = newDate.getTime();
-        const timestamps = array.map((x) => x.getTime());
-
-        if (!timestamps.includes(timestamp)) {
-            timestamps.push(timestamp);
-        } else {
-            timestamps.splice(timestamps.indexOf(timestamp), 1);
-        }
-        return timestamps.map((x) => new Date(x));
-    }
-
-    /**
-     * Check if value is an invalid date.
-     */
-    isInvalidDate(value) {
-        const date = new Date(value);
-        return (
-            !date ||
-            isNaN(date) ||
-            this.startOfDay(date).getTime() === NULL_DATE
-        );
-    }
-
-    /**
-     * Returns the start of the day for the given date.
-     *
-     * @param {Date} date Date to get the start of the day for.
-     * @returns {Date} The start of the day for the given date.
-     */
-    startOfDay(date) {
-        return setDate(date, 'hour', 0, 0, 0, 0);
     }
 
     /*
