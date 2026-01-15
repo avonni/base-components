@@ -112,7 +112,11 @@ export default class PrimitiveCalendar extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value = value;
+        const normalizedValue =
+            value && !Array.isArray(value)
+                ? [this.value]
+                : normalizeArray(value);
+        this._value = normalizedValue;
     }
 
     /**
@@ -269,12 +273,22 @@ export default class PrimitiveCalendar extends LightningElement {
         });
     }
 
+    /**
+     * Simulates a mouseout event on the calendar by removing the borders on the dates.
+     *
+     * @public
+     */
     @api mouseOutDate() {
-        this.handlerMouseOut();
+        this.removeDateBorder();
     }
 
+    /**
+     * Simulates a mouseon event on a calendar date by adding borders.
+     * @param {string} day The timestamp of the date
+     * @public
+     */
     @api mouseOverDate(day) {
-        this.handlerMouseOver(day);
+        this.addDateBorder(day);
     }
 
     /*
@@ -283,15 +297,11 @@ export default class PrimitiveCalendar extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    handlerMouseOut() {
-        this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
-            x.classList.remove('avonni-calendar__cell_bordered-right');
-            x.classList.remove('avonni-calendar__cell_bordered-left');
-        });
-    }
-
-    handlerMouseOver(day) {
+    /**
+     * Add borders on cells
+     * @param {string} day The timestamp of the date
+     */
+    addDateBorder(day) {
         const dayCell = this.template.querySelector(
             `[data-full-date="${day}"]${SELECTOR_HAS_BORDER}`
         );
@@ -378,6 +388,17 @@ export default class PrimitiveCalendar extends LightningElement {
         }
     }
 
+    /**
+     * Remove borders on cells
+     */
+    removeDateBorder() {
+        this.template.querySelectorAll('td').forEach((x) => {
+            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
+            x.classList.remove('avonni-calendar__cell_bordered-right');
+            x.classList.remove('avonni-calendar__cell_bordered-left');
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -451,7 +472,7 @@ export default class PrimitiveCalendar extends LightningElement {
      * Mouse out handler.
      */
     handleMouseOut() {
-        this.handlerMouseOut();
+        this.dispatchMouseOutDate();
     }
 
     /**
@@ -606,26 +627,26 @@ export default class PrimitiveCalendar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * The event fired when a date is moused out.
+     *
+     * @event
+     * @public
+     * @name mouseoutdate
+     */
     dispatchMouseOutDate() {
-        /**
-         * The event fired when a date is moused out.
-         *
-         * @event
-         * @public
-         * @name mouseoutdate
-         */
         this.dispatchEvent(new CustomEvent('mouseoutdate'));
     }
 
+    /**
+     * The event fired when a date is moused over.
+     *
+     * @event
+     * @public
+     * @name mouseoverdate
+     * @param {string} day The mouse over date in string .
+     */
     dispatchMouseOverDate(day) {
-        /**
-         * The event fired when a date is moused over.
-         *
-         * @event
-         * @public
-         * @name mouseoverdate
-         * @param {string} day The mouse over date in string .
-         */
         this.dispatchEvent(
             new CustomEvent('mouseoverdate', {
                 detail: {

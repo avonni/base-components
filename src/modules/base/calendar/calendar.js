@@ -1407,33 +1407,45 @@ export default class Calendar extends LightningElement {
 
         const firstDayOfMonth = setDate(this.displayDate, 'date', 1);
         let currentMonth = firstDayOfMonth.getMonth();
-        const isMultiCalendarNavigation = isNavigate && this.isMultiCalendars;
+
         const isPreviousTime = nextDate.getTime() < initialDate.getTime();
         const isNextTime = nextDate.getTime() > initialDate.getTime();
-        const isNextMonth =
-            isMultiCalendarNavigation &&
-            dataIndex === this.nbMonthCalendars - 1 &&
-            isNextTime;
-        const isPreviousMonth =
-            isMultiCalendarNavigation && dataIndex === 0 && isPreviousTime;
-        // We go to the next month from the latest calendar.
-        if (isNextMonth) {
-            currentMonth += 1;
-            this.dispatchNavigateEvent(nextDate);
-            this.displayDate = setDate(firstDayOfMonth, 'month', currentMonth);
-        }
-        // We go to the previous month from the first calendar.
-        else if (isPreviousMonth) {
-            currentMonth -= 1;
-            this.dispatchNavigateEvent(nextDate);
-            this.displayDate = setDate(firstDayOfMonth, 'month', currentMonth);
+
+        // On multi calendars navigation
+        if (isNavigate && this.isMultiCalendars) {
+            const isAtLastCalendar = dataIndex === this.nbMonthCalendars - 1;
+            const isAtFirstCalendar = dataIndex === 0;
+
+            const isMultiCalendarNextMonth = isAtLastCalendar && isNextTime;
+
+            const isMultiCalendarPreviousMonth =
+                isAtFirstCalendar && isPreviousTime;
+
+            // Navigate forward from last calendar
+            if (isMultiCalendarNextMonth) {
+                this.dispatchNavigateEvent(nextDate);
+                this.displayDate = setDate(
+                    firstDayOfMonth,
+                    'month',
+                    currentMonth + 1
+                );
+            }
+            // Navigate backward from first calendar
+            else if (isMultiCalendarPreviousMonth) {
+                this.dispatchNavigateEvent(nextDate);
+                this.displayDate = setDate(
+                    firstDayOfMonth,
+                    'month',
+                    currentMonth - 1
+                );
+            }
+            // We leave the displayDate unchanged if the calendars are not shifted
         }
 
         // Single calendar always syncs display date
         if (!this.isMultiCalendars) {
             this.displayDate = computedNextDate;
         }
-
         this.updateDateParameters();
         this.computeFocus(true, computedNextDate, computedNextDate);
     }
@@ -1531,8 +1543,8 @@ export default class Calendar extends LightningElement {
             }
         }
         const clickedDate = this.toISO(date);
-        // If event comes from a calendar that is not the first, we have to sync the display date
-        this.displayDate = dataIndex > 0 ? this.displayDate : date;
+        // When deadling with multiple calendars, we leave the display date unchanged
+        this.displayDate = this.isMultiCalendars ? this.displayDate : date;
         this.updateDateParameters();
         this.updateValue();
 
