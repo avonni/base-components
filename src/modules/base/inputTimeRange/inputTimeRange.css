@@ -1,0 +1,54 @@
+.slds-form-element {
+    padding-right: var(--lwc-spacingXSmall, 0.5rem);
+    min-width: 150px;
+}
+
+.avonni-input-time-range__label-container {
+    display: flex;
+}
+
+.avonni-input-time-range__label {
+    color: var(
+        --avonni-input-time-range-header-text-color,
+        var(
+            var(--slds-s-label-color, var(--slds-g-color-on-surface-2)),
+            #080707
+        )
+    );
+    font-size: var(
+        --avonni-input-time-range-header-font-size,
+        var(--slds-g-font-scale-1, 0.8125rem)
+    );
+    font-style: var(--avonni-input-time-range-header-font-style, normal);
+    font-weight: var(
+        --avonni-input-time-range-header-font-weight,
+        var(--slds-g-font-weight-6, 400)
+    );
+    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
+    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
+.avonni-input-time-range__input-labels {
+    color: var(
+        var(
+            --avonni-input-time-range-labels-text-color,
+            var(--slds-s-label-color, var(--slds-g-color-on-surface-2))
+        ),
+        #3e3e3c
+    );
+    font-size: var(
+        var(
+            --avonni-input-time-range-labels-font-size,
+            var(--slds-s-label-font-size, var(--slds-g-font-scale-neg-2))
+        ),
+        0.75rem
+    );
+    font-style: var(--avonni-input-time-range-labels-font-style, normal);
+    font-weight: var(
+        var(
+            --avonni-input-time-range-labels-font-weight,
+            var(--slds-s-label-font-weight)
+        ),
+        400
+    );
+}
