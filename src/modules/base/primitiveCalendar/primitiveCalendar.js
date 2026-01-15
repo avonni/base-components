@@ -416,47 +416,28 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
-     * Record focus if a cell is clicked.
+     * Handler of a date focus.
      */
     handleDateFocus(event) {
         if (!event.currentTarget) {
             return;
         }
-
-        this.handleFocus(event);
-    }
-
-    /**
-     * Private focus handler.
-     */
-    handleFocus(event) {
-        if (
-            event.relatedTarget &&
-            this.template.contains(event.relatedTarget)
-        ) {
-            return;
-        }
-
+        const focusDate = event.currentTarget.dataset.fullDate;
         /**
-         * The event fired when the focus is set on the calendar.
+         * The event fired when a focus target is found in the public method focusDate().
+         * The focused date passed to focusDate() is not necessarily the same as the focus target.
+         * Therefore, it allows to sync the focusDate to the parent.
          *
          * @event
-         * @name focus
          * @public
-         */
-        this.dispatchEvent(new CustomEvent('focus'));
-
-        /**
-         * @event
-         * @private
-         * @name privatefocus
-         * @bubbles
-         * @cancelable
+         * @name datefocus
+         * @param {string} fulldate The focused date
          */
         this.dispatchEvent(
-            new CustomEvent('privatefocus', {
-                bubbles: true,
-                cancelable: true
+            new CustomEvent('datefocus', {
+                detail: {
+                    focusDate
+                }
             })
         );
     }
