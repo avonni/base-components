@@ -1378,14 +1378,16 @@ export default class Calendar extends LightningElement {
             return;
         }
         const initialDate = new Date(fullDate);
-        const month = initialDate.getMonth();
-        const year = initialDate.getFullYear();
-        const isNavigate =
-            month !== nextDate.getMonth() || year !== nextDate.getFullYear();
 
-        if (nextDate && isNavigate && !this.isMultiCalendars) {
+        const isNavigate =
+            initialDate.getMonth() !== nextDate.getMonth() ||
+            initialDate.getFullYear() !== nextDate.getFullYear();
+
+        // Handle navigation for single calendar
+        if (isNavigate && !this.isMultiCalendars) {
             this.dispatchNavigateEvent(nextDate);
         }
+        // Clamping the next date based on the min and max
         let computedNextDate;
         if (nextDate.getTime() < this._computedMin.getTime()) {
             computedNextDate = this._computedMin;
@@ -1396,53 +1398,37 @@ export default class Calendar extends LightningElement {
         }
         this._focusDate = computedNextDate;
 
-        let computedIndex = dataIndex;
         const firstDayOfMonth = setDate(this.displayDate, 'date', 1);
         let currentMonth = firstDayOfMonth.getMonth();
-        const isDecalingCalendars = isNavigate && this.isMultiCalendars;
+        const isMultiCalendarNavigation = isNavigate && this.isMultiCalendars;
         const isPreviousTime = nextDate.getTime() < initialDate.getTime();
         const isNextTime = nextDate.getTime() > initialDate.getTime();
         const isNextMonth =
-            isDecalingCalendars &&
+            isMultiCalendarNavigation &&
             dataIndex === this.nbMonthCalendars - 1 &&
             isNextTime;
         const isPreviousMonth =
-            isDecalingCalendars && dataIndex === 0 && isPreviousTime;
+            isMultiCalendarNavigation && dataIndex === 0 && isPreviousTime;
         // We go to the next month from the latest calendar.
         if (isNextMonth) {
-            computedIndex = dataIndex;
             currentMonth += 1;
             this.dispatchNavigateEvent(nextDate);
             this.displayDate = setDate(firstDayOfMonth, 'month', currentMonth);
         }
-        // We go to the previous month
+        // We go to the previous month from the first calendar.
         else if (isPreviousMonth) {
-            computedIndex = dataIndex;
             currentMonth -= 1;
             this.dispatchNavigateEvent(nextDate);
             this.displayDate = setDate(firstDayOfMonth, 'month', currentMonth);
         }
-        // We go to the next calendar, but doesn't change the month
-        else if (isDecalingCalendars && isNextTime) {
-            computedIndex = dataIndex + 1;
-        }
-        // We go to the previous calendar, but doesn't change the month
-        else if (isDecalingCalendars && isPreviousTime) {
-            computedIndex = dataIndex - 1;
-        }
 
-        // If it has only a single calendar, we have to change the display date
+        // Single calendar always syncs display date
         if (!this.isMultiCalendars) {
             this.displayDate = computedNextDate;
         }
 
         this.updateDateParameters();
-        this.computeFocus(
-            true,
-            computedNextDate,
-            computedNextDate,
-            computedIndex
-        );
+        this.computeFocus(true, computedNextDate, computedNextDate);
     }
 
     /**
@@ -1510,6 +1496,7 @@ export default class Calendar extends LightningElement {
             }
         }
         const clickedDate = this.toISO(date);
+        // If event comes from a calendar that is not the first, we have to sync the display date
         this.displayDate = dataIndex > 0 ? this.displayDate : date;
         this.updateDateParameters();
         this.updateValue();
