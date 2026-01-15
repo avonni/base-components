@@ -40,6 +40,7 @@ describe('Layout', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.direction).toBe('row');
+            expect(element.equalHeights).toBeFalsy();
             expect(element.horizontalAlign).toBe('start');
             expect(element.multipleRows).toBeFalsy();
             expect(element.verticalAlign).toBe('stretch');
@@ -635,6 +636,93 @@ describe('Layout', () => {
 
                     jest.runAllTimers();
                     expect(callback).not.toHaveBeenCalled();
+                });
+            });
+
+            it('If equalHeights is true, set equal heights on items when one connects', () => {
+                element.equalHeights = true;
+
+                const callbackGetHeight = jest
+                    .fn()
+                    .mockReturnValueOnce(100)
+                    .mockReturnValue(200);
+                const callbackSetHeight = jest.fn();
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: () => {},
+                                    getHeight: callbackGetHeight,
+                                    setHeight: callbackSetHeight
+                                }
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(1);
+                    expect(callbackSetHeight.mock.calls[0][0]).toBe(100);
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberTwo',
+                                callbacks: {
+                                    setContainerSize: () => {},
+                                    getHeight: callbackGetHeight,
+                                    setHeight: callbackSetHeight
+                                }
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(3);
+                    expect(callbackSetHeight.mock.calls[1][0]).toBe(200);
+                    expect(callbackSetHeight.mock.calls[2][0]).toBe(200);
+                });
+            });
+
+            it('If equalHeights is true, does not set equal heights on items when one connects and is the same height', () => {
+                element.equalHeights = true;
+
+                const callbackGetHeight = jest.fn().mockReturnValue(200);
+                const callbackSetHeight = jest.fn();
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: () => {},
+                                    getHeight: callbackGetHeight,
+                                    setHeight: callbackSetHeight
+                                }
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(1);
+                    expect(callbackSetHeight.mock.calls[0][0]).toBe(200);
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberTwo',
+                                callbacks: {
+                                    setContainerSize: () => {},
+                                    getHeight: callbackGetHeight,
+                                    setHeight: callbackSetHeight
+                                }
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(1);
                 });
             });
         });

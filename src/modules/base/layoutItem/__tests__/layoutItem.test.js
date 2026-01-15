@@ -193,6 +193,12 @@ describe('Layout Item', () => {
             expect(
                 connectedCall.detail.callbacks.setContainerSize
             ).toBeInstanceOf(Function);
+            expect(connectedCall.detail.callbacks.getHeight).toBeInstanceOf(
+                Function
+            );
+            expect(connectedCall.detail.callbacks.setHeight).toBeInstanceOf(
+                Function
+            );
             expect(connectedCall.bubbles).toBeTruthy();
             expect(connectedCall.composed).toBeFalsy();
             expect(connectedCall.cancelable).toBeFalsy();
@@ -207,6 +213,51 @@ describe('Layout Item', () => {
             expect(disconnectedCall.bubbles).toBeTruthy();
             expect(disconnectedCall.composed).toBeFalsy();
             expect(disconnectedCall.cancelable).toBeFalsy();
+        });
+
+        it('getHeight and setHeight callbacks', () => {
+            const connectedHandler = jest.fn();
+            element.addEventListener(
+                'privatelayoutitemconnected',
+                connectedHandler
+            );
+
+            jest.spyOn(element, 'getBoundingClientRect').mockImplementation(
+                () => ({
+                    height: 75,
+                    width: 200,
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 200
+                })
+            );
+
+            document.body.appendChild(element);
+
+            const connectedCall = connectedHandler.mock.calls[0][0];
+            const getHeight = connectedCall.detail.callbacks.getHeight;
+
+            expect(getHeight()).toBe(75);
+        });
+
+        it('setHeight callback functionality', () => {
+            const connectedHandler = jest.fn();
+            element.addEventListener(
+                'privatelayoutitemconnected',
+                connectedHandler
+            );
+
+            document.body.appendChild(element);
+
+            const connectedCall = connectedHandler.mock.calls[0][0];
+            const setHeight = connectedCall.detail.callbacks.setHeight;
+
+            setHeight(100);
+            expect(element.style.height).toBe('100px');
+
+            setHeight(0);
+            expect(element.style.height).toBe('0px');
         });
     });
 });
