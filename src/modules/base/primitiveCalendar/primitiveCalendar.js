@@ -6,12 +6,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utils';
-import {
-    setDate,
-    getStartOfWeek,
-    isInvalidDate,
-    startOfDay
-} from 'c/dateTimeUtils';
+import { setDate, getStartOfWeek, startOfDay } from 'c/dateTimeUtils';
 import { keyValues } from 'c/utilsPrivate';
 const DEFAULT_WEEK_START_DAY = 0;
 
@@ -21,7 +16,6 @@ const SELECTION_MODES = {
 };
 
 export default class PrimitiveCalendar extends LightningElement {
-    static delegatesFocus = true;
     _calendarData = [];
     _isLabeled = false;
     _isMultiSelect = false;
@@ -29,8 +23,6 @@ export default class PrimitiveCalendar extends LightningElement {
     _value = [];
     _weekdays = [];
     _weekStartDay = DEFAULT_WEEK_START_DAY;
-
-    _focusDate;
 
     /*
      * ------------------------------------------------------------
@@ -193,10 +185,6 @@ export default class PrimitiveCalendar extends LightningElement {
      */
     @api
     focusDate(focusDate, displayDate, applyFocus) {
-        if (isInvalidDate(focusDate)) {
-            return;
-        }
-
         // if a date was previously selected or focused, focus the same date in this month.
         let selectedMonthDate, rovingDate;
         if (focusDate) {
@@ -213,22 +201,22 @@ export default class PrimitiveCalendar extends LightningElement {
 
         requestAnimationFrame(() => {
             const rovingFocusDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${rovingDate}"]`
+                `[data-element-id="td"][data-full-date="${rovingDate}"]:not([data-is-date-invisible="true"])`
             );
             const selectedDates = this.template.querySelectorAll(
-                '[data-selected="true"]'
+                '[data-selected="true"]:not([data-is-date-invisible="true"])'
             );
             const todaysDate = this.template.querySelector(
-                '[data-today="true"]'
+                '[data-today="true"]:not([data-is-date-invisible="true"])'
             );
             const firstOfMonth = this.template.querySelector(
                 `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
             );
             const rovingMonthDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
+                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]:not([data-is-date-invisible="true"]):not([data-is-date-invisible="true"])`
             );
             const firstValidDate = this.template.querySelector(
-                '[data-element-id="td"]:not([data-disabled="true"])'
+                '[data-element-id="td"]:not([data-disabled="true"]):not([data-is-date-invisible="true"])'
             );
 
             const focusTarget =
@@ -326,12 +314,6 @@ export default class PrimitiveCalendar extends LightningElement {
             return;
         }
 
-        const focusDate = new Date(
-            Number(event.currentTarget.dataset.fullDate)
-        );
-        if (focusDate) {
-            this._focusDate = focusDate;
-        }
         this.handleFocus(event);
     }
 

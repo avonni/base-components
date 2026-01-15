@@ -613,17 +613,42 @@ export default class Calendar extends LightningElement {
      * Place focus according to keyboard selection
      *
      * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
+     * @param {Date} [focusDate=this._focusDate] The date that should receive focus inside the calendar.
+     * @param {Date} [displayDate=this.displayDate] The reference display date used by the calendar when computing focus.
+     * @param {number|null} [index] The index of the calendar to focus. If null or undefined, the index is
+     *  resolved by matching the focus date’s year and month against rendered
+     *  calendar components.
      */
     computeFocus(
         applyFocus,
         focusDate = this._focusDate,
         displayDate = this.displayDate,
-        index = 0
+        index
     ) {
-        const calendar = this.template.querySelector(
-            `[data-element-id="avonni-calendar__primitive-calendar"][data-index="${index}"]`
-        );
-        calendar?.focusDate(focusDate, displayDate, applyFocus);
+        requestAnimationFrame(() => {
+            let resolvedIndex = index;
+
+            // Set index from focused date if not explicitly provided
+            if (resolvedIndex == null && this._focusDate) {
+                const year = this._focusDate.getFullYear();
+                const monthIndex = this._focusDate.getMonth();
+
+                resolvedIndex = Number(
+                    this.template.querySelector(
+                        `[data-element-id="avonni-calendar__primitive-calendar"]` +
+                            `[data-year="${year}"][data-month-index="${monthIndex}"]`
+                    )?.dataset.index ?? 0
+                );
+            }
+            // Fallback to first calendar
+            resolvedIndex = resolvedIndex ?? 0;
+
+            const calendar = this.template.querySelector(
+                `[data-element-id="avonni-calendar__primitive-calendar"][data-index="${resolvedIndex}"]`
+            );
+
+            calendar?.focusDate(focusDate, displayDate, applyFocus);
+        });
     }
 
     /**

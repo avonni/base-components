@@ -10,7 +10,7 @@ describe('Primitive Calendar', () => {
     });
 
     beforeEach(() => {
-        element = createElement('avonni-primitive-calendar', {
+        element = createElement('base-primitive-calendar', {
             is: PrimitiveCalendar
         });
         document.body.appendChild(element);
