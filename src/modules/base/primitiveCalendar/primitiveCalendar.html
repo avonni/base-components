@@ -45,7 +45,8 @@
                             data-disabled={day.disabled}
                             data-element-id="td"
                             data-full-date={day.ts}
-                            data-is-date-invisible={day.isDateInvisible}
+                            data-is-date-hidden={day.isDateHidden}
+                            data-is-week-disabled={day.isWeekDisabled}
                             data-selected={day.appearsSelected}
                             data-today={day.isToday}
                             onblur={handleBlur}
@@ -54,7 +55,7 @@
                             onmouseover={handleMouseOver}
                         >
                             <span
-                                if:false={day.isDateInvisible}
+                                if:false={day.isDateHidden}
                                 class="slds-assistive-text"
                                 data-element-id="day-label-assistive-text"
                             >
@@ -67,12 +68,13 @@
                                 data-date={day.label}
                                 data-disabled={day.disabled}
                                 data-element-id="span-day-label"
-                                data-is-date-invisible={day.isDateInvisible}
+                                data-is-date-hidden={day.isDateHidden}
+                                data-is-week-disabled={day.isWeekDisabled}
                                 onclick={handleSelectDate}
                             >
                                 {day.label}
                             </span>
-                            <template if:false={day.isDateInvisible}>
+                            <template if:false={day.isDateHidden}>
                                 <div
                                     if:true={day.markers.length}
                                     class="slds-is-relative"

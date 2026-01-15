@@ -13,7 +13,7 @@ export default class CalendarDate {
         this.date = props.date;
         this.disabled = normalizeBoolean(props.disabled);
         this.isEndDate = normalizeBoolean(props.isEndDate);
-        this.isDateInvisible = normalizeBoolean(props.isDateInvisible);
+        this.isDateHidden = normalizeBoolean(props.isDateHidden);
         this.isPartOfInterval = normalizeBoolean(props.isPartOfInterval);
         this.isStartDate = normalizeBoolean(props.isStartDate);
         this.isToday = normalizeBoolean(props.isToday);
@@ -28,13 +28,11 @@ export default class CalendarDate {
     }
 
     get appearsSelected() {
-        return (
-            (this.selected || this.isPartOfInterval) && !this.isDateInvisible
-        );
+        return (this.selected || this.isPartOfInterval) && !this.isDateHidden;
     }
 
     get appearsSelectedMulti() {
-        return !this.isDateInvisible && this.isPartOfInterval;
+        return !this.isDateHidden && this.isPartOfInterval;
     }
 
     get ariaCurrent() {
@@ -42,7 +40,7 @@ export default class CalendarDate {
     }
 
     get computedAriaLabel() {
-        if (this.isWeekNumber) {
+        if (this.isWeekNumber && !this.isDateHidden) {
             return `Week ${this._dateTime.isoWeek}`;
         }
         const dateLabel = this.date?.toLocaleString('en-EN', {
@@ -70,11 +68,15 @@ export default class CalendarDate {
         return this.chip.iconName || this.chip.label;
     }
 
+    get isWeekDisabled() {
+        return this.isWeekNumber && this.disabled;
+    }
+
     get label() {
-        if (this.isWeekNumber && !this.isDateInvisible) {
+        if (this.isWeekNumber && !this.isDateHidden) {
             return this._dateTime.isoWeek;
-        } else if (this.isDateInvisible) {
-            return ' ';
+        } else if (this.isDateHidden) {
+            return '';
         }
         return this.date.getDate();
     }
@@ -83,7 +85,7 @@ export default class CalendarDate {
         return classSet({
             'slds-day': !this.isWeekNumber,
             'avonni-calendar__disabled-cell': this.disabled,
-            'avonni-calendar__invisible-cell': this.isDateInvisible
+            'avonni-calendar__hidden-cell': this.isDateHidden
         }).toString();
     }
 

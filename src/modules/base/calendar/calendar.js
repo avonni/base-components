@@ -713,16 +713,20 @@ export default class Calendar extends LightningElement {
             // Add an array per week
             for (let i = 0; i < 6; i++) {
                 const weekData = [];
+                const isWeekDisabled =
+                    date.getMonth() !== currentMonth && this.isMultiCalendars;
+                // The first week number must always be visible
+                const isWeekNumberHidden =
+                    isWeekDisabled && this.isMultiCalendars && i !== 0;
 
                 if (this.weekNumber) {
                     // Week number
                     weekData.push(
                         new CalendarDate({
                             date,
-                            isWeekNumber: true,
-                            isDateInvisible:
-                                date.getMonth() !== currentMonth &&
-                                this.isMultiCalendars
+                            disabled: isWeekDisabled,
+                            isDateHidden: isWeekNumberHidden,
+                            isWeekNumber: true
                         })
                     );
                 }
@@ -756,7 +760,7 @@ export default class Calendar extends LightningElement {
                             startOfDay(time).getTime();
                     }
                     const isAdjacentMonth = date.getMonth() !== currentMonth;
-                    const isDateInvisible =
+                    const isDateHidden =
                         this.isMultiCalendars && isAdjacentMonth;
                     weekData.push(
                         new CalendarDate({
@@ -766,8 +770,8 @@ export default class Calendar extends LightningElement {
                                 this.disabled ||
                                 disabledDate ||
                                 outsideOfMinMax ||
-                                isDateInvisible,
-                            isDateInvisible: isDateInvisible,
+                                isDateHidden,
+                            isDateHidden: isDateHidden,
                             isPartOfInterval,
                             isToday: today.getTime() === time,
                             ...(isPartOfInterval && {
@@ -1498,10 +1502,10 @@ export default class Calendar extends LightningElement {
     handleSelectDate(event) {
         this.handleDateFocus(event);
 
-        const { bounds, fullDate, disabled, isDateInvisible } = event.detail;
+        const { bounds, fullDate, disabled, isDateHidden } = event.detail;
         const dataIndex = Number(event.currentTarget.dataset.index);
         const date = new Date(Number(fullDate));
-        if (isInvalidDate(date) || disabled || isDateInvisible) {
+        if (isInvalidDate(date) || disabled || isDateHidden) {
             return;
         }
 

@@ -8,12 +8,17 @@ import {
 } from 'c/utils';
 import { setDate, getStartOfWeek, startOfDay } from 'c/dateTimeUtils';
 import { keyValues } from 'c/utilsPrivate';
+
 const DEFAULT_WEEK_START_DAY = 0;
 
 const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
     default: 'single'
 };
+
+const SELECTOR_IS_VISIBLE = ':not([data-is-date-hidden="true"])';
+
+const SELECTOR_HAS_BORDER = `${SELECTOR_IS_VISIBLE}:not([data-is-week-disabled="true"])`;
 
 export default class PrimitiveCalendar extends LightningElement {
     _calendarData = [];
@@ -201,22 +206,22 @@ export default class PrimitiveCalendar extends LightningElement {
 
         requestAnimationFrame(() => {
             const rovingFocusDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${rovingDate}"]:not([data-is-date-invisible="true"])`
+                `[data-element-id="td"][data-full-date="${rovingDate}"]${SELECTOR_IS_VISIBLE}`
             );
             const selectedDates = this.template.querySelectorAll(
-                '[data-selected="true"]:not([data-is-date-invisible="true"])'
+                `[data-selected="true"]${SELECTOR_IS_VISIBLE}`
             );
             const todaysDate = this.template.querySelector(
-                '[data-today="true"]:not([data-is-date-invisible="true"])'
+                `[data-today="true"]${SELECTOR_IS_VISIBLE}`
             );
             const firstOfMonth = this.template.querySelector(
                 `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
             );
             const rovingMonthDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]:not([data-is-date-invisible="true"]):not([data-is-date-invisible="true"])`
+                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]${SELECTOR_IS_VISIBLE}`
             );
             const firstValidDate = this.template.querySelector(
-                '[data-element-id="td"]:not([data-disabled="true"]):not([data-is-date-invisible="true"])'
+                `[data-element-id="td"]:not([data-disabled="true"])${SELECTOR_IS_VISIBLE}`
             );
 
             const focusTarget =
@@ -288,12 +293,12 @@ export default class PrimitiveCalendar extends LightningElement {
 
     handlerMouseOver(day) {
         const dayCell = this.template.querySelector(
-            `[data-full-date="${day}"]:not([data-is-date-invisible="true"])`
+            `[data-full-date="${day}"]${SELECTOR_HAS_BORDER}`
         );
         const timeArray = this._value
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
-        const cellSelector = 'td:not([data-is-date-invisible="true"])';
+        const cellSelector = `td${SELECTOR_HAS_BORDER}`;
         if (this.selectionMode === 'interval' && !!day) {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
@@ -453,9 +458,9 @@ export default class PrimitiveCalendar extends LightningElement {
      * Mouse over handler.
      */
     handleMouseOver(event) {
-        const isDateInvisible = event.target.dataset.isDateInvisible;
-        // We don't want to border invisible dates on mouseover
-        if (isDateInvisible === 'true') {
+        const { isDateHidden, isWeekDisabled } = event.target.dataset;
+        // We don't want to draw border on hidden dates or disabled week number on mouseover
+        if (isDateHidden === 'true' || isWeekDisabled === 'true') {
             this.dispatchMouseOutDate();
             return;
         }
@@ -469,7 +474,7 @@ export default class PrimitiveCalendar extends LightningElement {
      * @param {object} event
      */
     handleSelectDate(event) {
-        const { fullDate, disabled, isDateInvisible } =
+        const { fullDate, disabled, isDateHidden } =
             event.currentTarget.dataset;
 
         /**
@@ -481,7 +486,7 @@ export default class PrimitiveCalendar extends LightningElement {
          * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
          * @param {string} fullDate The selected date.
          * @param {boolean} disabled If present, the selected date is disabled.
-         * @param {boolean} isDateInvisible If present, the selected date is invisible.
+         * @param {boolean} isDateHidden If present, the selected date is hidden.
          */
         this.dispatchEvent(
             new CustomEvent('selectdate', {
@@ -489,7 +494,7 @@ export default class PrimitiveCalendar extends LightningElement {
                     bounds: event.currentTarget.getBoundingClientRect(),
                     fullDate,
                     disabled: disabled === 'true',
-                    isDateInvisible: isDateInvisible === 'true'
+                    isDateHidden: isDateHidden === 'true'
                 }
             })
         );
