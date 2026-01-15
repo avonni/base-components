@@ -302,7 +302,6 @@ export default class Layout extends LightningElement {
         if (this._disconnected) return;
 
         if (this.equalHeights) {
-            console.log('Setting equal heights for items');
             requestAnimationFrame(() => {
                 const maxHeight = Math.max(
                     ...Array.from(this._items.values()).map((item) =>
