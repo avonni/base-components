@@ -71,7 +71,7 @@ export default class CalendarDate {
     }
 
     get label() {
-        if (this.isWeekNumber) {
+        if (this.isWeekNumber && !this.isDateInvisible) {
             return this._dateTime.isoWeek;
         } else if (this.isDateInvisible) {
             return ' ';
@@ -82,7 +82,8 @@ export default class CalendarDate {
     get labelClass() {
         return classSet({
             'slds-day': !this.isWeekNumber,
-            'avonni-calendar__disabled-cell': this.disabled
+            'avonni-calendar__disabled-cell': this.disabled,
+            'avonni-calendar__invisible-cell': this.isDateInvisible
         }).toString();
     }
 

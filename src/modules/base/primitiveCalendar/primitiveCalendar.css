@@ -85,11 +85,19 @@ div:focus {
     z-index: 0;
 }
 
-.avonni-calendar__table-row > .avonni-calendar__date-cell:hover > .slds-day {
+.avonni-calendar__table-row
+    > .avonni-calendar__date-cell:hover
+    > .slds-day:not(.avonni-calendar__invisible-cell) {
     background-color: var(
         --avonni-calendar-date-color-background-hover,
         var(--slds-s-button-color-background-hover, #f3f2f2)
     );
+}
+
+.avonni-calendar__table-row
+    > .avonni-calendar__date-cell:hover
+    > .slds-day.avonni-calendar__invisible-cell {
+    background-color: transparent;
 }
 
 .avonni-calendar__table-row

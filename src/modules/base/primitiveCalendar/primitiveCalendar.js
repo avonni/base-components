@@ -264,6 +264,115 @@ export default class PrimitiveCalendar extends LightningElement {
         });
     }
 
+    @api mouseOutDate() {
+        this.handlerMouseOut();
+    }
+
+    @api mouseOverDate(day) {
+        this.handlerMouseOver(day);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    handlerMouseOut() {
+        this.template.querySelectorAll('td').forEach((x) => {
+            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
+            x.classList.remove('avonni-calendar__cell_bordered-right');
+            x.classList.remove('avonni-calendar__cell_bordered-left');
+        });
+    }
+
+    handlerMouseOver(day) {
+        const dayCell = this.template.querySelector(
+            `[data-full-date="${day}"]:not([data-is-date-invisible="true"])`
+        );
+        const timeArray = this._value
+            .map((x) => x.getTime())
+            .sort((a, b) => a - b);
+        const cellSelector = 'td:not([data-is-date-invisible="true"])';
+        if (this.selectionMode === 'interval' && !!day) {
+            if (timeArray.length === 1) {
+                if (day > timeArray[0]) {
+                    dayCell?.classList.add(
+                        'avonni-calendar__cell_bordered-right'
+                    );
+                    this.template
+                        .querySelectorAll(cellSelector)
+                        .forEach((x) => {
+                            if (
+                                x.getAttribute('data-full-date') >=
+                                    timeArray[0] &&
+                                x.getAttribute('data-full-date') <= day
+                            ) {
+                                x.classList.add(
+                                    'avonni-calendar__cell_bordered-top_bottom'
+                                );
+                            }
+                        });
+                }
+                if (day < timeArray[0]) {
+                    dayCell?.classList.add(
+                        'avonni-calendar__cell_bordered-left'
+                    );
+                    this.template
+                        .querySelectorAll(cellSelector)
+                        .forEach((x) => {
+                            if (
+                                x.getAttribute('data-full-date') <=
+                                    timeArray[0] &&
+                                x.getAttribute('data-full-date') >= day
+                            ) {
+                                x.classList.add(
+                                    'avonni-calendar__cell_bordered-top_bottom'
+                                );
+                            }
+                        });
+                }
+            } else if (timeArray.length === 2) {
+                if (day > timeArray[1]) {
+                    dayCell?.classList.add(
+                        'avonni-calendar__cell_bordered-right'
+                    );
+                    this.template
+                        .querySelectorAll(cellSelector)
+                        .forEach((x) => {
+                            if (
+                                x.getAttribute('data-full-date') >=
+                                    timeArray[1] &&
+                                x.getAttribute('data-full-date') <= day
+                            ) {
+                                x.classList.add(
+                                    'avonni-calendar__cell_bordered-top_bottom'
+                                );
+                            }
+                        });
+                }
+                if (day < timeArray[0]) {
+                    dayCell?.classList.add(
+                        'avonni-calendar__cell_bordered-left'
+                    );
+                    this.template
+                        .querySelectorAll(cellSelector)
+                        .forEach((x) => {
+                            if (
+                                x.getAttribute('data-full-date') <=
+                                    timeArray[0] &&
+                                x.getAttribute('data-full-date') >= day
+                            ) {
+                                x.classList.add(
+                                    'avonni-calendar__cell_bordered-top_bottom'
+                                );
+                            }
+                        });
+                }
+            }
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -356,89 +465,21 @@ export default class PrimitiveCalendar extends LightningElement {
      * Mouse out handler.
      */
     handleMouseOut() {
-        this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
-            x.classList.remove('avonni-calendar__cell_bordered-right');
-            x.classList.remove('avonni-calendar__cell_bordered-left');
-        });
+        this.handlerMouseOut();
     }
 
     /**
      * Mouse over handler.
      */
     handleMouseOver(event) {
-        const day = event.target.getAttribute('data-full-date');
-        const dayCell = this.template.querySelector(
-            `[data-full-date="${day}"]`
-        );
-        const timeArray = this._value
-            .map((x) => x.getTime())
-            .sort((a, b) => a - b);
-        if (this.selectionMode === 'interval' && !!day) {
-            if (timeArray.length === 1) {
-                if (day > timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-right'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') >= timeArray[0] &&
-                            x.getAttribute('data-full-date') <= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-                if (day < timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-left'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') <= timeArray[0] &&
-                            x.getAttribute('data-full-date') >= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-            } else if (timeArray.length === 2) {
-                if (day > timeArray[1]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-right'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') >= timeArray[1] &&
-                            x.getAttribute('data-full-date') <= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-                if (day < timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-left'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') <= timeArray[0] &&
-                            x.getAttribute('data-full-date') >= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-            }
+        const isDateInvisible = event.target.dataset.isDateInvisible;
+        // We don't want to border invisible dates on mouseover
+        if (isDateInvisible === 'true') {
+            this.dispatchMouseOutDate();
+            return;
         }
+        const day = event.target.getAttribute('data-full-date');
+        this.dispatchMouseOverDate(day);
     }
 
     /**
@@ -447,9 +488,9 @@ export default class PrimitiveCalendar extends LightningElement {
      * @param {object} event
      */
     handleSelectDate(event) {
-        // this.handleDateFocus(event);
+        const { fullDate, disabled, isDateInvisible } =
+            event.currentTarget.dataset;
 
-        const { fullDate, disabled } = event.currentTarget.dataset;
         /**
          * The event fired when the selected date is changed.
          *
@@ -458,14 +499,16 @@ export default class PrimitiveCalendar extends LightningElement {
          * @name selectdate
          * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
          * @param {string} fullDate The selected date.
-         * @param {string} string If present, the selected date is disabled.
+         * @param {boolean} disabled If present, the selected date is disabled.
+         * @param {boolean} isDateInvisible If present, the selected date is invisible.
          */
         this.dispatchEvent(
             new CustomEvent('selectdate', {
                 detail: {
                     bounds: event.currentTarget.getBoundingClientRect(),
                     fullDate,
-                    disabled
+                    disabled: disabled === 'true',
+                    isDateInvisible: isDateInvisible === 'true'
                 }
             })
         );
@@ -566,6 +609,41 @@ export default class PrimitiveCalendar extends LightningElement {
                 detail: {
                     fullDate,
                     nextDate
+                }
+            })
+        );
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    dispatchMouseOutDate() {
+        /**
+         * The event fired when a date is moused out.
+         *
+         * @event
+         * @public
+         * @name mouseoutdate
+         */
+        this.dispatchEvent(new CustomEvent('mouseoutdate'));
+    }
+
+    dispatchMouseOverDate(day) {
+        /**
+         * The event fired when a date is moused over.
+         *
+         * @event
+         * @public
+         * @name mouseoverdate
+         * @param {string} day The mouse over date in string .
+         */
+        this.dispatchEvent(
+            new CustomEvent('mouseoverdate', {
+                detail: {
+                    day
                 }
             })
         );

@@ -719,7 +719,10 @@ export default class Calendar extends LightningElement {
                     weekData.push(
                         new CalendarDate({
                             date,
-                            isWeekNumber: true
+                            isWeekNumber: true,
+                            isDateInvisible:
+                                date.getMonth() !== currentMonth &&
+                                this.isMultiCalendars
                         })
                     );
                 }
@@ -754,7 +757,7 @@ export default class Calendar extends LightningElement {
                     }
                     const isAdjacentMonth = date.getMonth() !== currentMonth;
                     const isDateInvisible =
-                        this._nbMonthCalendars > 1 && isAdjacentMonth;
+                        this.isMultiCalendars && isAdjacentMonth;
                     weekData.push(
                         new CalendarDate({
                             adjacentMonth: isAdjacentMonth,
@@ -1432,6 +1435,34 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Mouse out date handler.
+     */
+    handleMouseOutDate() {
+        const calendars = this.template.querySelectorAll(
+            '[data-element-id="avonni-calendar__primitive-calendar"]'
+        );
+        calendars.forEach((calendar) => {
+            calendar.mouseOutDate();
+        });
+    }
+
+    /**
+     * Mouse over date handler.
+     */
+    handleMouseOverDate(event) {
+        const day = event.detail.day;
+
+        const calendars = this.template.querySelectorAll(
+            '[data-element-id="avonni-calendar__primitive-calendar"]'
+        );
+        calendars.forEach((calendar) => {
+            // We need to remove the borders on the dates first
+            calendar.mouseOutDate();
+            calendar.mouseOverDate(day);
+        });
+    }
+
+    /**
      * Next month handler.
      */
     handlerNextMonth() {
@@ -1467,10 +1498,10 @@ export default class Calendar extends LightningElement {
     handleSelectDate(event) {
         this.handleDateFocus(event);
 
-        const { bounds, fullDate, disabled } = event.detail;
+        const { bounds, fullDate, disabled, isDateInvisible } = event.detail;
         const dataIndex = Number(event.currentTarget.dataset.index);
         const date = new Date(Number(fullDate));
-        if (isInvalidDate(date) || disabled === 'true') {
+        if (isInvalidDate(date) || disabled || isDateInvisible) {
             return;
         }
 
