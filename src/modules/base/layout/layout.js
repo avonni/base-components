@@ -38,6 +38,7 @@ const WIDTHS = {
  */
 export default class Layout extends LightningElement {
     _direction = DIRECTIONS.default;
+    _equalHeights = false;
     _horizontalAlign = HORIZONTAL_ALIGNMENTS.default;
     _multipleRows = false;
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
@@ -46,6 +47,7 @@ export default class Layout extends LightningElement {
     _items = new Map();
     _name = generateUUID();
     _previouslyDispatchedWidth;
+    _previousMaxHeight = 0;
     _rendered = false;
     _debounceTimeoutId;
     _resizeIsHandledByParent = false;
@@ -102,6 +104,21 @@ export default class Layout extends LightningElement {
             fallbackValue: DIRECTIONS.default,
             validValues: DIRECTIONS.valid
         });
+    }
+
+    /**
+     * If present, layout items have equal heights.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get equalHeights() {
+        return this._equalHeights;
+    }
+    set equalHeights(value) {
+        this._equalHeights = normalizeBoolean(value);
     }
 
     /**
@@ -283,6 +300,23 @@ export default class Layout extends LightningElement {
      */
     setItemsSize(width) {
         if (this._disconnected) return;
+
+        if (this.equalHeights) {
+            console.log('Setting equal heights for items');
+            requestAnimationFrame(() => {
+                const maxHeight = Math.max(
+                    ...Array.from(this._items.values()).map((item) =>
+                        item.getHeight()
+                    )
+                );
+                if (this._previousMaxHeight !== maxHeight) {
+                    this._items.forEach((item) => {
+                        item.setHeight(maxHeight);
+                    });
+                    this._previousMaxHeight = maxHeight;
+                }
+            });
+        }
 
         if (width === undefined || width === null) {
             this.clearDebounceTimeout();

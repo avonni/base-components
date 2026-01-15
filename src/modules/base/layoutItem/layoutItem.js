@@ -331,6 +331,19 @@ export default class LayoutItem extends LightningElement {
     }
 
     /**
+     * Get the height of the item.
+     *
+     * @returns {number} Height in pixels.
+     */
+    getHeight() {
+        const previousHeight = this.template.host.style.height;
+        this.template.host.style.height = '';
+        const currentHeight = this.template.host.getBoundingClientRect().height;
+        this.template.host.style.height = previousHeight;
+        return currentHeight;
+    }
+
+    /**
      * Normalize the given size to a valid CSS flex-basis value.
      *
      * @param {number|string} size
@@ -363,6 +376,15 @@ export default class LayoutItem extends LightningElement {
         });
         if (oldContainerWidth === this._containerWidth) return;
         this.updateClassAndStyle();
+    }
+
+    /**
+     * Set the height of the item.
+     *
+     * @param {number} height Height in pixels.
+     */
+    setHeight(height) {
+        this.template.host.style.height = `${height}px`;
     }
 
     /**
@@ -415,7 +437,9 @@ export default class LayoutItem extends LightningElement {
                 detail: {
                     name: this.name,
                     callbacks: {
-                        setContainerSize: this.setContainerSize.bind(this)
+                        setContainerSize: this.setContainerSize.bind(this),
+                        getHeight: this.getHeight.bind(this),
+                        setHeight: this.setHeight.bind(this)
                     }
                 },
                 bubbles: true
