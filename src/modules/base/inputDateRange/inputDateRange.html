@@ -19,6 +19,22 @@
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
         </div>
+        <div
+            if:true={showOptions}
+            class="slds-grid slds-wrap slds-m-bottom_x-small"
+        >
+            <c-combobox
+                disabled={disabled}
+                name="predefined-ranges"
+                options={rangeOptions}
+                value={optionRangeValue}
+                variant="label-hidden"
+                data-element-id="avonni-input-date-range__combobox-range-options"
+                onblur={handleBlur}
+                onchange={handleChangeRangeOption}
+                onfocus={handleFocus}
+            ></c-combobox>
+        </div>
         <div class="slds-grid slds-wrap">
             <div class="slds-grid slds-wrap">
                 <div
