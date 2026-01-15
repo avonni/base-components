@@ -819,7 +819,7 @@ export default class FilterMenuGroup extends LightningElement {
 
         if (
             this._sliceIndex !== sliceIndex ||
-            this._containerMaxHeight !== wrapperHeight
+            Math.ceil(this._containerMaxHeight) !== wrapperHeight
         ) {
             this.updateVisibleMenus(wrapperWidth);
         }
