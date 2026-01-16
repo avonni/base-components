@@ -2,13 +2,13 @@ import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { LightningElement, api } from 'lwc';
 
-const SLDS_CLASS_ERROR = 'slds-has-error';
-const TIME_RANGE_VALIDATION_ERROR = 'End time must be after start time.';
-
+const DEFAULT_INVALID_TIME_RANGE_MESSAGE =
+    'End time must be after or equal to the start time.';
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden'],
     default: 'standard'
 };
+const SLDS_CLASS_ERROR = 'slds-has-error';
 const TIME_STYLES = {
     valid: ['short', 'medium', 'long'],
     default: 'short'
@@ -29,6 +29,14 @@ export default class InputTimeRange extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
+    /**
+     * Message to be displayed when the current time range is invalid.
+     *
+     * @type {string}
+     * @public
+     * @default End time must be after or equal to the start time.
+     */
+    @api invalidTimeRangeMessage = DEFAULT_INVALID_TIME_RANGE_MESSAGE;
     /**
      * Text label for the input.
      *
@@ -364,7 +372,7 @@ export default class InputTimeRange extends LightningElement {
         if (isValid) {
             this.setCustomValidity('');
         } else {
-            this.setCustomValidity(TIME_RANGE_VALIDATION_ERROR);
+            this.setCustomValidity(this.invalidTimeRangeMessage);
         }
         this.reportValidity();
         return isValid;
