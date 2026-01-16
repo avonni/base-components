@@ -245,11 +245,14 @@ describe('Bc Input Time Range', () => {
                 element.variant = 'standard';
 
                 return Promise.resolve().then(() => {
+                    const labelContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="time-range-label-container"]'
+                    );
                     const label = element.shadowRoot.querySelector(
                         '[data-element-id="time-range-label"]'
                     );
-                    expect(label).toBeTruthy();
-                    expect(label.classList).not.toContain(
+                    expect(labelContainer).toBeTruthy();
+                    expect(labelContainer.classList).not.toContain(
                         'slds-assistive-text'
                     );
                     expect(label.textContent).toBe('This is a label text');
@@ -261,11 +264,16 @@ describe('Bc Input Time Range', () => {
                 element.variant = 'label-hidden';
 
                 return Promise.resolve().then(() => {
+                    const labelContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="time-range-label-container"]'
+                    );
                     const label = element.shadowRoot.querySelector(
                         '[data-element-id="time-range-label"]'
                     );
-                    expect(label).toBeTruthy();
-                    expect(label.classList).toContain('slds-assistive-text');
+                    expect(labelContainer).toBeTruthy();
+                    expect(labelContainer.classList).toContain(
+                        'slds-assistive-text'
+                    );
                     expect(label.textContent).toBe('This is a label text');
                 });
             });

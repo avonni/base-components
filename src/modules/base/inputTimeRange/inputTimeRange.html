@@ -1,106 +1,117 @@
 <template>
     <div data-element-id="div-wrapper" onfocusout={handleFocusOut}>
-        <div class="avonni-input-time-range__label-container">
-            <legend
-                class={computedLabelClass}
-                data-element-id="time-range-label"
-            >
-                <abbr
-                    if:true={required}
-                    class="slds-required"
-                    title="required"
-                    data-element-id="abbr"
-                >
-                    *
-                </abbr>
-                {label}
-            </legend>
-            <lightning-helptext
-                if:true={fieldLevelHelp}
-                content={fieldLevelHelp}
-                data-element-id="lightning-helptext"
-            ></lightning-helptext>
-        </div>
-        <div class="slds-grid slds-wrap">
-            <div class="slds-grid slds-wrap">
-                <div class="slds-form-element slds-m-bottom_xxx-small">
-                    <label
-                        if:true={labelStartTime}
-                        class="
-                            slds-form-element__label
-                            avonni-input-time-range__input-labels
-                        "
-                        data-element-id="time-range-labels"
-                        >{labelStartTime}
-                    </label>
-                    <div if:true={readOnly}>
-                        <lightning-formatted-time
-                            if:true={startTime}
-                            value={normalizedStartTime}
-                            data-element-id="lightning-formatted-time"
-                        ></lightning-formatted-time>
-                    </div>
-                    <lightning-input
-                        if:false={readOnly}
-                        disabled={disabled}
-                        label="Start time"
-                        time-style={timeStyle}
-                        type="time"
-                        value={normalizedStartTime}
-                        variant="label-hidden"
-                        data-element-id="input-start-time"
-                        onblur={handleStartInputBlur}
-                        onchange={handleStartInputChange}
-                        onclick={handleClickTimeInput}
-                        onfocus={handleFocus}
-                    ></lightning-input>
-                </div>
-            </div>
-            <div class="slds-grid slds-wrap">
-                <div class="slds-form-element slds-m-bottom_xxx-small">
-                    <label
-                        if:true={labelEndTime}
-                        class="
-                            slds-form-element__label
-                            avonni-input-time-range__input-labels
-                        "
-                        data-element-id="time-range-labels"
-                        >{labelEndTime}
-                    </label>
-                    <div if:true={readOnly}>
-                        <lightning-formatted-time
-                            if:true={endTime}
-                            value={normalizedEndTime}
-                            data-element-id="lightning-formatted-time"
-                        ></lightning-formatted-time>
-                    </div>
-                    <lightning-input
-                        if:false={readOnly}
-                        disabled={disabled}
-                        label="End time"
-                        time-style={timeStyle}
-                        type="time"
-                        value={normalizedEndTime}
-                        variant="label-hidden"
-                        data-element-id="input-end-time"
-                        onblur={handleEndInputBlur}
-                        onchange={handleEndInputChange}
-                        onclick={handleClickTimeInput}
-                        onfocus={handleFocus}
-                    ></lightning-input>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div if:true={helpMessage} class="slds-has-error">
-        <div
-            id="help-message"
-            class="slds-form-element__help"
-            data-element-id="help-message"
-            role="alert"
-            aria-live="assertive"
+        <fieldset
+            class="avonni-input-time-range__fieldset"
+            aria-required={required}
         >
-            {helpMessage}
-        </div>
+            <div
+                class={computedLegendClass}
+                data-element-id="time-range-label-container"
+            >
+                <legend
+                    class="
+                        slds-form-element__label
+                        avonni-input-time-range__label
+                    "
+                    data-element-id="time-range-label"
+                >
+                    <abbr
+                        if:true={required}
+                        class="slds-required"
+                        title="required"
+                        data-element-id="abbr"
+                    >
+                        *
+                    </abbr>
+                    {label}
+                </legend>
+                <lightning-helptext
+                    if:true={fieldLevelHelp}
+                    content={fieldLevelHelp}
+                    data-element-id="lightning-helptext"
+                ></lightning-helptext>
+            </div>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-form-element slds-m-bottom_xxx-small">
+                        <label
+                            if:true={labelStartTime}
+                            class="
+                                slds-form-element__label
+                                avonni-input-time-range__input-labels
+                            "
+                            data-element-id="time-range-labels"
+                            >{labelStartTime}
+                        </label>
+                        <div if:true={readOnly}>
+                            <lightning-formatted-time
+                                if:true={startTime}
+                                value={normalizedStartTime}
+                                data-element-id="lightning-formatted-time"
+                            ></lightning-formatted-time>
+                        </div>
+                        <lightning-input
+                            if:false={readOnly}
+                            disabled={disabled}
+                            label="Start time"
+                            time-style={timeStyle}
+                            type="time"
+                            value={normalizedStartTime}
+                            variant="label-hidden"
+                            data-element-id="input-start-time"
+                            onblur={handleStartInputBlur}
+                            onchange={handleStartInputChange}
+                            onclick={handleClickTimeInput}
+                            onfocus={handleFocus}
+                        ></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-form-element slds-m-bottom_xxx-small">
+                        <label
+                            if:true={labelEndTime}
+                            class="
+                                slds-form-element__label
+                                avonni-input-time-range__input-labels
+                            "
+                            data-element-id="time-range-labels"
+                            >{labelEndTime}
+                        </label>
+                        <div if:true={readOnly}>
+                            <lightning-formatted-time
+                                if:true={endTime}
+                                value={normalizedEndTime}
+                                data-element-id="lightning-formatted-time"
+                            ></lightning-formatted-time>
+                        </div>
+                        <lightning-input
+                            if:false={readOnly}
+                            disabled={disabled}
+                            label="End time"
+                            time-style={timeStyle}
+                            type="time"
+                            value={normalizedEndTime}
+                            variant="label-hidden"
+                            data-element-id="input-end-time"
+                            onblur={handleEndInputBlur}
+                            onchange={handleEndInputChange}
+                            onclick={handleClickTimeInput}
+                            onfocus={handleFocus}
+                        ></lightning-input>
+                    </div>
+                </div>
+            </div>
+            <div if:true={helpMessage} class="slds-has-error">
+                <div
+                    id="help-message"
+                    class="slds-form-element__help"
+                    data-element-id="help-message"
+                    role="alert"
+                    aria-live="assertive"
+                >
+                    {helpMessage}
+                </div>
+            </div>
+        </fieldset>
     </div>
 </template>

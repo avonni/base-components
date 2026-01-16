@@ -1,6 +1,6 @@
-import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { FieldConstraintApi, InteractingState, VARIANT } from 'c/inputUtils';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { LightningElement, api } from 'lwc';
+import { api, LightningElement } from 'lwc';
 
 const DEFAULT_INVALID_TIME_RANGE_MESSAGE =
     'End time must be after or equal to the start time.';
@@ -257,12 +257,11 @@ export default class InputTimeRange extends LightningElement {
         return this._constraintApi;
     }
 
-    get computedLabelClass() {
-        return classSet(
-            'slds-form-element__legend slds-form-element__label avonni-input-time-range__label'
-        )
+    get computedLegendClass() {
+        return classSet('')
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
+                'slds-grid': this.variant !== VARIANT.LABEL_INLINE
             })
             .toString();
     }
