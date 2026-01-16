@@ -1,22 +1,18 @@
 <template>
     <div data-element-id="div-wrapper" onfocusout={handleFocusOut}>
-        <div class={computedLabelClass}>
-            <abbr
-                if:true={required}
-                class="slds-required"
-                title="required"
-                data-element-id="abbr"
-            >
-                *
-            </abbr>
+        <div class="avonni-input-time-range__label-container">
             <legend
-                if:true={showLabel}
-                class="
-                    slds-form-element__legend slds-form-element__label
-                    avonni-input-time-range__label
-                "
+                class={computedLabelClass}
                 data-element-id="time-range-label"
             >
+                <abbr
+                    if:true={required}
+                    class="slds-required"
+                    title="required"
+                    data-element-id="abbr"
+                >
+                    *
+                </abbr>
                 {label}
             </legend>
             <lightning-helptext

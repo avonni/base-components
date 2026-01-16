@@ -258,7 +258,9 @@ export default class InputTimeRange extends LightningElement {
     }
 
     get computedLabelClass() {
-        return classSet('avonni-input-time-range__label-container')
+        return classSet(
+            'slds-form-element__legend slds-form-element__label avonni-input-time-range__label'
+        )
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
@@ -269,10 +271,6 @@ export default class InputTimeRange extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="input-end-time"]'
         );
-    }
-
-    get showLabel() {
-        return this.label && this.variant !== 'label-hidden';
     }
 
     get startTimeInput() {

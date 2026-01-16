@@ -249,6 +249,9 @@ describe('Bc Input Time Range', () => {
                         '[data-element-id="time-range-label"]'
                     );
                     expect(label).toBeTruthy();
+                    expect(label.classList).not.toContain(
+                        'slds-assistive-text'
+                    );
                     expect(label.textContent).toBe('This is a label text');
                 });
             });
@@ -261,7 +264,9 @@ describe('Bc Input Time Range', () => {
                     const label = element.shadowRoot.querySelector(
                         '[data-element-id="time-range-label"]'
                     );
-                    expect(label).toBeFalsy();
+                    expect(label).toBeTruthy();
+                    expect(label.classList).toContain('slds-assistive-text');
+                    expect(label.textContent).toBe('This is a label text');
                 });
             });
         });
