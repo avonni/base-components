@@ -47,7 +47,6 @@ export default class Layout extends LightningElement {
     _items = new Map();
     _name = generateUUID();
     _previouslyDispatchedWidth;
-    _previousMaxHeight = 0;
     _rendered = false;
     _debounceTimeoutId;
     _resizeIsHandledByParent = false;
