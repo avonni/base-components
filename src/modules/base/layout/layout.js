@@ -38,6 +38,7 @@ const WIDTHS = {
  */
 export default class Layout extends LightningElement {
     _direction = DIRECTIONS.default;
+    _equalHeights = false;
     _horizontalAlign = HORIZONTAL_ALIGNMENTS.default;
     _multipleRows = false;
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
@@ -102,6 +103,21 @@ export default class Layout extends LightningElement {
             fallbackValue: DIRECTIONS.default,
             validValues: DIRECTIONS.valid
         });
+    }
+
+    /**
+     * If present, layout items have equal heights.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get equalHeights() {
+        return this._equalHeights;
+    }
+    set equalHeights(value) {
+        this._equalHeights = normalizeBoolean(value);
     }
 
     /**
@@ -252,6 +268,15 @@ export default class Layout extends LightningElement {
     }
 
     /**
+     * Remove an item from the layout.
+     *
+     * @param {string} name Name of the item to remove.
+     */
+    removeItem(name) {
+        this._items.delete(name);
+    }
+
+    /**
      * Remove the resize observer.
      */
     removeResizeObserver() {
@@ -284,6 +309,21 @@ export default class Layout extends LightningElement {
     setItemsSize(width) {
         if (this._disconnected) return;
 
+        if (this.equalHeights) {
+            requestAnimationFrame(() => {
+                Array.from(this._items.values()).forEach((item) => {
+                    item.setHeight('');
+                });
+                const heights = Array.from(this._items.values()).map((item) =>
+                    item.getHeight()
+                );
+                const maxHeight = Math.max(...heights);
+                Array.from(this._items.values()).forEach((item) => {
+                    item.setHeight(maxHeight);
+                });
+            });
+        }
+
         if (width === undefined || width === null) {
             this.clearDebounceTimeout();
             this._debounceTimeoutId = setTimeout(() => {
@@ -315,8 +355,9 @@ export default class Layout extends LightningElement {
      */
     handleItemConnected(event) {
         event.stopPropagation();
-        const { name, callbacks } = event.detail;
+        const { name, callbacks, setRemoveLayoutItemCallback } = event.detail;
         this._items.set(name, callbacks);
+        setRemoveLayoutItemCallback(() => this.removeItem(name));
 
         // Here we use the setItemsSize() method instead of setting the size immediately.
         // This ensures that it does not freeze with a lot of items, since there is a debounce.
@@ -332,7 +373,7 @@ export default class Layout extends LightningElement {
     handleItemDisconnected(event) {
         event.stopPropagation();
         const name = event.detail.name;
-        this._items.delete(name);
+        this.removeItem(name);
     }
 
     /*

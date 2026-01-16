@@ -36,6 +36,7 @@ describe('List', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.cols).toBe(1);
             expect(element.enableInfiniteLoading).toBeFalsy();
+            expect(element.equalHeights).toBeFalsy();
             expect(element.fieldAttributes).toEqual({
                 cols: 12,
                 largeContainerCols: 4,
@@ -222,6 +223,20 @@ describe('List', () => {
                     expect(divItem.classList).toContain(
                         'avonni-list__item-divider_bottom'
                     );
+                });
+            });
+        });
+
+        describe('Equal Heights', () => {
+            it('Equal Heights = true', () => {
+                element.items = ITEMS;
+                element.equalHeights = true;
+
+                return Promise.resolve().then(() => {
+                    const listElem = element.shadowRoot.querySelector(
+                        '[data-element-id="list-element"]'
+                    );
+                    expect(listElem.equalHeights).toBeTruthy();
                 });
             });
         });

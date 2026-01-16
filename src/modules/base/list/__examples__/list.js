@@ -8,6 +8,7 @@ export const List = ({
     cols,
     divider,
     enableInfiniteLoading,
+    equalHeights,
     fieldAttributes,
     imageAttributes,
     isLoading,
@@ -36,6 +37,7 @@ export const List = ({
     element.cols = cols;
     element.divider = divider;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.equalHeights = equalHeights;
     element.fieldAttributes = fieldAttributes;
     element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;

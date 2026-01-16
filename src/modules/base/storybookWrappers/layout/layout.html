@@ -2,6 +2,7 @@
     <div class="slds-box slds-p-around_none">
         <c-layout
             direction={direction}
+            equal-heights={equalHeights}
             horizontal-align={horizontalAlign}
             multiple-rows={multipleRows}
             vertical-align={verticalAlign}
@@ -16,7 +17,11 @@
             </c-layout-item>
             <c-layout-item grow="1" shrink="0" style="background: #fff1e6"
                 ><div class="slds-p-around_medium">
-                    Growing and unshrinkable item
+                    Growing and unshrinkable item<br />
+                    This item has more content<br />
+                    to make it taller than the others<br />
+                    so we can test equal heights functionality<br />
+                    and see the console.log message
                 </div></c-layout-item
             >
             <c-layout-item

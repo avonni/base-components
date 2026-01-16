@@ -4,6 +4,7 @@ export default {
     title: 'Example/Layout',
     argTypes: {
         direction: {
+            name: 'direction',
             control: {
                 type: 'select'
             },
@@ -13,6 +14,18 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'row' }
+            }
+        },
+        equalHeights: {
+            name: 'equal-heights',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, layout items are set to the height of the tallest item in the layout.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         horizontalAlign: {
@@ -56,6 +69,7 @@ export default {
     },
     args: {
         direction: 'row',
+        equalHeights: false,
         horizontalAlign: 'start',
         multipleRows: false,
         verticalAlign: 'stretch'
@@ -69,6 +83,12 @@ export const Base = Template.bind({});
 export const MultipleRows = Template.bind({});
 MultipleRows.args = {
     multipleRows: true
+};
+
+export const EqualHeights = Template.bind({});
+EqualHeights.args = {
+    multipleRows: true,
+    equalHeights: true
 };
 
 export const ReverseColumns = Template.bind({});

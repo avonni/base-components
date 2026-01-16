@@ -191,6 +191,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-body-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-body-spacing-block-start
  * @default 0.75rem
  * @type dimension

@@ -135,6 +135,7 @@ export default class List extends LightningElement {
     _cols = 1;
     _divider = DIVIDER.default;
     _enableInfiniteLoading = false;
+    _equalHeights = false;
     _fieldAttributes = {
         cols: DEFAULT_FIELD_COLUMNS.default,
         largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
@@ -406,6 +407,25 @@ export default class List extends LightningElement {
             if (previousPageStart >= 0) {
                 this._singleLinePageFirstIndex = previousPageStart;
             }
+        }
+    }
+
+    /**
+     * If true, all items have the same height.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get equalHeights() {
+        return this._equalHeights;
+    }
+    set equalHeights(value) {
+        this._equalHeights = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.setItemProperties();
         }
     }
 

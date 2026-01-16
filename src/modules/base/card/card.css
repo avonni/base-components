@@ -234,6 +234,7 @@ article.avonni-card {
 .avonni-card__default-slot {
     margin-top: var(--avonni-card-body-spacing-block-start, 0px);
     margin-bottom: var(--avonni-card-body-spacing-block-end, 0px);
+    height: var(--avonni-card-body-height);
 }
 
 /* card footer */
