@@ -464,7 +464,7 @@ export default class InputTimeRange extends LightningElement {
             const date = '1970-01-01T'; // Arbitrary date to compare times
             const startDate = new Date(`${date}${this.normalizedStartTime}`);
             const endDate = new Date(`${date}${this.normalizedEndTime}`);
-            return endDate > startDate;
+            return endDate >= startDate;
         }
         return true;
     }
