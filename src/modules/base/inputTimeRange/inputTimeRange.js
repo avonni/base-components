@@ -405,7 +405,7 @@ export default class InputTimeRange extends LightningElement {
             if (ampm === 'PM' && hours !== 12) hours += 12;
             if (ampm === 'AM' && hours === 12) hours = 0;
 
-            return `${hours.toString().padStart(2, '0')}:${minutes}:00`;
+            return `${hours.toString().padStart(2, '0')}:${minutes}:00.000`;
         }
 
         // 24-hour format HH:MM or HH:MM:SS(.sss)
@@ -417,7 +417,7 @@ export default class InputTimeRange extends LightningElement {
             const hours = match24[1];
             const minutes = match24[2];
             const seconds = match24[3] || '00';
-            return `${hours}:${minutes}:${seconds}`;
+            return `${hours}:${minutes}:${seconds}.000`;
         }
 
         return null;
@@ -425,7 +425,7 @@ export default class InputTimeRange extends LightningElement {
 
     _setEndTime(value) {
         if (!this._isValidTime(value)) {
-            this._endTime = undefined;
+            this._endTime = null;
             this.normalizedEndTime = null;
             return;
         }
@@ -436,7 +436,7 @@ export default class InputTimeRange extends LightningElement {
 
     _setStartTime(value) {
         if (!this._isValidTime(value)) {
-            this._startTime = undefined;
+            this._startTime = null;
             this.normalizedStartTime = null;
             return;
         }

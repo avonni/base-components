@@ -59,7 +59,7 @@ describe('Bc Input Time Range', () => {
                     const endInput = element.shadowRoot.querySelector(
                         '[data-element-id="input-end-time"]'
                     );
-                    expect(endInput.value).toBe('23:00:00');
+                    expect(endInput.value).toBe('23:00:00.000');
                 });
             });
 
@@ -70,7 +70,7 @@ describe('Bc Input Time Range', () => {
                     const endInput = element.shadowRoot.querySelector(
                         '[data-element-id="input-end-time"]'
                     );
-                    expect(endInput.value).toBe('23:00:00');
+                    expect(endInput.value).toBe('23:00:00.000');
                 });
             });
 
@@ -81,7 +81,7 @@ describe('Bc Input Time Range', () => {
                     const endInput = element.shadowRoot.querySelector(
                         '[data-element-id="input-end-time"]'
                     );
-                    expect(endInput.value).toBe('23:00:00');
+                    expect(endInput.value).toBe('23:00:00.000');
                 });
             });
 
@@ -144,8 +144,8 @@ describe('Bc Input Time Range', () => {
                     '[data-element-id="lightning-formatted-time"]'
                 );
                 expect(formattedTimes).toHaveLength(2);
-                expect(formattedTimes[0].value).toBe('12:00:00');
-                expect(formattedTimes[1].value).toBe('13:00:00');
+                expect(formattedTimes[0].value).toBe('12:00:00.000');
+                expect(formattedTimes[1].value).toBe('13:00:00.000');
             });
         });
 
@@ -169,7 +169,7 @@ describe('Bc Input Time Range', () => {
                     const startInput = element.shadowRoot.querySelector(
                         '[data-element-id="input-start-time"]'
                     );
-                    expect(startInput.value).toBe('23:00:00');
+                    expect(startInput.value).toBe('23:00:00.000');
                 });
             });
 
@@ -180,7 +180,7 @@ describe('Bc Input Time Range', () => {
                     const startInput = element.shadowRoot.querySelector(
                         '[data-element-id="input-start-time"]'
                     );
-                    expect(startInput.value).toBe('23:00:00');
+                    expect(startInput.value).toBe('23:00:00.000');
                 });
             });
 
@@ -191,7 +191,7 @@ describe('Bc Input Time Range', () => {
                     const startInput = element.shadowRoot.querySelector(
                         '[data-element-id="input-start-time"]'
                     );
-                    expect(startInput.value).toBe('23:00:00');
+                    expect(startInput.value).toBe('23:00:00.000');
                 });
             });
 
@@ -283,8 +283,8 @@ describe('Bc Input Time Range', () => {
             element.startTime = '12:00 PM';
             element.endTime = '1:00 PM';
             expect(element.value).toEqual({
-                startTime: '12:00:00',
-                endTime: '13:00:00'
+                startTime: '12:00:00.000',
+                endTime: '13:00:00.000'
             });
         });
     });
@@ -351,7 +351,7 @@ describe('Bc Input Time Range', () => {
                 .then(() => {
                     expect(handler).toHaveBeenCalled();
                     const call = handler.mock.calls[0][0];
-                    expect(call.detail.startTime).toBe('12:00:00');
+                    expect(call.detail.startTime).toBe('12:00:00.000');
                 });
         });
 
