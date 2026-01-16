@@ -303,17 +303,18 @@ export default class Layout extends LightningElement {
 
         if (this.equalHeights) {
             requestAnimationFrame(() => {
-                const maxHeight = Math.max(
-                    ...Array.from(this._items.values()).map((item) =>
-                        item.getHeight()
-                    )
-                );
-                if (this._previousMaxHeight !== maxHeight) {
-                    this._items.forEach((item) => {
+                Array.from(this._items.values()).forEach((item) => {
+                    item.setHeight('');
+                });
+                requestAnimationFrame(() => {
+                    const heights = Array.from(this._items.values()).map(
+                        (item) => item.getHeight()
+                    );
+                    const maxHeight = Math.max(...heights);
+                    Array.from(this._items.values()).forEach((item) => {
                         item.setHeight(maxHeight);
                     });
-                    this._previousMaxHeight = maxHeight;
-                }
+                });
             });
         }
 

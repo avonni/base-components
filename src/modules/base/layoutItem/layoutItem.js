@@ -336,11 +336,7 @@ export default class LayoutItem extends LightningElement {
      * @returns {number} Height in pixels.
      */
     getHeight() {
-        const previousHeight = this.template.host.style.height;
-        this.template.host.style.height = '';
-        const currentHeight = this.template.host.getBoundingClientRect().height;
-        this.template.host.style.height = previousHeight;
-        return currentHeight;
+        return this.template.host.getBoundingClientRect().height;
     }
 
     /**
@@ -381,9 +377,20 @@ export default class LayoutItem extends LightningElement {
     /**
      * Set the height of the item.
      *
-     * @param {number} height Height in pixels.
+     * @param {number|string} height Height in pixels or empty string to reset the height.
      */
     setHeight(height) {
+        if (
+            isNaN(height) ||
+            height === null ||
+            height === undefined ||
+            height === ''
+        ) {
+            this.template.host.style.height = '';
+            return;
+        }
+        const currentHeight = this.template.host.style.height;
+        if (currentHeight === `${height}px`) return;
         this.template.host.style.height = `${height}px`;
     }
 

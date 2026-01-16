@@ -241,7 +241,7 @@ describe('Layout Item', () => {
             expect(getHeight()).toBe(75);
         });
 
-        it('setHeight callback functionality', () => {
+        it('setHeight callback with number', () => {
             const connectedHandler = jest.fn();
             element.addEventListener(
                 'privatelayoutitemconnected',
@@ -258,6 +258,25 @@ describe('Layout Item', () => {
 
             setHeight(0);
             expect(element.style.height).toBe('0px');
+        });
+
+        it('setHeight callback with empty string', () => {
+            const connectedHandler = jest.fn();
+            element.addEventListener(
+                'privatelayoutitemconnected',
+                connectedHandler
+            );
+
+            document.body.appendChild(element);
+
+            const connectedCall = connectedHandler.mock.calls[0][0];
+            const setHeight = connectedCall.detail.callbacks.setHeight;
+
+            setHeight(100);
+            expect(element.style.height).toBe('100px');
+
+            setHeight('');
+            expect(element.style.height).toBe('');
         });
     });
 });
