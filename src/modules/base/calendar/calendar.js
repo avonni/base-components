@@ -1155,7 +1155,20 @@ export default class Calendar extends LightningElement {
         this.year = this.displayDate.getFullYear();
         this.month = MONTHS[this.displayDate.getMonth()];
         this.day = this.displayDate.getDay();
+        this.updateSelectYear();
         this.generateViewData();
+    }
+
+    /**
+     * Update the select year.
+     */
+    updateSelectYear() {
+        const selectYear = this.template.querySelector(
+            '[data-element-id="select-year"]'
+        );
+        if (selectYear) {
+            selectYear.value = this.year;
+        }
     }
 
     /**
@@ -1405,39 +1418,26 @@ export default class Calendar extends LightningElement {
         }
         this._focusDate = computedNextDate;
 
-        const firstDayOfMonth = setDate(this.displayDate, 'date', 1);
-        let currentMonth = firstDayOfMonth.getMonth();
-
-        const isPreviousTime = nextDate.getTime() < initialDate.getTime();
-        const isNextTime = nextDate.getTime() > initialDate.getTime();
-
         // On multi calendars navigation
         if (isNavigate && this.isMultiCalendars) {
-            const isAtLastCalendar = dataIndex === this.nbMonthCalendars - 1;
-            const isAtFirstCalendar = dataIndex === 0;
+            const firstDayOfMonth = setDate(computedNextDate, 'date', 1);
+            const nextYear = computedNextDate.getFullYear();
+            const nextMonthIndex = computedNextDate.getMonth();
+            const isOutsideCalendarList = !this.calendarDataList.some(
+                ({ monthIndex, year }) =>
+                    monthIndex === nextMonthIndex && year === nextYear
+            );
 
-            const isMultiCalendarNextMonth = isAtLastCalendar && isNextTime;
-
-            const isMultiCalendarPreviousMonth =
-                isAtFirstCalendar && isPreviousTime;
-
-            // Navigate forward from last calendar
-            if (isMultiCalendarNextMonth) {
+            // Navigate outside the calendar list
+            if (isOutsideCalendarList) {
                 this.dispatchNavigateEvent(nextDate);
-                this.displayDate = setDate(
+                // We adjust the date so that the displayed calendars are only shifted by the necessary months
+                const adjustedDate = setDate(
                     firstDayOfMonth,
                     'month',
-                    currentMonth + 1
+                    computedNextDate.getMonth() - dataIndex
                 );
-            }
-            // Navigate backward from first calendar
-            else if (isMultiCalendarPreviousMonth) {
-                this.dispatchNavigateEvent(nextDate);
-                this.displayDate = setDate(
-                    firstDayOfMonth,
-                    'month',
-                    currentMonth - 1
-                );
+                this.displayDate = adjustedDate;
             }
             // We leave the displayDate unchanged if the calendars are not shifted
         }
