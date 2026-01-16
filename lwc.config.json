@@ -255,6 +255,10 @@
             "path": "src/modules/base/inputRichText/inputRichText.js"
         },
         {
+            "name": "c/inputTimeRange",
+            "path": "src/modules/base/inputTimeRange/inputTimeRange.js"
+        },
+        {
             "name": "c/inputToggle",
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
@@ -871,6 +875,10 @@
             "path": "src/modules/base/inputRichText/inputRichText.js"
         },
         {
+            "name": "avonni/inputTimeRange",
+            "path": "src/modules/base/inputTimeRange/inputTimeRange.js"
+        },
+        {
             "name": "avonni/inputToggle",
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
@@ -1101,6 +1109,7 @@
         "avonni/inputDateRange",
         "avonni/inputPen",
         "avonni/inputRichText",
+        "avonni/inputTimeRange",
         "avonni/inputToggle",
         "avonni/kanban",
         "avonni/layout",

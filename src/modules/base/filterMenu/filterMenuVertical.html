@@ -270,57 +270,21 @@
                 ></c-slider>
 
                 <!-- Time Range -->
-                <div
+                <c-input-time-range
                     if:true={isTimeRange}
                     class="slds-grid slds-wrap"
-                    data-element-id="input-time-range-container"
-                >
-                    <div class="slds-form-element">
-                        <label
-                            if:true={computedTypeAttributes.labelStartTime}
-                            class="slds-form-element__label"
-                            for="start-time"
-                            data-element-id="label-start-time"
-                            >{computedTypeAttributes.labelStartTime}
-                        </label>
-                        <lightning-input
-                            label="start-time"
-                            name="start-time"
-                            time-style={computedTypeAttributes.timeStyle}
-                            type="time"
-                            value={timeRangeStartTime}
-                            variant="label-hidden"
-                            data-is-focusable
-                            data-element-id="lightning-input-start-time"
-                            onblur={handleBlur}
-                            onchange={handleTimeRangeChange}
-                            onfocus={handleFocus}
-                        ></lightning-input>
-                    </div>
-
-                    <div class="slds-form-element">
-                        <label
-                            if:true={computedTypeAttributes.labelEndTime}
-                            class="slds-form-element__label"
-                            for="end-time"
-                            data-element-id="label-end-time"
-                            >{computedTypeAttributes.labelEndTime}
-                        </label>
-                        <lightning-input
-                            label="end-time"
-                            name="end-time"
-                            time-style={computedTypeAttributes.timeStyle}
-                            type="time"
-                            value={timeRangeEndTime}
-                            variant="label-hidden"
-                            data-is-focusable
-                            data-element-id="lightning-input-end-time"
-                            onblur={handleBlur}
-                            onchange={handleTimeRangeChange}
-                            onfocus={handleFocus}
-                        ></lightning-input>
-                    </div>
-                </div>
+                    end-time={timeRangeEndTime}
+                    label={label}
+                    label-end-time={computedTypeAttributes.labelEndTime}
+                    label-start-time={computedTypeAttributes.labelStartTime}
+                    start-time={timeRangeStartTime}
+                    time-style={computedTypeAttributes.timeStyle}
+                    variant="label-hidden"
+                    data-element-id="avonni-input-time-range"
+                    onblur={handleBlur}
+                    onchange={handleTimeRangeChange}
+                    onfocus={handleFocus}
+                ></c-input-time-range>
             </template>
         </div>
     </template>
