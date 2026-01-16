@@ -36,23 +36,6 @@ div:focus {
     max-height: var(--avonni-calendar-cell-labeled-sizing-height);
 }
 
-.avonni-calendar__container {
-    width: var(--avonni-calendar-width, fit-content);
-}
-
-.avonni-calendar__year-select {
-    appearance: none;
-    border: 1px solid #747474;
-    background: transparent;
-}
-
-.avonni-calendar__year-select-icon {
-    right: 6px;
-    top: 50%;
-    transform: translateY(-50%) scale(0.9);
-    z-index: -1;
-}
-
 .avonni-calendar__week-cell,
 .avonni-calendar__disabled-cell.slds-day,
 .avonni-calendar__weekdays_color {
@@ -111,14 +94,6 @@ div:focus {
         )
     );
     color: var(--avonni-calendar-selected-date-text-color-hover, #ffffff);
-}
-
-.avonni-calendar__background_color {
-    background-color: var(--avonni-calendar-color-background, transparent);
-}
-
-.avonni-calendar__month_color {
-    color: var(--avonni-calendar-month-text-color, #080707);
 }
 
 .avonni-calendar__weekdays_color {

@@ -7,7 +7,6 @@ import {
     startOfDay
 } from 'c/dateTimeUtils';
 import {
-    classSet,
     deepCopy,
     generateUUID,
     normalizeArray,
@@ -419,20 +418,6 @@ export default class Calendar extends LightningElement {
         return this.computedValue.every(
             (value) => this.isBeforeMin(value) || this.isAfterMax(value)
         );
-    }
-
-    /**
-     * Computed class for the table.
-     *
-     * @return {string}
-     */
-    get computedTableClasses() {
-        const isLabeled = this._dateLabels.length > 0;
-        return classSet(
-            'slds-datepicker__month slds-is-relative avonni-calendar__table'
-        )
-            .add({ 'avonni-calendar__date-with-labels': isLabeled })
-            .toString();
     }
 
     /**

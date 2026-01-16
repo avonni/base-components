@@ -95,10 +95,6 @@ export default class PrimitiveCalendar extends LightningElement {
             validValues: SELECTION_MODES.valid,
             fallbackValue: SELECTION_MODES.default
         });
-        if (this._connected) {
-            this.validateCurrentDayValue();
-            this.updateDateParameters();
-        }
     }
 
     /**
