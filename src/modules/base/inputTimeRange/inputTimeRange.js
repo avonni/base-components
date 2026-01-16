@@ -419,7 +419,8 @@ export default class InputTimeRange extends LightningElement {
         if (match24) {
             const hours = match24[1];
             const minutes = match24[2];
-            return `${hours}:${minutes}:00`;
+            const seconds = match24[3] || '00';
+            return `${hours}:${minutes}:${seconds}`;
         }
 
         return null;
