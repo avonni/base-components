@@ -454,7 +454,7 @@ export default class InputTimeRange extends LightningElement {
      * Removes it from every input when valid.
      */
     _updateClassListWhenError() {
-        if (this.readOnly) {
+        if (this.readOnly || !this.startTimeInput || !this.endTimeInput) {
             return;
         }
         if (!this.validity.valid) {
