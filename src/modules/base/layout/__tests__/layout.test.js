@@ -263,7 +263,8 @@ describe('Layout', () => {
                             name: 'numberOne',
                             callbacks: {
                                 setContainerSize: callback
-                            }
+                            },
+                            setRemoveLayoutItemCallback: () => {}
                         }
                     })
                 );
@@ -314,7 +315,8 @@ describe('Layout', () => {
                                 name: 'numberOne',
                                 callbacks: {
                                     setContainerSize: callback
-                                }
+                                },
+                                setRemoveLayoutItemCallback: () => {}
                             }
                         })
                     );
@@ -354,7 +356,8 @@ describe('Layout', () => {
                                     name: 'numberOne',
                                     callbacks: {
                                         setContainerSize: callback
-                                    }
+                                    },
+                                    setRemoveLayoutItemCallback: () => {}
                                 }
                             })
                         );
@@ -390,7 +393,8 @@ describe('Layout', () => {
                                     name: 'numberOne',
                                     callbacks: {
                                         setContainerSize: callback
-                                    }
+                                    },
+                                    setRemoveLayoutItemCallback: () => {}
                                 }
                             })
                         );
@@ -426,7 +430,8 @@ describe('Layout', () => {
                                     name: 'numberOne',
                                     callbacks: {
                                         setContainerSize: callback
-                                    }
+                                    },
+                                    setRemoveLayoutItemCallback: () => {}
                                 }
                             })
                         );
@@ -462,7 +467,8 @@ describe('Layout', () => {
                                     name: 'numberOne',
                                     callbacks: {
                                         setContainerSize: callback
-                                    }
+                                    },
+                                    setRemoveLayoutItemCallback: () => {}
                                 }
                             })
                         );
@@ -507,7 +513,8 @@ describe('Layout', () => {
                             name: 'numberOne',
                             callbacks: {
                                 setContainerSize: callback
-                            }
+                            },
+                            setRemoveLayoutItemCallback: () => {}
                         }
                     })
                 );
@@ -577,7 +584,8 @@ describe('Layout', () => {
                                 name: 'numberOne',
                                 callbacks: {
                                     setContainerSize: callback
-                                }
+                                },
+                                setRemoveLayoutItemCallback: () => {}
                             }
                         })
                     );
@@ -629,7 +637,8 @@ describe('Layout', () => {
                                 name: 'numberOne',
                                 callbacks: {
                                     setContainerSize: callback
-                                }
+                                },
+                                setRemoveLayoutItemCallback: () => {}
                             }
                         })
                     );
@@ -659,7 +668,8 @@ describe('Layout', () => {
                                     setContainerSize: () => {},
                                     getHeight: callbackGetHeight,
                                     setHeight: callbackSetHeight
-                                }
+                                },
+                                setRemoveLayoutItemCallback: () => {}
                             }
                         })
                     );
@@ -676,7 +686,8 @@ describe('Layout', () => {
                                     setContainerSize: () => {},
                                     getHeight: callbackGetHeight,
                                     setHeight: callbackSetHeight
-                                }
+                                },
+                                setRemoveLayoutItemCallback: () => {}
                             }
                         })
                     );

@@ -269,6 +269,15 @@ export default class Layout extends LightningElement {
     }
 
     /**
+     * Remove an item from the layout.
+     *
+     * @param {string} name Name of the item to remove.
+     */
+    removeItem(name) {
+        this._items.delete(name);
+    }
+
+    /**
      * Remove the resize observer.
      */
     removeResizeObserver() {
@@ -349,8 +358,9 @@ export default class Layout extends LightningElement {
      */
     handleItemConnected(event) {
         event.stopPropagation();
-        const { name, callbacks } = event.detail;
+        const { name, callbacks, setRemoveLayoutItemCallback } = event.detail;
         this._items.set(name, callbacks);
+        setRemoveLayoutItemCallback(() => this.removeItem(name));
 
         // Here we use the setItemsSize() method instead of setting the size immediately.
         // This ensures that it does not freeze with a lot of items, since there is a debounce.
@@ -366,7 +376,7 @@ export default class Layout extends LightningElement {
     handleItemDisconnected(event) {
         event.stopPropagation();
         const name = event.detail.name;
-        this._items.delete(name);
+        this.removeItem(name);
     }
 
     /*

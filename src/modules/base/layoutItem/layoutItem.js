@@ -39,6 +39,7 @@ export default class LayoutItem extends LightningElement {
     _connected = false;
     _containerWidth = CONTAINER_WIDTHS.default;
     _orders = { default: 0 };
+    _removeLayoutItemCallback;
     _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
 
@@ -58,6 +59,8 @@ export default class LayoutItem extends LightningElement {
     }
 
     disconnectedCallback() {
+        this._removeLayoutItemCallback?.();
+        this._connected = false;
         this.dispatchDisconnected();
     }
 
@@ -395,6 +398,15 @@ export default class LayoutItem extends LightningElement {
     }
 
     /**
+     * Set the callback to remove the layout item from the parent layout.
+     *
+     * @param {function} removeLayoutItemCallback Callback to remove the layout item from the parent layout.
+     */
+    setRemoveLayoutItemCallback(removeLayoutItemCallback) {
+        this._removeLayoutItemCallback = removeLayoutItemCallback;
+    }
+
+    /**
      * Update the class and style of the item.
      */
     updateClassAndStyle() {
@@ -447,7 +459,11 @@ export default class LayoutItem extends LightningElement {
                         setContainerSize: this.setContainerSize.bind(this),
                         getHeight: this.getHeight.bind(this),
                         setHeight: this.setHeight.bind(this)
-                    }
+                    },
+                    // This callback is necessary because the event dispatched in the disconnectedCallback
+                    // does not always bubble up in time before it is removed from the DOM.
+                    setRemoveLayoutItemCallback:
+                        this.setRemoveLayoutItemCallback.bind(this)
                 },
                 bubbles: true
             })
