@@ -1,4 +1,8 @@
-import { DateTime, getFormattedDate } from 'c/dateTimeUtils';
+import {
+    DateTime,
+    getFormattedDate,
+    parseFormattedDateString
+} from 'c/dateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     Direction,
@@ -6,7 +10,10 @@ import {
     stopPositioning
 } from 'c/positionLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { animationFrame, keyValues, timeout } from 'c/utilsPrivate';
+import inputDateRange from './inputDateRange.html';
+import expandedDateRange from './expandedDateRange.html';
+
+import { animationFrame, keyValues, timeout, equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const DATE_STYLES = {
@@ -25,6 +32,82 @@ const DEFAULT_WEEK_START_DAY = 0;
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden'],
     default: 'standard'
+};
+
+const RANGES_OPTIONS = [
+    {
+        label: 'Today',
+        value: 'today'
+    },
+    {
+        label: 'Yesterday',
+        value: 'yesterday'
+    },
+    {
+        label: 'This week',
+        value: 'thisWeek'
+    },
+    {
+        label: 'Last week',
+        value: 'lastWeek'
+    },
+    {
+        label: 'This month',
+        value: 'thisMonth'
+    },
+    {
+        label: 'Month-to-date',
+        value: 'monthToDate'
+    },
+    {
+        label: 'Last month',
+        value: 'lastMonth'
+    },
+    {
+        label: 'This quarter',
+        value: 'thisQuarter'
+    },
+    {
+        label: 'Quarter-to-date',
+        value: 'quarterToDate'
+    },
+    {
+        label: 'Last quarter',
+        value: 'lastQuarter'
+    },
+    {
+        label: 'This year',
+        value: 'thisYear'
+    },
+    {
+        label: 'Year-to-date',
+        value: 'yearToDate'
+    },
+    {
+        label: 'Last year',
+        value: 'lastYear'
+    },
+    {
+        label: 'Custom',
+        value: 'custom'
+    }
+];
+
+const RANGE_OPTIONS_LABELS_MAP = {
+    today: 'Today',
+    yesterday: 'Yesterday',
+    thisWeek: 'This week',
+    lastWeek: 'Last week',
+    thisMonth: 'This month',
+    monthToDate: 'Month-to-date',
+    lastMonth: 'Last month',
+    thisQuarter: 'This quarter',
+    quarterToDate: 'Quarter-to-date',
+    lastQuarter: 'Last quarter',
+    thisYear: 'This year',
+    yearToDate: 'Year-to-date',
+    lastYear: 'Last year',
+    custom: 'Custom'
 };
 
 /**
@@ -65,6 +148,21 @@ export default class InputDateRange extends LightningElement {
      */
     @api labelEndTime;
     /**
+     * Labels for the range options.
+     *
+     * This object must be a map where:
+     * - the **key** is the range option `value`
+     * - the **value** is the label displayed to the user
+     *
+     * Expected keys: today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, monthToDate, quarterToDate, yearToDate and custom.
+     *
+     * Any missing key will fall back to the default label.
+     *
+     * @type {Object<string, string>}
+     * @public
+     */
+    @api labelRangeOptions = RANGE_OPTIONS_LABELS_MAP;
+    /**
      * Text label for the start input.
      *
      * @type {string}
@@ -103,8 +201,10 @@ export default class InputDateRange extends LightningElement {
     _dateStyle = DATE_STYLES.defaultDate;
     _disabled = false;
     _endDate;
+    _isExpanded = false;
     _readOnly = false;
     _required = false;
+    _showRangeOptions = false;
     _startDate;
     _timeStyle = DATE_STYLES.defaultTime;
     _timezone;
@@ -119,6 +219,7 @@ export default class InputDateRange extends LightningElement {
     isOpenEndDate = false;
     isOpenStartDate = false;
     helpMessage;
+    optionRangeValue = 'custom';
     savedFocus;
     showEndDate = false;
     showStartDate = false;
@@ -141,9 +242,17 @@ export default class InputDateRange extends LightningElement {
     connectedCallback() {
         this.initStartDate();
         this.initEndDate();
+        this.setSelectionModeExpanded();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
+    }
+
+    render() {
+        if (this._isExpanded) {
+            return expandedDateRange;
+        }
+        return inputDateRange;
     }
 
     /*
@@ -199,11 +308,33 @@ export default class InputDateRange extends LightningElement {
     }
     set endDate(value) {
         const date = new Date(value);
+        if (!equal(this._endDate, date)) {
+            this.optionRangeValue = 'custom';
+        }
         this._endDate = !value || isNaN(date) ? null : date;
         this._initialEndDate = !this._endDate ? null : new Date(date);
 
         if (this._connected) {
             this.initEndDate();
+            this.setSelectionModeExpanded();
+        }
+    }
+
+    /**
+     * If present, the input is expanded to show the calendars.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get isExpanded() {
+        return this._isExpanded;
+    }
+    set isExpanded(value) {
+        this._isExpanded = normalizeBoolean(value);
+        if (this._connected) {
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -238,6 +369,21 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * If present, a combobox for predefined date ranges is displayed.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get showRangeOptions() {
+        return this._showRangeOptions;
+    }
+    set showRangeOptions(value) {
+        this._showRangeOptions = normalizeBoolean(value);
+    }
+
+    /**
      * Specifies the value of the start date input, which can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(string|Date|number)}
@@ -249,11 +395,15 @@ export default class InputDateRange extends LightningElement {
     }
     set startDate(value) {
         const date = new Date(value);
+        if (!equal(this._startDate, date)) {
+            this.optionRangeValue = 'custom';
+        }
         this._startDate = !value || isNaN(date) ? null : date;
         this._initialStartDate = !this._startDate ? null : new Date(date);
 
         if (this._connected) {
             this.initStartDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -292,6 +442,7 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initStartDate();
             this.initEndDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -315,6 +466,7 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initStartDate();
             this.initEndDate();
+            this.setSelectionModeExpanded();
         }
     }
 
@@ -404,6 +556,17 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Combobox range options.
+     *
+     * @type {element}
+     */
+    get comboboxRangeOptions() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+        );
+    }
+
+    /**
      * Class of the label container.
      *
      * @type {string}
@@ -431,6 +594,26 @@ export default class InputDateRange extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    /**
+     * Disabled or read-only.
+     *
+     * @type {boolean}
+     */
+    get disabledOrReadOnly() {
+        return this.disabled || this.readOnly;
+    }
+
+    /**
+     * End Calendar
+     *
+     * @type {element}
+     */
+    get endCalendar() {
+        return this.template.querySelector(
+            '[data-element-id="calendar-end-date"]'
+        );
     }
 
     /**
@@ -504,12 +687,49 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Range options available.
+     *
+     * @type {Array}
+     */
+    get rangeOptions() {
+        return RANGES_OPTIONS.map((option) => {
+            const customLabel = this.labelRangeOptions?.[option.value];
+
+            return {
+                ...option,
+                label:
+                    typeof customLabel === 'string' ? customLabel : option.label
+            };
+        });
+    }
+
+    /**
+     * True if options should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showOptions() {
+        return this.showRangeOptions && !this.readOnly;
+    }
+
+    /**
      * True if type is datetime.
      *
      * @type {boolean}
      */
     get showTime() {
         return this.type === 'datetime';
+    }
+
+    /**
+     * Start Calendar
+     *
+     * @type {element}
+     */
+    get startCalendar() {
+        return this.template.querySelector(
+            '[data-element-id="calendar-start-date"]'
+        );
     }
 
     /**
@@ -567,14 +787,15 @@ export default class InputDateRange extends LightningElement {
      */
 
     /**
-     * Removes keyboard focus from the start date input and end date input.
+     * Removes keyboard focus from the start date input, end date input and combobox.
      *
      * @public
      */
     @api
     blur() {
-        this.startDateInput.blur();
-        this.endDateInput.blur();
+        this.startDateInput?.blur();
+        this.endDateInput?.blur();
+        this.comboboxRangeOptions?.blur();
         this.showStartDate = false;
         this.showEndDate = false;
         this.stopPositioning();
@@ -593,14 +814,16 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Sets focus on the start date input.
+     * Sets focus on the start date input or the start calendar if is expanded.
      *
      * @public
      */
     @api
     focus() {
-        if (this.startDateInput) {
+        if (!this.isExpanded && this.startDateInput) {
             this.startDateInput.focus();
+        } else if (this.isExpanded && this.startCalendar) {
+            this.startCalendar.focus();
         }
     }
 
@@ -706,6 +929,22 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Set the display date for each calendar when the input date range is expanded.
+     */
+    setDisplayDates() {
+        if (this.isExpanded) {
+            requestAnimationFrame(() => {
+                if (this.startDate) {
+                    this.startCalendar?.goToDate(this._startDate);
+                }
+                if (this.endDate) {
+                    this.endCalendar?.goToDate(this._endDate);
+                }
+            });
+        }
+    }
+
+    /**
      * Set focus in a selected calendar
      */
     setFocusDate(date, calendar) {
@@ -717,6 +956,153 @@ export default class InputDateRange extends LightningElement {
                 targetCalendar.focusDate(date);
             }
         });
+    }
+
+    /**
+     * Set the date range to today.
+     */
+    setPredefinedTodayRange() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this._startDate = new Date(today);
+        this._endDate = new Date(today);
+    }
+
+    /**
+     * Sets the date range to a full calendar week.
+     *
+     * @param {number} [offset=0] Number of weeks to offset from the current week.
+     */
+    setPredefinedWeekRange(offset = 0) {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+
+        d.setDate(d.getDate() + offset * 7);
+
+        const weekStartDay = this._weekStartDay;
+        const currentDay = d.getDay();
+
+        const diff = (currentDay - weekStartDay + 7) % 7;
+
+        const startOfWeek = new Date(d);
+        startOfWeek.setDate(d.getDate() - diff);
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfWeek;
+        this._endDate = endOfWeek;
+    }
+
+    /**
+     * Sets the date range to a full calendar month.
+     *
+     * @param {number} [offset=0] Number of months to offset from the current month.
+     * @param {boolean} [isToDate] If present, the end date should be today.
+     */
+    setPredefinedMonthRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const d = new Date();
+        d.setDate(1);
+        d.setHours(0, 0, 0, 0);
+
+        d.setMonth(d.getMonth() + offset);
+
+        const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+        endOfMonth.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfMonth;
+        this._endDate = isToDate && offset <= 0 ? today : endOfMonth;
+    }
+
+    /**
+     * Sets the date range to a full calendar quarter.
+     *
+     * @param {number} [offset=0] Number of quarters to offset from the current quarter.
+     * @param {boolean} [isToDate] If present, the end date should be today.
+     */
+    setPredefinedQuarterRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        d.setDate(1);
+
+        d.setMonth(d.getMonth() + offset * 3);
+
+        const quarter = Math.floor(d.getMonth() / 3);
+
+        const startMonth = quarter * 3;
+        const startOfQuarter = new Date(d.getFullYear(), startMonth, 1);
+        startOfQuarter.setHours(0, 0, 0, 0);
+
+        const endMonth = startMonth + 3;
+        const endOfQuarter = new Date(d.getFullYear(), endMonth, 0);
+        endOfQuarter.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfQuarter;
+        this._endDate = isToDate && offset <= 0 ? today : endOfQuarter;
+    }
+
+    /**
+     * Sets the date range to a full calendar year.
+     *
+     * @param {number} [offset=0] Number of years to offset from the current year.
+     * @param {boolean} [isToDate] If present, the end date should be today.
+     */
+    setPredefinedYearRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+
+        d.setFullYear(d.getFullYear() + offset);
+
+        const startOfYear = new Date(d.getFullYear(), 0, 1);
+        startOfYear.setHours(0, 0, 0, 0);
+
+        const endOfYear = new Date(d.getFullYear(), 11, 31);
+        endOfYear.setHours(0, 0, 0, 0);
+
+        this._startDate = startOfYear;
+        this._endDate = isToDate && offset <= 0 ? today : endOfYear;
+    }
+
+    /**
+     * Set the date range to yesterday.
+     */
+    setPredefinedYesterdayRange() {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(0, 0, 0, 0);
+
+        this._startDate = new Date(yesterday);
+        this._endDate = new Date(yesterday);
+    }
+
+    /**
+     * Set the selection mode for the calendar if expanded
+     */
+    setSelectionModeExpanded() {
+        if (!this.isExpanded) return;
+        this.selectionModeStartDate = !this._endDate ? 'single' : 'interval';
+        this.selectionModeEndDate = !this._startDate ? 'single' : 'interval';
+    }
+
+    /**
+     * Validate the time range and reset the time range if invalid.
+     */
+    setValidTimeRange() {
+        if (this.type === 'datetime' && !this.isValidTimeRange) {
+            this.startTime = null;
+            this.endTime = null;
+        }
     }
 
     /**
@@ -797,6 +1183,23 @@ export default class InputDateRange extends LightningElement {
                 return this.formatDate(value, 't');
             default:
                 return this.formatDate(value, 'tt');
+        }
+    }
+
+    /**
+     * Change the date format depending on date style.
+     *
+     * @param {date} value date object
+     * @returns {date} formatted date depending on the date style.
+     */
+    dateStringFormat(value) {
+        switch (this.dateStyle) {
+            case 'medium':
+                return parseFormattedDateString(value, 'LLL. d, y');
+            case 'long':
+                return parseFormattedDateString(value, 'LLLL d, y');
+            default:
+                return parseFormattedDateString(value, 'L/d/y');
         }
     }
 
@@ -948,6 +1351,8 @@ export default class InputDateRange extends LightningElement {
             state = 'DESELECT_END';
         }
 
+        this.optionRangeValue = 'custom';
+
         // Case execution
         switch (state) {
             case 'SELECT_ONLY_END':
@@ -975,10 +1380,7 @@ export default class InputDateRange extends LightningElement {
 
             case 'SELECT_END_EQUAL_START':
                 this._endDate = this._startDate;
-                if (this.type === 'datetime' && !this.isValidTimeRange) {
-                    this.startTime = null;
-                    this.endTime = null;
-                }
+                this.setValidTimeRange();
                 break;
 
             default:
@@ -997,6 +1399,23 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        this.setDisplayDates();
+    }
+
+    handleChangeEndDateInput(event) {
+        const value = event.target.value;
+        let parsedDate = this.dateStringFormat(value);
+        if (parsedDate && !isNaN(parsedDate.getTime())) {
+            parsedDate.setHours(0, 0, 0, 0);
+            const max = this.endCalendar?.max ?? new Date(2099, 11, 31);
+            max.setHours(0, 0, 0, 0);
+            this._endDate = parsedDate < max ? parsedDate : max;
+            this._dispatchChange();
+            this.setDisplayDates();
+            // needs to use handle change end date input.
+        } else {
+            // Show Error
+        }
     }
 
     /**
@@ -1010,7 +1429,6 @@ export default class InputDateRange extends LightningElement {
         this.endTime = event.target.value;
         if (!this.isValidTimeRange) {
             this.startTime = null;
-            this.endTime = null;
         }
         this._dispatchChange();
     }
@@ -1068,6 +1486,7 @@ export default class InputDateRange extends LightningElement {
         ) {
             state = 'DESELECT_START';
         }
+        this.optionRangeValue = 'custom';
 
         // Case execution
         switch (state) {
@@ -1096,10 +1515,7 @@ export default class InputDateRange extends LightningElement {
 
             case 'SELECT_START_EQUAL_END':
                 this._startDate = this._endDate;
-                if (this.type === 'datetime' && !this.isValidTimeRange) {
-                    this.startTime = null;
-                    this.endTime = null;
-                }
+                this.setValidTimeRange();
                 break;
 
             default:
@@ -1119,6 +1535,23 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        this.setDisplayDates();
+    }
+
+    handleChangeStartDateInput(event) {
+        const value = event.target.value;
+        const parsedDate = this.dateStringFormat(value);
+        if (parsedDate && !isNaN(parsedDate.getTime())) {
+            parsedDate.setHours(0, 0, 0, 0);
+            const min = this.startCalendar?.min ?? new Date(1900, 0, 1);
+            min.setHours(0, 0, 0, 0);
+            this._startDate = parsedDate > min ? parsedDate : min;
+            // needs to handle use handleChangeStartDate
+            this._dispatchChange();
+            this.setDisplayDates();
+        } else {
+            // Show Error
+        }
     }
 
     /**
@@ -1131,7 +1564,6 @@ export default class InputDateRange extends LightningElement {
         event.preventDefault();
         this.startTime = event.target.value;
         if (!this.isValidTimeRange) {
-            this.startTime = null;
             this.endTime = null;
         }
         this._dispatchChange();
@@ -1219,6 +1651,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.endDate) {
             this._endDate = null;
+            this.optionRangeValue = 'custom';
             this._dispatchChange();
         }
 
@@ -1260,6 +1693,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.startDate) {
             this._startDate = null;
+            this.optionRangeValue = 'custom';
             this._dispatchChange();
         }
 
@@ -1277,6 +1711,69 @@ export default class InputDateRange extends LightningElement {
             this.enteredStartCalendar = false;
         });
         this.handleBlur(event);
+    }
+
+    handleChangeRangeOption(event) {
+        event.stopPropagation();
+        // The focus on the date ranges needs to be blurred to avoid setting one of the dates to null
+        if (!this.isExpanded) {
+            this.startDateInput?.blur();
+            this.endDateInput?.blur();
+        }
+
+        const range = event.detail.value;
+        this.optionRangeValue = range;
+        switch (range) {
+            case 'today':
+                this.setPredefinedTodayRange();
+                break;
+            case 'yesterday':
+                this.setPredefinedYesterdayRange();
+                break;
+            case 'lastWeek':
+                this.setPredefinedWeekRange(-1);
+                break;
+            case 'lastMonth':
+                this.setPredefinedMonthRange(-1);
+                break;
+            case 'lastQuarter':
+                this.setPredefinedQuarterRange(-1);
+                break;
+            case 'lastYear':
+                this.setPredefinedYearRange(-1);
+                break;
+            case 'thisWeek':
+                this.setPredefinedWeekRange(0);
+                break;
+            case 'thisMonth':
+                this.setPredefinedMonthRange(0);
+                break;
+            case 'thisQuarter':
+                this.setPredefinedQuarterRange(0);
+                break;
+            case 'thisYear':
+                this.setPredefinedYearRange(0);
+                break;
+            case 'monthToDate':
+                this.setPredefinedMonthRange(0, true);
+                break;
+            case 'quarterToDate':
+                this.setPredefinedQuarterRange(0, true);
+                break;
+            case 'yearToDate':
+                this.setPredefinedYearRange(0, true);
+                break;
+            default:
+                return;
+        }
+        this.setValidTimeRange();
+        this.interactingState.enter();
+        this.updateClassListWhenError();
+        this.interactingState.leave();
+        this._dispatchChange();
+        if (this.isExpanded) {
+            this.setDisplayDates();
+        }
     }
 
     /**
@@ -1325,7 +1822,11 @@ export default class InputDateRange extends LightningElement {
      */
     handleFocusOut() {
         requestAnimationFrame(() => {
-            if (!(this.showEndDate || this.showStartDate)) {
+            if (!this.isExpanded && !(this.showEndDate || this.showStartDate)) {
+                this.updateClassListWhenError();
+                this.interactingState.leave();
+            } else if (this.isExpanded) {
+                this.interactingState.enter();
                 this.updateClassListWhenError();
                 this.interactingState.leave();
             }
@@ -1361,6 +1862,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectEndToday() {
         this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this.optionRangeValue = 'custom';
 
         if (this._endDate < this._startDate) {
             this._startDate = null;
@@ -1378,6 +1880,9 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        if (this.isExpanded) {
+            this.setDisplayDates();
+        }
     }
 
     /**
@@ -1385,6 +1890,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectStartToday() {
         this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
+        this.optionRangeValue = 'custom';
 
         if (this._startDate > this._endDate) this._endDate = null;
 
@@ -1402,6 +1908,9 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
+        if (this.isExpanded) {
+            this.setDisplayDates();
+        }
     }
 
     /**
@@ -1458,6 +1967,7 @@ export default class InputDateRange extends LightningElement {
     _dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
+        this.setSelectionModeExpanded();
 
         /**
          * The event fired when the value changed.

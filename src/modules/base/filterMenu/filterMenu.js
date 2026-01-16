@@ -100,10 +100,13 @@ const RESET_BUTTON_POSITION = {
 const TYPE_ATTRIBUTES = {
     'date-range': [
         'dateStyle',
+        'isExpanded',
         'labelEndDate',
         'labelEndTime',
+        'labelRangeOptions',
         'labelStartDate',
         'labelStartTime',
+        'showRangeOptions',
         'timeStyle',
         'timezone',
         'type'
@@ -997,6 +1000,7 @@ export default class FilterMenu extends LightningElement {
         const alignment = this.dropdownAlignment;
         const nubbin = this.dropdownNubbin;
         const isDateTime = this.computedTypeAttributes.type === 'datetime';
+        const isExpanded = this.computedTypeAttributes.isExpanded;
         const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
 
         const classes = classSet('slds-dropdown slds-p-around_none').add({
@@ -1016,7 +1020,8 @@ export default class FilterMenu extends LightningElement {
             'slds-nubbin_bottom': nubbin && alignment === 'bottom-center',
             'slds-dropdown_small': isSmallRange,
             'slds-dropdown_large':
-                (this.isDateRange && !isDateTime) || this.isTimeRange
+                (this.isDateRange && !isDateTime) || this.isTimeRange,
+            'avonni-filter-menu__dropdown-max-width': isExpanded
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
