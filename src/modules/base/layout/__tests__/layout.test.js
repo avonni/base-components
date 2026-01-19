@@ -699,6 +699,65 @@ describe('Layout', () => {
                     expect(callbackSetHeight.mock.calls[3][0]).toBe(200);
                 });
             });
+
+            it('If equalHeights switches to false, reset heights of items', () => {
+                element.equalHeights = true;
+
+                const callbackGetHeight = jest
+                    .fn()
+                    .mockReturnValueOnce(100)
+                    .mockReturnValue(200);
+                const callbackSetHeight = jest.fn();
+                return Promise.resolve().then(() => {
+                    const wrapper = element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    );
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberOne',
+                                callbacks: {
+                                    setContainerSize: () => {},
+                                    getHeight: callbackGetHeight,
+                                    setHeight: callbackSetHeight
+                                },
+                                setRemoveLayoutItemCallback: () => {}
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(2);
+                    expect(callbackSetHeight.mock.calls[0][0]).toBe('');
+                    expect(callbackSetHeight.mock.calls[1][0]).toBe(100);
+                    jest.clearAllMocks();
+                    wrapper.dispatchEvent(
+                        new CustomEvent('privatelayoutitemconnected', {
+                            detail: {
+                                name: 'numberTwo',
+                                callbacks: {
+                                    setContainerSize: () => {},
+                                    getHeight: callbackGetHeight,
+                                    setHeight: callbackSetHeight
+                                },
+                                setRemoveLayoutItemCallback: () => {}
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(4);
+                    expect(callbackSetHeight.mock.calls[0][0]).toBe('');
+                    expect(callbackSetHeight.mock.calls[1][0]).toBe('');
+                    expect(callbackSetHeight.mock.calls[2][0]).toBe(200);
+                    expect(callbackSetHeight.mock.calls[3][0]).toBe(200);
+                    jest.clearAllMocks();
+
+                    element.equalHeights = false;
+                    jest.runAllTimers();
+                    expect(callbackSetHeight).toHaveBeenCalledTimes(2);
+                    expect(callbackSetHeight.mock.calls[0][0]).toBe('');
+                    expect(callbackSetHeight.mock.calls[1][0]).toBe('');
+                });
+            });
         });
     });
 });

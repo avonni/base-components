@@ -118,6 +118,10 @@ export default class Layout extends LightningElement {
     }
     set equalHeights(value) {
         this._equalHeights = normalizeBoolean(value);
+
+        if (!this._equalHeights) {
+            this.setItemsHeight('');
+        }
     }
 
     /**
@@ -302,6 +306,31 @@ export default class Layout extends LightningElement {
     }
 
     /**
+     * Set the height of the items.
+     *
+     * @param {number|string} height Height to set to the items. If empty string, heights are reset.
+     */
+    setItemsHeight(height) {
+        requestAnimationFrame(() => {
+            if (this._disconnected) return;
+
+            let maxHeight = height;
+            if (maxHeight === undefined || maxHeight === null) {
+                Array.from(this._items.values()).forEach((item) => {
+                    item.setHeight('');
+                });
+                const heights = Array.from(this._items.values()).map((item) =>
+                    item.getHeight()
+                );
+                maxHeight = Math.max(...heights);
+            }
+            Array.from(this._items.values()).forEach((item) => {
+                item.setHeight(maxHeight);
+            });
+        });
+    }
+
+    /**
      * Set the size of the items.
      *
      * @param {number} width
@@ -310,18 +339,7 @@ export default class Layout extends LightningElement {
         if (this._disconnected) return;
 
         if (this.equalHeights) {
-            requestAnimationFrame(() => {
-                Array.from(this._items.values()).forEach((item) => {
-                    item.setHeight('');
-                });
-                const heights = Array.from(this._items.values()).map((item) =>
-                    item.getHeight()
-                );
-                const maxHeight = Math.max(...heights);
-                Array.from(this._items.values()).forEach((item) => {
-                    item.setHeight(maxHeight);
-                });
-            });
+            this.setItemsHeight();
         }
 
         if (width === undefined || width === null) {
