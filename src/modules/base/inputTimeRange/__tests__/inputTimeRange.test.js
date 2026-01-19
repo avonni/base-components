@@ -126,7 +126,7 @@ describe('Bc Input Time Range', () => {
 
             return Promise.resolve().then(() => {
                 const labelStrings = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="time-range-labels"]'
+                    '[data-group-name="time-range-labels"]'
                 );
                 expect(labelStrings).toHaveLength(2);
                 expect(labelStrings[0].textContent).toBe('Start Time');
