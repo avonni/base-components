@@ -5,9 +5,9 @@ import {
     normalizeObject
 } from 'c/utils';
 import { DateTime } from 'c/dateTimeUtils';
-import Label from './dateLabel';
+import CalendarDateLabel from './calendarDateLabel';
 
-export default class CalendarDate {
+export class CalendarDate {
     constructor(props) {
         this.adjacentMonth = props.adjacentMonth;
         this.date = props.date;
@@ -18,7 +18,7 @@ export default class CalendarDate {
         this.isStartDate = normalizeBoolean(props.isStartDate);
         this.isToday = normalizeBoolean(props.isToday);
         this.isWeekNumber = normalizeBoolean(props.isWeekNumber);
-        this.chip = new Label(normalizeObject(props.chip));
+        this.chip = new CalendarDateLabel(normalizeObject(props.chip));
         this.markers = normalizeArray(props.markers);
         this.selected = normalizeBoolean(props.selected);
 
@@ -84,8 +84,8 @@ export default class CalendarDate {
     get labelClass() {
         return classSet({
             'slds-day': !this.isWeekNumber,
-            'avonni-calendar__disabled-cell': this.disabled,
-            'avonni-calendar__hidden-cell': this.isDateHidden
+            'avonni-primitive-calendar__disabled-cell': this.disabled,
+            'avonni-primitive-calendar__hidden-cell': this.isDateHidden
         }).toString();
     }
 
@@ -95,8 +95,8 @@ export default class CalendarDate {
 
     get wrapperClass() {
         return classSet({
-            'avonni-calendar__date-cell': !this.isWeekNumber,
-            'avonni-calendar__week-cell': this.isWeekNumber,
+            'avonni-primitive-calendar__date-cell': !this.isWeekNumber,
+            'avonni-primitive-calendar__week-cell': this.isWeekNumber,
             'slds-day_adjacent-month': this.adjacentMonth,
             'slds-is-today': this.isToday,
             'slds-is-selected': this.appearsSelected,

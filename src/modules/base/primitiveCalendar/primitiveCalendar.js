@@ -1,33 +1,61 @@
 import { LightningElement, api } from 'lwc';
 import {
     classSet,
+    deepCopy,
     generateUUID,
     normalizeBoolean,
     normalizeString,
     normalizeArray
 } from 'c/utils';
-import { setDate, getStartOfWeek, startOfDay } from 'c/dateTimeUtils';
+import { setDate, getStartOfWeek, DateTime } from 'c/dateTimeUtils';
 import { keyValues } from 'c/utilsPrivate';
-
-const DEFAULT_WEEK_START_DAY = 0;
-
-const SELECTION_MODES = {
-    valid: ['single', 'multiple', 'interval'],
-    default: 'single'
-};
+import {
+    CalendarDate,
+    DAYS,
+    DEFAULT_DATE,
+    DEFAULT_MAX,
+    DEFAULT_MIN,
+    DEFAULT_WEEK_START_DAY,
+    fullDatesFromArray,
+    monthDaysFromArray,
+    isInvalidDate,
+    SELECTION_MODES,
+    startOfDay,
+    weekDaysFromArray
+} from 'c/calendarUtils';
 
 const SELECTOR_IS_VISIBLE = ':not([data-is-date-hidden="true"])';
 
 const SELECTOR_HAS_BORDER = `${SELECTOR_IS_VISIBLE}:not([data-is-week-disabled="true"])`;
 
 export default class PrimitiveCalendar extends LightningElement {
-    _calendarData = [];
-    _isLabeled = false;
-    _isMultiSelect = false;
+    _dateLabels = [];
+    _displayDate = DEFAULT_DATE;
+    _disabled = false;
+    _disabledDates = [];
+    _isMultiCalendars = false;
+    _markedDates = [];
+    _max = DEFAULT_MAX;
+    _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
+    _timezone;
     _value = [];
     _weekdays = [];
+    _weekNumber = false;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
+
+    calendarData = [];
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
+    connectedCallback() {
+        this.generateViewData();
+        this._connected = true;
+    }
 
     /*
      * ------------------------------------------------------------
@@ -36,45 +64,152 @@ export default class PrimitiveCalendar extends LightningElement {
      */
 
     /**
-     * Array of weekdays.
+     * Array of date label objects. If a date has several labels, the first one in the array will be used.
      *
      * @public
      * @type {object[]}
      */
     @api
-    get calendarData() {
-        return this._calendarData;
+    get dateLabels() {
+        return this._dateLabels;
     }
-    set calendarData(value) {
-        this._calendarData = normalizeArray(value);
+    set dateLabels(value) {
+        this._dateLabels = deepCopy(normalizeArray(value, 'object'));
+
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
-     * If present, the calendar is labeled.
+     * If true, the calendar is disabled.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * Array of disabled dates. The dates should be a Date object, a timestamp, or an ISO8601 formatted string.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get disabledDates() {
+        return this._disabledDates;
+    }
+    set disabledDates(value) {
+        this._disabledDates =
+            value && !Array.isArray(value) ? [value] : normalizeArray(value);
+
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * The display date. The date should be a Date object, a timestamp, or an ISO8601 formatted string.
+     *
+     * @public
+     * @type {object}
+     */
+    @api
+    get displayDate() {
+        return this._displayDate;
+    }
+    set displayDate(value) {
+        this._displayDate = isInvalidDate(value)
+            ? DEFAULT_DATE
+            : new Date(value);
+
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * If present, there are multiple calendars.
      *
      * @public
      * @type {boolean}
      */
     @api
-    get isLabeled() {
-        return this._isLabeled;
+    get isMultiCalendars() {
+        return this._isMultiCalendars;
     }
-    set isLabeled(value) {
-        this._isLabeled = normalizeBoolean(value);
+    set isMultiCalendars(value) {
+        this._isMultiCalendars = normalizeBoolean(value);
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
-     * If present, the calendar is multi selectable
+     * Specifies the maximum date, which the calendar can show.
      *
      * @public
-     * @type {boolean}
+     * @type {object}
+     * @default Date(2099, 11, 31)
      */
     @api
-    get isMultiSelect() {
-        return this._isMultiSelect;
+    get max() {
+        return this._max;
     }
-    set isMultiSelect(value) {
-        this._isMultiSelect = normalizeBoolean(value);
+    set max(value) {
+        this._max = isInvalidDate(value) ? DEFAULT_MAX : value;
+
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * Array of marked date objects. A maximum of three markers can be displayed on a same date.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get markedDates() {
+        return this._markedDates;
+    }
+    set markedDates(value) {
+        this._markedDates = normalizeArray(value, 'object');
+
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * Specifies the minimum date, which the calendar can show.
+     *
+     * @public
+     * @type {object}
+     * @default Date(1900, 0, 1)
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+    set min(value) {
+        this._min = isInvalidDate(value) ? DEFAULT_MIN : value;
+
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
@@ -95,6 +230,27 @@ export default class PrimitiveCalendar extends LightningElement {
             validValues: SELECTION_MODES.valid,
             fallbackValue: SELECTION_MODES.default
         });
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
@@ -113,6 +269,9 @@ export default class PrimitiveCalendar extends LightningElement {
                 ? [this.value]
                 : normalizeArray(value);
         this._value = normalizedValue;
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
@@ -127,6 +286,28 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set weekdays(value) {
         this._weekdays = normalizeArray(value);
+        if (this._connected) {
+            this.generateViewData();
+        }
+    }
+
+    /**
+     * If true, display a week number column.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get weekNumber() {
+        return this._weekNumber;
+    }
+    set weekNumber(value) {
+        this._weekNumber = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
@@ -146,6 +327,9 @@ export default class PrimitiveCalendar extends LightningElement {
             isNaN(number) || number < 0 || number > 6
                 ? DEFAULT_WEEK_START_DAY
                 : number;
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /*
@@ -161,9 +345,11 @@ export default class PrimitiveCalendar extends LightningElement {
      */
     get computedTableClasses() {
         return classSet(
-            'slds-datepicker__month slds-is-relative avonni-calendar__table'
+            'slds-datepicker__month slds-is-relative avonni-primitive-calendar__table'
         )
-            .add({ 'avonni-calendar__date-with-labels': this._isLabeled })
+            .add({
+                'avonni-primitive-calendar__date-with-labels': this.isLabeled
+            })
             .toString();
     }
 
@@ -172,6 +358,27 @@ export default class PrimitiveCalendar extends LightningElement {
      */
     get generateKey() {
         return generateUUID();
+    }
+
+    /**
+     * Check if the calendar is labeled.
+     *
+     * @return {boolean}
+     */
+    get isLabeled() {
+        return this._dateLabels.length > 0;
+    }
+
+    /**
+     * Check if the calendar is in multi-select mode.
+     *
+     * @return {boolean}
+     */
+    get isMultiSelect() {
+        return (
+            this.selectionMode === 'interval' ||
+            this.selectionMode === 'multiple'
+        );
     }
 
     /*
@@ -309,7 +516,7 @@ export default class PrimitiveCalendar extends LightningElement {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
                     dayCell?.classList.add(
-                        'avonni-calendar__cell_bordered-right'
+                        'avonni-primitive-calendar__cell_bordered-right'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
@@ -320,14 +527,14 @@ export default class PrimitiveCalendar extends LightningElement {
                                 x.getAttribute('data-full-date') <= day
                             ) {
                                 x.classList.add(
-                                    'avonni-calendar__cell_bordered-top_bottom'
+                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
                                 );
                             }
                         });
                 }
                 if (day < timeArray[0]) {
                     dayCell?.classList.add(
-                        'avonni-calendar__cell_bordered-left'
+                        'avonni-primitive-calendar__cell_bordered-left'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
@@ -338,7 +545,7 @@ export default class PrimitiveCalendar extends LightningElement {
                                 x.getAttribute('data-full-date') >= day
                             ) {
                                 x.classList.add(
-                                    'avonni-calendar__cell_bordered-top_bottom'
+                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
                                 );
                             }
                         });
@@ -346,7 +553,7 @@ export default class PrimitiveCalendar extends LightningElement {
             } else if (timeArray.length === 2) {
                 if (day > timeArray[1]) {
                     dayCell?.classList.add(
-                        'avonni-calendar__cell_bordered-right'
+                        'avonni-primitive-calendar__cell_bordered-right'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
@@ -357,14 +564,14 @@ export default class PrimitiveCalendar extends LightningElement {
                                 x.getAttribute('data-full-date') <= day
                             ) {
                                 x.classList.add(
-                                    'avonni-calendar__cell_bordered-top_bottom'
+                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
                                 );
                             }
                         });
                 }
                 if (day < timeArray[0]) {
                     dayCell?.classList.add(
-                        'avonni-calendar__cell_bordered-left'
+                        'avonni-primitive-calendar__cell_bordered-left'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
@@ -375,7 +582,7 @@ export default class PrimitiveCalendar extends LightningElement {
                                 x.getAttribute('data-full-date') >= day
                             ) {
                                 x.classList.add(
-                                    'avonni-calendar__cell_bordered-top_bottom'
+                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
                                 );
                             }
                         });
@@ -385,13 +592,191 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
+     * Generate the calendar data.
+     */
+    generateViewData() {
+        const today = startOfDay(new Date());
+
+        const mode = this.selectionMode;
+        const firstValue = this.value[0];
+        const lastValue = this.value[this.value.length - 1];
+        const isInterval = mode === 'interval' && this.value.length >= 2;
+
+        const calendarData = [];
+
+        const displayDate = new Date(this.displayDate);
+        displayDate.setDate(1);
+        displayDate.setMonth(displayDate.getMonth());
+
+        const currentMonth = displayDate.getMonth();
+        const firstDay = setDate(displayDate, 'date', 1);
+        let date = getStartOfWeek(firstDay, this.weekStartDay);
+
+        // Add an array per week
+        for (let i = 0; i < 6; i++) {
+            const weekData = [];
+            const isWeekDisabled =
+                date.getMonth() !== currentMonth && this.isMultiCalendars;
+            // The first week number must always be visible
+            const isWeekNumberHidden =
+                isWeekDisabled && this.isMultiCalendars && i !== 0;
+
+            if (this.weekNumber) {
+                // Week number
+                weekData.push(
+                    new CalendarDate({
+                        date,
+                        disabled: isWeekDisabled,
+                        isDateHidden: isWeekNumberHidden,
+                        isWeekNumber: true
+                    })
+                );
+            }
+
+            // Add 7 days to each week
+            for (let a = 0; a < 7; a++) {
+                const time = date.getTime();
+                const disabledDate = this.getIsDisabled(date);
+                const outsideOfMinMax = time < this.min || time > this.max;
+
+                const markers = this.getMarkers(date);
+                const label = this.getLabel(date);
+
+                const isPartOfInterval =
+                    isInterval &&
+                    firstValue.getTime() <= time &&
+                    lastValue.getTime() >= time;
+
+                let selected;
+                if (this.isMultiSelect) {
+                    selected = this.value.find((value) => {
+                        return (
+                            startOfDay(value).getTime() ===
+                            startOfDay(time).getTime()
+                        );
+                    });
+                } else if (firstValue) {
+                    selected =
+                        startOfDay(firstValue).getTime() ===
+                        startOfDay(time).getTime();
+                }
+                const isAdjacentMonth = date.getMonth() !== currentMonth;
+                const isDateHidden = this.isMultiCalendars && isAdjacentMonth;
+                weekData.push(
+                    new CalendarDate({
+                        adjacentMonth: isAdjacentMonth,
+                        date,
+                        disabled:
+                            this.disabled ||
+                            disabledDate ||
+                            outsideOfMinMax ||
+                            isDateHidden,
+                        isDateHidden: isDateHidden,
+                        isPartOfInterval,
+                        isToday: today.getTime() === time,
+                        ...(isPartOfInterval && {
+                            isStartDate: firstValue.getTime() === time,
+                            isEndDate: lastValue.getTime() === time
+                        }),
+                        chip: label,
+                        markers,
+                        selected
+                    })
+                );
+
+                date = setDate(date, 'date', date.getDate() + 1);
+            }
+
+            calendarData.push(weekData);
+        }
+        this.calendarData = calendarData;
+    }
+
+    /**
+     * Get the label object for the given date.
+     *
+     * @param {DateTime} date Date to get the label for.
+     * @returns {object} Label object.
+     */
+    getLabel(date) {
+        const dayIndex = date.getDay();
+        const weekday = DAYS[dayIndex];
+        return this._dateLabels.find((label) => {
+            const labelDate = label.date;
+            const labelAsNumber = Number(labelDate);
+
+            let labelAsTime;
+            if (!isInvalidDate(labelDate)) {
+                const startOfDayDate = startOfDay(labelDate);
+                labelAsTime = startOfDayDate.getTime();
+            }
+
+            return (
+                labelAsTime === date.getTime() ||
+                labelAsNumber === date.getDate() ||
+                weekday === labelDate.getDay()
+            );
+        });
+    }
+
+    /**
+     * Check if the given date is disabled.
+     *
+     * @param {DateTime} date Date to check.
+     * @returns {boolean} True if the date is disabled.
+     */
+    getIsDisabled(date) {
+        const dates = this._disabledDates;
+        const time = startOfDay(date).getTime();
+        const dateTime = new DateTime(date);
+        const weekday = dateTime.getUnit('weekday', 'short').replace(/\.$/, '');
+        const monthDay = dateTime.day;
+        return (
+            fullDatesFromArray(dates).indexOf(time) > -1 ||
+            weekDaysFromArray(dates).indexOf(weekday) > -1 ||
+            monthDaysFromArray(dates).indexOf(monthDay) > -1
+        );
+    }
+
+    /**
+     * Get the markers for the given date.
+     *
+     * @param {DateTime} date Date to get the markers for.
+     * @returns {string[]} Array of marker styles.
+     */
+    getMarkers(date) {
+        const markers = [];
+        const time = startOfDay(date).getTime();
+        const dateTime = new DateTime(date, this.timezone);
+        const weekday = dateTime.getUnit('weekday', 'short');
+        const monthDay = dateTime.day;
+
+        this._markedDates.forEach((marker) => {
+            const dateArray = [marker.date];
+            if (
+                fullDatesFromArray(dateArray).indexOf(time) > -1 ||
+                weekDaysFromArray(dateArray).indexOf(weekday) > -1 ||
+                monthDaysFromArray(dateArray).indexOf(monthDay) > -1
+            ) {
+                markers.push(`background-color: ${marker.color}`);
+            }
+        });
+        // A maximum of 3 markers are displayed per date
+        return markers.slice(0, 3);
+    }
+
+    /**
      * Remove borders on cells
      */
     removeDateBorder() {
         this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
-            x.classList.remove('avonni-calendar__cell_bordered-right');
-            x.classList.remove('avonni-calendar__cell_bordered-left');
+            x.classList.remove(
+                'avonni-primitive-calendar__cell_bordered-top_bottom'
+            );
+            x.classList.remove(
+                'avonni-primitive-calendar__cell_bordered-right'
+            );
+            x.classList.remove('avonni-primitive-calendar__cell_bordered-left');
         });
     }
 

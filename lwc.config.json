@@ -127,6 +127,10 @@
             "path": "src/modules/base/calendar/calendar.js"
         },
         {
+            "name": "c/calendarUtils",
+            "path": "src/modules/base/calendarUtils/calendarUtils.js"
+        },
+        {
             "name": "c/card",
             "path": "src/modules/base/card/card.js"
         },

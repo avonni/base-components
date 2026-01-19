@@ -10,8 +10,8 @@ div:focus {
     outline: none;
 }
 
-.avonni-calendar__date-cell,
-.avonni-calendar__week-cell {
+.avonni-primitive-calendar__date-cell,
+.avonni-primitive-calendar__week-cell {
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -26,8 +26,10 @@ div:focus {
     max-height: var(--avonni-calendar-cell-sizing-height);
 }
 
-.avonni-calendar__date-with-labels .avonni-calendar__date-cell,
-.avonni-calendar__date-with-labels .avonni-calendar__week-cell {
+.avonni-primitive-calendar__date-with-labels
+    .avonni-primitive-calendar__date-cell,
+.avonni-primitive-calendar__date-with-labels
+    .avonni-primitive-calendar__week-cell {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
     min-width: var(--avonni-calendar-cell-labeled-sizing-width);
     max-width: var(--avonni-calendar-cell-labeled-sizing-width);
@@ -36,9 +38,9 @@ div:focus {
     max-height: var(--avonni-calendar-cell-labeled-sizing-height);
 }
 
-.avonni-calendar__week-cell,
-.avonni-calendar__disabled-cell.slds-day,
-.avonni-calendar__weekdays_color {
+.avonni-primitive-calendar__week-cell,
+.avonni-primitive-calendar__disabled-cell.slds-day,
+.avonni-primitive-calendar__weekdays_color {
     cursor: default !important;
 }
 
@@ -46,8 +48,8 @@ div:focus {
     color: #adadad;
 }
 
-.avonni-calendar__date-cell > .slds-day,
-.avonni-calendar__week-cell > span {
+.avonni-primitive-calendar__date-cell > .slds-day,
+.avonni-primitive-calendar__week-cell > span {
     display: block;
     position: relative;
     width: var(--lwc-squareIconMediumBoundary, 2rem);
@@ -58,33 +60,33 @@ div:focus {
     margin: auto;
 }
 
-.avonni-calendar__week-cell {
+.avonni-primitive-calendar__week-cell {
     color: var(--avonni-calendar-week-label-text-color, #747474);
     font-size: var(--avonni-calendar-week-label-font-size, 0.8125em);
     font-weight: var(--avonni-calendar-week-label-font-weight, 600);
 }
 
-.avonni-calendar__table {
+.avonni-primitive-calendar__table {
     z-index: 0;
 }
 
-.avonni-calendar__table-row
-    > .avonni-calendar__date-cell:hover
-    > .slds-day:not(.avonni-calendar__hidden-cell) {
+.avonni-primitive-calendar__table-row
+    > .avonni-primitive-calendar__date-cell:hover
+    > .slds-day:not(.avonni-primitive-calendar__hidden-cell) {
     background-color: var(
         --avonni-calendar-date-color-background-hover,
         var(--slds-s-button-color-background-hover, #f3f2f2)
     );
 }
 
-.avonni-calendar__table-row
-    > .avonni-calendar__date-cell:hover
-    > .slds-day.avonni-calendar__hidden-cell {
+.avonni-primitive-calendar__table-row
+    > .avonni-primitive-calendar__date-cell:hover
+    > .slds-day.avonni-primitive-calendar__hidden-cell {
     background-color: transparent;
 }
 
-.avonni-calendar__table-row
-    > .avonni-calendar__date-cell:hover.slds-is-selected
+.avonni-primitive-calendar__table-row
+    > .avonni-primitive-calendar__date-cell:hover.slds-is-selected
     > .slds-day {
     background-color: var(
         --avonni-calendar-selected-date-color-background-hover,
@@ -96,11 +98,11 @@ div:focus {
     color: var(--avonni-calendar-selected-date-text-color-hover, #ffffff);
 }
 
-.avonni-calendar__weekdays_color {
+.avonni-primitive-calendar__weekdays_color {
     color: var(--avonni-calendar-weekdays-text-color, #3e3e3c);
 }
 
-.avonni-calendar__disabled-cell.slds-day,
+.avonni-primitive-calendar__disabled-cell.slds-day,
 .slds-day_adjacent-month .slds-day {
     color: var(--avonni-calendar-date-disabled-text-color, #adadad);
 }
@@ -130,13 +132,13 @@ div:focus {
     color: var(--avonni-calendar-selected-date-text-color-focus, #ffffff);
 }
 
-.slds-is-today .avonni-calendar__disabled-cell.slds-day {
+.slds-is-today .avonni-primitive-calendar__disabled-cell.slds-day {
     background-color: var(--avonni-calendar-color-background, transparent);
     outline: 1px solid var(--avonni-calendar-date-disabled-text-color, #adadad);
     color: var(--avonni-calendar-date-disabled-text-color, #adadad);
 }
 
-.slds-is-selected .avonni-calendar__disabled-cell.slds-day {
+.slds-is-selected .avonni-primitive-calendar__disabled-cell.slds-day {
     background: var(
         --avonni-calendar-selected-date-color-background,
         var(--slds-g-color-accent-container-1, #0176d3)
@@ -149,7 +151,7 @@ div:focus {
 
 /* Interval selection 'bridges' */
 .slds-datepicker__month
-    .avonni-calendar__date-cell.slds-is-selected-multi
+    .avonni-primitive-calendar__date-cell.slds-is-selected-multi
     + .slds-is-selected-multi
     > .slds-day:before {
     content: '';
@@ -165,8 +167,8 @@ div:focus {
     box-shadow: none;
 }
 
-.slds-datepicker__month.avonni-calendar__date-with-labels
-    .avonni-calendar__date-cell.slds-is-selected-multi
+.slds-datepicker__month.avonni-primitive-calendar__date-with-labels
+    .avonni-primitive-calendar__date-cell.slds-is-selected-multi
     + .slds-is-selected-multi
     > .slds-day:before {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
@@ -174,9 +176,9 @@ div:focus {
 }
 
 /* Borders around hovered interval */
-.avonni-calendar__cell_bordered-right:after,
-.avonni-calendar__cell_bordered-left:after,
-.avonni-calendar__cell_bordered-top_bottom:after {
+.avonni-primitive-calendar__cell_bordered-right:after,
+.avonni-primitive-calendar__cell_bordered-left:after,
+.avonni-primitive-calendar__cell_bordered-top_bottom:after {
     content: '';
     position: absolute;
     pointer-events: none;
@@ -187,7 +189,7 @@ div:focus {
     border-width: 1px;
 }
 
-.avonni-calendar__cell_bordered-right:after {
+.avonni-primitive-calendar__cell_bordered-right:after {
     border-right-color: var(
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
@@ -198,7 +200,7 @@ div:focus {
     );
 }
 
-.avonni-calendar__cell_bordered-left:after {
+.avonni-primitive-calendar__cell_bordered-left:after {
     border-left-color: var(
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
@@ -209,7 +211,7 @@ div:focus {
     );
 }
 
-.avonni-calendar__cell_bordered-top_bottom:after {
+.avonni-primitive-calendar__cell_bordered-top_bottom:after {
     border-bottom-color: var(
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
@@ -229,7 +231,7 @@ div:focus {
 }
 
 /* Markers */
-.avonni-calendar__marked-cells {
+.avonni-primitive-calendar__marked-cells {
     width: 5px;
     height: 5px;
     background: #bf0201;
@@ -237,11 +239,11 @@ div:focus {
     margin-left: 1px;
 }
 
-.avonni-calendar__marked-cells:first-child {
+.avonni-primitive-calendar__marked-cells:first-child {
     margin-left: 0;
 }
 
-.avonni-calendar__marker-container {
+.avonni-primitive-calendar__marker-container {
     display: flex;
     position: absolute;
     left: 50%;
@@ -250,7 +252,7 @@ div:focus {
 }
 
 /* Chip label */
-.avonni-calendar__chip-label {
+.avonni-primitive-calendar__chip-label {
     --avonni-chip-label-font-size: 8px;
     --avonni-chip-spacing-block-start: 0px;
     --avonni-chip-spacing-block-end: 0px;
@@ -258,20 +260,20 @@ div:focus {
     --avonni-chip-spacing-inline-end: 3px;
 }
 
-.avonni-calendar__chip-without-icon {
+.avonni-primitive-calendar__chip-without-icon {
     --avonni-chip-spacing-block-start: 1px;
     --avonni-chip-spacing-block-end: 3px;
 }
 
-.avonni-calendar__chip-icon-only {
+.avonni-primitive-calendar__chip-icon-only {
     --avonni-chip-spacing-inline-start: 0px;
     --avonni-chip-spacing-inline-end: 0px;
 }
 
-.avonni-calendar-chip-icon-left {
+.avonni-primitive-calendar-chip-icon-left {
     margin-right: -4px;
 }
 
-.avonni-calendar-chip-icon-right {
+.avonni-primitive-calendar-chip-icon-right {
     margin-left: -4px;
 }

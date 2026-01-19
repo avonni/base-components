@@ -16,7 +16,7 @@
                         role="columnheader"
                         scope="col"
                         data-element-id="th"
-                        class="avonni-calendar__weekdays_color"
+                        class="avonni-primitive-calendar__weekdays_color"
                     >
                         <abbr>{day}</abbr>
                     </th>
@@ -28,7 +28,10 @@
         <tbody>
             <template for:each={calendarData} for:item="week">
                 <tr
-                    class="avonni-calendar__table-row slds-has-multi-selection"
+                    class="
+                        avonni-primitive-calendar__table-row
+                        slds-has-multi-selection
+                    "
                     key={generateKey}
                     role="row"
                 >
@@ -81,7 +84,7 @@
                                 >
                                     <div
                                         class="
-                                            avonni-calendar__marker-container
+                                            avonni-primitive-calendar__marker-container
                                         "
                                     >
                                         <template
@@ -92,7 +95,7 @@
                                                 key={generateKey}
                                                 style={marker}
                                                 class="
-                                                    avonni-calendar__marked-cells
+                                                    avonni-primitive-calendar__marked-cells
                                                 "
                                                 data-element-id="div-marked-cells"
                                             ></div>
@@ -110,7 +113,9 @@
                                 >
                                     <c-primitive-icon
                                         if:true={day.chip.showLeftIcon}
-                                        class="avonni-calendar-chip-icon-left"
+                                        class="
+                                            avonni-primitive-calendar-chip-icon-left
+                                        "
                                         icon-name={day.chip.iconName}
                                         slot="left"
                                         size="xx-small"
@@ -119,7 +124,9 @@
                                     ></c-primitive-icon>
                                     <c-primitive-icon
                                         if:true={day.chip.showRightIcon}
-                                        class="avonni-calendar-chip-icon-right"
+                                        class="
+                                            avonni-primitive-calendar-chip-icon-right
+                                        "
                                         icon-name={day.chip.iconName}
                                         slot="right"
                                         size="xx-small"

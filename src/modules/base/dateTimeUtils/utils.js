@@ -1,4 +1,4 @@
-import { DATE, HOUR, MONTH, YEAR, NULL_DATE } from './constants';
+import { DATE, HOUR, MONTH, YEAR } from './constants';
 
 function getStartOfWeek(date, weekStartDay = 0) {
     const weekday = date.getDay();
@@ -31,22 +31,4 @@ function setDate(date, unit, ...value) {
     }
 }
 
-/**
- * Returns the start of the day for the given date.
- *
- * @param {Date} date Date to get the start of the day for.
- * @returns {Date} The start of the day for the given date.
- */
-function startOfDay(date) {
-    return setDate(date, 'hour', 0, 0, 0, 0);
-}
-
-/**
- * Check if value is an invalid date.
- */
-function isInvalidDate(value) {
-    const date = new Date(value);
-    return !date || isNaN(date) || startOfDay(date).getTime() === NULL_DATE;
-}
-
-export { getStartOfWeek, pad, setDate, startOfDay, isInvalidDate };
+export { getStartOfWeek, pad, setDate };

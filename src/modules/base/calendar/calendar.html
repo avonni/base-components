@@ -131,12 +131,19 @@
                             </h2>
 
                             <c-primitive-calendar
-                                calendar-data={item.calendarData}
-                                is-labeled={isLabeled}
-                                is-multi-select={isMultiSelect}
+                                date-labels={computedDateLabels}
+                                disabled={disabled}
+                                disabled-dates={computedDisabledDates}
+                                display-date={item.displayDate}
+                                is-multi-calendars={isMultiCalendars}
+                                marked-dates={computedMarkedDates}
+                                max={computedMax}
+                                min={computedMin}
                                 selection-mode={selectionMode}
-                                weekdays={weekdays}
+                                timezone={timezone}
                                 value={computedValue}
+                                weekdays={weekdays}
+                                week-number={weekNumber}
                                 onselectdate={handleSelectDate}
                                 onselectdatekey={handleKeyDate}
                                 onblur={handleBlur}
