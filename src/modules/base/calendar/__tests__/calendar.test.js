@@ -59,18 +59,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const day26Data = calendar.calendarData
-                        .flat()
-                        .find((date) => {
-                            return date.ts === new Date('05/26/2022').getTime();
-                        });
-                    expect(day26Data.chip).toBeTruthy();
-                    expect(day26Data.chip.variant).toBe('base');
-                    expect(day26Data.chip.outline).toBeFalsy();
-                    expect(day26Data.chip.label).toBe('26 may');
-                    expect(day26Data.chip.computedClass).toBe(
-                        'avonni-calendar__chip-label avonni-calendar__chip-without-icon'
-                    );
+                    expect(calendar.dateLabels).toEqual(element.dateLabels);
                 });
             });
         });
@@ -94,11 +83,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    expect(calendarData.length).toBeGreaterThan(0);
-                    calendarData.forEach((day) => {
-                        expect(day.labelClass).toContain('slds-day');
-                    });
+                    expect(calendar.disabled).toBe(true);
                 });
             });
         });
@@ -114,19 +99,9 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const disabledDates = [];
-                    calendarData.forEach((day) => {
-                        if (
-                            day.labelClass
-                                .split(' ')
-                                .includes('avonni-calendar__disabled-cell')
-                        ) {
-                            disabledDates.push(String(day.label));
-                        }
-                    });
-
-                    expect(disabledDates.includes('6')).toBeTruthy();
+                    expect(calendar.disabledDates).toEqual([
+                        new Date('05/06/2021')
+                    ]);
                 });
             });
         });
@@ -489,123 +464,27 @@ describe('Calendar', () => {
                 element.max = new Date('05/31/2021');
 
                 return Promise.resolve().then(() => {
-                    const markedDates = [];
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    calendarData.forEach((day) => {
-                        if (day.markers.length) {
-                            markedDates.push(...day.markers);
-                        }
-                    });
-
-                    expect(markedDates).toHaveLength(3);
-                    expect(markedDates[0]).toBe(
-                        'background-color: rgb(255, 0, 0)'
-                    );
-                    expect(markedDates[1]).toBe(
-                        'background-color: rgb(0, 0, 0)'
-                    );
-                    expect(markedDates[2]).toBe(
-                        'background-color: rgb(255, 255, 255)'
-                    );
-                });
-            });
-
-            it('A maximum of 3 per date is displayed', () => {
-                element.value = '05/09/2021';
-                element.markedDates = [
-                    { date: new Date('05/05/2021'), color: 'tomato' },
-                    { date: new Date('05/05/2021'), color: 'blue' },
-                    { date: new Date('05/05/2021'), color: 'violet' },
-                    { date: new Date('05/05/2021'), color: 'purple' },
-                    { date: new Date('05/05/2021'), color: 'orange' }
-                ];
-
-                return Promise.resolve().then(() => {
-                    const markedDates = [];
-                    const calendar = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-calendar__primitive-calendar"]'
-                    );
-                    const calendarData = calendar.calendarData.flat();
-                    calendarData.forEach((day) => {
-                        if (day.markers.length) {
-                            markedDates.push(...day.markers);
-                        }
-                    });
-                    expect(markedDates).toHaveLength(3);
-                });
-            });
-        });
-
-        describe('enable current month only', () => {
-            it('Passed to the component', () => {
-                element.value = '05/09/2021';
-                return Promise.resolve().then(() => {
-                    const dates = [];
-                    const dateArray = [];
-                    const calendar = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-calendar__primitive-calendar"]'
-                    );
-                    const calendarData = calendar.calendarData.flat();
-                    calendarData.forEach((day) => {
-                        if (
-                            !day.wrapperClass
-                                .split(' ')
-                                .includes('slds-day_adjacent-month') &&
-                            day.labelClass.split(' ').includes('slds-day')
-                        ) {
-                            dates.push(day);
-                        }
-                    });
-                    dates.forEach((date) => {
-                        dateArray.push(String(date.label));
-                    });
-                    expect(dateArray.slice(0, 1)[0]).toBe('1');
-                    expect(dateArray.slice(-1)[0]).toBe('31');
+                    expect(calendar.markedDates).toEqual(element.markedDates);
                 });
             });
         });
 
         describe('min max', () => {
-            it('Click only inside min-max', () => {
+            it('Passed to component', () => {
                 element.value = '05/16/2021';
                 element.min = new Date('05/15/2021');
                 element.max = new Date('05/23/2021');
-                element.selectionMode = 'single';
 
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
 
-                    const calendarData = calendar.calendarData.flat();
-
-                    const datesToSelect = [
-                        '05/14/2021',
-                        '05/18/2021',
-                        '05/24/2021'
-                    ].map((date) => new Date(date).getTime());
-
-                    const selectedDates = datesToSelect.map((ts) =>
-                        calendarData.find((date) => date.ts === ts)
-                    );
-
-                    selectedDates.forEach((date) => {
-                        calendar.dispatchEvent(
-                            new CustomEvent('selectdate', {
-                                detail: {
-                                    fullDate: String(date.ts),
-                                    disabled: date.disabled
-                                }
-                            })
-                        );
-                    });
-
-                    expect(new Date(element.value)).toEqual(
-                        new Date('05/18/2021')
-                    );
+                    expect(calendar.min).toEqual(new Date('05/15/2021'));
+                    expect(element.max).toEqual(new Date('05/23/2021'));
                 });
             });
         });
@@ -623,21 +502,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const selectedDay = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-
-                    expect(String(selectedDay.label)).toBe('19');
-                    const day15 = calendarData.find((data) => {
-                        return String(data.label) === '15';
-                    });
-                    expect(day15.disabled).toBe(true);
-
-                    const day23 = calendarData.find((data) => {
-                        return String(data.label) === '23';
-                    });
-                    expect(day23.disabled).toBe(false);
+                    expect(calendar.timezone).toBe('Pacific/Noumea');
                 });
             });
         });
@@ -650,11 +515,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const selectedDay = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(String(selectedDay.label)).toBe('15');
+                    expect(calendar.value).toEqual([new Date('04/15/2021')]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -675,11 +536,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(day).toBeUndefined();
+                    expect(calendar.value).toEqual([]);
+                    expect(calendar.displayDate).toEqual(
+                        new Date('12/01/2030')
+                    );
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -699,11 +559,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(day).toBeUndefined();
+                    expect(calendar.value).toEqual([]);
+                    expect(calendar.displayDate).toEqual(
+                        new Date('01/01/2020')
+                    );
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -722,18 +581,18 @@ describe('Calendar', () => {
                     month: 'long'
                 });
                 element.min = new Date('01/01/2020');
-                element.max = new Date('12/31/2030');
+                element.max = new Date('12/31/2099');
                 element.value = '00/00/2022';
 
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(day).toBeUndefined();
+                    const today = new Date();
+                    today.setDate(1);
+                    today.setHours(0, 0, 0, 0);
+                    expect(calendar.value).toEqual([]);
+                    expect(calendar.displayDate).toEqual(today);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -761,11 +620,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const selected = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(String(selected.label)).toBe('6');
+                    expect(calendar.displayDate).toEqual(
+                        new Date('05/01/2022')
+                    );
+                    expect(calendar.value).toEqual([new Date('05/06/2022')]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -787,15 +645,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const days = calendarData.filter((data) => {
-                        return data.appearsSelected;
-                    });
-
-                    expect(days.length).toBe(10);
-                    for (let i = 0; i < days.length; ++i) {
-                        expect(String(days[i].label)).toBe((i + 1).toString());
-                    }
+                    expect(calendar.value).toEqual([
+                        new Date('01/01/2020'),
+                        new Date('01/10/2020')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -817,15 +670,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const days = calendarData.filter((data) => {
-                        return data.appearsSelected;
-                    });
-
-                    expect(days.length).toBe(3);
-                    for (let i = 0; i < days.length; ++i) {
-                        expect(String(days[i].label)).toBe((i + 29).toString());
-                    }
+                    expect(calendar.value).toEqual([
+                        new Date('12/29/2021'),
+                        new Date('12/31/2021')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -847,11 +695,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(day).toBeUndefined();
+                    expect(calendar.value).toEqual([]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -873,11 +717,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day = calendarData.find((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(day).toBeUndefined();
+                    expect(calendar.value).toEqual([]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -899,14 +739,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const days = calendarData.filter((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(days.length).toBe(31);
-                    for (let i = 0; i < days.length; ++i) {
-                        expect(String(days[i].label)).toBe((i + 1).toString());
-                    }
+                    expect(calendar.value).toEqual([
+                        new Date('01/01/2020'),
+                        new Date('01/31/2020')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -928,14 +764,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const days = calendarData.filter((data) => {
-                        return data.appearsSelected;
-                    });
-                    expect(days.length).toBe(21);
-                    for (let i = 0; i < days.length; ++i) {
-                        expect(String(days[i].label)).toBe((i + 2).toString());
-                    }
+                    expect(calendar.value).toEqual([
+                        new Date('04/02/2022'),
+                        new Date('04/22/2022')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -952,19 +784,17 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'single';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day14 = calendarData.find((data) => {
-                        return String(data.label) === '14';
-                    });
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -978,19 +808,17 @@ describe('Calendar', () => {
                 element.value = '05/14/2021';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day14 = calendarData.find((data) => {
-                        return String(data.label) === '14';
-                    });
+                    expect(calendar.value).toEqual([new Date('05/14/2021')]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1005,18 +833,11 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const days = calendarData.filter((data) => {
-                        return data.appearsSelected;
-                    });
-                    const dates = [];
-                    days.forEach((day) => {
-                        dates.push(String(day.label));
-                    });
-
-                    expect(dates.includes('15')).toBeTruthy();
-                    expect(dates.includes('16')).toBeTruthy();
-                    expect(dates.includes('17')).toBeTruthy();
+                    expect(calendar.value).toEqual([
+                        new Date('04/15/2021'),
+                        new Date('04/16/2021'),
+                        new Date('04/17/2021')
+                    ]);
 
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
@@ -1034,19 +855,17 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'multiple';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day14 = calendarData.find((data) => {
-                        return String(data.label) === '14';
-                    });
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1065,19 +884,17 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day14 = calendarData.find((data) => {
-                        return String(data.label) === '14';
-                    });
+                    expect(calendar.value).toEqual([new Date('05/14/2021')]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1085,8 +902,8 @@ describe('Calendar', () => {
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1101,19 +918,17 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day14 = calendarData.find((data) => {
-                        return String(data.label) === '14';
-                    });
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1132,19 +947,17 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day17 = new Date('05/17/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day17 = calendarData.find((data) => {
-                        return String(data.label) === '17';
-                    });
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day17.ts),
-                                disabled: day17.disabled
+                                fullDate: String(day17.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1163,19 +976,20 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day17 = new Date('05/17/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day17 = calendarData.find((data) => {
-                        return String(data.label) === '17';
-                    });
+                    expect(calendar.value).toEqual([
+                        new Date('05/15/2021'),
+                        new Date('05/16/2021')
+                    ]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day17.ts),
-                                disabled: day17.disabled
+                                fullDate: String(day17.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1194,19 +1008,20 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day14 = calendarData.find((data) => {
-                        return String(data.label) === '14';
-                    });
+                    expect(calendar.value).toEqual([
+                        new Date('05/15/2021'),
+                        new Date('05/16/2021')
+                    ]);
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day14.ts),
-                                disabled: day14.disabled
+                                fullDate: String(day14.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1232,22 +1047,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const weekNumbers = [];
-                    const weeks = calendarData.filter((data) => {
-                        return data.isWeekNumber;
-                    });
-                    expect(weeks).toHaveLength(6);
-
-                    weeks.forEach((week) => {
-                        weekNumbers.push(String(week.label));
-                    });
-                    expect(weekNumbers.includes('16')).toBeTruthy();
-                    expect(weekNumbers.includes('17')).toBeTruthy();
-                    expect(weekNumbers.includes('18')).toBeTruthy();
-                    expect(weekNumbers.includes('19')).toBeTruthy();
-                    expect(weekNumbers.includes('20')).toBeTruthy();
-                    expect(weekNumbers.includes('21')).toBeTruthy();
+                    expect(calendar.weekNumber).toEqual(true);
                 });
             });
         });
@@ -1261,21 +1061,7 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(calendar.weekdays).toEqual([
-                        'Tue',
-                        'Wed',
-                        'Thu',
-                        'Fri',
-                        'Sat',
-                        'Sun',
-                        'Mon'
-                    ]);
-                    const days = calendar.calendarData.flat();
-                    const firstDay = new Date(2025, 8, 30).getTime().toString();
-                    expect(String(days[0].ts)).toBe(firstDay);
-
-                    const lastDay = new Date(2025, 10, 10).getTime().toString();
-                    expect(String(days[days.length - 1].ts)).toBe(lastDay);
+                    expect(calendar.weekStartDay).toBe(2);
                 });
             });
         });
@@ -1338,7 +1124,7 @@ describe('Calendar', () => {
                 element.value = '05/09/2021';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
-
+                const day7 = new Date('05/07/2021');
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
 
@@ -1346,13 +1132,11 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const days = calendar.calendarData.flat();
-                    const day7 = days[12];
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day7.ts),
-                                disabled: day7.disabled
+                                fullDate: String(day7.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1373,6 +1157,7 @@ describe('Calendar', () => {
                 element.selectionMode = 'multiple';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
+                const day7 = new Date('05/07/2021');
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -1381,12 +1166,10 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const days = calendar.calendarData.flat();
-                    const day7 = days[12];
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day7.ts),
+                                fullDate: String(day7.getTime()),
                                 disabled: day7.disabled
                             }
                         })
@@ -1412,6 +1195,7 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'multiple';
+                const day9 = new Date('05/09/2021');
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -1420,15 +1204,11 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day9 = calendarData.find((data) => {
-                        return String(data.label) === '9';
-                    });
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day9.ts),
-                                disabled: day9.disabled
+                                fullDate: String(day9.getTime()),
+                                disabled: false
                             }
                         })
                     );
@@ -1444,6 +1224,7 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day11 = new Date('05/11/2021');
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -1452,15 +1233,11 @@ describe('Calendar', () => {
                     const calendar = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const calendarData = calendar.calendarData.flat();
-                    const day11 = calendarData.find((data) => {
-                        return String(data.label) === '11';
-                    });
                     calendar.dispatchEvent(
                         new CustomEvent('selectdate', {
                             detail: {
-                                fullDate: String(day11.ts),
-                                disabled: day11.disabled
+                                fullDate: String(day11.getTime()),
+                                disabled: false
                             }
                         })
                     );
