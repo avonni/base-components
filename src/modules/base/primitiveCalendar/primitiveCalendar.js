@@ -40,11 +40,11 @@ export default class PrimitiveCalendar extends LightningElement {
     _selectionMode = SELECTION_MODES.default;
     _timezone;
     _value = [];
-    _weekdays = [];
     _weekNumber = false;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     calendarData = [];
+    weekdays = [];
 
     /*
      * ------------------------------------------------------------
@@ -53,6 +53,7 @@ export default class PrimitiveCalendar extends LightningElement {
      */
 
     connectedCallback() {
+        this.initWeekdays();
         this.generateViewData();
         this._connected = true;
     }
@@ -275,23 +276,6 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
-     * Array of weekdays.
-     *
-     * @public
-     * @type {object[]}
-     */
-    @api
-    get weekdays() {
-        return this._weekdays;
-    }
-    set weekdays(value) {
-        this._weekdays = normalizeArray(value);
-        if (this._connected) {
-            this.generateViewData();
-        }
-    }
-
-    /**
      * If true, display a week number column.
      *
      * @public
@@ -306,6 +290,7 @@ export default class PrimitiveCalendar extends LightningElement {
         this._weekNumber = normalizeBoolean(value);
 
         if (this._connected) {
+            this.initWeekdays();
             this.generateViewData();
         }
     }
@@ -328,6 +313,7 @@ export default class PrimitiveCalendar extends LightningElement {
                 ? DEFAULT_WEEK_START_DAY
                 : number;
         if (this._connected) {
+            this.initWeekdays();
             this.generateViewData();
         }
     }
@@ -763,6 +749,19 @@ export default class PrimitiveCalendar extends LightningElement {
         });
         // A maximum of 3 markers are displayed per date
         return markers.slice(0, 3);
+    }
+
+    /**
+     * Initialize the weekdays headers.
+     */
+    initWeekdays() {
+        const days = DAYS.slice(this.weekStartDay).concat(
+            DAYS.slice(0, this.weekStartDay)
+        );
+        if (this.weekNumber) {
+            days.unshift('');
+        }
+        this.weekdays = days;
     }
 
     /**

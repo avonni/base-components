@@ -1,4 +1,4 @@
-import { DateTime, getFormattedDate, setDate } from 'c/dateTimeUtils';
+import { getFormattedDate, setDate } from 'c/dateTimeUtils';
 import {
     deepCopy,
     generateUUID,
@@ -14,14 +14,11 @@ import {
     DEFAULT_MAX,
     DEFAULT_MIN,
     DEFAULT_WEEK_START_DAY,
-    fullDatesFromArray,
-    weekDaysFromArray,
     getDateWithTimezone,
     isInvalidDate,
     MONTHS,
     SELECTION_MODES,
-    startOfDay,
-    monthDaysFromArray
+    startOfDay
 } from 'c/calendarUtils';
 
 const DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Next Month';
@@ -88,7 +85,6 @@ export default class Calendar extends LightningElement {
     month;
     months = MONTHS;
     year;
-    weekdays = [];
 
     /*
      * ------------------------------------------------------------
@@ -97,7 +93,6 @@ export default class Calendar extends LightningElement {
      */
 
     connectedCallback() {
-        this.initWeekdays();
         this.initDates();
         this.initDisplayDate();
         this.validateCurrentDayValue();
@@ -357,7 +352,6 @@ export default class Calendar extends LightningElement {
         this._weekNumber = normalizeBoolean(value);
 
         if (this._connected) {
-            this.initWeekdays();
             this.generateViewData();
         }
     }
@@ -381,7 +375,6 @@ export default class Calendar extends LightningElement {
                 : number;
 
         if (this._connected) {
-            this.initWeekdays();
             this.generateViewData();
         }
     }
@@ -778,19 +771,6 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Initialize the weekdays headers.
-     */
-    initWeekdays() {
-        const days = DAYS.slice(this.weekStartDay).concat(
-            DAYS.slice(0, this.weekStartDay)
-        );
-        if (this.weekNumber) {
-            days.unshift('');
-        }
-        this.weekdays = days;
-    }
-
-    /**
      * Check if value is after max date.
      */
     isAfterMax(value) {
@@ -802,25 +782,6 @@ export default class Calendar extends LightningElement {
      */
     isBeforeMin(value) {
         return value.getTime() < this.computedMin.getTime();
-    }
-
-    /**
-     * Check if the given date is disabled.
-     *
-     * @param {DateTime} date Date to check.
-     * @returns {boolean} True if the date is disabled.
-     */
-    isDisabled(date) {
-        const dates = this.computedDisabledDates;
-        const time = startOfDay(date).getTime();
-        const dateTime = new DateTime(date);
-        const weekday = dateTime.getUnit('weekday', 'short').replace(/\.$/, '');
-        const monthDay = dateTime.day;
-        return (
-            fullDatesFromArray(dates).indexOf(time) > -1 ||
-            weekDaysFromArray(dates).indexOf(weekday) > -1 ||
-            monthDaysFromArray(dates).indexOf(monthDay) > -1
-        );
     }
 
     /**

@@ -12,7 +12,6 @@ export default class PrimitiveCalendar extends LightningElement {
     @api selectionMode;
     @api timezone;
     @api value;
-    @api weekdays;
     @api weekNumber;
     @api weekStartDay;
 
