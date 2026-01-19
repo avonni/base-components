@@ -121,6 +121,8 @@ export default class Layout extends LightningElement {
 
         if (!this._equalHeights) {
             this.setItemsHeight('');
+        } else {
+            this.setItemsHeight();
         }
     }
 

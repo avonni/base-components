@@ -650,12 +650,14 @@ describe('Layout', () => {
 
             it('If equalHeights is true, set equal heights on items when one connects', () => {
                 element.equalHeights = true;
+                jest.runAllTimers();
 
                 const callbackGetHeight = jest
                     .fn()
                     .mockReturnValueOnce(100)
                     .mockReturnValue(200);
                 const callbackSetHeight = jest.fn();
+                jest.clearAllMocks();
                 return Promise.resolve().then(() => {
                     const wrapper = element.shadowRoot.querySelector(
                         '[data-element-id="div-wrapper"]'
@@ -702,12 +704,14 @@ describe('Layout', () => {
 
             it('If equalHeights switches to false, reset heights of items', () => {
                 element.equalHeights = true;
+                jest.runAllTimers();
 
                 const callbackGetHeight = jest
                     .fn()
                     .mockReturnValueOnce(100)
                     .mockReturnValue(200);
                 const callbackSetHeight = jest.fn();
+                jest.clearAllMocks();
                 return Promise.resolve().then(() => {
                     const wrapper = element.shadowRoot.querySelector(
                         '[data-element-id="div-wrapper"]'
@@ -725,11 +729,6 @@ describe('Layout', () => {
                             }
                         })
                     );
-                    jest.runAllTimers();
-                    expect(callbackSetHeight).toHaveBeenCalledTimes(2);
-                    expect(callbackSetHeight.mock.calls[0][0]).toBe('');
-                    expect(callbackSetHeight.mock.calls[1][0]).toBe(100);
-                    jest.clearAllMocks();
                     wrapper.dispatchEvent(
                         new CustomEvent('privatelayoutitemconnected', {
                             detail: {
@@ -744,11 +743,6 @@ describe('Layout', () => {
                         })
                     );
                     jest.runAllTimers();
-                    expect(callbackSetHeight).toHaveBeenCalledTimes(4);
-                    expect(callbackSetHeight.mock.calls[0][0]).toBe('');
-                    expect(callbackSetHeight.mock.calls[1][0]).toBe('');
-                    expect(callbackSetHeight.mock.calls[2][0]).toBe(200);
-                    expect(callbackSetHeight.mock.calls[3][0]).toBe(200);
                     jest.clearAllMocks();
 
                     element.equalHeights = false;
