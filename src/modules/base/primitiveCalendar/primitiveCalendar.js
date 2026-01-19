@@ -64,6 +64,11 @@ export default class PrimitiveCalendar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    @api
+    get visibleData() {
+        return this.calendarData;
+    }
+
     /**
      * Array of date label objects. If a date has several labels, the first one in the array will be used.
      *
@@ -102,7 +107,7 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
-     * Array of disabled dates. The dates should be a Date object, a timestamp, or an ISO8601 formatted string.
+     * Array of disabled dates. Dates must be a Date object.
      *
      * @public
      * @type {object[]}
@@ -121,10 +126,10 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
-     * The display date. The date should be a Date object, a timestamp, or an ISO8601 formatted string.
+     * The display date. The date should be a Date object.
      *
      * @public
-     * @type {object}
+     * @type {Date}
      */
     @api
     get displayDate() {
@@ -255,10 +260,10 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
-     * The value of the selected date(s). Dates can be a Date object, timestamp, or an ISO8601 formatted string.
+     * The value of the selected date(s). Dates must be a Date object.
      *
      * @public
-     * @type {string[]}
+     * @type {Date[]}
      */
     @api
     get value() {
@@ -266,9 +271,7 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set value(value) {
         const normalizedValue =
-            value && !Array.isArray(value)
-                ? [this.value]
-                : normalizeArray(value);
+            value && !Array.isArray(value) ? [value] : normalizeArray(value);
         this._value = normalizedValue;
         if (this._connected) {
             this.generateViewData();
@@ -377,24 +380,23 @@ export default class PrimitiveCalendar extends LightningElement {
      * Set the focus on a given date.
      *
      * @param {Date} focusDate A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
-     * @param {Date} displayDate A value to be displayed, which can be a Date object, timestamp, or an ISO8601 formatted string.
      * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
      * @public
      */
     @api
-    focusDate(focusDate, displayDate, applyFocus) {
+    focusDate(focusDate, applyFocus) {
         // if a date was previously selected or focused, focus the same date in this month.
         let selectedMonthDate, rovingDate;
         if (focusDate) {
             rovingDate = focusDate.getTime();
             selectedMonthDate = setDate(
-                displayDate,
+                this.displayDate,
                 'date',
                 focusDate.getDate()
             );
         }
         const firstOfMonthDate = startOfDay(
-            setDate(displayDate, 'date', 1)
+            setDate(this.displayDate, 'date', 1)
         ).getTime();
 
         requestAnimationFrame(() => {

@@ -566,17 +566,11 @@ export default class Calendar extends LightningElement {
      *
      * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
      * @param {Date} [focusDate=this._focusDate] The date that should receive focus inside the calendar.
-     * @param {Date} [displayDate=this.displayDate] The reference display date used by the calendar when computing focus.
      * @param {number|null} [index] The index of the calendar to focus. If null or undefined, the index is
      *  resolved by matching the focus date’s year and month against rendered
      *  calendar components.
      */
-    computeFocus(
-        applyFocus,
-        focusDate = this._focusDate,
-        displayDate = this.displayDate,
-        index
-    ) {
+    computeFocus(applyFocus, focusDate = this._focusDate, index) {
         requestAnimationFrame(() => {
             let resolvedIndex = index;
 
@@ -599,7 +593,7 @@ export default class Calendar extends LightningElement {
                 `[data-element-id="avonni-calendar__primitive-calendar"][data-index="${resolvedIndex}"]`
             );
 
-            calendar?.focusDate(focusDate, displayDate, applyFocus);
+            calendar?.focusDate(focusDate, applyFocus);
         });
     }
 
@@ -1171,7 +1165,7 @@ export default class Calendar extends LightningElement {
             this.displayDate = computedNextDate;
         }
         this.updateDateParameters();
-        this.computeFocus(true, computedNextDate, computedNextDate);
+        this.computeFocus(true, computedNextDate);
     }
 
     /**
@@ -1292,7 +1286,7 @@ export default class Calendar extends LightningElement {
             })
         );
 
-        this.computeFocus(true, date, date, dataIndex);
+        this.computeFocus(true, date, dataIndex);
     }
 
     /**
