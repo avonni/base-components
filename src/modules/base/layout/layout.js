@@ -340,13 +340,12 @@ export default class Layout extends LightningElement {
     setItemsSize(width) {
         if (this._disconnected) return;
 
-        if (this.equalHeights) {
-            this.setItemsHeight();
-        }
-
         if (width === undefined || width === null) {
             this.clearDebounceTimeout();
             this._debounceTimeoutId = setTimeout(() => {
+                if (this.equalHeights) {
+                    this.setItemsHeight();
+                }
                 this._items.forEach((item) => {
                     item.setContainerSize(this.width);
                 });
@@ -360,6 +359,12 @@ export default class Layout extends LightningElement {
         this._items.forEach((item) => {
             item.setContainerSize(size);
         });
+        if (this.equalHeights) {
+            this.clearDebounceTimeout();
+            this._debounceTimeoutId = setTimeout(() => {
+                this.setItemsHeight();
+            }, ONE_TWENTY_FPS);
+        }
     }
 
     /*
