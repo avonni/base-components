@@ -1,9 +1,9 @@
 :host {
     /* internal styling hooks - not documented */
-    --avonni-calendar-cell-sizing-width: 42px;
-    --avonni-calendar-cell-sizing-height: 42px;
-    --avonni-calendar-cell-labeled-sizing-width: 70px;
-    --avonni-calendar-cell-labeled-sizing-height: 60px;
+    --avonni-primitive-calendar-cell-sizing-width: 42px;
+    --avonni-primitive-calendar-cell-sizing-height: 42px;
+    --avonni-primitive-calendar-cell-labeled-sizing-width: 70px;
+    --avonni-primitive-calendar-cell-labeled-sizing-height: 60px;
 }
 
 div:focus {
@@ -18,24 +18,24 @@ div:focus {
     user-select: none;
     position: relative;
     vertical-align: top;
-    width: var(--avonni-calendar-cell-sizing-width);
-    min-width: var(--avonni-calendar-cell-sizing-width);
-    max-width: var(--avonni-calendar-cell-sizing-width);
-    height: var(--avonni-calendar-cell-sizing-height);
-    min-height: var(--avonni-calendar-cell-sizing-height);
-    max-height: var(--avonni-calendar-cell-sizing-height);
+    width: var(--avonni-primitive-calendar-cell-sizing-width);
+    min-width: var(--avonni-primitive-calendar-cell-sizing-width);
+    max-width: var(--avonni-primitive-calendar-cell-sizing-width);
+    height: var(--avonni-primitive-calendar-cell-sizing-height);
+    min-height: var(--avonni-primitive-calendar-cell-sizing-height);
+    max-height: var(--avonni-primitive-calendar-cell-sizing-height);
 }
 
 .avonni-primitive-calendar__date-with-labels
     .avonni-primitive-calendar__date-cell,
 .avonni-primitive-calendar__date-with-labels
     .avonni-primitive-calendar__week-cell {
-    width: var(--avonni-calendar-cell-labeled-sizing-width);
-    min-width: var(--avonni-calendar-cell-labeled-sizing-width);
-    max-width: var(--avonni-calendar-cell-labeled-sizing-width);
-    height: var(--avonni-calendar-cell-labeled-sizing-height);
-    min-height: var(--avonni-calendar-cell-labeled-sizing-height);
-    max-height: var(--avonni-calendar-cell-labeled-sizing-height);
+    width: var(--avonni-primitive-calendar-cell-labeled-sizing-width);
+    min-width: var(--avonni-primitive-calendar-cell-labeled-sizing-width);
+    max-width: var(--avonni-primitive-calendar-cell-labeled-sizing-width);
+    height: var(--avonni-primitive-calendar-cell-labeled-sizing-height);
+    min-height: var(--avonni-primitive-calendar-cell-labeled-sizing-height);
+    max-height: var(--avonni-primitive-calendar-cell-labeled-sizing-height);
 }
 
 .avonni-primitive-calendar__week-cell,
@@ -61,9 +61,9 @@ div:focus {
 }
 
 .avonni-primitive-calendar__week-cell {
-    color: var(--avonni-calendar-week-label-text-color, #747474);
-    font-size: var(--avonni-calendar-week-label-font-size, 0.8125em);
-    font-weight: var(--avonni-calendar-week-label-font-weight, 600);
+    color: var(--avonni-primitive-calendar-week-label-text-color, #747474);
+    font-size: var(--avonni-primitive-calendar-week-label-font-size, 0.8125em);
+    font-weight: var(--avonni-primitive-calendar-week-label-font-weight, 600);
 }
 
 .avonni-primitive-calendar__table {
@@ -74,7 +74,7 @@ div:focus {
     > .avonni-primitive-calendar__date-cell:hover
     > .slds-day:not(.avonni-primitive-calendar__hidden-cell) {
     background-color: var(
-        --avonni-calendar-date-color-background-hover,
+        --avonni-primitive-calendar-date-color-background-hover,
         var(--slds-s-button-color-background-hover, #f3f2f2)
     );
 }
@@ -89,62 +89,75 @@ div:focus {
     > .avonni-primitive-calendar__date-cell:hover.slds-is-selected
     > .slds-day {
     background-color: var(
-        --avonni-calendar-selected-date-color-background-hover,
+        --avonni-primitive-calendar-selected-date-color-background-hover,
         var(
-            --avonni-calendar-selected-date-color-background,
+            --avonni-primitive-calendar-selected-date-color-background,
             var(--slds-g-color-accent-container-1, #0176d3)
         )
     );
-    color: var(--avonni-calendar-selected-date-text-color-hover, #ffffff);
+    color: var(
+        --avonni-primitive-calendar-selected-date-text-color-hover,
+        #ffffff
+    );
 }
 
 .avonni-primitive-calendar__weekdays_color {
-    color: var(--avonni-calendar-weekdays-text-color, #3e3e3c);
+    color: var(--avonni-primitive-calendar-weekdays-text-color, #3e3e3c);
 }
 
 .avonni-primitive-calendar__disabled-cell.slds-day,
 .slds-day_adjacent-month .slds-day {
-    color: var(--avonni-calendar-date-disabled-text-color, #adadad);
+    color: var(--avonni-primitive-calendar-date-disabled-text-color, #adadad);
 }
 
 .slds-day {
-    color: var(--avonni-calendar-date-text-color, #080707);
+    color: var(--avonni-primitive-calendar-date-text-color, #080707);
 }
 
 .slds-is-today .slds-day {
-    background-color: var(--avonni-calendar-today-color-background, #ecebea);
-    color: var(--avonni-calendar-today-text-color, #080707);
+    background-color: var(
+        --avonni-primitive-calendar-today-color-background,
+        #ecebea
+    );
+    color: var(--avonni-primitive-calendar-today-text-color, #080707);
 }
 
 .slds-is-selected .slds-day {
     background-color: var(
-        --avonni-calendar-selected-date-color-background,
+        --avonni-primitive-calendar-selected-date-color-background,
         var(--slds-g-color-accent-container-1, #0176d3)
     );
-    color: var(--avonni-calendar-selected-date-text-color, #ffffff);
+    color: var(--avonni-primitive-calendar-selected-date-text-color, #ffffff);
 }
 
 .slds-is-selected:focus > .slds-day {
     background-color: var(
-        --avonni-calendar-selected-date-color-background-focus,
+        --avonni-primitive-calendar-selected-date-color-background-focus,
         var(--slds-g-color-accent-container-1Active, #355d96)
     );
-    color: var(--avonni-calendar-selected-date-text-color-focus, #ffffff);
+    color: var(
+        --avonni-primitive-calendar-selected-date-text-color-focus,
+        #ffffff
+    );
 }
 
 .slds-is-today .avonni-primitive-calendar__disabled-cell.slds-day {
-    background-color: var(--avonni-calendar-color-background, transparent);
-    outline: 1px solid var(--avonni-calendar-date-disabled-text-color, #adadad);
-    color: var(--avonni-calendar-date-disabled-text-color, #adadad);
+    background-color: var(
+        --avonni-primitive-calendar-color-background,
+        transparent
+    );
+    outline: 1px solid
+        var(--avonni-primitive-calendar-date-disabled-text-color, #adadad);
+    color: var(--avonni-primitive-calendar-date-disabled-text-color, #adadad);
 }
 
 .slds-is-selected .avonni-primitive-calendar__disabled-cell.slds-day {
     background: var(
-        --avonni-calendar-selected-date-color-background,
+        --avonni-primitive-calendar-selected-date-color-background,
         var(--slds-g-color-accent-container-1, #0176d3)
     );
     color: var(
-        --avonni-calendar-selected-date-text-color,
+        --avonni-primitive-calendar-selected-date-text-color,
         rgba(255, 255, 255, 0.75)
     );
 }
@@ -157,11 +170,11 @@ div:focus {
     content: '';
     position: absolute;
     height: 100%;
-    width: var(--avonni-calendar-cell-sizing-width);
+    width: var(--avonni-primitive-calendar-cell-sizing-width);
     transform: translateX(-0.5rem);
     z-index: -1;
     background: var(
-        --avonni-calendar-selected-date-color-background,
+        --avonni-primitive-calendar-selected-date-color-background,
         var(--slds-g-color-accent-container-1, #0176d3)
     );
     box-shadow: none;
@@ -171,7 +184,7 @@ div:focus {
     .avonni-primitive-calendar__date-cell.slds-is-selected-multi
     + .slds-is-selected-multi
     > .slds-day:before {
-    width: var(--avonni-calendar-cell-labeled-sizing-width);
+    width: var(--avonni-primitive-calendar-cell-labeled-sizing-width);
     transform: translateX(calc(-50% + -2px));
 }
 
@@ -191,41 +204,41 @@ div:focus {
 
 .avonni-primitive-calendar__cell_bordered-right:after {
     border-right-color: var(
-        --avonni-calendar-multi-selected-color-border-hover,
+        --avonni-primitive-calendar-multi-selected-color-border-hover,
         #d3d3d39a
     );
     border-right-style: var(
-        --avonni-calendar-multi-selected-styling-border-hover,
+        --avonni-primitive-calendar-multi-selected-styling-border-hover,
         dashed
     );
 }
 
 .avonni-primitive-calendar__cell_bordered-left:after {
     border-left-color: var(
-        --avonni-calendar-multi-selected-color-border-hover,
+        --avonni-primitive-calendar-multi-selected-color-border-hover,
         #d3d3d39a
     );
     border-left-style: var(
-        --avonni-calendar-multi-selected-styling-border-hover,
+        --avonni-primitive-calendar-multi-selected-styling-border-hover,
         dashed
     );
 }
 
 .avonni-primitive-calendar__cell_bordered-top_bottom:after {
     border-bottom-color: var(
-        --avonni-calendar-multi-selected-color-border-hover,
+        --avonni-primitive-calendar-multi-selected-color-border-hover,
         #d3d3d39a
     );
     border-bottom-style: var(
-        --avonni-calendar-multi-selected-styling-border-hover,
+        --avonni-primitive-calendar-multi-selected-styling-border-hover,
         dashed
     );
     border-top-color: var(
-        --avonni-calendar-multi-selected-color-border-hover,
+        --avonni-primitive-calendar-multi-selected-color-border-hover,
         #d3d3d39a
     );
     border-top-style: var(
-        --avonni-calendar-multi-selected-styling-border-hover,
+        --avonni-primitive-calendar-multi-selected-styling-border-hover,
         dashed
     );
 }
