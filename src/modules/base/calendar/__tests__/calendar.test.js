@@ -232,7 +232,7 @@ describe('Calendar', () => {
                     );
 
                     expect(calendar.min).toEqual(new Date('05/15/2021'));
-                    expect(element.max).toEqual(new Date('05/23/2021'));
+                    expect(calendar.max).toEqual(new Date('05/23/2021'));
                 });
             });
         });
@@ -908,7 +908,8 @@ describe('Calendar', () => {
                         new CustomEvent('selectdate', {
                             detail: {
                                 fullDate: String(day7.getTime()),
-                                disabled: false
+                                disabled: false,
+                                bounds: { x: 1, y: 1 }
                             }
                         })
                     );
@@ -917,6 +918,7 @@ describe('Calendar', () => {
                     const call = handler.mock.calls[0][0];
                     const normalizedDate = new Date('05/07/2021');
                     expect(typeof call.detail.value).toBe('string');
+                    expect(call.detail.bounds).toEqual({ x: 1, y: 1 });
                     expect(new Date(call.detail.value)).toEqual(normalizedDate);
                     expect(call.bubbles).toBeFalsy();
                     expect(call.composed).toBeFalsy();
@@ -942,7 +944,8 @@ describe('Calendar', () => {
                         new CustomEvent('selectdate', {
                             detail: {
                                 fullDate: String(day7.getTime()),
-                                disabled: day7.disabled
+                                disabled: day7.disabled,
+                                bounds: { x: 1, y: 1 }
                             }
                         })
                     );
@@ -950,6 +953,7 @@ describe('Calendar', () => {
                     expect(handler).toHaveBeenCalled();
                     const call = handler.mock.calls[0][0];
                     expect(call.detail.value).toHaveLength(2);
+                    expect(call.detail.bounds).toEqual({ x: 1, y: 1 });
                     call.detail.value.forEach((val) => {
                         expect(typeof val).toBe('string');
                     });
@@ -980,7 +984,8 @@ describe('Calendar', () => {
                         new CustomEvent('selectdate', {
                             detail: {
                                 fullDate: String(day9.getTime()),
-                                disabled: false
+                                disabled: false,
+                                bounds: { x: 1, y: 1 }
                             }
                         })
                     );
@@ -988,6 +993,10 @@ describe('Calendar', () => {
                     expect(handler.mock.calls[0][0].detail.value).toMatchObject(
                         []
                     );
+                    expect(handler.mock.calls[0][0].detail.bounds).toEqual({
+                        x: 1,
+                        y: 1
+                    });
                 });
             });
 
@@ -1009,7 +1018,8 @@ describe('Calendar', () => {
                         new CustomEvent('selectdate', {
                             detail: {
                                 fullDate: String(day11.getTime()),
-                                disabled: false
+                                disabled: false,
+                                bounds: { x: 1, y: 1 }
                             }
                         })
                     );
@@ -1021,6 +1031,10 @@ describe('Calendar', () => {
                     });
                     expect(new Date(value[0])).toEqual(new Date('05/09/2021'));
                     expect(new Date(value[1])).toEqual(new Date('05/11/2021'));
+                    expect(handler.mock.calls[0][0].detail.bounds).toEqual({
+                        x: 1,
+                        y: 1
+                    });
                 });
             });
         });

@@ -567,14 +567,17 @@ describe('Primitive Calendar', () => {
                     expect(day14Call.detail.fullDate).toEqual(
                         Number(day14.dataset.fullDate)
                     );
+                    expect(day14Call.detail.bounds).not.toBeUndefined();
                     expect(day14Call.detail.disabled).toEqual(true);
                     expect(day18Call.detail.fullDate).toEqual(
                         Number(day18.dataset.fullDate)
                     );
+                    expect(day18Call.detail.bounds).not.toBeUndefined();
                     expect(day18Call.detail.disabled).toEqual(false);
                     expect(day24Call.detail.fullDate).toEqual(
                         Number(day24.dataset.fullDate)
                     );
+                    expect(day24Call.detail.bounds).not.toBeUndefined();
                     expect(day24Call.detail.disabled).toEqual(true);
                 });
             });
