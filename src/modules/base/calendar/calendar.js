@@ -20,6 +20,8 @@ import {
     startOfDay
 } from 'c/calendarUtils';
 
+const DEFAULT_NUMBER_CALENDAR = 1;
+
 const DEFAULT_NEXT_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Next Month';
 const DEFAULT_PREVIOUS_MONTH_BUTTON_ALTERNATIVE_TEXT = 'Previous Month';
 const DEFAULT_YEAR_SELECT_ASSISTIVE_TEXT = 'Pick a year';
@@ -63,7 +65,7 @@ export default class Calendar extends LightningElement {
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
-    _nbMonthCalendars = 1;
+    _nbMonthCalendars = DEFAULT_NUMBER_CALENDAR;
     _selectionMode = SELECTION_MODES.default;
     _timezone;
     _value;
@@ -261,7 +263,10 @@ export default class Calendar extends LightningElement {
     }
     set nbMonthCalendars(value) {
         const number = parseInt(value, 10);
-        this._nbMonthCalendars = isNaN(number) || number < 1 ? 0 : number;
+        this._nbMonthCalendars =
+            isNaN(number) || number < DEFAULT_NUMBER_CALENDAR
+                ? DEFAULT_NUMBER_CALENDAR
+                : number;
         if (this._connected) {
             this.generateViewData();
         }
@@ -710,8 +715,7 @@ export default class Calendar extends LightningElement {
                 date: isInvalidDate(marker.date)
                     ? marker.date
                     : startOfDay(
-                          getDateWithTimezone(marker.date),
-                          this.timezone
+                          getDateWithTimezone(marker.date, this.timezone)
                       )
             };
         });
