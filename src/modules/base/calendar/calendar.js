@@ -1,7 +1,6 @@
 import { getFormattedDate, setDate } from 'c/dateTimeUtils';
 import {
     deepCopy,
-    generateUUID,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -427,13 +426,6 @@ export default class Calendar extends LightningElement {
         }
 
         return disabled;
-    }
-
-    /**
-     * Generate unique ID key.
-     */
-    get generateKey() {
-        return generateUUID();
     }
 
     /**
@@ -1090,14 +1082,15 @@ export default class Calendar extends LightningElement {
      *
      * @param {Event} event
      */
-    handleKeyDate(event) {
-        const nextDate = event.detail.nextDate;
-        const fullDate = Number(event.detail.fullDate);
+    handleKeyDownDate(event) {
+        const nextDateTimeStamp = Number(event.detail.nextDate);
+        const fullDateTimeStamp = Number(event.detail.fullDate);
         const dataIndex = Number(event.currentTarget.dataset.index);
-        if (!nextDate || !fullDate) {
+        if (isNaN(nextDateTimeStamp) || isNaN(fullDateTimeStamp)) {
             return;
         }
-        const initialDate = new Date(fullDate);
+        const initialDate = new Date(fullDateTimeStamp);
+        const nextDate = new Date(nextDateTimeStamp);
 
         const isNavigate =
             initialDate.getMonth() !== nextDate.getMonth() ||
@@ -1166,7 +1159,7 @@ export default class Calendar extends LightningElement {
      * Mouse over date handler.
      */
     handleMouseOverDate(event) {
-        const day = event.detail.day;
+        const day = Number(event.detail.day);
 
         const calendars = this.template.querySelectorAll(
             '[data-element-id="avonni-calendar__primitive-calendar"]'

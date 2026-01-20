@@ -473,7 +473,7 @@ export default class PrimitiveCalendar extends LightningElement {
 
     /**
      * Simulates a mouseon event on a calendar date by adding borders.
-     * @param {string} day The timestamp of the date
+     * @param {number} day The timestamp of the date.
      * @public
      */
     @api mouseOverDate(day) {
@@ -488,29 +488,32 @@ export default class PrimitiveCalendar extends LightningElement {
 
     /**
      * Add borders on cells
-     * @param {string} day The timestamp of the date
+     * @param {number} day The timestamp of the date
      */
     addDateBorder(day) {
+        const computedDay = Number(day);
         const dayCell = this.template.querySelector(
-            `[data-full-date="${day}"]${SELECTOR_HAS_BORDER}`
+            `[data-full-date="${computedDay}"]${SELECTOR_HAS_BORDER}`
         );
         const timeArray = this._value
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
         const cellSelector = `td${SELECTOR_HAS_BORDER}`;
-        if (this.selectionMode === 'interval' && !!day) {
+        if (this.selectionMode === 'interval' && !isNaN(computedDay)) {
             if (timeArray.length === 1) {
-                if (day > timeArray[0]) {
+                if (computedDay > timeArray[0]) {
                     dayCell?.classList.add(
                         'avonni-primitive-calendar__cell_bordered-right'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
                         .forEach((x) => {
+                            const timestamp = Number(
+                                x.getAttribute('data-full-date')
+                            );
                             if (
-                                x.getAttribute('data-full-date') >=
-                                    timeArray[0] &&
-                                x.getAttribute('data-full-date') <= day
+                                timestamp >= timeArray[0] &&
+                                timestamp <= computedDay
                             ) {
                                 x.classList.add(
                                     'avonni-primitive-calendar__cell_bordered-top_bottom'
@@ -518,17 +521,19 @@ export default class PrimitiveCalendar extends LightningElement {
                             }
                         });
                 }
-                if (day < timeArray[0]) {
+                if (computedDay < timeArray[0]) {
                     dayCell?.classList.add(
                         'avonni-primitive-calendar__cell_bordered-left'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
                         .forEach((x) => {
+                            const timestamp = Number(
+                                x.getAttribute('data-full-date')
+                            );
                             if (
-                                x.getAttribute('data-full-date') <=
-                                    timeArray[0] &&
-                                x.getAttribute('data-full-date') >= day
+                                timestamp <= timeArray[0] &&
+                                timestamp >= computedDay
                             ) {
                                 x.classList.add(
                                     'avonni-primitive-calendar__cell_bordered-top_bottom'
@@ -537,17 +542,19 @@ export default class PrimitiveCalendar extends LightningElement {
                         });
                 }
             } else if (timeArray.length === 2) {
-                if (day > timeArray[1]) {
+                if (computedDay > timeArray[1]) {
                     dayCell?.classList.add(
                         'avonni-primitive-calendar__cell_bordered-right'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
                         .forEach((x) => {
+                            const timestamp = Number(
+                                x.getAttribute('data-full-date')
+                            );
                             if (
-                                x.getAttribute('data-full-date') >=
-                                    timeArray[1] &&
-                                x.getAttribute('data-full-date') <= day
+                                timestamp >= timeArray[1] &&
+                                timestamp <= computedDay
                             ) {
                                 x.classList.add(
                                     'avonni-primitive-calendar__cell_bordered-top_bottom'
@@ -555,17 +562,19 @@ export default class PrimitiveCalendar extends LightningElement {
                             }
                         });
                 }
-                if (day < timeArray[0]) {
+                if (computedDay < timeArray[0]) {
                     dayCell?.classList.add(
                         'avonni-primitive-calendar__cell_bordered-left'
                     );
                     this.template
                         .querySelectorAll(cellSelector)
                         .forEach((x) => {
+                            const timestamp = Number(
+                                x.getAttribute('data-full-date')
+                            );
                             if (
-                                x.getAttribute('data-full-date') <=
-                                    timeArray[0] &&
-                                x.getAttribute('data-full-date') >= day
+                                timestamp <= timeArray[0] &&
+                                timestamp >= computedDay
                             ) {
                                 x.classList.add(
                                     'avonni-primitive-calendar__cell_bordered-top_bottom'
@@ -865,7 +874,7 @@ export default class PrimitiveCalendar extends LightningElement {
             this.dispatchMouseOutDate();
             return;
         }
-        const day = event.target.getAttribute('data-full-date');
+        const day = Number(event.target.getAttribute('data-full-date'));
         this.dispatchMouseOverDate(day);
     }
 
@@ -885,7 +894,7 @@ export default class PrimitiveCalendar extends LightningElement {
          * @public
          * @name selectdate
          * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
-         * @param {string} fullDate The selected date.
+         * @param {number} fullDate The selected date.
          * @param {boolean} disabled If present, the selected date is disabled.
          * @param {boolean} isDateHidden If present, the selected date is hidden.
          */
@@ -893,7 +902,7 @@ export default class PrimitiveCalendar extends LightningElement {
             new CustomEvent('selectdate', {
                 detail: {
                     bounds: event.currentTarget.getBoundingClientRect(),
-                    fullDate,
+                    fullDate: Number(fullDate),
                     disabled: disabled === 'true',
                     isDateHidden: isDateHidden === 'true'
                 }
@@ -908,7 +917,7 @@ export default class PrimitiveCalendar extends LightningElement {
      */
     handleKeyDown(event) {
         const fullDate = Number(event.target.dataset.fullDate);
-        if (!fullDate) {
+        if (isNaN(fullDate)) {
             return;
         }
 
@@ -987,15 +996,15 @@ export default class PrimitiveCalendar extends LightningElement {
          *
          * @event
          * @public
-         * @name selectdatekey
-         * @param {number} fulldate The current date
-         * @param {Date} nextDate The selected date by key
+         * @name keydowndate
+         * @param {number} fulldate The current date timestamp
+         * @param {number} nextDate The next date timestamp
          */
         this.dispatchEvent(
-            new CustomEvent('selectdatekey', {
+            new CustomEvent('keydowndate', {
                 detail: {
                     fullDate,
-                    nextDate
+                    nextDate: nextDate.getTime()
                 }
             })
         );
@@ -1024,7 +1033,7 @@ export default class PrimitiveCalendar extends LightningElement {
      * @event
      * @public
      * @name mouseoverdate
-     * @param {string} day The mouse over date in string .
+     * @param {number} day The timestamp of the date moused over
      */
     dispatchMouseOverDate(day) {
         this.dispatchEvent(

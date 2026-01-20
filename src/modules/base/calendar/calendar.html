@@ -144,13 +144,13 @@
                                 value={computedValue}
                                 week-number={weekNumber}
                                 week-start-day={weekStartDay}
-                                onselectdate={handleSelectDate}
-                                onselectdatekey={handleKeyDate}
                                 onblur={handleBlur}
                                 ondatefocus={handleDateFocus}
                                 onfocus={handleFocus}
+                                onkeydowndate={handleKeyDownDate}
                                 onmouseoutdate={handleMouseOutDate}
                                 onmouseoverdate={handleMouseOverDate}
+                                onselectdate={handleSelectDate}
                                 data-element-id="avonni-calendar__primitive-calendar"
                                 data-index={index}
                                 data-month-index={item.monthIndex}

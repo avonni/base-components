@@ -143,7 +143,7 @@ describe('Primitive Calendar', () => {
                 element.displayDate = new Date('05/09/2021');
                 element.value = new Date('05/09/2021');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day8 =
@@ -165,7 +165,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date(Number(day8.dataset.fullDate))
+                        Number(day8.dataset.fullDate)
                     );
                 });
             });
@@ -174,7 +174,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2021');
                 element.displayDate = new Date('05/09/2021');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
                 return Promise.resolve().then(() => {
                     const day10 =
                         element.shadowRoot.querySelector('td[data-date="10"]');
@@ -195,7 +195,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date(Number(day10.dataset.fullDate))
+                        Number(day10.dataset.fullDate)
                     );
                 });
             });
@@ -204,7 +204,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2021');
                 element.displayDate = new Date('05/09/2021');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day2 =
@@ -225,7 +225,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date(Number(day2.dataset.fullDate))
+                        Number(day2.dataset.fullDate)
                     );
                 });
             });
@@ -234,7 +234,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2021');
                 element.displayDate = new Date('05/09/2021');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day16 =
@@ -255,7 +255,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date(Number(day16.dataset.fullDate))
+                        Number(day16.dataset.fullDate)
                     );
                 });
             });
@@ -264,7 +264,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/10/2022');
                 element.displayDate = new Date('05/10/2022');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day8 =
@@ -285,7 +285,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date(Number(day8.dataset.fullDate))
+                        Number(day8.dataset.fullDate)
                     );
                 });
             });
@@ -294,7 +294,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2022');
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day14 =
@@ -315,7 +315,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date(Number(day14.dataset.fullDate))
+                        Number(day14.dataset.fullDate)
                     );
                 });
             });
@@ -324,7 +324,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2022');
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day9 =
@@ -341,7 +341,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date('04/09/2022')
+                        new Date('04/09/2022').getTime()
                     );
                 });
             });
@@ -350,7 +350,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2022');
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day9 =
@@ -367,7 +367,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date('06/09/2022')
+                        new Date('06/09/2022').getTime()
                     );
                 });
             });
@@ -376,7 +376,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2022');
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day9 =
@@ -394,7 +394,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date('05/09/2023')
+                        new Date('05/09/2023').getTime()
                     );
                 });
             });
@@ -403,7 +403,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2022');
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
-                element.addEventListener('selectdatekey', handler);
+                element.addEventListener('keydowndate', handler);
 
                 return Promise.resolve().then(() => {
                     const day9 =
@@ -421,7 +421,7 @@ describe('Primitive Calendar', () => {
                         Number(day9.dataset.fullDate)
                     );
                     expect(handler.mock.calls[0][0].detail.nextDate).toEqual(
-                        new Date('05/09/2021')
+                        new Date('05/09/2021').getTime()
                     );
                 });
             });
@@ -431,7 +431,7 @@ describe('Primitive Calendar', () => {
                 element.value = new Date('05/09/2021');
                 const handlerDateKey = jest.fn();
                 const handlerSelectDate = jest.fn();
-                element.addEventListener('selectdatekey', handlerDateKey);
+                element.addEventListener('keydowndate', handlerDateKey);
                 element.addEventListener('selectdate', handlerSelectDate);
 
                 return Promise.resolve().then(() => {
@@ -460,7 +460,7 @@ describe('Primitive Calendar', () => {
                     expect(handlerSelectDate).toHaveBeenCalledTimes(3);
                     handlerSelectDate.mock.calls.forEach((call) => {
                         expect(call[0].detail.fullDate).toEqual(
-                            day9.dataset.fullDate
+                            Number(day9.dataset.fullDate)
                         );
                     });
                 });
@@ -565,15 +565,15 @@ describe('Primitive Calendar', () => {
                     const day18Call = handler.mock.calls[1][0];
                     const day24Call = handler.mock.calls[2][0];
                     expect(day14Call.detail.fullDate).toEqual(
-                        day14.dataset.fullDate
+                        Number(day14.dataset.fullDate)
                     );
                     expect(day14Call.detail.disabled).toEqual(true);
                     expect(day18Call.detail.fullDate).toEqual(
-                        day18.dataset.fullDate
+                        Number(day18.dataset.fullDate)
                     );
                     expect(day18Call.detail.disabled).toEqual(false);
                     expect(day24Call.detail.fullDate).toEqual(
-                        day24.dataset.fullDate
+                        Number(day24.dataset.fullDate)
                     );
                     expect(day24Call.detail.disabled).toEqual(true);
                 });
@@ -757,7 +757,7 @@ describe('Primitive Calendar', () => {
                     td.dispatchEvent(new CustomEvent('mouseover'));
                     expect(handler).toHaveBeenCalledTimes(1);
                     expect(handler.mock.calls[0][0].detail.day).toEqual(
-                        td.dataset.fullDate
+                        Number(td.dataset.fullDate)
                     );
                 });
             });

@@ -30,6 +30,7 @@ describe('Calendar', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.disabledDates).toMatchObject([]);
             expect(element.hideNavigation).toBeFalsy();
+            expect(element.nbMonthCalendars).toBe(1);
             expect(element.markedDates).toMatchObject([]);
             expect(element.max).toMatchObject(new Date(2099, 11, 31));
             expect(element.min).toMatchObject(new Date(1900, 0, 1));
@@ -232,6 +233,30 @@ describe('Calendar', () => {
 
                     expect(calendar.min).toEqual(new Date('05/15/2021'));
                     expect(element.max).toEqual(new Date('05/23/2021'));
+                });
+            });
+        });
+
+        describe('nbMonthCalendars', () => {
+            it('Passed to the component', () => {
+                element.value = '05/09/2021';
+                element.nbMonthCalendars = 2;
+                return Promise.resolve().then(() => {
+                    const calendars = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendars.length).toBe(2);
+                    calendars.forEach((calendar, index) => {
+                        const date = new Date('05/01/2021');
+                        const displayDate = new Date(
+                            new Date(date).setMonth(date.getMonth() + index)
+                        );
+                        expect(calendar.isMultiCalendars).toBe(true);
+                        expect(calendar.value).toEqual([
+                            new Date('05/09/2021')
+                        ]);
+                        expect(calendar.displayDate).toEqual(displayDate);
+                    });
                 });
             });
         });
@@ -1034,6 +1059,322 @@ describe('Calendar', () => {
                     expect(handler).toHaveBeenCalled();
                     const date = handler.mock.calls[0][0].detail.date;
                     expect(new Date(date)).toEqual(new Date('04/01/2022'));
+                });
+            });
+
+            it('Fired on year change', () => {
+                element.value = '05/09/2021';
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const selectYear = element.shadowRoot.querySelector(
+                        '[data-element-id="select-year"]'
+                    );
+                    selectYear.value = '2025';
+                    selectYear.dispatchEvent(new CustomEvent('change'));
+
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(new Date(date)).toEqual(new Date('05/01/2025'));
+                });
+            });
+        });
+
+        describe('keydowndate', () => {
+            it('Dispatch navigate on different month/year', () => {
+                element.value = '05/08/2022';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('06/08/2022')
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(typeof date).toBe('string');
+                    expect(new Date(date)).toEqual(new Date('06/01/2022'));
+                    jest.runAllTimers();
+                    expect(focusDateSpy).toHaveBeenCalledWith(
+                        new Date('06/08/2022'),
+                        true
+                    );
+                });
+            });
+
+            it('Does not dispatch navigate on same month/year', () => {
+                element.value = '05/08/2022';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('05/09/2022')
+                            }
+                        })
+                    );
+                    expect(handler).not.toHaveBeenCalled();
+                    jest.runAllTimers();
+                    expect(focusDateSpy).toHaveBeenCalledWith(
+                        new Date('05/09/2022'),
+                        true
+                    );
+                });
+            });
+
+            it('Next date above max', () => {
+                element.value = '05/08/2022';
+                element.max = '12/31/2099';
+                element.min = '01/01/2000';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('05/08/2100')
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(typeof date).toBe('string');
+                    expect(new Date(date)).toEqual(new Date('05/01/2100'));
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    jest.runAllTimers();
+                    const lastCall =
+                        focusDateSpy.mock.calls[
+                            focusDateSpy.mock.calls.length - 1
+                        ];
+                    expect(lastCall).toEqual([new Date('12/31/2099'), true]);
+                });
+            });
+
+            it('Next date below min', () => {
+                element.value = '05/08/2022';
+                element.max = '12/31/2099';
+                element.min = '01/01/2000';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('05/08/1999')
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(typeof date).toBe('string');
+                    expect(new Date(date)).toEqual(new Date('05/01/1999'));
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    jest.runAllTimers();
+                    const lastCall =
+                        focusDateSpy.mock.calls[
+                            focusDateSpy.mock.calls.length - 1
+                        ];
+                    expect(lastCall).toEqual([new Date('01/01/2000'), true]);
+                });
+            });
+
+            it('Dispatch navigate on multi calendars if next date not visible', () => {
+                element.value = '05/08/2022';
+                element.nbMonthCalendars = 2;
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        calendars[1].dispatchEvent(
+                            new CustomEvent('keydowndate', {
+                                detail: {
+                                    fullDate: new Date('06/08/2022'),
+                                    nextDate: new Date('07/08/2022')
+                                }
+                            })
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        const date = handler.mock.calls[0][0].detail.date;
+                        expect(typeof date).toBe('string');
+                        expect(new Date(date)).toEqual(new Date('07/01/2022'));
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        const focusDateSpy = jest.spyOn(
+                            calendars[1],
+                            'focusDate'
+                        );
+                        jest.runAllTimers();
+                        const lastCall =
+                            focusDateSpy.mock.calls[
+                                focusDateSpy.mock.calls.length - 1
+                            ];
+                        expect(lastCall).toEqual([
+                            new Date('07/08/2022'),
+                            true
+                        ]);
+                    });
+            });
+
+            it('Dispatch not navigate on multi calendars if next date visible', () => {
+                element.value = '05/08/2022';
+                element.nbMonthCalendars = 2;
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        calendars[1].dispatchEvent(
+                            new CustomEvent('keydowndate', {
+                                detail: {
+                                    fullDate: new Date('05/08/2022'),
+                                    nextDate: new Date('06/08/2022')
+                                }
+                            })
+                        );
+                        expect(handler).not.toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        const focusDateSpy = jest.spyOn(
+                            calendars[1],
+                            'focusDate'
+                        );
+                        jest.runAllTimers();
+                        const lastCall =
+                            focusDateSpy.mock.calls[
+                                focusDateSpy.mock.calls.length - 1
+                            ];
+                        expect(lastCall).toEqual([
+                            new Date('06/08/2022'),
+                            true
+                        ]);
+                    });
+            });
+
+            it('Does not dispatch navigate if initial date is NaN', () => {
+                element.value = '05/08/2022';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: NaN,
+                                nextDate: new Date('05/09/2022')
+                            }
+                        })
+                    );
+                    expect(handler).not.toHaveBeenCalled();
+                });
+            });
+
+            it('Does not dispatch navigate if next date is NaN', () => {
+                element.value = '05/08/2022';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/09/2022'),
+                                nextDate: NaN
+                            }
+                        })
+                    );
+                    expect(handler).not.toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('mouseoutdate', () => {
+            it('Mouse out date', () => {
+                element.value = '05/08/2022';
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const spy = jest.spyOn(calendar, 'mouseOutDate');
+                    calendar.dispatchEvent(new CustomEvent('mouseoutdate'));
+                    expect(spy).toHaveBeenCalledTimes(1);
+                });
+            });
+        });
+
+        describe('mouseoverdate', () => {
+            it('Mouse over date', () => {
+                element.value = '05/08/2022';
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const spyMouseOut = jest.spyOn(calendar, 'mouseOutDate');
+                    const spyMouseOver = jest.spyOn(calendar, 'mouseOverDate');
+                    calendar.dispatchEvent(
+                        new CustomEvent('mouseoverdate', {
+                            detail: {
+                                day: new Date('05/10/2022').getTime()
+                            }
+                        })
+                    );
+                    expect(spyMouseOut).toHaveBeenCalledTimes(1);
+                    expect(spyMouseOver).toHaveBeenCalledTimes(1);
                 });
             });
         });
