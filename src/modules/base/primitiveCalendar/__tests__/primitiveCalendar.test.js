@@ -1,7 +1,7 @@
 import { createElement } from 'lwc';
 import PrimitiveCalendar from '../primitiveCalendar';
 
-// not tested : mouse over, mouse out events on calendar, keyboard selecting a date ouside current month, trying to select a disabled date, previous month and next month buttons
+// not tested : keyboard selecting a date ouside current month, trying to select a disabled date
 
 let element;
 describe('Primitive Calendar', () => {
@@ -29,6 +29,7 @@ describe('Primitive Calendar', () => {
             expect(element.dateLabels).toMatchObject([]);
             expect(element.disabled).toBeFalsy();
             expect(element.disabledDates).toMatchObject([]);
+            expect(element.isMultiCalendars).toBeFalsy();
             expect(element.markedDates).toMatchObject([]);
             expect(element.max).toMatchObject(new Date(2099, 11, 31));
             expect(element.min).toMatchObject(new Date(1900, 0, 1));
@@ -102,15 +103,17 @@ describe('Primitive Calendar', () => {
             });
         });
 
-        describe('hideNavigation', () => {
-            it('Passed to the component', () => {
-                element.hideNavigation = true;
+        describe('isMultiCalendars', () => {
+            it('Display only dates of the month', () => {
+                element.displayDate = new Date('05/09/2021');
+                element.value = new Date('05/09/2021');
+                element.isMultiCalendars = true;
 
                 return Promise.resolve().then(() => {
-                    const calendarNavigation = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-calendar__header"]'
+                    const tds = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="span-day-label"]:not([data-is-date-hidden="true"])'
                     );
-                    expect(calendarNavigation).toBeNull();
+                    expect(tds.length).toBe(31);
                 });
             });
         });
@@ -422,6 +425,46 @@ describe('Primitive Calendar', () => {
                     );
                 });
             });
+
+            it('[enter], [Spacebar], [ ]', () => {
+                element.displayDate = new Date('05/09/2021');
+                element.value = new Date('05/09/2021');
+                const handlerDateKey = jest.fn();
+                const handlerSelectDate = jest.fn();
+                element.addEventListener('selectdatekey', handlerDateKey);
+                element.addEventListener('selectdate', handlerSelectDate);
+
+                return Promise.resolve().then(() => {
+                    const day9 =
+                        element.shadowRoot.querySelector('td[data-date="9"]');
+                    day9.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'Enter',
+                            bubbles: true
+                        })
+                    );
+                    day9.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: ' ',
+                            bubbles: true
+                        })
+                    );
+                    day9.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'Spacebar',
+                            bubbles: true
+                        })
+                    );
+                    jest.runOnlyPendingTimers();
+                    expect(handlerDateKey).not.toHaveBeenCalled();
+                    expect(handlerSelectDate).toHaveBeenCalledTimes(3);
+                    handlerSelectDate.mock.calls.forEach((call) => {
+                        expect(call[0].detail.fullDate).toEqual(
+                            day9.dataset.fullDate
+                        );
+                    });
+                });
+            });
         });
 
         describe('marked dates', () => {
@@ -537,440 +580,62 @@ describe('Primitive Calendar', () => {
             });
         });
 
-        describe('timezone', () => {
-            it('Passed to the component', () => {
-                element.value = new Date('2021-05-18T20:00:00.000Z');
-                element.min = new Date('2021-05-15T18:00:00.000Z');
-                element.max = new Date('2021-05-23T04:00:00.000Z');
+        describe('values', () => {
+            it('Selection-mode: single', () => {
                 element.selectionMode = 'single';
-                // UTC+11
-                element.timezone = 'Pacific/Noumea';
-                element.displayDate = new Date('2021-05-18T20:00:00.000Z');
-
+                element.value = new Date('04/15/2021');
+                element.displayDate = new Date('04/15/2021');
                 return Promise.resolve().then(() => {
-                    const selected = element.shadowRoot.querySelector(
-                        '[data-element-id="td"][data-selected="true"]'
-                    );
+                    const selected =
+                        element.shadowRoot.querySelector('.slds-is-selected');
                     const selectedDayLabel = selected.querySelector(
                         '[data-element-id="span-day-label"]'
                     );
-                    expect(selectedDayLabel.textContent).toBe('19');
+                    expect(selectedDayLabel.textContent).toBe('15');
+                });
+            });
 
-                    const day15 = element.shadowRoot.querySelector(
-                        '[data-element-id="span-day-label"][data-date="15"]'
+            it('value multiple', () => {
+                element.selectionMode = 'multiple';
+                element.min = new Date('01/01/2020');
+                element.max = new Date('12/31/2030');
+                element.value = [new Date('05/06/2022')];
+                element.displayDate = new Date('05/06/2022');
+                return Promise.resolve().then(() => {
+                    const selected =
+                        element.shadowRoot.querySelector('.slds-is-selected');
+                    const selectedDayLabel = selected.querySelector(
+                        '[data-element-id="span-day-label"]'
                     );
-                    expect(day15.dataset.disabled).toBe('true');
+                    expect(selectedDayLabel.textContent).toBe('6');
+                });
+            });
 
-                    const day23 = element.shadowRoot.querySelector(
-                        '[data-element-id="span-day-label"][data-date="23"]'
-                    );
-                    expect(day23.dataset.disabled).toBe('false');
+            it('value with interval', () => {
+                element.selectionMode = 'interval';
+                element.min = new Date('01/01/2020');
+                element.max = new Date('12/31/2021');
+                element.value = [
+                    new Date('01/01/2020'),
+                    new Date('01/10/2020')
+                ];
+                element.displayDate = new Date('01/01/2020');
+
+                return Promise.resolve().then(() => {
+                    const days =
+                        element.shadowRoot.querySelectorAll(
+                            '.slds-is-selected'
+                        );
+                    expect(days.length).toBe(10);
+                    for (let i = 0; i < days.length; ++i) {
+                        const dayLabel = days[i].querySelector(
+                            '[data-element-id="span-day-label"]'
+                        );
+                        expect(dayLabel.textContent).toBe((i + 1).toString());
+                    }
                 });
             });
         });
-
-        // describe('values', () => {
-        //     it('Selection-mode: single', () => {
-        //         element.selectionMode = 'single';
-        //         element.value = new Date('04/15/2021');
-        //         element.displayDate = new Date('04/15/2021');
-        //         return Promise.resolve().then(() => {
-        //             const selected =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             const selectedDayLabel = selected.querySelector(
-        //                 '[data-element-id="span-day-label"]'
-        //             );
-        //             expect(selectedDayLabel.textContent).toBe('15');
-        //         });
-        //     });
-
-        //     it('Current day bigger than upper bound should re-center calendar to max value', () => {
-        //         element.selectionMode = 'single';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2030');
-        //         element.value = new Date('11/11/2040');
-        //         return Promise.resolve().then(() => {
-        //             const day =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             expect(day).toBeNull();
-        //         });
-        //     });
-        //     it('Current day smaller than lower bound should change to min value', () => {
-        //         element.selectionMode = 'single';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2030');
-        //         element.value = new Date('04/04/100');
-        //         return Promise.resolve().then(() => {
-        //             const day =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             expect(day).toBeNull();
-        //         });
-        //     });
-
-        //     it('Invalid calendar current day should change to current date if it is in min-max interval', () => {
-        //         element.selectionMode = 'single';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2030');
-        //         element.value = new Date('00/00/2022');
-
-        //         return Promise.resolve().then(() => {
-        //             const day =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             expect(day).toBeNull();
-        //         });
-        //     });
-
-        //     it('only dates in range should be selected', () => {
-        //         element.selectionMode = 'multiple';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2030');
-        //         element.value = [
-        //             new Date('01/02/1000'),
-        //             new Date('03/04/1032'),
-        //             new Date('05/06/2022'),
-        //             new Date('07/08/2300'),
-        //             new Date('09/10/2444')
-        //         ];
-        //         element.displayDate = new Date('05/06/2022');
-        //         return Promise.resolve().then(() => {
-        //             const selected =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             const selectedDayLabel = selected.querySelector(
-        //                 '[data-element-id="span-day-label"]'
-        //             );
-        //             expect(selectedDayLabel.textContent).toBe('6');
-        //         });
-        //     });
-
-        //     it('value validation with value below min', () => {
-        //         element.selectionMode = 'interval';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2021');
-        //         element.value = [new Date('02/11/1000'), new Date('01/10/2020')];
-        //         element.displayDate = new Date('01/01/2020');
-
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelectorAll(
-        //                     '.slds-is-selected'
-        //                 );
-        //             expect(days.length).toBe(10);
-        //             for (let i = 0; i < days.length; ++i) {
-        //                 const dayLabel = days[i].querySelector(
-        //                     '[data-element-id="span-day-label"]'
-        //                 );
-        //                 expect(dayLabel.textContent).toBe((i + 1).toString());
-        //             }
-        //         });
-        //     });
-
-        //     it('value validation with value higher than max', () => {
-        //         element.selectionMode = 'interval';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2021');
-        //         element.value = [new Date('12/29/2021'), new Date('01/10/2025')];
-
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelectorAll(
-        //                     '.slds-is-selected'
-        //                 );
-        //             expect(days.length).toBe(3);
-        //             for (let i = 0; i < days.length; ++i) {
-        //                 const dayLabel = days[i].querySelector(
-        //                     '[data-element-id="span-day-label"]'
-        //                 );
-        //                 expect(dayLabel.textContent).toBe((i + 29).toString());
-        //             }
-        //             const month = element.shadowRoot.querySelector(
-        //                 '[data-element-id="h2"]'
-        //             );
-        //             expect(month.textContent).toBe('December');
-        //             const year2021 = element.shadowRoot.querySelector(
-        //                 '[data-element-id="option-year"][value="2021"]'
-        //             );
-        //             expect(year2021.selected).toBeTruthy();
-        //         });
-        //     });
-
-        //     it('invalid values (before min)', () => {
-        //         element.selectionMode = 'interval';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2021');
-        //         element.value = ['12/29/1000', '01/10/2000'];
-
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             expect(days).toBeNull();
-        //             const month = element.shadowRoot.querySelector(
-        //                 '[data-element-id="h2"]'
-        //             );
-        //             expect(month.textContent).toBe('January');
-        //             const year2020 = element.shadowRoot.querySelector(
-        //                 '[data-element-id="option-year"][value="2020"]'
-        //             );
-        //             expect(year2020.selected).toBeTruthy();
-        //         });
-        //     });
-
-        //     it('invalid values (after max)', () => {
-        //         element.selectionMode = 'interval';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2021');
-        //         element.value = ['12/29/2022', '01/10/2024'];
-
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelector('.slds-is-selected');
-        //             expect(days).toBeNull();
-        //             const month = element.shadowRoot.querySelector(
-        //                 '[data-element-id="h2"]'
-        //             );
-        //             expect(month.textContent).toBe('January');
-        //             const year2020 = element.shadowRoot.querySelector(
-        //                 '[data-element-id="option-year"][value="2020"]'
-        //             );
-        //             expect(year2020.selected).toBeTruthy();
-        //         });
-        //     });
-
-        //     it('values before min and after max', () => {
-        //         element.selectionMode = 'interval';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('01/31/2020');
-        //         element.value = ['12/29/1000', '01/10/2025'];
-
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelectorAll(
-        //                     '.slds-is-selected'
-        //                 );
-        //             expect(days.length).toBe(31);
-        //             for (let i = 0; i < days.length; ++i) {
-        //                 const dayLabel = days[i].querySelector(
-        //                     '[data-element-id="span-day-label"]'
-        //                 );
-        //                 expect(dayLabel.textContent).toBe((i + 1).toString());
-        //             }
-        //             const month = element.shadowRoot.querySelector(
-        //                 '[data-element-id="h2"]'
-        //             );
-        //             expect(month.textContent).toBe('January');
-        //             const year2020 = element.shadowRoot.querySelector(
-        //                 '[data-element-id="option-year"][value="2020"]'
-        //             );
-        //             expect(year2020.selected).toBeTruthy();
-        //         });
-        //     });
-
-        //     it('two valid values selected', () => {
-        //         element.selectionMode = 'interval';
-        //         element.min = new Date('01/01/2020');
-        //         element.max = new Date('12/31/2025');
-        //         element.value = ['04/22/2022', '04/02/2022'];
-
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelectorAll(
-        //                     '.slds-is-selected'
-        //                 );
-        //             expect(days.length).toBe(21);
-        //             for (let i = 0; i < days.length; ++i) {
-        //                 const dayLabel = days[i].querySelector(
-        //                     '[data-element-id="span-day-label"]'
-        //                 );
-        //                 expect(dayLabel.textContent).toBe((i + 2).toString());
-        //             }
-        //             const month = element.shadowRoot.querySelector(
-        //                 '[data-element-id="h2"]'
-        //             );
-        //             expect(month.textContent).toBe('April');
-        //             const year2022 = element.shadowRoot.querySelector(
-        //                 '[data-element-id="option-year"][value="2022"]'
-        //             );
-        //             expect(year2022.selected).toBeTruthy();
-        //         });
-        //     });
-
-        //     it('single no value', () => {
-        //         element.value = '05/15/2021';
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'single';
-        //         return Promise.resolve().then(() => {
-        //             const day14 = element.shadowRoot.querySelector(
-        //                 'span[data-date="14"]'
-        //             );
-        //             day14.click();
-        //             expect(new Date(element.value)).toEqual(
-        //                 new Date('05/14/2021')
-        //             );
-        //         });
-        //     });
-
-        //     it('single same value', () => {
-        //         element.value = '05/14/2021';
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         return Promise.resolve().then(() => {
-        //             const day14 = element.shadowRoot.querySelector(
-        //                 'span[data-date="14"]'
-        //             );
-        //             day14.click();
-        //             expect(element.value).toBeNull();
-        //         });
-        //     });
-
-        //     it('multiple', () => {
-        //         element.value = ['04/15/2021', '04/16/2021', '04/17/2021'];
-        //         element.selectionMode = 'multiple';
-        //         return Promise.resolve().then(() => {
-        //             const days =
-        //                 element.shadowRoot.querySelectorAll(
-        //                     '.slds-is-selected'
-        //                 );
-        //             const dates = [];
-        //             days.forEach((day) => {
-        //                 const dayLabel = day.querySelector(
-        //                     '[data-element-id="span-day-label"]'
-        //                 );
-        //                 dates.push(dayLabel.textContent);
-        //             });
-
-        //             expect(dates.includes('15')).toBeTruthy();
-        //             expect(dates.includes('16')).toBeTruthy();
-        //             expect(dates.includes('17')).toBeTruthy();
-
-        //             const month = element.shadowRoot.querySelector(
-        //                 '[data-element-id="h2"]'
-        //             );
-        //             expect(month.textContent).toBe('April');
-        //             const year2021 = element.shadowRoot.querySelector(
-        //                 '[data-element-id="option-year"][value="2021"]'
-        //             );
-        //             expect(year2021.selected).toBeTruthy();
-        //         });
-        //     });
-
-        //     it('multiple no value', () => {
-        //         element.value = '05/15/2021';
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'multiple';
-        //         return Promise.resolve().then(() => {
-        //             const day14 = element.shadowRoot.querySelector(
-        //                 'span[data-date="14"]'
-        //             );
-        //             day14.click();
-        //             expect(element.value).toHaveLength(2);
-        //             expect(new Date(element.value[0])).toEqual(
-        //                 new Date('05/15/2021')
-        //             );
-        //             expect(new Date(element.value[1])).toEqual(
-        //                 new Date('05/14/2021')
-        //             );
-        //         });
-        //     });
-
-        //     it('interval no value', () => {
-        //         element.value = '05/14/2021';
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'interval';
-        //         return Promise.resolve().then(() => {
-        //             const day14 = element.shadowRoot.querySelector(
-        //                 'span[data-date="14"]'
-        //             );
-        //             day14.click();
-        //             expect(element.value).toEqual([]);
-        //             day14.click();
-        //             expect(new Date(element.value)).toEqual(
-        //                 new Date('05/14/2021')
-        //             );
-        //         });
-        //     });
-
-        //     it('interval newDate < startDate', () => {
-        //         element.value = '05/15/2021';
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'interval';
-        //         return Promise.resolve().then(() => {
-        //             const day14 = element.shadowRoot.querySelector(
-        //                 'span[data-date="14"]'
-        //             );
-        //             day14.click();
-        //             expect(element.value).toHaveLength(2);
-        //             expect(new Date(element.value[0])).toEqual(
-        //                 new Date('05/14/2021')
-        //             );
-        //             expect(new Date(element.value[1])).toEqual(
-        //                 new Date('05/15/2021')
-        //             );
-        //         });
-        //     });
-
-        //     it('interval newDate > startDate', () => {
-        //         element.value = '05/15/2021';
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'interval';
-        //         return Promise.resolve().then(() => {
-        //             const day17 = element.shadowRoot.querySelector(
-        //                 'span[data-date="17"]'
-        //             );
-        //             day17.click();
-        //             expect(element.value).toHaveLength(2);
-        //             expect(new Date(element.value[0])).toEqual(
-        //                 new Date('05/15/2021')
-        //             );
-        //             expect(new Date(element.value[1])).toEqual(
-        //                 new Date('05/17/2021')
-        //             );
-        //         });
-        //     });
-
-        //     it('interval newDate < endDate', () => {
-        //         element.value = ['05/15/2021', '05/16/2021'];
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'interval';
-        //         return Promise.resolve().then(() => {
-        //             const day17 = element.shadowRoot.querySelector(
-        //                 'span[data-date="17"]'
-        //             );
-        //             day17.click();
-        //             expect(element.value).toHaveLength(2);
-        //             expect(new Date(element.value[0])).toEqual(
-        //                 new Date('05/15/2021')
-        //             );
-        //             expect(new Date(element.value[1])).toEqual(
-        //                 new Date('05/17/2021')
-        //             );
-        //         });
-        //     });
-
-        //     it('interval newDate < startDate < endDate', () => {
-        //         element.value = ['05/15/2021', '05/16/2021'];
-        //         element.min = new Date('05/01/2021');
-        //         element.max = new Date('05/31/2021');
-        //         element.selectionMode = 'interval';
-        //         return Promise.resolve().then(() => {
-        //             const day14 = element.shadowRoot.querySelector(
-        //                 'span[data-date="14"]'
-        //             );
-        //             day14.click();
-        //             expect(element.value).toHaveLength(2);
-        //             expect(new Date(element.value[0])).toEqual(
-        //                 new Date('05/14/2021')
-        //             );
-        //             expect(new Date(element.value[1])).toEqual(
-        //                 new Date('05/16/2021')
-        //             );
-        //         });
-        //     });
-        // });
 
         describe('week number', () => {
             it('Passed to the component', () => {
@@ -1037,5 +702,300 @@ describe('Primitive Calendar', () => {
         });
     });
 
-    describe('Events', () => {});
+    describe('Events', () => {
+        describe('datefocus', () => {
+            it('dispatched when focused', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/01/2022')];
+                element.selectionMode = 'interval';
+                const handler = jest.fn();
+                element.addEventListener('datefocus', handler);
+
+                return Promise.resolve().then(() => {
+                    const td = element.shadowRoot.querySelector(
+                        '[data-element-id="td"]'
+                    );
+                    td.dispatchEvent(new CustomEvent('focus'));
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.focusDate).toEqual(
+                        td.dataset.fullDate
+                    );
+                });
+            });
+        });
+
+        describe('mouseoutdate', () => {
+            it('dispatched when mouse out', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/01/2022')];
+                element.selectionMode = 'interval';
+                const handler = jest.fn();
+                element.addEventListener('mouseoutdate', handler);
+
+                return Promise.resolve().then(() => {
+                    const td = element.shadowRoot.querySelector(
+                        '[data-element-id="td"]'
+                    );
+                    td.dispatchEvent(new CustomEvent('mouseout'));
+                    expect(handler).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('mouseoverdate', () => {
+            it('dispatched when mouse over', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/01/2022')];
+                element.selectionMode = 'interval';
+                const handler = jest.fn();
+                element.addEventListener('mouseoverdate', handler);
+
+                return Promise.resolve().then(() => {
+                    const td = element.shadowRoot.querySelector(
+                        '[data-element-id="td"][data-date="1"]'
+                    );
+                    td.dispatchEvent(new CustomEvent('mouseover'));
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    expect(handler.mock.calls[0][0].detail.day).toEqual(
+                        td.dataset.fullDate
+                    );
+                });
+            });
+            it('not dispatched when mouse over on disabled', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/01/2022')];
+                element.selectionMode = 'interval';
+                element.isMultiCalendars = true;
+                const june1 = new Date('06/01/2022');
+                const june1FullDate = june1.getTime().toString();
+                const mouseOverDateHandler = jest.fn();
+                const mouseOutDateHandler = jest.fn();
+                element.addEventListener('mouseoverdate', mouseOverDateHandler);
+                element.addEventListener('mouseoutdate', mouseOutDateHandler);
+
+                return Promise.resolve().then(() => {
+                    const td = element.shadowRoot.querySelector(
+                        `[data-element-id="td"][data-full-date="${june1FullDate}"]`
+                    );
+                    td.dispatchEvent(new CustomEvent('mouseover'));
+                    expect(mouseOverDateHandler).toHaveBeenCalledTimes(0);
+                    expect(mouseOutDateHandler).toHaveBeenCalledTimes(1);
+                });
+            });
+        });
+
+        describe('private blur', () => {
+            it('dispatched when blured', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/01/2022')];
+                element.selectionMode = 'interval';
+                const handler = jest.fn();
+                element.addEventListener('privateblur', handler);
+
+                return Promise.resolve().then(() => {
+                    const td = element.shadowRoot.querySelector(
+                        '[data-element-id="td"]'
+                    );
+                    td.dispatchEvent(new CustomEvent('blur'));
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].composed).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                });
+            });
+        });
+    });
+
+    describe('Methods', () => {
+        describe('mouseoverdate & mouseoutdate', () => {
+            it('date after selected, single value', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/01/2022')];
+                element.selectionMode = 'interval';
+                const day31 = new Date('05/31/2022');
+                const day31FullDate = day31.getTime().toString();
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.mouseOverDate(day31FullDate);
+                    })
+                    .then(() => {
+                        const cellBorderTopBottom =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-top_bottom'
+                            );
+                        expect(cellBorderTopBottom.length).toBe(31);
+                        const cellBorderLeft =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-left'
+                            );
+                        expect(cellBorderLeft.length).toBe(0);
+                        const cellBorderRight =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-right'
+                            );
+                        expect(cellBorderRight.length).toBe(1);
+                        expect(cellBorderRight[0].dataset.fullDate).toBe(
+                            day31FullDate
+                        );
+                        element.mouseOutDate();
+                    })
+                    .then(() => {
+                        const borderedCells = element.shadowRoot
+                            .querySelectorAll(`
+                        .avonni-primitive-calendar__cell_bordered-top_bottom,
+                        .avonni-primitive-calendar__cell_bordered-left,
+                        .avonni-primitive-calendar__cell_bordered-right
+                    `);
+
+                        expect(borderedCells.length).toBe(0);
+                    });
+            });
+
+            it('date before selected, single value', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [new Date('05/31/2022')];
+                element.selectionMode = 'interval';
+                const day1 = new Date('05/01/2022');
+                const day1FullDate = day1.getTime().toString();
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.mouseOverDate(day1FullDate);
+                    })
+                    .then(() => {
+                        const cellBorderTopBottom =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-top_bottom'
+                            );
+                        expect(cellBorderTopBottom.length).toBe(31);
+                        const cellBorderRight =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-right'
+                            );
+                        expect(cellBorderRight.length).toBe(0);
+                        const cellBorderLeft =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-left'
+                            );
+                        expect(cellBorderLeft.length).toBe(1);
+                        expect(cellBorderLeft[0].dataset.fullDate).toBe(
+                            day1FullDate
+                        );
+                        element.mouseOutDate();
+                    })
+                    .then(() => {
+                        const borderedCells = element.shadowRoot
+                            .querySelectorAll(`
+                        .avonni-primitive-calendar__cell_bordered-top_bottom,
+                        .avonni-primitive-calendar__cell_bordered-left,
+                        .avonni-primitive-calendar__cell_bordered-right
+                    `);
+
+                        expect(borderedCells.length).toBe(0);
+                    });
+            });
+
+            it('date after selected, two values', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [
+                    new Date('05/10/2022'),
+                    new Date('05/22/2022')
+                ];
+                element.selectionMode = 'interval';
+                const day31 = new Date('05/31/2022');
+                const day31FullDate = day31.getTime().toString();
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.mouseOverDate(day31FullDate);
+                    })
+                    .then(() => {
+                        const cellBorderTopBottom =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-top_bottom'
+                            );
+                        expect(cellBorderTopBottom.length).toBe(10);
+                        cellBorderTopBottom.forEach((td, index) => {
+                            expect(td.dataset.date).toBe(String(index + 22));
+                        });
+                        const cellBorderLeft =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-left'
+                            );
+                        expect(cellBorderLeft.length).toBe(0);
+                        const cellBorderRight =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-right'
+                            );
+                        expect(cellBorderRight.length).toBe(1);
+                        expect(cellBorderRight[0].dataset.fullDate).toBe(
+                            day31FullDate
+                        );
+                        element.mouseOutDate();
+                    })
+                    .then(() => {
+                        const borderedCells = element.shadowRoot
+                            .querySelectorAll(`
+                        .avonni-primitive-calendar__cell_bordered-top_bottom,
+                        .avonni-primitive-calendar__cell_bordered-left,
+                        .avonni-primitive-calendar__cell_bordered-right
+                    `);
+
+                        expect(borderedCells.length).toBe(0);
+                    });
+            });
+
+            it('date before selected, two values', () => {
+                element.displayDate = new Date('05/01/2022');
+                element.value = [
+                    new Date('05/10/2022'),
+                    new Date('05/22/2022')
+                ];
+                element.selectionMode = 'interval';
+                const day1 = new Date('05/01/2022');
+                const day1FullDate = day1.getTime().toString();
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.mouseOverDate(day1FullDate);
+                    })
+                    .then(() => {
+                        const cellBorderTopBottom =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-top_bottom'
+                            );
+                        expect(cellBorderTopBottom.length).toBe(10);
+                        cellBorderTopBottom.forEach((td, index) => {
+                            expect(td.dataset.date).toBe(String(1 + index));
+                        });
+
+                        const cellBorderRight =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-right'
+                            );
+                        expect(cellBorderRight.length).toBe(0);
+                        const cellBorderLeft =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-primitive-calendar__cell_bordered-left'
+                            );
+                        expect(cellBorderLeft.length).toBe(1);
+                        expect(cellBorderLeft[0].dataset.fullDate).toBe(
+                            day1FullDate
+                        );
+                        element.mouseOutDate();
+                    })
+                    .then(() => {
+                        const borderedCells = element.shadowRoot
+                            .querySelectorAll(`
+                        .avonni-primitive-calendar__cell_bordered-top_bottom,
+                        .avonni-primitive-calendar__cell_bordered-left,
+                        .avonni-primitive-calendar__cell_bordered-right
+                    `);
+
+                        expect(borderedCells.length).toBe(0);
+                    });
+            });
+        });
+    });
 });

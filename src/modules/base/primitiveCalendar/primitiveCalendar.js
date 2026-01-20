@@ -29,6 +29,9 @@ const SELECTOR_IS_VISIBLE = ':not([data-is-date-hidden="true"])';
 const SELECTOR_HAS_BORDER = `${SELECTOR_IS_VISIBLE}:not([data-is-week-disabled="true"])`;
 
 export default class PrimitiveCalendar extends LightningElement {
+    // The date labels, display date, disabled dates, and marked are expected to be timezone normalized by the parent component avonni-calendar.
+    // To avoid shifting the dates infinitely due to a timezone difference, only the parent component is expected to normalize the dates with the timezone.
+    // The dates are all expected to be Date Objects.
     _dateLabels = [];
     _displayDate = DEFAULT_DATE;
     _disabled = false;
@@ -63,11 +66,6 @@ export default class PrimitiveCalendar extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    @api
-    get visibleData() {
-        return this.calendarData;
-    }
 
     /**
      * Array of date label objects. If a date has several labels, the first one in the array will be used.

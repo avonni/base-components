@@ -16,4 +16,6 @@ export default class PrimitiveCalendar extends LightningElement {
     @api weekStartDay;
 
     @api focusDate() {}
+    @api mouseOutDate() {}
+    @api mouseOverDate() {}
 }
