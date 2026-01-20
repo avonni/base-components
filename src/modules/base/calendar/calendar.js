@@ -608,24 +608,6 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Filter the valid dates from the given array.
-     *
-     * @param {object[]} array Array to filter.
-     * @returns Array of DateTime objects, set to the beginning of the day.
-     */
-    fullDatesFromArray(array) {
-        const dates = [];
-
-        array.forEach((date) => {
-            if (typeof date === 'object') {
-                dates.push(startOfDay(date).getTime());
-            }
-        });
-
-        return dates;
-    }
-
-    /**
      * Generate the calendar data.
      */
     generateViewData() {
