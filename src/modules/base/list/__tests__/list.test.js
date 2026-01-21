@@ -534,7 +534,10 @@ describe('List', () => {
                     ];
 
                     const handler = jest.fn();
-                    element.addEventListener('privatelayoutconnected', handler);
+                    element.addEventListener(
+                        'privatefieldslayoutconnected',
+                        handler
+                    );
 
                     return Promise.resolve().then(() => {
                         const fields = element.shadowRoot.querySelectorAll(
@@ -648,7 +651,7 @@ describe('List', () => {
                     ];
                     const handler = jest.fn();
                     element.addEventListener(
-                        'privatelayoutdisconnected',
+                        'privatefieldslayoutdisconnected',
                         handler
                     );
 
