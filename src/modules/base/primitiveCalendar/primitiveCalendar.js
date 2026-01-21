@@ -701,7 +701,8 @@ export default class PrimitiveCalendar extends LightningElement {
             for (let a = 0; a < 7; a++) {
                 const time = date.getTime();
                 const disabledDate = this.getIsDisabled(date);
-                const outsideOfMinMax = time < this.min || time > this.max;
+                const outsideOfMinMax =
+                    time < this._computedMin || time > this._computedMax;
 
                 const markers = this.getMarkers(date);
                 const label = this.getLabel(date);
