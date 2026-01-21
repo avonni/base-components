@@ -906,7 +906,7 @@ export default class PrimitiveCalendar extends LightningElement {
         if (!event.currentTarget) {
             return;
         }
-        const focusDate = event.currentTarget.dataset.fullDate;
+        const fullDate = event.currentTarget.dataset.fullDate;
         /**
          * The event fired when a focus target is found in the public method focusDate().
          * The focused date passed to focusDate() is not necessarily the same as the focus target.
@@ -915,12 +915,12 @@ export default class PrimitiveCalendar extends LightningElement {
          * @event
          * @public
          * @name datefocus
-         * @param {string} fulldate The focused date
+         * @param {string} fullDate The focused date
          */
         this.dispatchEvent(
             new CustomEvent('datefocus', {
                 detail: {
-                    focusDate
+                    fullDate
                 }
             })
         );

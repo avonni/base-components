@@ -717,7 +717,7 @@ describe('Primitive Calendar', () => {
                     );
                     td.dispatchEvent(new CustomEvent('focus'));
                     expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.focusDate).toEqual(
+                    expect(handler.mock.calls[0][0].detail.fullDate).toEqual(
                         td.dataset.fullDate
                     );
                 });
