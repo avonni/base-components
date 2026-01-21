@@ -614,7 +614,7 @@ describe('Primitive Activity Timeline Item', () => {
             it('Passed to the component', () => {
                 element.title = 'This is an title link text';
                 element.href = 'salesforce.com';
-                element.hrefTarget = '_blank';
+                element.target = '_blank';
 
                 return Promise.resolve().then(() => {
                     const link = element.shadowRoot.querySelector(
@@ -628,7 +628,7 @@ describe('Primitive Activity Timeline Item', () => {
             it('target = _self', () => {
                 element.title = 'This is an title link text';
                 element.href = 'salesforce.com';
-                element.hrefTarget = '_self';
+                element.target = '_self';
 
                 return Promise.resolve().then(() => {
                     const link = element.shadowRoot.querySelector(
