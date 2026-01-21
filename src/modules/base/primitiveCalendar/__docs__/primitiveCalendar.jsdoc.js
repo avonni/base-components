@@ -51,7 +51,31 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-calendar-selected-date-color-background-focus
+ * @default #035d96
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-selected-date-color-background-hover
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-primitive-calendar-selected-date-text-color
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-selected-date-text-color-focus
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-selected-date-text-color-hover
  * @default #ffffff
  * @type color
  */

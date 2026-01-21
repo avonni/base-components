@@ -997,9 +997,10 @@ export default class Calendar extends LightningElement {
         }
 
         const focusDate = new Date(Number(event.detail.fullDate));
-        if (focusDate) {
-            this._focusDate = focusDate;
+        if (isInvalidDate(focusDate)) {
+            return;
         }
+        this._focusDate = focusDate;
         this.handleFocus(event);
     }
 

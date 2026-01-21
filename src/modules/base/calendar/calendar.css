@@ -70,4 +70,16 @@ div:focus {
     --avonni-primitive-calendar-week-label-font-weight: var(
         --avonni-calendar-week-label-font-weight
     );
+    --avonni-primitive-calendar-selected-date-color-background-hover: var(
+        --avonni-calendar-selected-date-color-background-hover
+    );
+    --avonni-primitive-calendar-selected-date-text-color-hover: var(
+        --avonni-calendar-selected-date-text-color-hover
+    );
+    --avonni-primitive-calendar-selected-date-color-background-focus: var(
+        --avonni-calendar-selected-date-color-background-focus
+    );
+    --avonni-primitive-calendar-selected-date-text-color-focus: var(
+        --avonni-calendar-selected-date-text-color-focus
+    );
 }
