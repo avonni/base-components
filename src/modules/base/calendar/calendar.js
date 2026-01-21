@@ -8,15 +8,22 @@ import {
 import { equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import {
-    DAYS,
+    computeDisabledDates,
+    computeLabelDates,
+    computeMarkedDates,
+    computeSelectedDates,
     DEFAULT_DATE,
     DEFAULT_MAX,
     DEFAULT_MIN,
     DEFAULT_WEEK_START_DAY,
     getDateWithTimezone,
+    isAfterMax,
+    isBeforeMin,
     isInvalidDate,
     MONTHS,
+    removeValuesOutsideRange,
     SELECTION_MODES,
+    setIntervalWithOneValidValue,
     startOfDay
 } from 'c/calendarUtils';
 
@@ -396,7 +403,9 @@ export default class Calendar extends LightningElement {
      */
     get allValuesOutsideMinAndMax() {
         return this.computedValue.every(
-            (value) => this.isBeforeMin(value) || this.isAfterMax(value)
+            (value) =>
+                isBeforeMin(value, this.computedMin) ||
+                isAfterMax(value, this.computedMax)
         );
     }
 
@@ -651,12 +660,10 @@ export default class Calendar extends LightningElement {
      * Initialize the date labels to include the timezone.
      */
     initDateLabels() {
-        this.computedDateLabels = this.dateLabels.map((label) => {
-            return {
-                ...label,
-                date: getDateWithTimezone(label.date, this.timezone)
-            };
-        });
+        this.computedDateLabels = computeLabelDates(
+            this.dateLabels,
+            this.timezone
+        );
     }
 
     /**
@@ -681,13 +688,10 @@ export default class Calendar extends LightningElement {
      * Initialize the disabled dates to include the timezone and set them to the beginning of the day.
      */
     initDisabledDates() {
-        this.computedDisabledDates = this.disabledDates.map((date) => {
-            if (DAYS.includes(date) || isInvalidDate(date)) {
-                return date;
-            }
-            const fullDate = getDateWithTimezone(date, this.timezone);
-            return startOfDay(fullDate);
-        });
+        this.computedDisabledDates = computeDisabledDates(
+            this.disabledDates,
+            this.timezone
+        );
     }
 
     /**
@@ -709,51 +713,17 @@ export default class Calendar extends LightningElement {
      * Initialize the marked dates to include the timezone and set them to the beginning of the day.
      */
     initMarkedDates() {
-        this.computedMarkedDates = this.markedDates.map((marker) => {
-            return {
-                color: marker.color,
-                date: isInvalidDate(marker.date)
-                    ? marker.date
-                    : startOfDay(
-                          getDateWithTimezone(marker.date, this.timezone)
-                      )
-            };
-        });
+        this.computedMarkedDates = computeMarkedDates(
+            this.markedDates,
+            this.timezone
+        );
     }
 
     /**
      * Initialize the value to include the timezone, sort them and set them to the beginning of the day.
      */
     initValue() {
-        const normalizedValue =
-            this.value && !Array.isArray(this.value)
-                ? [this.value]
-                : normalizeArray(this.value);
-        const computedValues = [];
-        normalizedValue.forEach((date) => {
-            if (!isInvalidDate(date)) {
-                const normalizedDate = startOfDay(
-                    getDateWithTimezone(date, this.timezone)
-                );
-                computedValues.push(normalizedDate);
-            }
-        });
-        computedValues.sort((a, b) => a.getTime() - b.getTime());
-        this.computedValue = computedValues;
-    }
-
-    /**
-     * Check if value is after max date.
-     */
-    isAfterMax(value) {
-        return value.getTime() > this.computedMax.getTime();
-    }
-
-    /**
-     * Check if value is before min date.
-     */
-    isBeforeMin(value) {
-        return value.getTime() < this.computedMin.getTime();
+        this.computedValue = computeSelectedDates(this.value, this.timezone);
     }
 
     /**
@@ -807,40 +777,6 @@ export default class Calendar extends LightningElement {
             timestamps.splice(timestamps.indexOf(timestamp), 1);
         }
         return timestamps.map((x) => new Date(x));
-    }
-
-    /**
-     * Remove invalid values, or values outside of min-max interval, from the computed value.
-     */
-    removeValuesOutsideRange() {
-        this.computedValue = this.computedValue.filter((date) => {
-            return (
-                !isInvalidDate(date) &&
-                !this.isAfterMax(date) &&
-                !this.isBeforeMin(date)
-            );
-        });
-    }
-
-    /**
-     * Set interval when only one value is valid (in min-max range) and the other one is outside range.
-     *
-     * @param {DateTime} minValue Minimum valid value.
-     * @param {DateTime} maxValue Maximum valid value.
-     */
-    setIntervalWithOneValidValue(minValue, maxValue) {
-        if (
-            this.isBeforeMin(minValue) &&
-            minValue.getTime() < this.computedValue[0].getTime()
-        ) {
-            this.computedValue[1] = this.computedValue[0];
-            this.computedValue[0] = this.computedMin;
-        } else if (
-            this.isAfterMax(maxValue) &&
-            maxValue.getTime() > this.computedValue[0].getTime()
-        ) {
-            this.computedValue[1] = this.computedMax;
-        }
     }
 
     /**
@@ -930,7 +866,10 @@ export default class Calendar extends LightningElement {
         const maxValue = this.computedValue[this.computedValue.length - 1];
 
         if (this.allValuesOutsideMinAndMax) {
-            if (this.isBeforeMin(minValue) && this.isAfterMax(maxValue)) {
+            if (
+                isBeforeMin(minValue, this.computedMin) &&
+                isAfterMax(maxValue, this.computedMax)
+            ) {
                 this.computedValue[0] = new Date(this.computedMin);
                 this.computedValue[1] = new Date(this.computedMax);
                 this.displayDate = new Date(this.computedMin);
@@ -940,12 +879,22 @@ export default class Calendar extends LightningElement {
             }
             this.updateDateParameters();
         } else {
-            this.removeValuesOutsideRange();
+            this.computedValue = removeValuesOutsideRange(
+                this.computedValue,
+                this.computedMin,
+                this.computedMax
+            );
 
             if (this.computedValue.length) {
                 // Check if previous min-max values saved were outside of range to create interval
                 if (this.computedValue.length === 1) {
-                    this.setIntervalWithOneValidValue(minValue, maxValue);
+                    this.computedValue = setIntervalWithOneValidValue(
+                        this.computedValue,
+                        this.computedMin,
+                        this.computedMax,
+                        minValue,
+                        maxValue
+                    );
                 }
                 this.displayDate = new Date(this.computedValue[0]);
                 this.updateDateParameters();
@@ -957,7 +906,11 @@ export default class Calendar extends LightningElement {
      * Validate value for multiple selection mode.
      */
     validateValueMultipleMode() {
-        this.removeValuesOutsideRange();
+        this.computedValue = removeValuesOutsideRange(
+            this.computedValue,
+            this.computedMin,
+            this.computedMax
+        );
 
         if (this.computedValue.length) {
             this.displayDate = this.computedValue[0];
@@ -971,17 +924,21 @@ export default class Calendar extends LightningElement {
     validateValueSingleMode() {
         // If multiple values are selected, we remove those outside range
         if (this.computedValue && this.computedValue.length > 1) {
-            this.removeValuesOutsideRange();
+            this.computedValue = removeValuesOutsideRange(
+                this.computedValue,
+                this.computedMin,
+                this.computedMax
+            );
         }
         // If one single value, we check if it's in interval and set to closest value if not
         else {
             if (isInvalidDate(this.computedValue[0])) {
                 this.computedValue = [];
                 this.displayDate = this.getCurrentDateOrMin();
-            } else if (this.isAfterMax(this.computedValue[0])) {
+            } else if (isAfterMax(this.computedValue[0], this.computedMax)) {
                 this.computedValue = [];
                 this.displayDate = new Date(this.computedMax);
-            } else if (this.isBeforeMin(this.computedValue[0])) {
+            } else if (isBeforeMin(this.computedValue[0], this.computedMin)) {
                 this.computedValue = [];
                 this.displayDate = new Date(this.computedMin);
             }

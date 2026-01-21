@@ -43,7 +43,7 @@ describe('Primitive Calendar', () => {
         describe('dateLabels', () => {
             it('Passed to the component', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = new Date('05/14/2022');
+                element.value = '05/14/2022';
                 element.dateLabels = [
                     {
                         date: new Date('05/26/2022'),
@@ -68,7 +68,7 @@ describe('Primitive Calendar', () => {
 
         describe('disabled', () => {
             it('Passed to the component', () => {
-                element.value = new Date('04/15/2021');
+                element.value = '04/15/2021';
                 element.displayDate = new Date('04/01/2021');
                 element.disabled = true;
                 return Promise.resolve().then(() => {
@@ -84,7 +84,7 @@ describe('Primitive Calendar', () => {
 
         describe('disabledDates', () => {
             it('Passed to the component', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 element.disabledDates = new Date('05/06/2021');
                 element.min = new Date('05/01/2021');
@@ -106,7 +106,7 @@ describe('Primitive Calendar', () => {
         describe('isMultiCalendars', () => {
             it('Display only dates of the month', () => {
                 element.displayDate = new Date('05/09/2021');
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.isMultiCalendars = true;
 
                 return Promise.resolve().then(() => {
@@ -141,7 +141,7 @@ describe('Primitive Calendar', () => {
         describe('keyboard accessibility', () => {
             it('[left]', () => {
                 element.displayDate = new Date('05/09/2021');
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
 
@@ -171,7 +171,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('[right]', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -201,7 +201,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('[up]', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -231,7 +231,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('[down]', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -261,7 +261,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('go to Sunday [home]', () => {
-                element.value = new Date('05/10/2022');
+                element.value = '05/10/2022';
                 element.displayDate = new Date('05/10/2022');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -291,7 +291,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('Calendar: keyboard accessibility - go to Saturday [end]', () => {
-                element.value = new Date('05/09/2022');
+                element.value = '05/09/2022';
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -321,7 +321,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('Month down [PageDown]', () => {
-                element.value = new Date('05/09/2022');
+                element.value = '05/09/2022';
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -347,7 +347,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('Month up [PageUp]', () => {
-                element.value = new Date('05/09/2022');
+                element.value = '05/09/2022';
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -373,7 +373,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('Year up [alt + PageDown]', () => {
-                element.value = new Date('05/09/2022');
+                element.value = '05/09/2022';
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -400,7 +400,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('Year down [alt + PageUp]', () => {
-                element.value = new Date('05/09/2022');
+                element.value = '05/09/2022';
                 element.displayDate = new Date('05/09/2022');
                 const handler = jest.fn();
                 element.addEventListener('keydowndate', handler);
@@ -428,7 +428,7 @@ describe('Primitive Calendar', () => {
 
             it('[enter], [Spacebar], [ ]', () => {
                 element.displayDate = new Date('05/09/2021');
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 const handlerDateKey = jest.fn();
                 const handlerSelectDate = jest.fn();
                 element.addEventListener('keydowndate', handlerDateKey);
@@ -469,7 +469,7 @@ describe('Primitive Calendar', () => {
 
         describe('marked dates', () => {
             it('Passed to the component', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 element.markedDates = [
                     { date: new Date('05/05/2021'), color: 'rgb(255, 0, 0)' },
@@ -500,7 +500,7 @@ describe('Primitive Calendar', () => {
             });
 
             it('A maximum of 3 per date is displayed', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 element.markedDates = [
                     { date: new Date('05/05/2021'), color: 'tomato' },
@@ -521,7 +521,7 @@ describe('Primitive Calendar', () => {
 
         describe('enable current month only', () => {
             it('Passed to the component', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.displayDate = new Date('05/09/2021');
                 return Promise.resolve().then(() => {
                     const dateArray = [];
@@ -586,7 +586,7 @@ describe('Primitive Calendar', () => {
         describe('values', () => {
             it('Selection-mode: single', () => {
                 element.selectionMode = 'single';
-                element.value = new Date('04/15/2021');
+                element.value = '04/15/2021';
                 element.displayDate = new Date('04/15/2021');
                 return Promise.resolve().then(() => {
                     const selected =
@@ -602,7 +602,7 @@ describe('Primitive Calendar', () => {
                 element.selectionMode = 'multiple';
                 element.min = new Date('01/01/2020');
                 element.max = new Date('12/31/2030');
-                element.value = [new Date('05/06/2022')];
+                element.value = '05/06/2022';
                 element.displayDate = new Date('05/06/2022');
                 return Promise.resolve().then(() => {
                     const selected =
@@ -618,10 +618,7 @@ describe('Primitive Calendar', () => {
                 element.selectionMode = 'interval';
                 element.min = new Date('01/01/2020');
                 element.max = new Date('12/31/2021');
-                element.value = [
-                    new Date('01/01/2020'),
-                    new Date('01/10/2020')
-                ];
+                element.value = ['01/01/2020', '01/10/2020'];
                 element.displayDate = new Date('01/01/2020');
 
                 return Promise.resolve().then(() => {
@@ -642,7 +639,7 @@ describe('Primitive Calendar', () => {
 
         describe('week number', () => {
             it('Passed to the component', () => {
-                element.value = new Date('05/09/2021');
+                element.value = '05/09/2021';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.weekNumber = true;
@@ -709,7 +706,7 @@ describe('Primitive Calendar', () => {
         describe('datefocus', () => {
             it('dispatched when focused', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/01/2022')];
+                element.value = '05/01/2022';
                 element.selectionMode = 'interval';
                 const handler = jest.fn();
                 element.addEventListener('datefocus', handler);
@@ -730,7 +727,7 @@ describe('Primitive Calendar', () => {
         describe('mouseoutdate', () => {
             it('dispatched when mouse out', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/01/2022')];
+                element.value = ['05/01/2022'];
                 element.selectionMode = 'interval';
                 const handler = jest.fn();
                 element.addEventListener('mouseoutdate', handler);
@@ -748,7 +745,7 @@ describe('Primitive Calendar', () => {
         describe('mouseoverdate', () => {
             it('dispatched when mouse over', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/01/2022')];
+                element.value = '05/01/2022';
                 element.selectionMode = 'interval';
                 const handler = jest.fn();
                 element.addEventListener('mouseoverdate', handler);
@@ -766,7 +763,7 @@ describe('Primitive Calendar', () => {
             });
             it('not dispatched when mouse over on disabled', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/01/2022')];
+                element.value = '05/01/2022';
                 element.selectionMode = 'interval';
                 element.isMultiCalendars = true;
                 const june1 = new Date('06/01/2022');
@@ -790,7 +787,7 @@ describe('Primitive Calendar', () => {
         describe('private blur', () => {
             it('dispatched when blured', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/01/2022')];
+                element.value = '05/01/2022';
                 element.selectionMode = 'interval';
                 const handler = jest.fn();
                 element.addEventListener('privateblur', handler);
@@ -813,7 +810,7 @@ describe('Primitive Calendar', () => {
         describe('mouseoverdate & mouseoutdate', () => {
             it('date after selected, single value', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/01/2022')];
+                element.value = '05/01/2022';
                 element.selectionMode = 'interval';
                 const day31 = new Date('05/31/2022');
                 const day31FullDate = day31.getTime().toString();
@@ -857,7 +854,7 @@ describe('Primitive Calendar', () => {
 
             it('date before selected, single value', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [new Date('05/31/2022')];
+                element.value = '05/31/2022';
                 element.selectionMode = 'interval';
                 const day1 = new Date('05/01/2022');
                 const day1FullDate = day1.getTime().toString();
@@ -901,10 +898,7 @@ describe('Primitive Calendar', () => {
 
             it('date after selected, two values', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [
-                    new Date('05/10/2022'),
-                    new Date('05/22/2022')
-                ];
+                element.value = ['05/10/2022', '05/22/2022'];
                 element.selectionMode = 'interval';
                 const day31 = new Date('05/31/2022');
                 const day31FullDate = day31.getTime().toString();
@@ -951,10 +945,7 @@ describe('Primitive Calendar', () => {
 
             it('date before selected, two values', () => {
                 element.displayDate = new Date('05/01/2022');
-                element.value = [
-                    new Date('05/10/2022'),
-                    new Date('05/22/2022')
-                ];
+                element.value = ['05/10/2022', '05/22/2022'];
                 element.selectionMode = 'interval';
                 const day1 = new Date('05/01/2022');
                 const day1FullDate = day1.getTime().toString();

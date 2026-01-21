@@ -9,17 +9,27 @@ import {
 } from 'c/utils';
 import { setDate, getStartOfWeek, DateTime } from 'c/dateTimeUtils';
 import { keyValues } from 'c/utilsPrivate';
+import { equal } from 'c/utilsPrivate';
+
 import {
     CalendarDate,
+    computeDisabledDates,
+    computeLabelDates,
+    computeMarkedDates,
+    computeSelectedDates,
     DAYS,
     DEFAULT_DATE,
     DEFAULT_MAX,
     DEFAULT_MIN,
     DEFAULT_WEEK_START_DAY,
     fullDatesFromArray,
-    monthDaysFromArray,
+    isAfterMax,
+    isBeforeMin,
     isInvalidDate,
+    monthDaysFromArray,
+    removeValuesOutsideRange,
     SELECTION_MODES,
+    setIntervalWithOneValidValue,
     startOfDay,
     weekDaysFromArray
 } from 'c/calendarUtils';
@@ -31,7 +41,6 @@ const SELECTOR_HAS_BORDER = `${SELECTOR_IS_VISIBLE}:not([data-is-week-disabled="
 export default class PrimitiveCalendar extends LightningElement {
     // The date labels, display date, disabled dates, and marked are expected to be timezone normalized by the parent component avonni-calendar.
     // To avoid shifting the dates infinitely due to a timezone difference, only the parent component is expected to normalize the dates with the timezone.
-    // The dates are all expected to be Date Objects.
     _dateLabels = [];
     _displayDate = DEFAULT_DATE;
     _disabled = false;
@@ -46,6 +55,15 @@ export default class PrimitiveCalendar extends LightningElement {
     _weekNumber = false;
     _weekStartDay = DEFAULT_WEEK_START_DAY;
 
+    _computedDateLabels = [];
+    _computedDisabledDates = [];
+    _computedDisplayDate = DEFAULT_DATE;
+    _computedMarkedDates = [];
+    _computedMax = DEFAULT_MAX;
+    _computedMin = DEFAULT_MIN;
+    _computedValue = [];
+    _connected = false;
+
     calendarData = [];
     weekdays = [];
 
@@ -57,6 +75,8 @@ export default class PrimitiveCalendar extends LightningElement {
 
     connectedCallback() {
         this.initWeekdays();
+        this.initDates();
+        this.validateCurrentDayValue();
         this.generateViewData();
         this._connected = true;
     }
@@ -81,6 +101,7 @@ export default class PrimitiveCalendar extends LightningElement {
         this._dateLabels = deepCopy(normalizeArray(value, 'object'));
 
         if (this._connected) {
+            this.initDateLabels();
             this.generateViewData();
         }
     }
@@ -119,6 +140,7 @@ export default class PrimitiveCalendar extends LightningElement {
             value && !Array.isArray(value) ? [value] : normalizeArray(value);
 
         if (this._connected) {
+            this.initDisabledDates();
             this.generateViewData();
         }
     }
@@ -134,10 +156,8 @@ export default class PrimitiveCalendar extends LightningElement {
         return this._displayDate;
     }
     set displayDate(value) {
-        this._displayDate = isInvalidDate(value)
-            ? DEFAULT_DATE
-            : new Date(value);
-
+        this._displayDate = isInvalidDate(value) ? DEFAULT_DATE : value;
+        this._computedDisplayDate = new Date(this._displayDate);
         if (this._connected) {
             this.generateViewData();
         }
@@ -173,8 +193,9 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set max(value) {
         this._max = isInvalidDate(value) ? DEFAULT_MAX : value;
-
+        this._computedMax = new Date(this._max);
         if (this._connected) {
+            this.validateCurrentDayValue();
             this.generateViewData();
         }
     }
@@ -193,6 +214,7 @@ export default class PrimitiveCalendar extends LightningElement {
         this._markedDates = normalizeArray(value, 'object');
 
         if (this._connected) {
+            this.initMarkedDates();
             this.generateViewData();
         }
     }
@@ -210,8 +232,10 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set min(value) {
         this._min = isInvalidDate(value) ? DEFAULT_MIN : value;
+        this._computedMin = new Date(this._min);
 
         if (this._connected) {
+            this.validateCurrentDayValue();
             this.generateViewData();
         }
     }
@@ -235,6 +259,7 @@ export default class PrimitiveCalendar extends LightningElement {
             fallbackValue: SELECTION_MODES.default
         });
         if (this._connected) {
+            this.validateCurrentDayValue();
             this.generateViewData();
         }
     }
@@ -253,25 +278,30 @@ export default class PrimitiveCalendar extends LightningElement {
         this._timezone = value;
 
         if (this._connected) {
+            this.initDates();
             this.generateViewData();
         }
     }
 
     /**
-     * The value of the selected date(s). Dates must be a Date object.
+     * The value of the selected date(s). Dates can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @public
-     * @type {Date[]}
+     * @type {string|string[]}
      */
     @api
     get value() {
         return this._value;
     }
     set value(value) {
-        const normalizedValue =
-            value && !Array.isArray(value) ? [value] : normalizeArray(value);
-        this._value = normalizedValue;
+        if (equal(value, this._value)) {
+            return;
+        }
+        this._value = value;
+
         if (this._connected) {
+            this.initValue();
+            this.validateCurrentDayValue();
             this.generateViewData();
         }
     }
@@ -324,6 +354,19 @@ export default class PrimitiveCalendar extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Check if all values are outside the min-max interval.
+     *
+     * @return {boolean}
+     */
+    get allValuesOutsideMinAndMax() {
+        return this._computedValue.every(
+            (value) =>
+                isBeforeMin(value, this._computedMin) ||
+                isAfterMax(value, this._computedMax)
+        );
+    }
 
     /**
      * Computed class for the table.
@@ -388,13 +431,13 @@ export default class PrimitiveCalendar extends LightningElement {
         if (focusDate) {
             rovingDate = focusDate.getTime();
             selectedMonthDate = setDate(
-                this.displayDate,
+                this._computedDisplayDate,
                 'date',
                 focusDate.getDate()
             );
         }
         const firstOfMonthDate = startOfDay(
-            setDate(this.displayDate, 'date', 1)
+            setDate(this._computedDisplayDate, 'date', 1)
         ).getTime();
 
         requestAnimationFrame(() => {
@@ -495,7 +538,7 @@ export default class PrimitiveCalendar extends LightningElement {
         const dayCell = this.template.querySelector(
             `[data-full-date="${computedDay}"]${SELECTOR_HAS_BORDER}`
         );
-        const timeArray = this._value
+        const timeArray = this._computedValue
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
         const cellSelector = `td${SELECTOR_HAS_BORDER}`;
@@ -587,19 +630,66 @@ export default class PrimitiveCalendar extends LightningElement {
     }
 
     /**
+     * Initialize the date labels without including the timezone.
+     */
+    initDateLabels() {
+        this._computedDateLabels = computeLabelDates(this.dateLabels, '');
+    }
+
+    /**
+     * Initialize all the properties depending on dates, without including the timezone and set them to the beginning of the day.
+     */
+    initDates() {
+        const max = new Date(this.max);
+        const min = new Date(this.min);
+        this._computedMax = setDate(max, 'hours', 0, 0, 0, 0);
+        this._computedMin = setDate(min, 'hours', 0, 0, 0, 0);
+        this._computedDisplayDate = new Date(this._displayDate);
+        this.initDateLabels();
+        this.initDisabledDates();
+        this.initMarkedDates();
+        this.initValue();
+    }
+
+    /**
+     * Initialize the disabled dates without including the timezone and set them to the beginning of the day.
+     */
+    initDisabledDates() {
+        this._computedDisabledDates = computeDisabledDates(
+            this.disabledDates,
+            ''
+        );
+    }
+
+    /**
+     * Initialize the marked dates without including the timezone and set them to the beginning of the day.
+     */
+    initMarkedDates() {
+        this._computedMarkedDates = computeMarkedDates(this.markedDates, '');
+    }
+
+    /**
+     * Initialize the value, sort them and set them to the beginning of the day. The timezone is expected to have been included by the parent.
+     */
+    initValue() {
+        this._computedValue = computeSelectedDates(deepCopy(this._value), '');
+    }
+
+    /**
      * Generate the calendar data.
      */
     generateViewData() {
         const today = startOfDay(new Date());
 
         const mode = this.selectionMode;
-        const firstValue = this.value[0];
-        const lastValue = this.value[this.value.length - 1];
-        const isInterval = mode === 'interval' && this.value.length >= 2;
+        const firstValue = this._computedValue[0];
+        const lastValue = this._computedValue[this._computedValue.length - 1];
+        const isInterval =
+            mode === 'interval' && this._computedValue.length >= 2;
 
         const calendarData = [];
 
-        const displayDate = new Date(this.displayDate);
+        const displayDate = new Date(this._computedDisplayDate);
         displayDate.setDate(1);
         displayDate.setMonth(displayDate.getMonth());
 
@@ -644,7 +734,7 @@ export default class PrimitiveCalendar extends LightningElement {
 
                 let selected;
                 if (this.isMultiSelect) {
-                    selected = this.value.find((value) => {
+                    selected = this._computedValue.find((value) => {
                         return (
                             startOfDay(value).getTime() ===
                             startOfDay(time).getTime()
@@ -696,7 +786,7 @@ export default class PrimitiveCalendar extends LightningElement {
     getLabel(date) {
         const dayIndex = date.getDay();
         const weekday = DAYS[dayIndex];
-        return this._dateLabels.find((label) => {
+        return this._computedDateLabels.find((label) => {
             const labelDate = label.date;
             const labelAsNumber = Number(labelDate);
 
@@ -721,7 +811,7 @@ export default class PrimitiveCalendar extends LightningElement {
      * @returns {boolean} True if the date is disabled.
      */
     getIsDisabled(date) {
-        const dates = this._disabledDates;
+        const dates = this._computedDisabledDates;
         const time = startOfDay(date).getTime();
         const dateTime = new DateTime(date);
         const weekday = dateTime.getUnit('weekday', 'short').replace(/\.$/, '');
@@ -746,7 +836,7 @@ export default class PrimitiveCalendar extends LightningElement {
         const weekday = dateTime.getUnit('weekday', 'short');
         const monthDay = dateTime.day;
 
-        this._markedDates.forEach((marker) => {
+        this._computedMarkedDates.forEach((marker) => {
             const dateArray = [marker.date];
             if (
                 fullDatesFromArray(dateArray).indexOf(time) > -1 ||
@@ -786,6 +876,102 @@ export default class PrimitiveCalendar extends LightningElement {
             );
             x.classList.remove('avonni-primitive-calendar__cell_bordered-left');
         });
+    }
+
+    /**
+     * If invalid current day, center calendar's current day to closest date in min-max interval
+     */
+    validateCurrentDayValue() {
+        if (!this._computedValue.length) {
+            return;
+        }
+
+        switch (this.selectionMode) {
+            case 'interval':
+                this.validateValueIntervalMode();
+                break;
+            case 'single':
+                this.validateValueSingleMode();
+                break;
+            case 'multiple':
+                this.validateValueMultipleMode();
+                break;
+            default:
+        }
+    }
+
+    /**
+     * Validate values for interval selection mode.
+     */
+    validateValueIntervalMode() {
+        const minValue = this._computedValue[0];
+        const maxValue = this._computedValue[this._computedValue.length - 1];
+
+        if (this.allValuesOutsideMinAndMax) {
+            if (
+                isBeforeMin(minValue, this._computedMin) &&
+                isAfterMax(maxValue, this._computedMax)
+            ) {
+                this._computedValue[0] = new Date(this._computedMin);
+                this._computedValue[1] = new Date(this._computedMax);
+            } else {
+                this._computedValue = [];
+            }
+        } else {
+            this._computedValue = removeValuesOutsideRange(
+                this._computedValue,
+                this._computedMin,
+                this._computedMax
+            );
+
+            if (this._computedValue.length) {
+                // Check if previous min-max values saved were outside of range to create interval
+                if (this._computedValue.length === 1) {
+                    this._computedValue = setIntervalWithOneValidValue(
+                        this._computedValue,
+                        this._computedMin,
+                        this._computedMax,
+                        minValue,
+                        maxValue
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Validate value for multiple selection mode.
+     */
+    validateValueMultipleMode() {
+        this._computedValue = removeValuesOutsideRange(
+            this._computedValue,
+            this._computedMin,
+            this._computedMax
+        );
+    }
+
+    /**
+     * Validate value for single selection mode.
+     */
+    validateValueSingleMode() {
+        // If multiple values are selected, we remove those outside range
+        if (this._computedValue && this._computedValue.length > 1) {
+            this._computedValue = removeValuesOutsideRange(
+                this._computedValue,
+                this._computedMin,
+                this._computedMax
+            );
+        }
+        // If one single value, we check if it's in interval and set to closest value if not
+        else {
+            if (isInvalidDate(this._computedValue[0])) {
+                this._computedValue = [];
+            } else if (isAfterMax(this._computedValue[0], this._computedMax)) {
+                this._computedValue = [];
+            } else if (isBeforeMin(this._computedValue[0], this._computedMin)) {
+                this._computedValue = [];
+            }
+        }
     }
 
     /*

@@ -1,4 +1,10 @@
 export {
+    computeDisabledDates,
+    computeLabelDates,
+    computeMarkedDates,
+    computeSelectedDates
+} from './calendarComputation';
+export {
     DAYS,
     DEFAULT_DATE,
     DEFAULT_MAX,
@@ -7,13 +13,15 @@ export {
     MONTHS,
     NULL_DATE,
     SELECTION_MODES
-} from './constants';
+} from './calendarConstants';
+export { CalendarDate } from './calendarDate';
 export {
     fullDatesFromArray,
     getDateWithTimezone,
-    isInvalidDate,
     monthDaysFromArray,
+    removeValuesOutsideRange,
+    setIntervalWithOneValidValue,
     startOfDay,
     weekDaysFromArray
-} from './utils';
-export { CalendarDate } from './calendarDate';
+} from './calendarFormatter';
+export { isAfterMax, isBeforeMin, isInvalidDate } from './calendarValidation';

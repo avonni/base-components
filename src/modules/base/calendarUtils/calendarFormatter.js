@@ -1,5 +1,6 @@
-import { NULL_DATE } from './constants';
+import { NULL_DATE } from './calendarConstants';
 import { DateTime, setDate } from 'c/dateTimeUtils';
+import { isAfterMax, isBeforeMin, isInvalidDate } from './calendarValidation';
 
 /**
  * If possible, transform the given value into a DateTime including the timezone.
@@ -38,14 +39,6 @@ function fullDatesFromArray(array) {
 }
 
 /**
- * Check if value is an invalid date.
- */
-function isInvalidDate(value) {
-    const date = new Date(value);
-    return !date || isNaN(date) || startOfDay(date).getTime() === NULL_DATE;
-}
-
-/**
  * Filter the numbers from the given array.
  *
  * @param {object[]} array Array to filter.
@@ -61,6 +54,59 @@ function monthDaysFromArray(array) {
     });
 
     return dates;
+}
+
+/**
+ * Remove invalid values, or values outside of a min–max interval.
+ *
+ * @param {Date[]} values
+ * @param {Date} min
+ * @param {Date} max
+ * @returns {Date[]}
+ */
+function removeValuesOutsideRange(values, min, max) {
+    return values.filter(
+        (date) =>
+            !isInvalidDate(date) &&
+            !isAfterMax(date, max) &&
+            !isBeforeMin(date, min)
+    );
+}
+
+/**
+ * Set interval when only one value is valid (inside min–max range)
+ * and the other value is outside the range.
+ *
+ * @param {Date[]} values Current interval values (length = 1)
+ * @param {Date} computedMin Minimum allowed date
+ * @param {Date} computedMax Maximum allowed date
+ * @param {Date} minValue Lower candidate value
+ * @param {Date} maxValue Upper candidate value
+ * @returns {Date[]}
+ */
+function setIntervalWithOneValidValue(
+    values,
+    computedMin,
+    computedMax,
+    minValue,
+    maxValue
+) {
+    const result = [...values];
+
+    if (
+        isBeforeMin(minValue, computedMin) &&
+        minValue.getTime() < result[0].getTime()
+    ) {
+        result[1] = result[0];
+        result[0] = computedMin;
+    } else if (
+        isAfterMax(maxValue, computedMax) &&
+        maxValue.getTime() > result[0].getTime()
+    ) {
+        result[1] = computedMax;
+    }
+
+    return result;
 }
 
 /**
@@ -94,8 +140,9 @@ function weekDaysFromArray(array) {
 export {
     getDateWithTimezone,
     fullDatesFromArray,
-    isInvalidDate,
     monthDaysFromArray,
+    removeValuesOutsideRange,
+    setIntervalWithOneValidValue,
     startOfDay,
     weekDaysFromArray
 };
