@@ -458,7 +458,7 @@ export default class ProfileCard extends LightningElement {
      * @type {string}
      */
     get computedMainContainerClass() {
-        const containerClass = classSet('');
+        const containerClass = classSet('avonni-height_full');
 
         // Add responsive classes
         containerClass.add({

@@ -1,3 +1,7 @@
+.avonni-height_full {
+    height: 100%;
+}
+
 article.avonni-profile-card {
     position: relative;
     background-color: var(--avonni-profile-card-color-background, white);
@@ -16,6 +20,7 @@ article.avonni-profile-card {
         var(--slds-s-container-radius-border, 0.25rem)
     );
     box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
+    height: 100%;
 }
 
 .avonni-profile-card__flex-container {
