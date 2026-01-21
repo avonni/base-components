@@ -1,12 +1,3 @@
-import { getFormattedDate, setDate } from 'c/dateTimeUtils';
-import {
-    deepCopy,
-    normalizeArray,
-    normalizeBoolean,
-    normalizeString
-} from 'c/utils';
-import { equal } from 'c/utilsPrivate';
-import { LightningElement, api } from 'lwc';
 import {
     computeDisabledDates,
     computeLabelDates,
@@ -26,6 +17,15 @@ import {
     setIntervalWithOneValidValue,
     startOfDay
 } from 'c/calendarUtils';
+import { getFormattedDate, setDate } from 'c/dateTimeUtils';
+import {
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utils';
+import { equal } from 'c/utilsPrivate';
+import { api, LightningElement } from 'lwc';
 
 const DEFAULT_NUMBER_CALENDAR = 1;
 
@@ -341,7 +341,21 @@ export default class Calendar extends LightningElement {
         if (this._connected) {
             this.initValue();
             if (this.computedValue[0]) {
-                this.displayDate = new Date(this.computedValue[0]);
+                if (this.isMultiCalendars) {
+                    const date = new Date(this.computedValue[0]);
+                    const nextYear = date.getFullYear();
+                    const nextMonthIndex = date.getMonth();
+                    const isOutsideCalendarList = !this.calendarDataList.some(
+                        ({ monthIndex, year }) =>
+                            monthIndex === nextMonthIndex && year === nextYear
+                    );
+                    // Prevent updating the display date by value when the date is already visible.
+                    if (isOutsideCalendarList) {
+                        this.displayDate = date;
+                    }
+                } else {
+                    this.displayDate = new Date(this.computedValue[0]);
+                }
             }
             this.validateCurrentDayValue();
             this.updateDateParameters();

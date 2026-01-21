@@ -241,23 +241,72 @@ describe('Calendar', () => {
             it('Passed to the component', () => {
                 element.value = '05/09/2021';
                 element.nbMonthCalendars = 2;
-                return Promise.resolve().then(() => {
-                    const calendars = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="avonni-calendar__primitive-calendar"]'
-                    );
-                    expect(calendars.length).toBe(2);
-                    calendars.forEach((calendar, index) => {
-                        const date = new Date('05/01/2021');
-                        const displayDate = new Date(
-                            new Date(date).setMonth(date.getMonth() + index)
+
+                return Promise.resolve()
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
                         );
-                        expect(calendar.isMultiCalendars).toBe(true);
-                        expect(calendar.value).toEqual([
-                            new Date('05/09/2021')
-                        ]);
-                        expect(calendar.displayDate).toEqual(displayDate);
+
+                        expect(calendars.length).toBe(2);
+
+                        calendars.forEach((calendar, index) => {
+                            const date = new Date('05/01/2021');
+                            const displayDate = new Date(
+                                new Date(date).setMonth(date.getMonth() + index)
+                            );
+
+                            expect(calendar.isMultiCalendars).toBe(true);
+                            expect(calendar.value).toEqual([
+                                new Date('05/09/2021')
+                            ]);
+                            expect(calendar.displayDate).toEqual(displayDate);
+                        });
+
+                        element.value = '06/09/2021';
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+
+                        expect(calendars.length).toBe(2);
+
+                        calendars.forEach((calendar, index) => {
+                            const date = new Date('05/01/2021');
+                            const displayDate = new Date(
+                                new Date(date).setMonth(date.getMonth() + index)
+                            );
+
+                            expect(calendar.isMultiCalendars).toBe(true);
+                            expect(calendar.value).toEqual([
+                                new Date('06/09/2021')
+                            ]);
+                            expect(calendar.displayDate).toEqual(displayDate);
+                        });
+
+                        element.value = '07/09/2021';
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+
+                        expect(calendars.length).toBe(2);
+
+                        calendars.forEach((calendar, index) => {
+                            const date = new Date('07/01/2021');
+                            const displayDate = new Date(
+                                new Date(date).setMonth(date.getMonth() + index)
+                            );
+
+                            expect(calendar.isMultiCalendars).toBe(true);
+                            expect(calendar.value).toEqual([
+                                new Date('07/09/2021')
+                            ]);
+                            expect(calendar.displayDate).toEqual(displayDate);
+                        });
                     });
-                });
             });
         });
 
