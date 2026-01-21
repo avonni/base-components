@@ -18,10 +18,12 @@ export { CalendarDate } from './calendarDate';
 export {
     fullDatesFromArray,
     getDateWithTimezone,
+    isAfterMax,
+    isBeforeMin,
+    isInvalidDate,
     monthDaysFromArray,
     removeValuesOutsideRange,
     setIntervalWithOneValidValue,
     startOfDay,
     weekDaysFromArray
 } from './calendarFormatter';
-export { isAfterMax, isBeforeMin, isInvalidDate } from './calendarValidation';

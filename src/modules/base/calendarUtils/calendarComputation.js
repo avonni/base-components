@@ -1,7 +1,10 @@
 import { DAYS } from './calendarConstants';
 import { normalizeArray } from 'c/utils';
-import { getDateWithTimezone, startOfDay } from './calendarFormatter';
-import { isInvalidDate } from './calendarValidation';
+import {
+    getDateWithTimezone,
+    isInvalidDate,
+    startOfDay
+} from './calendarFormatter';
 
 /**
  * Compute disabled dates with timezone applied and normalized to start of day.
