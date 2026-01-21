@@ -79,6 +79,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api href;
     /**
+     * Target for the title link.
+     *
+     * @public
+     * @type {string}
+     */
+    @api hrefTarget;
+    /**
      * Icon or list of icons next to the title.
      *
      * @public
