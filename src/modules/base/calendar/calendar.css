@@ -83,3 +83,7 @@ div:focus {
         --avonni-calendar-selected-date-text-color-focus
     );
 }
+
+.avonni-calendar__wrapper {
+    overflow-x: auto;
+}
