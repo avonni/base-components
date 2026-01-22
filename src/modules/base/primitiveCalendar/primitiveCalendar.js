@@ -428,10 +428,10 @@ export default class PrimitiveCalendar extends LightningElement {
                 `[data-element-id="td"][data-full-date="${rovingDate}"]${SELECTOR_IS_VISIBLE}`
             );
             const selectedDates = this.template.querySelectorAll(
-                `[data-selected="true"]${SELECTOR_IS_VISIBLE}`
+                `[data-element-id="td"][data-selected="true"]${SELECTOR_IS_VISIBLE}`
             );
             const todaysDate = this.template.querySelector(
-                `[data-today="true"]${SELECTOR_IS_VISIBLE}`
+                `[data-element-id="td"][data-today="true"]${SELECTOR_IS_VISIBLE}`
             );
             const firstOfMonth = this.template.querySelector(
                 `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
@@ -530,12 +530,12 @@ export default class PrimitiveCalendar extends LightningElement {
             return;
         }
         const dayCell = this.template.querySelector(
-            `[data-full-date="${computedDay}"]${SELECTOR_HAS_BORDER}`
+            `[data-element-id="td"][data-full-date="${computedDay}"]${SELECTOR_HAS_BORDER}`
         );
         const timeArray = this._computedValue
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
-        const cellSelector = `td${SELECTOR_HAS_BORDER}`;
+        const cellSelector = `[data-element-id="td"]${SELECTOR_HAS_BORDER}`;
         if (timeArray.length === 1) {
             if (computedDay > timeArray[0]) {
                 dayCell?.classList.add(
@@ -831,15 +831,19 @@ export default class PrimitiveCalendar extends LightningElement {
      * Remove borders on cells
      */
     removeDateBorder() {
-        this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove(
-                'avonni-primitive-calendar__cell_bordered-top_bottom'
-            );
-            x.classList.remove(
-                'avonni-primitive-calendar__cell_bordered-right'
-            );
-            x.classList.remove('avonni-primitive-calendar__cell_bordered-left');
-        });
+        this.template
+            .querySelectorAll('[data-element-id="td"]')
+            .forEach((x) => {
+                x.classList.remove(
+                    'avonni-primitive-calendar__cell_bordered-top_bottom'
+                );
+                x.classList.remove(
+                    'avonni-primitive-calendar__cell_bordered-right'
+                );
+                x.classList.remove(
+                    'avonni-primitive-calendar__cell_bordered-left'
+                );
+            });
     }
 
     /*
