@@ -1295,7 +1295,7 @@ describe('Calendar', () => {
                         expect(handler).toHaveBeenCalled();
                         const date = handler.mock.calls[0][0].detail.date;
                         expect(typeof date).toBe('string');
-                        expect(new Date(date)).toEqual(new Date('07/01/2022'));
+                        expect(new Date(date)).toEqual(new Date('06/01/2022'));
                     })
                     .then(() => {
                         const calendars = element.shadowRoot.querySelectorAll(

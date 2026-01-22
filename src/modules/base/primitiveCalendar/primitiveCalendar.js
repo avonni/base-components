@@ -517,7 +517,18 @@ export default class PrimitiveCalendar extends LightningElement {
      * @param {number} day The timestamp of the date
      */
     addDateBorder(day) {
+        if (
+            this.selectionMode !== 'interval' ||
+            day === undefined ||
+            day === null
+        ) {
+            return;
+        }
+
         const computedDay = Number(day);
+        if (isNaN(computedDay)) {
+            return;
+        }
         const dayCell = this.template.querySelector(
             `[data-full-date="${computedDay}"]${SELECTOR_HAS_BORDER}`
         );
@@ -525,89 +536,59 @@ export default class PrimitiveCalendar extends LightningElement {
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
         const cellSelector = `td${SELECTOR_HAS_BORDER}`;
-        if (this.selectionMode === 'interval' && !isNaN(computedDay)) {
-            if (timeArray.length === 1) {
-                if (computedDay > timeArray[0]) {
-                    dayCell?.classList.add(
-                        'avonni-primitive-calendar__cell_bordered-right'
-                    );
-                    this.template
-                        .querySelectorAll(cellSelector)
-                        .forEach((x) => {
-                            const timestamp = Number(
-                                x.getAttribute('data-full-date')
-                            );
-                            if (
-                                timestamp >= timeArray[0] &&
-                                timestamp <= computedDay
-                            ) {
-                                x.classList.add(
-                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
-                                );
-                            }
-                        });
-                }
-                if (computedDay < timeArray[0]) {
-                    dayCell?.classList.add(
-                        'avonni-primitive-calendar__cell_bordered-left'
-                    );
-                    this.template
-                        .querySelectorAll(cellSelector)
-                        .forEach((x) => {
-                            const timestamp = Number(
-                                x.getAttribute('data-full-date')
-                            );
-                            if (
-                                timestamp <= timeArray[0] &&
-                                timestamp >= computedDay
-                            ) {
-                                x.classList.add(
-                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
-                                );
-                            }
-                        });
-                }
-            } else if (timeArray.length === 2) {
-                if (computedDay > timeArray[1]) {
-                    dayCell?.classList.add(
-                        'avonni-primitive-calendar__cell_bordered-right'
-                    );
-                    this.template
-                        .querySelectorAll(cellSelector)
-                        .forEach((x) => {
-                            const timestamp = Number(
-                                x.getAttribute('data-full-date')
-                            );
-                            if (
-                                timestamp >= timeArray[1] &&
-                                timestamp <= computedDay
-                            ) {
-                                x.classList.add(
-                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
-                                );
-                            }
-                        });
-                }
-                if (computedDay < timeArray[0]) {
-                    dayCell?.classList.add(
-                        'avonni-primitive-calendar__cell_bordered-left'
-                    );
-                    this.template
-                        .querySelectorAll(cellSelector)
-                        .forEach((x) => {
-                            const timestamp = Number(
-                                x.getAttribute('data-full-date')
-                            );
-                            if (
-                                timestamp <= timeArray[0] &&
-                                timestamp >= computedDay
-                            ) {
-                                x.classList.add(
-                                    'avonni-primitive-calendar__cell_bordered-top_bottom'
-                                );
-                            }
-                        });
-                }
+        if (timeArray.length === 1) {
+            if (computedDay > timeArray[0]) {
+                dayCell?.classList.add(
+                    'avonni-primitive-calendar__cell_bordered-right'
+                );
+                this.template.querySelectorAll(cellSelector).forEach((x) => {
+                    const timestamp = Number(x.getAttribute('data-full-date'));
+                    if (timestamp >= timeArray[0] && timestamp <= computedDay) {
+                        x.classList.add(
+                            'avonni-primitive-calendar__cell_bordered-top_bottom'
+                        );
+                    }
+                });
+            }
+            if (computedDay < timeArray[0]) {
+                dayCell?.classList.add(
+                    'avonni-primitive-calendar__cell_bordered-left'
+                );
+                this.template.querySelectorAll(cellSelector).forEach((x) => {
+                    const timestamp = Number(x.getAttribute('data-full-date'));
+                    if (timestamp <= timeArray[0] && timestamp >= computedDay) {
+                        x.classList.add(
+                            'avonni-primitive-calendar__cell_bordered-top_bottom'
+                        );
+                    }
+                });
+            }
+        } else if (timeArray.length === 2) {
+            if (computedDay > timeArray[1]) {
+                dayCell?.classList.add(
+                    'avonni-primitive-calendar__cell_bordered-right'
+                );
+                this.template.querySelectorAll(cellSelector).forEach((x) => {
+                    const timestamp = Number(x.getAttribute('data-full-date'));
+                    if (timestamp >= timeArray[1] && timestamp <= computedDay) {
+                        x.classList.add(
+                            'avonni-primitive-calendar__cell_bordered-top_bottom'
+                        );
+                    }
+                });
+            }
+            if (computedDay < timeArray[0]) {
+                dayCell?.classList.add(
+                    'avonni-primitive-calendar__cell_bordered-left'
+                );
+                this.template.querySelectorAll(cellSelector).forEach((x) => {
+                    const timestamp = Number(x.getAttribute('data-full-date'));
+                    if (timestamp <= timeArray[0] && timestamp >= computedDay) {
+                        x.classList.add(
+                            'avonni-primitive-calendar__cell_bordered-top_bottom'
+                        );
+                    }
+                });
             }
         }
     }
