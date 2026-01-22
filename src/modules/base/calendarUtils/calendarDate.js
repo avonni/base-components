@@ -98,7 +98,7 @@ export class CalendarDate {
             'avonni-primitive-calendar__date-cell': !this.isWeekNumber,
             'avonni-primitive-calendar__week-cell': this.isWeekNumber,
             'slds-day_adjacent-month': this.adjacentMonth,
-            'slds-is-today': this.isToday,
+            'slds-is-today': this.isToday && !this.isDateHidden,
             'slds-is-selected': this.appearsSelected,
             'slds-is-selected-multi': this.appearsSelectedMulti
         }).toString();
