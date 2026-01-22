@@ -523,7 +523,7 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        this.displayDate = getDateWithTimezone(dateValue, this.timezone);
+        // We should only set the focus date and not the display date if we don't plan to update the view.
         this._focusDate = getDateWithTimezone(dateValue, this.timezone);
         this.computeFocus(true);
     }
