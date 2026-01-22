@@ -34,10 +34,6 @@ const SELECTOR_IS_VISIBLE = ':not([data-is-date-hidden="true"])';
 
 const SELECTOR_HAS_BORDER = `${SELECTOR_IS_VISIBLE}:not([data-is-week-disabled="true"])`;
 
-/**
- * @class
- * @descriptor avonni-primitive-calendar
- */
 export default class PrimitiveCalendar extends LightningElement {
     // To avoid shifting the dates infinitely due to a timezone difference, the date labels, display date, disabled dates, and
     // marked dates are expected to be timezone normalized by the parent component avonni-calendar.
@@ -417,7 +413,7 @@ export default class PrimitiveCalendar extends LightningElement {
                 this._computedDisplayDate,
                 'date',
                 focusDate.getDate()
-            );
+            ).getTime();
         }
         const firstOfMonthDate = startOfDay(
             setDate(this._computedDisplayDate, 'date', 1)
@@ -674,7 +670,6 @@ export default class PrimitiveCalendar extends LightningElement {
 
         const displayDate = new Date(this._computedDisplayDate);
         displayDate.setDate(1);
-        displayDate.setMonth(displayDate.getMonth());
 
         const currentMonth = displayDate.getMonth();
         const firstDay = setDate(displayDate, 'date', 1);
