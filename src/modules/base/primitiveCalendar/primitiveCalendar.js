@@ -157,7 +157,7 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set displayDate(value) {
         this._displayDate = isInvalidDate(value) ? DEFAULT_DATE : value;
-        this._computedDisplayDate = new Date(this._displayDate);
+        this._computedDisplayDate = startOfDay(new Date(this._displayDate));
         if (this._connected) {
             this.generateViewData();
         }
@@ -608,7 +608,7 @@ export default class PrimitiveCalendar extends LightningElement {
         const min = new Date(this.min);
         this._computedMax = setDate(max, 'hours', 0, 0, 0, 0);
         this._computedMin = setDate(min, 'hours', 0, 0, 0, 0);
-        this._computedDisplayDate = new Date(this._displayDate);
+        this._computedDisplayDate = startOfDay(new Date(this._displayDate));
         this.initDateLabels();
         this.initDisabledDates();
         this.initMarkedDates();
