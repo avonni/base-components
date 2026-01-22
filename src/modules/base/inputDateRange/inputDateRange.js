@@ -233,6 +233,8 @@ export default class InputDateRange extends LightningElement {
     _focusEndDate;
     _focusStartDate;
 
+    _displayDate;
+
     /*
      * ------------------------------------------------------------
      *  LIFECYCLE HOOKS
@@ -823,11 +825,7 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     focus() {
-        if (!this.isExpanded && this.startDateInput) {
-            this.startDateInput.focus();
-        } else if (this.isExpanded && this.startCalendar) {
-            this.startCalendar.focus();
-        }
+        this.startDateInput?.focus();
     }
 
     /**
@@ -900,6 +898,22 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Navigate the expanded calendar to a given date.
+     *
+     * @param {Date} date The date to navigate to
+     */
+    goToExpandedCalendarDate(date) {
+        if (!this.isExpanded || !date) {
+            return;
+        }
+        this._displayDate = date;
+
+        requestAnimationFrame(() => {
+            this.expandedCalendar?.goToDate(date);
+        });
+    }
+
+    /**
      * Initialize the end time.
      */
     initEndDate() {
@@ -940,7 +954,7 @@ export default class InputDateRange extends LightningElement {
                 `[data-element-id="calendar-${calendar}-date"]`
             );
             if (targetCalendar) {
-                targetCalendar.focusDate(date);
+                targetCalendar?.focusDate(date);
             }
         });
     }
@@ -1264,11 +1278,11 @@ export default class InputDateRange extends LightningElement {
                 if (elementId.includes('start-date')) {
                     this.showStartDate = false;
                     this.stopPositioning();
-                    this.startDateIcon.focus();
+                    this.startDateIcon?.focus();
                 } else if (elementId.includes('end-date')) {
                     this.showEndDate = false;
                     this.stopPositioning();
-                    this.endDateIcon.focus();
+                    this.endDateIcon?.focus();
                 }
                 break;
 
@@ -1280,6 +1294,16 @@ export default class InputDateRange extends LightningElement {
 
             default:
         }
+    }
+
+    /**
+     * Handles the navigation of the expanded calendar
+     *
+     * @param {Event} event
+     */
+    handleCalendarNavigation(event) {
+        const date = new Date(event.detail.date);
+        this._displayDate = date;
     }
 
     /**
@@ -1370,7 +1394,7 @@ export default class InputDateRange extends LightningElement {
             this.showEndDate = false;
             this.stopPositioning();
             if (this.calendarKeyEvent === 'keyboard') {
-                this.endDateIcon.focus();
+                this.endDateIcon?.focus();
             } else if (!this.startDate) {
                 this.setFocusDate(this._endDate, 'start');
                 this.showStartDate = true;
@@ -1379,18 +1403,33 @@ export default class InputDateRange extends LightningElement {
         });
     }
 
+    // needs to check if date
     handleChangeEndDateInput(event) {
         const value = event.target.value;
-        let parsedDate = this.dateStringFormat(value);
+        const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
             parsedDate.setHours(0, 0, 0, 0);
             const max = this.endCalendar?.max ?? new Date(2099, 11, 31);
-            max.setHours(0, 0, 0, 0);
-            this._endDate = parsedDate < max ? parsedDate : max;
+            const computedMax = new Date(max);
+            computedMax.setHours(0, 0, 0, 0);
+            this._endDate = parsedDate < computedMax ? parsedDate : computedMax;
+            if (
+                this._startDate &&
+                this._startDate.getTime() > this._endDate.getTime()
+            ) {
+                this._startDate = null;
+            }
             this._dispatchChange();
-            // needs to use handle change end date input.
+            this.goToExpandedCalendarDate(this._endDate);
+        } else if (!value) {
+            this._endDate = null;
+            this._dispatchChange();
+            if (this._startDate) {
+                this.goToExpandedCalendarDate(this._startDate);
+            }
         } else {
             // Show Error
+            this._endDate = this._endDate ? new Date(this._endDate) : null;
         }
     }
 
@@ -1423,26 +1462,42 @@ export default class InputDateRange extends LightningElement {
         });
 
         this.optionRangeValue = 'custom';
+        const [start, end] = dates ?? [];
 
-        this._startDate = dates[0];
-        this._endDate = dates[1];
+        // DESELECT START OR END DATE
+        if (dates.length === 1 && this.startDate && this.endDate && start) {
+            const isSameDate =
+                this.toISOString(this.startDate, this.startTime) ===
+                    this.toISOString(start, this.startTime) &&
+                this.toISOString(this.endDate, this.endTime) ===
+                    this.toISOString(start, this.endTime);
+
+            this._startDate = start;
+            this._endDate = isSameDate ? null : start;
+        }
+        // SET END DATE EQUAL TO START DATE
+        else if (dates.length === 0 && this.startDate && !this.endDate) {
+            this._endDate = new Date(this._startDate);
+        }
+        // SET NEW INTERVAL
+        else {
+            this._startDate = start;
+            this._endDate = end;
+        }
 
         if (this._startDate && this._endDate) {
             this.setValidTimeRange();
         }
         this._dispatchChange();
-        this.stopPositioning();
-        this.showStartDate = false;
 
         requestAnimationFrame(() => {
             if (this.calendarKeyEvent === 'keyboard') {
-                this.startDateIcon.focus();
-            } else if (!this.endDate) {
-                this.setFocusDate(this._startDate, 'end');
-                this.showEndDate = true;
+                this.startDateIcon?.focus();
             }
             this.calendarKeyEvent = null;
         });
+        // Prevents from going back to start date when selecting a value
+        this.goToExpandedCalendarDate(this._displayDate);
     }
 
     /**
@@ -1539,7 +1594,7 @@ export default class InputDateRange extends LightningElement {
 
         requestAnimationFrame(() => {
             if (this.calendarKeyEvent === 'keyboard') {
-                this.startDateIcon.focus();
+                this.startDateIcon?.focus();
             } else if (!this.endDate) {
                 this.setFocusDate(this._startDate, 'end');
                 this.showEndDate = true;
@@ -1554,13 +1609,31 @@ export default class InputDateRange extends LightningElement {
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
             parsedDate.setHours(0, 0, 0, 0);
+
             const min = this.startCalendar?.min ?? new Date(1900, 0, 1);
-            min.setHours(0, 0, 0, 0);
-            this._startDate = parsedDate > min ? parsedDate : min;
-            // needs to handle use handleChangeStartDate
+            const computedMin = new Date(min);
+            computedMin.setHours(0, 0, 0, 0);
+
+            this._startDate =
+                parsedDate > computedMin ? parsedDate : computedMin;
+
+            if (
+                this._endDate &&
+                this._startDate.getTime() > this._endDate.getTime()
+            ) {
+                this._endDate = null;
+            }
+
             this._dispatchChange();
+            this.goToExpandedCalendarDate(this._startDate);
+        } else if (!value) {
+            this._startDate = null;
+            this._dispatchChange();
+            this.goToExpandedCalendarDate(this._endDate);
         } else {
-            // Show Error
+            this._startDate = this._startDate
+                ? new Date(this._startDate)
+                : null;
         }
     }
 
@@ -1781,6 +1854,10 @@ export default class InputDateRange extends LightningElement {
         this.updateClassListWhenError();
         this.interactingState.leave();
         this._dispatchChange();
+        if (this.isExpanded) {
+            this._displayDate = this._startDate;
+            this.goToExpandedCalendarDate(this._startDate);
+        }
     }
 
     /**
@@ -1808,7 +1885,7 @@ export default class InputDateRange extends LightningElement {
                 this.stopPositioning();
 
                 if (this.template.activeElement !== this.endDateIcon) {
-                    this.endDateInput.focus();
+                    this.endDateInput?.focus();
                 }
             }
         });
@@ -1880,7 +1957,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             this.showEndDate = false;
             this.stopPositioning();
-            if (this.calendarKeyEvent === 'keyboard') this.endDateIcon.focus();
+            if (this.calendarKeyEvent === 'keyboard') this.endDateIcon?.focus();
             else if (!this.startDate) {
                 this.setFocusDate(this._endDate, 'start');
                 this.showStartDate = true;
@@ -1904,7 +1981,7 @@ export default class InputDateRange extends LightningElement {
 
         requestAnimationFrame(() => {
             if (this.calendarKeyEvent === 'keyboard') {
-                this.startDateIcon.focus();
+                this.startDateIcon?.focus();
             } else if (!this.endDate) {
                 this.setFocusDate(this._startDate, 'end');
                 this.showEndDate = true;
@@ -1938,8 +2015,11 @@ export default class InputDateRange extends LightningElement {
                 this.showStartDate = false;
                 this.stopPositioning();
 
-                if (this.template.activeElement !== this.startDateIcon) {
-                    this.startDateInput.focus();
+                if (
+                    this.template.activeElement !== this.startDateIcon &&
+                    !this.isExpanded
+                ) {
+                    this.startDateInput?.focus();
                 }
             }
         });

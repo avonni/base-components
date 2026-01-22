@@ -56,39 +56,48 @@
                     slds-box
                 "
             >
-                <c-calendar
-                    aria-label="Date input calendar"
-                    disabled={disabledOrReadOnly}
-                    nb-month-calendars="2"
-                    selection-mode="interval"
-                    timezone={timezone}
-                    value={calendarValue}
-                    week-start-day={weekStartDay}
-                    data-element-id="calendar-start-date"
-                    data-is-focusable
+                <c-focus-trap
+                    data-element-id="calendar-expanded-date-dialog"
                     onblur={handleBlur}
-                    onchange={handleChangeExpandedDate}
                     onfocus={handleFocus}
-                ></c-calendar>
-                <div
-                    if:false={showRangeOptions}
-                    class="
-                        slds-align_absolute-center
-                        avonni-input-date-range__button-container
-                    "
+                    onfocusin={handleStartCalendarFocusIn}
+                    onfocusout={handleStartCalendarFocusOut}
+                    onkeydown={handleCalendarDialogKeyDown}
                 >
-                    <lightning-button
+                    <c-calendar
+                        aria-label="Date input calendar"
                         disabled={disabledOrReadOnly}
-                        label={todayButtonLabel}
-                        title={todayButtonLabel}
-                        variant="base"
-                        data-element-id="select-start-today-button"
+                        nb-month-calendars="2"
+                        selection-mode="interval"
+                        timezone={timezone}
+                        value={calendarValue}
+                        week-start-day={weekStartDay}
+                        data-element-id="calendar-expanded-date"
                         data-is-focusable
                         onblur={handleBlur}
-                        onclick={handleSelectStartToday}
+                        onchange={handleChangeExpandedDate}
                         onfocus={handleFocus}
-                    ></lightning-button>
-                </div>
+                        onnavigate={handleCalendarNavigation}
+                    ></c-calendar>
+                    <div
+                        if:false={showRangeOptions}
+                        class="
+                            slds-align_absolute-center
+                            avonni-input-date-range__button-container
+                        "
+                    >
+                        <lightning-button
+                            disabled={disabledOrReadOnly}
+                            label={todayButtonLabel}
+                            title={todayButtonLabel}
+                            variant="base"
+                            data-element-id="select-start-today-button"
+                            data-is-focusable
+                            onblur={handleBlur}
+                            onclick={handleSelectStartToday}
+                            onfocus={handleFocus}
+                        ></lightning-button></div
+                ></c-focus-trap>
             </div>
         </div>
         <div>
