@@ -242,7 +242,6 @@ export default class InputDateRange extends LightningElement {
     connectedCallback() {
         this.initStartDate();
         this.initEndDate();
-        this.setSelectionModeExpanded();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
@@ -316,7 +315,6 @@ export default class InputDateRange extends LightningElement {
 
         if (this._connected) {
             this.initEndDate();
-            this.setSelectionModeExpanded();
         }
     }
 
@@ -333,9 +331,6 @@ export default class InputDateRange extends LightningElement {
     }
     set isExpanded(value) {
         this._isExpanded = normalizeBoolean(value);
-        if (this._connected) {
-            this.setSelectionModeExpanded();
-        }
     }
 
     /**
@@ -403,7 +398,6 @@ export default class InputDateRange extends LightningElement {
 
         if (this._connected) {
             this.initStartDate();
-            this.setSelectionModeExpanded();
         }
     }
 
@@ -442,7 +436,6 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initStartDate();
             this.initEndDate();
-            this.setSelectionModeExpanded();
         }
     }
 
@@ -466,7 +459,6 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initStartDate();
             this.initEndDate();
-            this.setSelectionModeExpanded();
         }
     }
 
@@ -661,6 +653,17 @@ export default class InputDateRange extends LightningElement {
     get endTimeInput() {
         return this.template.querySelector(
             '[data-element-id="lightning-input-end-time"]'
+        );
+    }
+
+    /**
+     * Expanded Calendar
+     *
+     * @type {element}
+     */
+    get expandedCalendar() {
+        return this.template.querySelector(
+            '[data-element-id="calendar-expanded-date"]'
         );
     }
 
@@ -929,22 +932,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Set the display date for each calendar when the input date range is expanded.
-     */
-    setDisplayDates() {
-        if (this.isExpanded) {
-            requestAnimationFrame(() => {
-                if (this.startDate) {
-                    this.startCalendar?.goToDate(this._startDate);
-                }
-                if (this.endDate) {
-                    this.endCalendar?.goToDate(this._endDate);
-                }
-            });
-        }
-    }
-
-    /**
      * Set focus in a selected calendar
      */
     setFocusDate(date, calendar) {
@@ -1084,15 +1071,6 @@ export default class InputDateRange extends LightningElement {
 
         this._startDate = new Date(yesterday);
         this._endDate = new Date(yesterday);
-    }
-
-    /**
-     * Set the selection mode for the calendar if expanded
-     */
-    setSelectionModeExpanded() {
-        if (!this.isExpanded) return;
-        this.selectionModeStartDate = !this._endDate ? 'single' : 'interval';
-        this.selectionModeEndDate = !this._startDate ? 'single' : 'interval';
     }
 
     /**
@@ -1399,7 +1377,6 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
-        this.setDisplayDates();
     }
 
     handleChangeEndDateInput(event) {
@@ -1411,7 +1388,6 @@ export default class InputDateRange extends LightningElement {
             max.setHours(0, 0, 0, 0);
             this._endDate = parsedDate < max ? parsedDate : max;
             this._dispatchChange();
-            this.setDisplayDates();
             // needs to use handle change end date input.
         } else {
             // Show Error
@@ -1431,6 +1407,42 @@ export default class InputDateRange extends LightningElement {
             this.startTime = null;
         }
         this._dispatchChange();
+    }
+
+    /**
+     * Handles the change of expanded date
+     *
+     * @param {Event} event
+     */
+    handleChangeExpandedDate(event) {
+        event.stopPropagation();
+        const value = event.detail.value;
+        const normalizedValue = value instanceof Array ? value : [value];
+        const dates = normalizedValue.map((date) => {
+            return date ? new Date(date) : null;
+        });
+
+        this.optionRangeValue = 'custom';
+
+        this._startDate = dates[0];
+        this._endDate = dates[1];
+
+        if (this._startDate && this._endDate) {
+            this.setValidTimeRange();
+        }
+        this._dispatchChange();
+        this.stopPositioning();
+        this.showStartDate = false;
+
+        requestAnimationFrame(() => {
+            if (this.calendarKeyEvent === 'keyboard') {
+                this.startDateIcon.focus();
+            } else if (!this.endDate) {
+                this.setFocusDate(this._startDate, 'end');
+                this.showEndDate = true;
+            }
+            this.calendarKeyEvent = null;
+        });
     }
 
     /**
@@ -1535,7 +1547,6 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
-        this.setDisplayDates();
     }
 
     handleChangeStartDateInput(event) {
@@ -1548,7 +1559,6 @@ export default class InputDateRange extends LightningElement {
             this._startDate = parsedDate > min ? parsedDate : min;
             // needs to handle use handleChangeStartDate
             this._dispatchChange();
-            this.setDisplayDates();
         } else {
             // Show Error
         }
@@ -1771,9 +1781,6 @@ export default class InputDateRange extends LightningElement {
         this.updateClassListWhenError();
         this.interactingState.leave();
         this._dispatchChange();
-        if (this.isExpanded) {
-            this.setDisplayDates();
-        }
     }
 
     /**
@@ -1880,9 +1887,6 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
-        if (this.isExpanded) {
-            this.setDisplayDates();
-        }
     }
 
     /**
@@ -1908,9 +1912,6 @@ export default class InputDateRange extends LightningElement {
             }
             this.calendarKeyEvent = null;
         });
-        if (this.isExpanded) {
-            this.setDisplayDates();
-        }
     }
 
     /**
@@ -1967,7 +1968,6 @@ export default class InputDateRange extends LightningElement {
     _dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
-        this.setSelectionModeExpanded();
 
         /**
          * The event fired when the value changed.
