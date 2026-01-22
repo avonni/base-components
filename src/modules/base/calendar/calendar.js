@@ -595,9 +595,9 @@ export default class Calendar extends LightningElement {
             let resolvedIndex = index;
 
             // Set index from focused date if not explicitly provided
-            if (resolvedIndex == null && this._focusDate) {
-                const year = this._focusDate.getFullYear();
-                const monthIndex = this._focusDate.getMonth();
+            if (resolvedIndex == null && focusDate) {
+                const year = focusDate.getFullYear();
+                const monthIndex = focusDate.getMonth();
 
                 resolvedIndex = Number(
                     this.template.querySelector(
@@ -891,8 +891,10 @@ export default class Calendar extends LightningElement {
                 isBeforeMin(minValue, this.computedMin) &&
                 isAfterMax(maxValue, this.computedMax)
             ) {
-                this.computedValue[0] = new Date(this.computedMin);
-                this.computedValue[1] = new Date(this.computedMax);
+                this.computedValue = [
+                    new Date(this.computedMin),
+                    new Date(this.computedMax)
+                ];
                 this.displayDate = new Date(this.computedMin);
             } else {
                 this.computedValue = [];
