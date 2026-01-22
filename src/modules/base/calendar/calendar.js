@@ -1106,13 +1106,13 @@ export default class Calendar extends LightningElement {
 
             // Navigate outside the calendar list
             if (isOutsideCalendarList) {
-                this.dispatchNavigateEvent(nextDate);
                 // We adjust the date so that the displayed calendars are only shifted by the necessary months
                 const adjustedDate = setDate(
                     firstDayOfMonth,
                     'month',
                     computedNextDate.getMonth() - dataIndex
                 );
+                this.dispatchNavigateEvent(adjustedDate);
                 this.displayDate = adjustedDate;
             }
             // We leave the displayDate unchanged if the calendars are not shifted
