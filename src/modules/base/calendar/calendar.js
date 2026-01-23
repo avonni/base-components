@@ -523,8 +523,13 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        // We should only set the focus date and not the display date if we don't plan to update the view.
         this._focusDate = getDateWithTimezone(dateValue, this.timezone);
+        // Previously, display date was updated, but `updateDateParameters` wasn't called to update the view, so it didn't change the position the calendar.
+        // The method `focusDate` should not move the position of the calendar, this is the role of `goToDate`.
+        // If changing the year immedialely using the select options or the arrows to change months, it would be based on the new display date
+        // whose changes were not reflected in the view yet. Therefore, the update of the display date by the method `focusDate` was removed.
+        // this.displayDate = getDateWithTimezone(dateValue, this.timezone);
+
         this.computeFocus(true);
     }
 
@@ -954,7 +959,6 @@ export default class Calendar extends LightningElement {
         );
 
         if (this.computedValue.length) {
-            this.displayDate = this.computedValue[0];
             if (!this.isMultiCalendars) {
                 this.displayDate = new Date(this.computedValue[0]);
             }
