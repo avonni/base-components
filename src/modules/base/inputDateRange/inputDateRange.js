@@ -819,7 +819,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Sets focus on the start date input or the start calendar if is expanded.
+     * Sets focus on the start date input.
      *
      * @public
      */
