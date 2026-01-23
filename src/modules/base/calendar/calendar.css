@@ -84,6 +84,6 @@ div:focus {
     );
 }
 
-.avonni-calendar__wrapper {
+.avonni-calendar__scrolling {
     overflow-x: auto;
 }
