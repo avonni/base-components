@@ -19,6 +19,7 @@ import {
 } from 'c/calendarUtils';
 import { getFormattedDate, setDate } from 'c/dateTimeUtils';
 import {
+    classSet,
     deepCopy,
     normalizeArray,
     normalizeBoolean,
@@ -105,6 +106,7 @@ export default class Calendar extends LightningElement {
         this.initDisplayDate();
         this.validateCurrentDayValue();
         this.updateDateParameters();
+        this.computeFocusAll();
         this.computeFocus(false);
         this._connected = true;
     }
@@ -414,6 +416,17 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * CSS classes of the wrapper element.
+     *
+     * @type {string}
+     */
+    get computedWrapperClass() {
+        return classSet('avonni-calendar__wrapper').add({
+            'avonni-calendar__scrolling': this.isMultiCalendars
+        });
+    }
+
+    /**
      * Disable interaction on next date layout.
      */
     get disabledNext() {
@@ -613,6 +626,20 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Compute the focus for all the calendars
+     */
+    computeFocusAll() {
+        requestAnimationFrame(() => {
+            const calendars = this.template.querySelectorAll(
+                '[data-element-id="avonni-calendar__primitive-calendar"]'
+            );
+            calendars.forEach((calendar) => {
+                calendar.focusDate(null, false);
+            });
+        });
+    }
+
+    /**
      * Returns the end of the month for the given date.
      *
      * @param {Date} date Date to get the end of the month for.
@@ -620,6 +647,15 @@ export default class Calendar extends LightningElement {
      */
     endOfMonth(date) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+
+    /**
+     * Focus the container to avoid focus loss when selectng a date or navigating with keyboard.
+     */
+    focusContainer() {
+        this.template
+            .querySelector('[data-element-id="avonni-calendar__container"]')
+            ?.focus();
     }
 
     /**
@@ -1142,7 +1178,10 @@ export default class Calendar extends LightningElement {
         if (!this.isMultiCalendars) {
             this.displayDate = computedNextDate;
         }
+
+        this.focusContainer();
         this.updateDateParameters();
+        this.computeFocusAll();
         this.computeFocus(true, computedNextDate);
     }
 
@@ -1184,6 +1223,7 @@ export default class Calendar extends LightningElement {
         const month = firstDayOfMonth.getMonth() + 1;
         this.displayDate = setDate(firstDayOfMonth, 'month', month);
         this.updateDateParameters();
+        this.computeFocusAll();
         this.computeFocus(false);
         this.dispatchNavigateEvent(this.displayDate);
     }
@@ -1198,6 +1238,7 @@ export default class Calendar extends LightningElement {
         const month = firstDayOfMonth.getMonth() - 1;
         this.displayDate = setDate(firstDayOfMonth, 'month', month);
         this.updateDateParameters();
+        this.computeFocusAll();
         this.computeFocus(false);
         this.dispatchNavigateEvent(this.displayDate);
     }
@@ -1241,6 +1282,7 @@ export default class Calendar extends LightningElement {
         const clickedDate = this.toISO(date);
         // When deadling with multiple calendars, we leave the display date unchanged
         this.displayDate = this.isMultiCalendars ? this.displayDate : date;
+        this.focusContainer();
         this.updateDateParameters();
         this.updateValue();
 
@@ -1263,7 +1305,7 @@ export default class Calendar extends LightningElement {
                 }
             })
         );
-
+        this.computeFocusAll();
         this.computeFocus(true, date, dataIndex);
     }
 
@@ -1292,6 +1334,7 @@ export default class Calendar extends LightningElement {
         this.dispatchNavigateEvent(this.displayDate);
         this.updateDateParameters();
         event.stopPropagation();
+        this.computeFocusAll();
         this.computeFocus(true);
     }
 

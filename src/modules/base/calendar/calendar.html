@@ -1,5 +1,5 @@
 <template>
-    <div class="avonni-calendar__wrapper" data-element-id="div-wrapper">
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
         <div
             class="avonni-calendar__container"
             tabindex="-1"
@@ -105,13 +105,13 @@
                         </label>
                     </div>
 
-                    <div class="slds-grid">
+                    <ul class="slds-grid">
                         <template
                             for:each={calendarDataList}
                             for:item="item"
                             for:index="index"
                         >
-                            <div
+                            <li
                                 key={item.id}
                                 class="
                                     slds-col slds-grow
@@ -159,9 +159,9 @@
                                     data-year={item.year}
                                 >
                                 </c-primitive-calendar>
-                            </div>
+                            </li>
                         </template>
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
