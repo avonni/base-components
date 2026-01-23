@@ -842,13 +842,6 @@ export default class Calendar extends LightningElement {
         this.day = this.displayDate.getDay();
         this.updateSelectYear();
         this.generateViewData();
-        // Make sure the selected year has this.year as value
-        const selectYear = this.template.querySelector(
-            '[data-element-id="select-year"]'
-        );
-        if (selectYear) {
-            selectYear.value = this.year;
-        }
     }
 
     /**
