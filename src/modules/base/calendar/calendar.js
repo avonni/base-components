@@ -421,9 +421,11 @@ export default class Calendar extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        return classSet('avonni-calendar__wrapper').add({
-            'avonni-calendar__scrolling': this.isMultiCalendars
-        });
+        return classSet('avonni-calendar__wrapper')
+            .add({
+                'avonni-calendar__scrolling': this.isMultiCalendars
+            })
+            .toString();
     }
 
     /**
