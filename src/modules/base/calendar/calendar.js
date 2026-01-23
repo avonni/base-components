@@ -421,9 +421,11 @@ export default class Calendar extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        return classSet('avonni-calendar__wrapper').add({
-            'avonni-calendar__scrolling': this.isMultiCalendars
-        });
+        return classSet('avonni-calendar__wrapper')
+            .add({
+                'avonni-calendar__scrolling': this.isMultiCalendars
+            })
+            .toString();
     }
 
     /**
@@ -542,7 +544,7 @@ export default class Calendar extends LightningElement {
         // If changing the year immedialely using the select options or the arrows to change months, it would be based on the new display date
         // whose changes were not reflected in the view yet. Therefore, the update of the display date by the method `focusDate` was removed.
         // this.displayDate = getDateWithTimezone(dateValue, this.timezone);
-
+        this.computeFocusAll();
         this.computeFocus(true);
     }
 
@@ -561,6 +563,7 @@ export default class Calendar extends LightningElement {
         }
         this.displayDate = selectedDate;
         this.updateDateParameters();
+        this.computeFocusAll();
     }
 
     /**
