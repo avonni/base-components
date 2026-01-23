@@ -342,17 +342,7 @@ export default class Calendar extends LightningElement {
             this.initValue();
             if (this.computedValue[0]) {
                 if (this.isMultiCalendars) {
-                    const date = new Date(this.computedValue[0]);
-                    const nextYear = date.getFullYear();
-                    const nextMonthIndex = date.getMonth();
-                    const isOutsideCalendarList = !this.calendarDataList.some(
-                        ({ monthIndex, year }) =>
-                            monthIndex === nextMonthIndex && year === nextYear
-                    );
-                    // Prevent updating the display date by value when the date is already visible.
-                    if (isOutsideCalendarList) {
-                        this.displayDate = date;
-                    }
+                    this.setDisplayDateMultipleCalendars();
                 } else {
                     this.displayDate = new Date(this.computedValue[0]);
                 }
@@ -533,8 +523,13 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        // We should only set the focus date and not the display date if we don't plan to update the view.
         this._focusDate = getDateWithTimezone(dateValue, this.timezone);
+        // Previously, display date was updated, but `updateDateParameters` wasn't called to update the view, so it didn't change the position the calendar.
+        // The method `focusDate` should not move the position of the calendar, this is the role of `goToDate`.
+        // If changing the year immedialely using the select options or the arrows to change months, it would be based on the new display date
+        // whose changes were not reflected in the view yet. Therefore, the update of the display date by the method `focusDate` was removed.
+        // this.displayDate = getDateWithTimezone(dateValue, this.timezone);
+
         this.computeFocus(true);
     }
 
@@ -813,6 +808,32 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Set the display date when multiple calendars are shown.
+     */
+    setDisplayDateMultipleCalendars() {
+        if (!this.isMultiCalendars) return;
+        const isAnyValueVisible = this.computedValue.some((dateValue) => {
+            const date = new Date(dateValue);
+            const year = date.getFullYear();
+            const monthIndex = date.getMonth();
+
+            return this.calendarDataList?.some(
+                (calendar) =>
+                    calendar.year === year && calendar.monthIndex === monthIndex
+            );
+        });
+
+        // First-time initialization
+        if (!this.displayDate) {
+            this.displayDate = new Date(this.computedValue[0]);
+        }
+        // Update only if ALL values are outside ALL calendars
+        else if (!isAnyValueVisible) {
+            this.displayDate = new Date(this.computedValue[0]);
+        }
+    }
+
+    /**
      * Update the dates displayed and generate the view data.
      */
     updateDateParameters() {
@@ -912,7 +933,9 @@ export default class Calendar extends LightningElement {
                         maxValue
                     );
                 }
-                this.displayDate = new Date(this.computedValue[0]);
+                if (!this.isMultiCalendars) {
+                    this.displayDate = new Date(this.computedValue[0]);
+                }
                 this.updateDateParameters();
             }
         }
@@ -929,7 +952,9 @@ export default class Calendar extends LightningElement {
         );
 
         if (this.computedValue.length) {
-            this.displayDate = this.computedValue[0];
+            if (!this.isMultiCalendars) {
+                this.displayDate = new Date(this.computedValue[0]);
+            }
             this.updateDateParameters();
         }
     }
