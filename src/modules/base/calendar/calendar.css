@@ -86,4 +86,5 @@ div:focus {
 
 .avonni-calendar__scrolling {
     overflow-x: auto;
+    overflow-y: hidden;
 }

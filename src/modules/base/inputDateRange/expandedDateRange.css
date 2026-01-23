@@ -58,12 +58,7 @@
 }
 
 .avonni-input-date-range__date-container
-    > .avonni-input-date-range__calendar-start-container:not(:first-child) {
-    border-radius: 0;
-}
-
-.avonni-input-date-range__date-container
-    > .avonni-input-date-range__calendar-start-container:first-child {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    > .avonni-input-date-range__calendar-expanded-container:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

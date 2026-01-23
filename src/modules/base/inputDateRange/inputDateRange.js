@@ -1967,6 +1967,18 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Click the today button on expanded calendar
+     */
+    handleSelectExpandedToday() {
+        this.setPredefinedTodayRange();
+        this._dispatchChange();
+        if (this.isExpanded) {
+            this._displayDate = this._startDate;
+            this.goToExpandedCalendarDate(this._startDate);
+        }
+    }
+
+    /**
      * Click the today button on start calendar
      */
     handleSelectStartToday() {
