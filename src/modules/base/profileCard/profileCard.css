@@ -290,12 +290,12 @@ article.avonni-profile-card {
     .slds-card__body,
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-large
     .slds-card__body {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+    padding-top: 2.5rem;
+    padding-bottom: 1rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small {
-    margin-top: 0.75rem;
+    padding-top: 0.75rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-small
@@ -309,7 +309,7 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-small {
-    margin-top: 1rem;
+    padding-top: 1rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-small
@@ -323,7 +323,7 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-medium {
-    margin-top: 1.25rem;
+    padding-top: 1.25rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-medium
@@ -337,7 +337,7 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-large {
-    margin-top: 1.5rem;
+    padding-top: 1.5rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-large
@@ -351,7 +351,7 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-large {
-    margin-top: 1.75rem;
+    padding-top: 1.75rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__card_size-x-large
@@ -371,27 +371,27 @@ article.avonni-profile-card {
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-x-small
     [data-element-id='text-container'] {
-    margin-top: 1.5rem;
+    padding-top: 1.5rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-small
     [data-element-id='text-container'] {
-    margin-top: 1.75rem;
+    padding-top: 1.75rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-medium
     [data-element-id='text-container'] {
-    margin-top: 2rem;
+    padding-top: 2rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-large
     [data-element-id='text-container'] {
-    margin-top: 2.25rem;
+    padding-top: 2.25rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-x-large
     [data-element-id='text-container'] {
-    margin-top: 2.5rem;
+    padding-top: 2.5rem;
     padding: 0 1rem;
 }
 
@@ -409,32 +409,32 @@ article.avonni-profile-card {
     .slds-card__body,
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-x-small
     .slds-card__body {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-small
     .slds-card__body,
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-small
     .slds-card__body {
-    margin-top: 1.75rem;
-    margin-bottom: 1rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-medium
     .slds-card__body,
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-medium
     .slds-card__body {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
 }
 
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-left.avonni-profile-card__card_size-large
     .slds-card__body,
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-right.avonni-profile-card__card_size-large
     .slds-card__body {
-    margin-top: 2.25rem;
-    margin-bottom: 1rem;
+    padding-top: 2.25rem;
+    padding-bottom: 1rem;
 }
 
 /* DESKTOP */
