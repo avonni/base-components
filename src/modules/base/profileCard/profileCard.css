@@ -392,7 +392,8 @@ article.avonni-profile-card {
 .avonni-profile-card__avatar-bottom.avonni-profile-card__avatar-center.avonni-profile-card__card_size-x-large
     [data-element-id='text-container'] {
     padding-top: 2.5rem;
-    padding: 0 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .avonni-profile-card__avatar-top.avonni-profile-card__avatar-center
