@@ -5,9 +5,5 @@ export {
     ISO_DATE_PATTERN
 } from './constants';
 export { DateTime } from './dateTime';
-export {
-    getFormattedDate,
-    isISODateOnly,
-    parseFormattedDateString
-} from './formatter';
-export { getStartOfWeek, setDate } from './utils';
+export { getFormattedDate, isISODateOnly } from './formatter';
+export { getStartOfWeek, parseFormattedDateString, setDate } from './utils';

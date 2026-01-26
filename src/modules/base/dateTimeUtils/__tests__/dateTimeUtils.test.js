@@ -1,5 +1,5 @@
 import { DateTime } from 'c/luxon';
-import { getFormattedDate } from '../dateTimeUtils';
+import { getFormattedDate, parseFormattedDateString } from '../dateTimeUtils';
 
 const DEFAULT_LANGUAGE = 'en-CA';
 jest.mock('../constants', () => {
@@ -270,6 +270,142 @@ describe('Date Time Utils', () => {
                 format: 'RELATIVE'
             });
             expect(result).toBe('in 1 year');
+        });
+    });
+
+    describe('Parse Formatted Date String', () => {
+        describe('LLL. d, y', () => {
+            const format = 'LLL. d, y';
+            it('Valid year, month, day', () => {
+                const date = new Date(
+                    new Date('1/1/2026').setHours(0, 0, 0, 0)
+                );
+                const value = 'Jan. 1, 2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toEqual(date);
+            });
+
+            it('Valid year, invalid month, valid day', () => {
+                const value = 'InvalidMonth. 1, 2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+            it('Invalid year, month, valid day', () => {
+                const value = 'Jan. 1, 300000';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+
+            it('No match', () => {
+                const parsedDate = parseFormattedDateString({
+                    value: '',
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+        });
+
+        describe('LLLL d, y', () => {
+            const format = 'LLLL d, y';
+            it('Valid year, month, day', () => {
+                const date = new Date(
+                    new Date('1/1/2026').setHours(0, 0, 0, 0)
+                );
+                const value = 'January 1, 2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toEqual(date);
+            });
+
+            it('Valid year, invalid month, valid day', () => {
+                const value = 'InvalidMonth 1, 2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+            it('Invalid year, month, valid day', () => {
+                const value = 'January 1, 300000';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+            it('No match', () => {
+                const parsedDate = parseFormattedDateString({
+                    value: '',
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+        });
+
+        describe('L/d/y', () => {
+            const format = 'L/d/y';
+            it('Valid year, month, day', () => {
+                const date = new Date(
+                    new Date('1/1/2026').setHours(0, 0, 0, 0)
+                );
+                const value = '1/1/2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toEqual(date);
+            });
+
+            it('Invalid year, month, valid day', () => {
+                const value = '1/1/300000';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+            it('No match', () => {
+                const parsedDate = parseFormattedDateString({
+                    value: '',
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+        });
+
+        describe('Invalid Format', () => {
+            const format = 'InvalidFormat';
+            it('Valid year, month, day', () => {
+                const value = '1/1/2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
         });
     });
 

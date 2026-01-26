@@ -859,6 +859,17 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Change the date format depending on date style.
+     *
+     * @param {date} value date object
+     * @returns {date} formatted date depending on the date style.
+     */
+    dateStringFormat(value) {
+        const format = this.getStringFormat();
+        return parseFormattedDateString({ value, format });
+    }
+
+    /**
      * Format a date object to a string.
      *
      * @param {date} date
@@ -1167,17 +1178,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Change the date format depending on date style.
-     *
-     * @param {date} value date object
-     * @returns {date} formatted date depending on the date style.
-     */
-    dateStringFormat(value) {
-        const stringFormat = this.getStringFormat();
-        return parseFormattedDateString(value, stringFormat);
-    }
-
-    /**
      * Convert a date object to an ISO8601 formatted string.
      *
      * @param {date} dateObject
@@ -1226,6 +1226,36 @@ export default class InputDateRange extends LightningElement {
                 this.endTimeInput.classList.remove('slds-has-error');
             }
         }
+    }
+
+    /**
+     * Clamp a date between computed min and max.
+     *
+     * @param {Date} date The date to clamp
+     * @returns {Date} Clamped date
+     */
+    validateDate(date) {
+        const min = this.expandedCalendar?.min ?? new Date(1900, 0, 1);
+        const max = this.expandedCalendar?.max ?? new Date(2099, 11, 31);
+
+        const computedMin = new Date(min);
+        computedMin.setHours(0, 0, 0, 0);
+
+        const computedMax = new Date(max);
+        computedMax.setHours(0, 0, 0, 0);
+
+        const value = new Date(date);
+        value.setHours(0, 0, 0, 0);
+
+        if (value < computedMin) {
+            return computedMin;
+        }
+
+        if (value > computedMax) {
+            return computedMax;
+        }
+
+        return value;
     }
 
     /*
@@ -1389,11 +1419,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.target.value;
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
-            parsedDate.setHours(0, 0, 0, 0);
-            const max = this.expandedCalendar?.max ?? new Date(2099, 11, 31);
-            const computedMax = new Date(max);
-            computedMax.setHours(0, 0, 0, 0);
-            this._endDate = parsedDate < computedMax ? parsedDate : computedMax;
+            this._endDate = this.validateDate(parsedDate);
             if (
                 this._startDate &&
                 this._startDate.getTime() > this._endDate.getTime()
@@ -1635,12 +1661,7 @@ export default class InputDateRange extends LightningElement {
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
             parsedDate.setHours(0, 0, 0, 0);
-            const min = this.expandedCalendar?.min ?? new Date(1900, 0, 1);
-            const computedMin = new Date(min);
-            computedMin.setHours(0, 0, 0, 0);
-
-            this._startDate =
-                parsedDate > computedMin ? parsedDate : computedMin;
+            this._startDate = this.validateDate(parsedDate);
 
             if (
                 this._endDate &&
