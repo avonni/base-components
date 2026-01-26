@@ -600,17 +600,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * End Calendar
-     *
-     * @type {element}
-     */
-    get endCalendar() {
-        return this.template.querySelector(
-            '[data-element-id="calendar-end-date"]'
-        );
-    }
-
-    /**
      * End date input.
      *
      * @type {element}
@@ -724,17 +713,6 @@ export default class InputDateRange extends LightningElement {
      */
     get showTime() {
         return this.type === 'datetime';
-    }
-
-    /**
-     * Start Calendar
-     *
-     * @type {element}
-     */
-    get startCalendar() {
-        return this.template.querySelector(
-            '[data-element-id="calendar-start-date"]'
-        );
     }
 
     /**
@@ -954,7 +932,7 @@ export default class InputDateRange extends LightningElement {
                 `[data-element-id="calendar-${calendar}-date"]`
             );
             if (targetCalendar) {
-                targetCalendar?.focusDate(date);
+                targetCalendar.focusDate(date);
             }
         });
     }
@@ -1403,13 +1381,12 @@ export default class InputDateRange extends LightningElement {
         });
     }
 
-    // needs to check if date
     handleChangeEndDateInput(event) {
         const value = event.target.value;
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
             parsedDate.setHours(0, 0, 0, 0);
-            const max = this.endCalendar?.max ?? new Date(2099, 11, 31);
+            const max = this.expandedCalendar?.max ?? new Date(2099, 11, 31);
             const computedMax = new Date(max);
             computedMax.setHours(0, 0, 0, 0);
             this._endDate = parsedDate < computedMax ? parsedDate : computedMax;
@@ -1428,7 +1405,7 @@ export default class InputDateRange extends LightningElement {
                 this.goToExpandedCalendarDate(this._startDate);
             }
         } else {
-            // Show Error
+            // Returns to old value
             this._endDate = this._endDate ? new Date(this._endDate) : null;
         }
     }
@@ -1609,8 +1586,7 @@ export default class InputDateRange extends LightningElement {
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
             parsedDate.setHours(0, 0, 0, 0);
-
-            const min = this.startCalendar?.min ?? new Date(1900, 0, 1);
+            const min = this.expandedCalendar?.min ?? new Date(1900, 0, 1);
             const computedMin = new Date(min);
             computedMin.setHours(0, 0, 0, 0);
 
@@ -1631,6 +1607,7 @@ export default class InputDateRange extends LightningElement {
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
         } else {
+            // returns to old value
             this._startDate = this._startDate
                 ? new Date(this._startDate)
                 : null;
@@ -1971,6 +1948,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleSelectExpandedToday() {
         this.setPredefinedTodayRange();
+        this.setValidTimeRange();
         this._dispatchChange();
         if (this.isExpanded) {
             this._displayDate = this._startDate;
