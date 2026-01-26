@@ -854,14 +854,8 @@ export default class InputDateRange extends LightningElement {
      * @returns {date} formatted date depending on the date style.
      */
     dateFormat(value) {
-        switch (this.dateStyle) {
-            case 'medium':
-                return this.formatDate(value, 'LLL. d, y');
-            case 'long':
-                return this.formatDate(value, 'LLLL d, y');
-            default:
-                return this.formatDate(value, 'L/d/y');
-        }
+        const stringFormat = this.getStringFormat();
+        return this.formatDate(value, stringFormat);
     }
 
     /**
@@ -873,6 +867,22 @@ export default class InputDateRange extends LightningElement {
      */
     formatDate(date, format) {
         return getFormattedDate({ date, format, timeZone: this.timezone });
+    }
+
+    /**
+     * Get the string format from the date style
+     *
+     * @returns {string} string format
+     */
+    getStringFormat() {
+        switch (this.dateStyle) {
+            case 'medium':
+                return 'LLL. d, y';
+            case 'long':
+                return 'LLLL d, y';
+            default:
+                return 'L/d/y';
+        }
     }
 
     /**
@@ -1163,14 +1173,8 @@ export default class InputDateRange extends LightningElement {
      * @returns {date} formatted date depending on the date style.
      */
     dateStringFormat(value) {
-        switch (this.dateStyle) {
-            case 'medium':
-                return parseFormattedDateString(value, 'LLL. d, y');
-            case 'long':
-                return parseFormattedDateString(value, 'LLLL d, y');
-            default:
-                return parseFormattedDateString(value, 'L/d/y');
-        }
+        const stringFormat = this.getStringFormat();
+        return parseFormattedDateString(value, stringFormat);
     }
 
     /**
