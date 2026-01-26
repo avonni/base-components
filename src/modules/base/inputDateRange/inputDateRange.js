@@ -878,7 +878,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Navigate the expanded calendar to a given date.
      *
-     * @param {Date} date The date to navigate to
+     * @param {Date} date The date to navigate to.
      */
     goToExpandedCalendarDate(date) {
         if (!this.isExpanded || !date) {
@@ -1398,7 +1398,7 @@ export default class InputDateRange extends LightningElement {
             }
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
-        } else if (!value) {
+        } else if (!value?.trim()) {
             this._endDate = null;
             this._dispatchChange();
             if (this._startDate) {
@@ -1433,6 +1433,7 @@ export default class InputDateRange extends LightningElement {
     handleChangeExpandedDate(event) {
         event.stopPropagation();
         const value = event.detail.value;
+        const clickedDate = new Date(event.detail.clickedDate);
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {
             return date ? new Date(date) : null;
@@ -1440,26 +1441,70 @@ export default class InputDateRange extends LightningElement {
 
         this.optionRangeValue = 'custom';
         const [start, end] = dates ?? [];
+        const clickedOnFirstValue =
+            dates[0] && clickedDate.getTime() === dates[0].getTime();
+        const clickedOnStartDate =
+            !!this._startDate &&
+            clickedDate.getTime() === this._startDate.getTime();
+        const clickedOnEndDate =
+            !!this._endDate &&
+            clickedDate.getTime() === this._endDate.getTime();
+        let state;
 
-        // DESELECT START OR END DATE
-        if (dates.length === 1 && this.startDate && this.endDate && start) {
-            const isSameDate =
-                this.toISOString(this.startDate, this.startTime) ===
-                    this.toISOString(start, this.startTime) &&
-                this.toISOString(this.endDate, this.endTime) ===
-                    this.toISOString(start, this.endTime);
+        if (
+            !this.startDate &&
+            !this.endDate &&
+            clickedOnFirstValue &&
+            dates.length === 1
+        ) {
+            state = 'SELECT_ONLY_START';
+        } else if (
+            clickedOnStartDate &&
+            clickedOnEndDate &&
+            this.startDate &&
+            this.endDate &&
+            dates.length === 1
+        ) {
+            state = 'DESELECT_END';
+        } else if (
+            (clickedOnEndDate && dates.length === 1) ||
+            (dates.length === 0 && this.startDate && !this.endDate)
+        ) {
+            state = 'SELECT_END_EQUAL_START';
+        } else if (
+            (clickedOnStartDate && dates.length === 1) ||
+            (dates.length === 0 && !this.startDate && this.endDate)
+        ) {
+            state = 'SELECT_START_EQUAL_END';
+        } else {
+            state = 'SELECT_NEW_INTERVAL';
+        }
 
-            this._startDate = start;
-            this._endDate = isSameDate ? null : start;
-        }
-        // SET END DATE EQUAL TO START DATE
-        else if (dates.length === 0 && this.startDate && !this.endDate) {
-            this._endDate = new Date(this._startDate);
-        }
-        // SET NEW INTERVAL
-        else {
-            this._startDate = start;
-            this._endDate = end;
+        // Case execution
+        switch (state) {
+            case 'SELECT_ONLY_START':
+                this._startDate = start;
+                this._endDate = null;
+                break;
+
+            case 'DESELECT_END':
+                this._endDate = null;
+                break;
+
+            case 'SELECT_END_EQUAL_START':
+                this._endDate = new Date(this._startDate);
+                break;
+
+            case 'SELECT_START_EQUAL_END':
+                this._startDate = new Date(this._endDate);
+                break;
+
+            case 'SELECT_NEW_INTERVAL':
+                this._startDate = start;
+                this._endDate = end;
+                break;
+
+            default:
         }
 
         if (this._startDate && this._endDate) {
@@ -1602,7 +1647,7 @@ export default class InputDateRange extends LightningElement {
 
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._startDate);
-        } else if (!value) {
+        } else if (!value?.trim()) {
             this._startDate = null;
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
