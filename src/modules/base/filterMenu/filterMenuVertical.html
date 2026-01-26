@@ -224,12 +224,12 @@
 
             <template if:false={isLoading}>
                 <!-- Date Range -->
+                <!-- The vertical expanded mode isn't implemented yet -->
                 <c-input-date-range
                     if:true={isDateRange}
                     class="slds-show slds-m-vertical_small"
                     date-style={computedTypeAttributes.dateStyle}
                     end-date={dateRangeEndDate}
-                    is-expanded={computedTypeAttributes.isExpanded}
                     label={label}
                     label-end-date={computedTypeAttributes.labelEndDate}
                     label-end-time={computedTypeAttributes.labelEndTime}

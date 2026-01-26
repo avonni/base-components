@@ -2120,7 +2120,10 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = !startDate && !endDate ? [] : [startDate, endDate];
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
         this._dateRangeFrames = [];
-        const isExpanded = this.computedTypeAttributes.isExpanded;
+
+        // The expanded mode isn't implemented in vertical
+        const isExpanded =
+            this.computedTypeAttributes.isExpanded && !this.isVertical;
 
         // In the input date range, after the dispatch change,
         // a request animation frame is used to show the next calendar.
