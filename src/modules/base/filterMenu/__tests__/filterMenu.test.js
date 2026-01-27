@@ -1805,6 +1805,7 @@ describe('Filter Menu', () => {
             it('typeAttributes for date-range', () => {
                 const typeAttributes = {
                     dateStyle: 'long',
+                    isExpanded: true,
                     labelEndDate: 'End date',
                     labelStartDate: 'Start date',
                     labelStartTime: 'Start time',
@@ -1826,6 +1827,9 @@ describe('Filter Menu', () => {
                         '[data-element-id="avonni-input-date-range"]'
                     );
                     expect(dateRange.dateStyle).toBe(typeAttributes.dateStyle);
+                    expect(dateRange.isExpanded).toBe(
+                        typeAttributes.isExpanded
+                    );
                     expect(dateRange.labelEndDate).toBe(
                         typeAttributes.labelEndDate
                     );
