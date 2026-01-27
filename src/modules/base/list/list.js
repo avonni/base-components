@@ -3,6 +3,7 @@ import {
     classSet,
     deepCopy,
     generateUUID,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -2537,13 +2538,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**

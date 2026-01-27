@@ -38,6 +38,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api showCheckbox;
     @api slottableTypes;
     @api sortable;
+    @api target;
     @api type;
     @api unselectable;
 }

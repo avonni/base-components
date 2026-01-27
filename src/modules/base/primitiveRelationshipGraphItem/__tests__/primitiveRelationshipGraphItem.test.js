@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import PrimitiveRelationshipGraphItem from 'c/primitiveRelationshipGraphItem';
+import { createElement } from 'lwc';
 
 // Not tested due to impossibility of targetting child component (mediaObject) slot content:
 // avatarFallbackIconName
@@ -40,6 +40,7 @@ describe('Primitive Relationship Graph Item', () => {
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.selected).toBeFalsy();
+            expect(element.target).toBeUndefined();
             expect(element.variant).toBe('horizontal');
         });
 
@@ -137,12 +138,15 @@ describe('Primitive Relationship Graph Item', () => {
             it('Passed to the component', () => {
                 element.href = 'https://www.avonni.app/';
                 element.label = 'A string label';
+                element.target = '_blank';
 
                 return Promise.resolve().then(() => {
                     const link = element.shadowRoot.querySelector(
                         '.slds-text-heading_small a'
                     );
                     expect(link).toBeTruthy();
+                    expect(link.href).toBe('https://www.avonni.app/');
+                    expect(link.target).toBe('_blank');
                 });
             });
         });

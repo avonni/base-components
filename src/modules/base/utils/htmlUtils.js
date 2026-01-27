@@ -42,3 +42,34 @@ export function convertHTMLToPlainText(html) {
 
     return html.replace(/\n\s+/g, '\n').trim();
 }
+
+/**
+ * When href leads to nothing or the same page -> prevent default
+ * When href leads to a different page -> stop propagation
+ * @param {*} event
+ * @returns
+ */
+export function handleHTMLAnchorTagClick(event) {
+    const href = event.currentTarget.href;
+    if (!href) return;
+
+    // eslint-disable-next-line no-script-url
+    if (href.startsWith('javascript:void')) {
+        event.preventDefault();
+        return;
+    }
+
+    const linkUrl = new URL(event.currentTarget.href, window.location.href);
+    const currentUrl = new URL(window.location.href);
+    const isSamePage =
+        linkUrl.origin === currentUrl.origin &&
+        linkUrl.pathname === currentUrl.pathname &&
+        linkUrl.search === currentUrl.search;
+
+    if (isSamePage && linkUrl.hash) {
+        event.preventDefault();
+    } else {
+        // If the href leads to a different page, do not propagate the click.
+        event.stopPropagation();
+    }
+}

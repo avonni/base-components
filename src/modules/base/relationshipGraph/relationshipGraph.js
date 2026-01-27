@@ -1,10 +1,11 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
@@ -95,6 +96,13 @@ export default class RelationshipGraph extends LightningElement {
      * @default utility:chevrondown
      */
     @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
+    /**
+     * Target attribute for the link.
+     *
+     * @type {string}
+     * @public
+     */
+    @api target;
 
     _actions = [];
     _groupActions = [];
@@ -500,13 +508,7 @@ export default class RelationshipGraph extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**

@@ -7,6 +7,7 @@
  * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the avatar image fails to load.
  * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
  * @property {string} href URL for the group label link.
+ * @property {string} target Target attribute for the link.
  * @property {boolean} expanded If true, the group is expanded. Defaults to true.
  * @property {boolean} hideDefaultActions If true, hide the default actions for this group.
  * @property {object[]} items Array of nested item objects.
@@ -22,6 +23,7 @@
  * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the avatar image fails to load.
  * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
  * @property {string} href URL for the item label link.
+ * @property {string} target Target attribute for the link.
  * @property {boolean} hideDefaultActions If true, hide the default actions for this item.
  * @property {boolean} disabled If true, the item is disabled and cannot be selected.
  * @property {object[]} groups Array of nested group objects.

@@ -55,6 +55,7 @@ describe('PrimitiveAvatar', () => {
             expect(element.status).toBeFalsy();
             expect(element.statusTitle).toBe('Status');
             expect(element.statusPosition).toBe('top-right');
+            expect(element.target).toBeUndefined();
             expect(element.variant).toBe('square');
         });
 
@@ -142,6 +143,7 @@ describe('PrimitiveAvatar', () => {
                         expect(avatarContainerLink).toBeNull();
                         expect(avatarContainerNoLink).not.toBeNull();
                         element.href = 'url';
+                        element.target = '_blank';
                     })
                     .then(() => {
                         const avatarContainerLink =
@@ -155,6 +157,7 @@ describe('PrimitiveAvatar', () => {
                         expect(avatarContainerLink).not.toBeNull();
                         expect(avatarContainerLink.href).not.toBeUndefined();
                         expect(avatarContainerNoLink).toBeNull();
+                        expect(avatarContainerLink.target).toBe('_blank');
                     });
             });
         });

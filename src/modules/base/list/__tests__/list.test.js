@@ -1,7 +1,7 @@
-import { createElement } from 'lwc';
-import { ITEMS, ITEMS_WITHOUT_ICONS, ACTIONS, ACTION } from './data';
-import { callObserver } from 'c/resizeObserver';
 import List from 'c/list';
+import { callObserver } from 'c/resizeObserver';
+import { createElement } from 'lwc';
+import { ACTION, ACTIONS, ITEMS, ITEMS_WITHOUT_ICONS } from './data';
 
 // Not tested:
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
@@ -347,7 +347,14 @@ describe('List', () => {
 
         describe('Items', () => {
             it('Items', () => {
-                element.items = ITEMS;
+                element.items = [
+                    {
+                        ...ITEMS[0],
+                        href: 'https://www.google.com/',
+                        target: '_blank'
+                    },
+                    ...ITEMS.slice(1)
+                ];
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
@@ -358,6 +365,12 @@ describe('List', () => {
                     );
                     expect(items).toHaveLength(5);
                     expect(itemsLabels).toHaveLength(5);
+
+                    const itemHeaderLink = items[0].querySelector(
+                        '[data-element-id="a-item-header-link"]'
+                    );
+                    expect(itemHeaderLink.href).toBe('https://www.google.com/');
+                    expect(itemHeaderLink.target).toBe('_blank');
 
                     items.forEach((item, index) => {
                         const originalItem = ITEMS[index];
@@ -403,7 +416,11 @@ describe('List', () => {
                     {
                         name: 'item-1',
                         infos: [
-                            { label: 'Info 1', href: 'https://www.google.com' },
+                            {
+                                label: 'Info 1',
+                                href: 'https://www.google.com',
+                                target: '_blank'
+                            },
                             { label: 'Info 2' }
                         ]
                     }
@@ -422,6 +439,7 @@ describe('List', () => {
                     );
                     expect(firstLink).toBeTruthy();
                     expect(firstLink.href).toBe('https://www.google.com/');
+                    expect(firstLink.target).toBe('_blank');
                     expect(firstLink.textContent).toBe('Info 1');
                     expect(firstSpan).toBeFalsy();
 

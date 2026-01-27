@@ -430,6 +430,7 @@ export default class Carousel extends LightningElement {
                 imageAssistiveText: item.imageAssistiveText || item.title,
                 href: item.href,
                 src: item.src,
+                target: item.target,
                 actions: item.actions || []
             });
         });

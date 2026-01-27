@@ -13,8 +13,10 @@
  * @property {object} infos List of additional information to display. Valid keys:
  * - label: string
  * - href: string
+ * - target: string
  * @property {string} label Required. Label of the item.
  * @property {string} name Name to identify the item in the list.
+ * @property {string} target The target attribute for the link.
  */
 /**
  * @typedef {Object} ListAction

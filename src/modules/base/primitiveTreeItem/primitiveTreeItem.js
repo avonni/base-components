@@ -2,6 +2,7 @@ import {
     classSet,
     convertHTMLToPlainText,
     generateUUID,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean
 } from 'c/utils';
@@ -15,7 +16,8 @@ const DEFAULT_EDIT_FIELDS = [
     'href',
     'expanded',
     'disabled',
-    'isLoading'
+    'isLoading',
+    'target'
 ];
 const i18n = {
     cancelButton: 'Cancel',
@@ -148,6 +150,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _showCheckbox = false;
     _slottableTypes = [];
     _sortable = false;
+    _target;
     _type;
     _unselectable = false;
 
@@ -344,7 +347,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
      *
      * @type {string[]}
-     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
+     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading', 'target']
      * @public
      */
     @api
@@ -632,6 +635,20 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set sortable(value) {
         this._sortable = normalizeBoolean(value);
+    }
+
+    /**
+     * Target attribute for the link.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get target() {
+        return this._target;
+    }
+    set target(value) {
+        this._target = value;
     }
 
     /**
@@ -1351,13 +1368,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**

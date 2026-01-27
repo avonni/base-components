@@ -23,6 +23,7 @@
  * @property {string} label Text to display in the pill.
  * @property {string} name Name to identify the pill.
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
+ * @property {string} target The target attribute for the link.
  */
 
 /**

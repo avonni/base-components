@@ -1,10 +1,11 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
@@ -40,6 +41,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api name;
     @api selected = false;
     @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
+    @api target;
 
     _actionsPosition = ACTIONS_POSITIONS.default;
     _customActions = [];
@@ -301,14 +303,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        event.stopPropagation();
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     handleSelect(event) {

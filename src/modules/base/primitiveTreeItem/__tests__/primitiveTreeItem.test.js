@@ -56,7 +56,8 @@ const ITEMS = [
         key: '2.1',
         label: 'First child',
         level: 2,
-        name: 'child1'
+        name: 'child1',
+        target: '_blank'
     },
     {
         actions: [...ACTIONS, { name: 'customAction' }],
@@ -83,7 +84,8 @@ const ITEMS = [
         level: 2,
         metatext: 'Some metatext',
         name: 'child3',
-        selected: true
+        selected: true,
+        target: '_blank'
     }
 ];
 
@@ -125,7 +127,8 @@ describe('Primitive Tree Item', () => {
                 'href',
                 'expanded',
                 'disabled',
-                'isLoading'
+                'isLoading',
+                'target'
             ]);
             expect(element.expanded).toBeFalsy();
             expect(element.fields).toEqual([]);
@@ -146,6 +149,7 @@ describe('Primitive Tree Item', () => {
             expect(element.selected).toBeFalsy();
             expect(element.showCheckbox).toBeFalsy();
             expect(element.sortable).toBeFalsy();
+            expect(element.target).toBeUndefined();
         });
 
         describe('actions', () => {
@@ -1272,7 +1276,7 @@ describe('Primitive Tree Item', () => {
                         const inputs = popover.querySelectorAll(
                             '[data-element-id="lightning-input-edit-field"]'
                         );
-                        expect(inputs).toHaveLength(7);
+                        expect(inputs).toHaveLength(8);
 
                         const label = popover.querySelector(
                             '[data-name="label"]'
@@ -1644,8 +1648,26 @@ describe('Primitive Tree Item', () => {
                     });
             });
 
-            it('privateitemclick event dispatched by keyboard', () => {
-                element.href = '#link';
+            it('privateitemclick event dispatched by keyboard (also tests handleHTMLAnchorTagClick with #)', () => {
+                element.href = '#'; // this allows the anchor to propagate the click
+                const handler = jest.fn();
+                element.addEventListener('privateitemclick', handler);
+
+                return Promise.resolve().then(() => {
+                    const event = new CustomEvent('keydown');
+                    event.key = 'Enter';
+                    element.dispatchEvent(event);
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.target).toBe(
+                        'anchor'
+                    );
+                });
+            });
+
+            it('privateitemclick event dispatched by keyboard (also tests handleHTMLAnchorTagClick with javascript:void(0))', () => {
+                // eslint-disable-next-line no-script-url
+                element.href = 'javascript:void(0)'; // this allows the anchor to propagate the click
                 const handler = jest.fn();
                 element.addEventListener('privateitemclick', handler);
 
