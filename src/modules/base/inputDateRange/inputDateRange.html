@@ -1,9 +1,5 @@
 <template>
-    <div
-        class={computedWrapperClass}
-        data-element-id="div-wrapper"
-        onfocusout={handleFocusOut}
-    >
+    <div data-element-id="div-wrapper" onfocusout={handleFocusOut}>
         <div class={computedLabelClass}>
             <abbr
                 if:true={required}
