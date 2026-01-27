@@ -568,7 +568,9 @@ export default class InputDateRange extends LightningElement {
     get computedLabelClass() {
         return classSet('avonni-date-range__label-container')
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                'slds-m-bottom_xxx-small':
+                    this.showRangeOptions && !this.isExpanded
             })
             .toString();
     }
