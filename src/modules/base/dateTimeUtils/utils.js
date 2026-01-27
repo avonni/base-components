@@ -88,6 +88,7 @@ function parseFormattedDateString({
         default:
             return null;
     }
+    if (month == null || year == null || day == null) return null;
 
     const date = new Date(year, month, day);
     date.setHours(0, 0, 0, 0);

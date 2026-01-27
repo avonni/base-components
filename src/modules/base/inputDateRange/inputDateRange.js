@@ -1454,6 +1454,7 @@ export default class InputDateRange extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
         this.endTime = event.target.value;
+        // We want to keep the end time and delete the start time if the time range is invalid.
         if (!this.isValidTimeRange) {
             this.startTime = null;
         }
@@ -1702,6 +1703,7 @@ export default class InputDateRange extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
         this.startTime = event.target.value;
+        // We want to keep the start time and delete the end time if the time range is invalid.
         if (!this.isValidTimeRange) {
             this.endTime = null;
         }
