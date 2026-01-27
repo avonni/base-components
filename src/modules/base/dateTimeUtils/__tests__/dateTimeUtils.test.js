@@ -308,6 +308,16 @@ describe('Date Time Utils', () => {
                 expect(parsedDate).toBeNull();
             });
 
+            it('Valid year, valid month, invalid day', () => {
+                const value = 'Jan. 32, 2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+
             it('No match', () => {
                 const parsedDate = parseFormattedDateString({
                     value: '',
@@ -351,6 +361,17 @@ describe('Date Time Utils', () => {
                 });
                 expect(parsedDate).toBeNull();
             });
+
+            it('Valid year, valid month, invalid day', () => {
+                const value = 'January 0, 2026';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+
             it('No match', () => {
                 const parsedDate = parseFormattedDateString({
                     value: '',
@@ -376,8 +397,30 @@ describe('Date Time Utils', () => {
                 expect(parsedDate).toEqual(date);
             });
 
-            it('Invalid year, month, valid day', () => {
+            it('Valid year with 2 digits, month, day', () => {
+                const date = new Date(
+                    new Date('1/1/2026').setHours(0, 0, 0, 0)
+                );
+                const value = '1/1/26';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toEqual(date);
+            });
+
+            it('Invalid year, valid month, valid day', () => {
                 const value = '1/1/300000';
+                const parsedDate = parseFormattedDateString({
+                    value,
+                    format,
+                    locale: 'en-US'
+                });
+                expect(parsedDate).toBeNull();
+            });
+            it('Valid year, valid month, invalid day', () => {
+                const value = '1/33/2026';
                 const parsedDate = parseFormattedDateString({
                     value,
                     format,

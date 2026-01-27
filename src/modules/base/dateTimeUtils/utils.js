@@ -1,4 +1,4 @@
-import { DATE, HOUR, MONTH, YEAR, DEFAULT_LANGUAGE } from './constants';
+import { DATE, DEFAULT_LANGUAGE, HOUR, MONTH, YEAR } from './constants';
 
 function _buildMonthMaps(locale) {
     const shortMonths = {};
@@ -21,6 +21,20 @@ function _buildMonthMaps(locale) {
     }
 
     return { shortMonths, longMonths };
+}
+
+function _normalizeDay(day) {
+    if (day >= 1 && day <= 31) {
+        return day;
+    }
+    return null;
+}
+
+function _normalizeMonth(month) {
+    if (month >= 0 && month <= 11) {
+        return month;
+    }
+    return null;
 }
 
 function _normalizeYear(year) {
@@ -62,8 +76,8 @@ function parseFormattedDateString({
             const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,6})$/);
             if (!match) return null;
 
-            month = Number(match[1]) - 1;
-            day = Number(match[2]);
+            month = _normalizeMonth(Number(match[1]) - 1);
+            day = _normalizeDay(Number(match[2]));
             year = _normalizeYear(Number(match[3]));
             break;
         }
@@ -75,8 +89,8 @@ function parseFormattedDateString({
             if (!match) return null;
 
             const monthKey = match[1].replace('.', '').toLowerCase();
-            month = shortMonths[monthKey];
-            day = Number(match[2]);
+            month = _normalizeMonth(shortMonths[monthKey]);
+            day = _normalizeDay(Number(match[2]));
             year = _normalizeYear(Number(match[3]));
             break;
         }
@@ -86,8 +100,8 @@ function parseFormattedDateString({
             if (!match) return null;
 
             const monthKey = match[1].toLowerCase();
-            month = longMonths[monthKey];
-            day = Number(match[2]);
+            month = _normalizeMonth(longMonths[monthKey]);
+            day = _normalizeDay(Number(match[2]));
             year = _normalizeYear(Number(match[3]));
             break;
         }
