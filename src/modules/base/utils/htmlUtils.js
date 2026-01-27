@@ -59,14 +59,16 @@ export function handleHTMLAnchorTagClick(event) {
         return;
     }
 
-    const linkUrl = new URL(event.currentTarget.href, window.location.href);
-    const currentUrl = new URL(window.location.href);
+    const windowHref = window.location.href;
+    const linkUrl = new URL(href, windowHref);
+    const currentUrl = new URL(windowHref);
     const isSamePage =
         linkUrl.origin === currentUrl.origin &&
         linkUrl.pathname === currentUrl.pathname &&
         linkUrl.search === currentUrl.search;
 
-    if (isSamePage && linkUrl.hash) {
+    if (isSamePage) {
+        // Same page - block navigation/scroll behavior
         event.preventDefault();
     } else {
         // If the href leads to a different page, do not propagate the click.
