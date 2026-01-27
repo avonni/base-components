@@ -1667,7 +1667,6 @@ export default class InputDateRange extends LightningElement {
         const value = event.target.value;
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
-            parsedDate.setHours(0, 0, 0, 0);
             this._startDate = this.validateDate(parsedDate);
 
             if (
