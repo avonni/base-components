@@ -1021,7 +1021,7 @@ export default class FilterMenu extends LightningElement {
             'slds-dropdown_small': isSmallRange,
             'slds-dropdown_large':
                 (this.isDateRange && !isDateTime) || this.isTimeRange,
-            'avonni-filter-menu__dropdown-max-width': isExpanded
+            'avonni-filter-menu__dropdown-min-width': isExpanded
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {

@@ -28,6 +28,6 @@
     min-width: 0;
 }
 
-.slds-dropdown.avonni-filter-menu__dropdown-max-width {
-    min-width: 844px;
+.slds-dropdown.avonni-filter-menu__dropdown-min-width {
+    min-width: 790px;
 }
