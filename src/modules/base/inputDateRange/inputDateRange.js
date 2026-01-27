@@ -1416,6 +1416,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeEndDateInput(event) {
+        event.stopPropagation();
         const value = event.target.value;
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
@@ -1534,8 +1535,8 @@ export default class InputDateRange extends LightningElement {
                 break;
 
             case 'SELECT_NEW_INTERVAL':
-                this._startDate = start;
-                this._endDate = end;
+                this._startDate = start ?? null;
+                this._endDate = end ?? null;
                 break;
 
             default:
@@ -1661,6 +1662,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeStartDateInput(event) {
+        event.stopPropagation();
         const value = event.target.value;
         const parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {

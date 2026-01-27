@@ -938,6 +938,7 @@ export default class Calendar extends LightningElement {
     validateValueIntervalMode() {
         const minValue = this.computedValue[0];
         const maxValue = this.computedValue[this.computedValue.length - 1];
+        const initComputedValue = deepCopy(this.computedValue);
 
         if (this.allValuesOutsideMinAndMax) {
             if (
@@ -972,7 +973,12 @@ export default class Calendar extends LightningElement {
                         maxValue
                     );
                 }
-                if (!this.isMultiCalendars) {
+                if (
+                    this.isMultiCalendars &&
+                    !equal(initComputedValue, this.computedValue)
+                ) {
+                    this.displayDate = new Date(this.computedValue[0]);
+                } else if (!this.isMultiCalendars) {
                     this.displayDate = new Date(this.computedValue[0]);
                 }
                 this.updateDateParameters();
@@ -984,6 +990,7 @@ export default class Calendar extends LightningElement {
      * Validate value for multiple selection mode.
      */
     validateValueMultipleMode() {
+        const initComputedValue = deepCopy(this.computedValue);
         this.computedValue = removeValuesOutsideRange(
             this.computedValue,
             this.computedMin,
@@ -991,7 +998,12 @@ export default class Calendar extends LightningElement {
         );
 
         if (this.computedValue.length) {
-            if (!this.isMultiCalendars) {
+            if (
+                this.isMultiCalendars &&
+                !equal(initComputedValue, this.computedValue)
+            ) {
+                this.displayDate = new Date(this.computedValue[0]);
+            } else if (!this.isMultiCalendars) {
                 this.displayDate = new Date(this.computedValue[0]);
             }
             this.updateDateParameters();
