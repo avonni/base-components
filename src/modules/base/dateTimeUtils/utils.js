@@ -23,6 +23,13 @@ function _buildMonthMaps(locale) {
     return { shortMonths, longMonths };
 }
 
+function _normalizeYear(year) {
+    if (year >= 0 && year <= 99) {
+        return 2000 + year;
+    }
+    return year;
+}
+
 function getStartOfWeek(date, weekStartDay = 0) {
     const weekday = date.getDay();
     let daysDiff = weekday - weekStartDay;
@@ -57,7 +64,7 @@ function parseFormattedDateString({
 
             month = Number(match[1]) - 1;
             day = Number(match[2]);
-            year = Number(match[3]);
+            year = _normalizeYear(Number(match[3]));
             break;
         }
 
@@ -70,7 +77,7 @@ function parseFormattedDateString({
             const monthKey = match[1].replace('.', '').toLowerCase();
             month = shortMonths[monthKey];
             day = Number(match[2]);
-            year = Number(match[3]);
+            year = _normalizeYear(Number(match[3]));
             break;
         }
 
@@ -81,7 +88,7 @@ function parseFormattedDateString({
             const monthKey = match[1].toLowerCase();
             month = longMonths[monthKey];
             day = Number(match[2]);
-            year = Number(match[3]);
+            year = _normalizeYear(Number(match[3]));
             break;
         }
 
