@@ -1426,10 +1426,12 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._startDate = null;
             }
+            this.optionRangeValue = 'custom';
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
         } else if (!value?.trim()) {
             this._endDate = null;
+            this.optionRangeValue = 'custom';
             this._dispatchChange();
             if (this._startDate) {
                 this.goToExpandedCalendarDate(this._startDate);
@@ -1669,10 +1671,11 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._endDate = null;
             }
-
+            this.optionRangeValue = 'custom';
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._startDate);
         } else if (!value?.trim()) {
+            this.optionRangeValue = 'custom';
             this._startDate = null;
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
@@ -2019,6 +2022,7 @@ export default class InputDateRange extends LightningElement {
     handleSelectExpandedToday() {
         this.setPredefinedTodayRange();
         this.setValidTimeRange();
+        this.optionRangeValue = 'custom';
         this._dispatchChange();
         if (this.isExpanded) {
             this._displayDate = this._startDate;
