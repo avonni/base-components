@@ -1,6 +1,7 @@
 import {
     classSet,
     generateUUID,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeString
 } from 'c/utils';
@@ -211,17 +212,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (!href) return;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        } else {
-            // If the href leads to something, do not propagate the click.
-            event.stopPropagation();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**
