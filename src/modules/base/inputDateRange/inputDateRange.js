@@ -1427,11 +1427,13 @@ export default class InputDateRange extends LightningElement {
                 this._startDate = null;
             }
             this.optionRangeValue = 'custom';
+            this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
         } else if (!value?.trim()) {
             this._endDate = null;
             this.optionRangeValue = 'custom';
+            this.setValidTimeRange();
             this._dispatchChange();
             if (this._startDate) {
                 this.goToExpandedCalendarDate(this._startDate);
@@ -1672,11 +1674,13 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = null;
             }
             this.optionRangeValue = 'custom';
+            this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._startDate);
         } else if (!value?.trim()) {
             this.optionRangeValue = 'custom';
             this._startDate = null;
+            this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
         } else {
