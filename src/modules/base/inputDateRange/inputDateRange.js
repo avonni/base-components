@@ -2009,7 +2009,7 @@ export default class InputDateRange extends LightningElement {
         if (this._endDate < this._startDate) {
             this._startDate = null;
         }
-
+        this.setValidTimeRange();
         this._dispatchChange();
 
         requestAnimationFrame(() => {
@@ -2046,7 +2046,7 @@ export default class InputDateRange extends LightningElement {
         this.optionRangeValue = 'custom';
 
         if (this._startDate > this._endDate) this._endDate = null;
-
+        this.setValidTimeRange();
         this._dispatchChange();
         this.stopPositioning();
         this.showStartDate = false;
