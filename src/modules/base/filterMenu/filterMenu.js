@@ -54,6 +54,7 @@ const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
+const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const DEFAULT_WEEK_START_DAY = 0;
 
@@ -91,6 +92,8 @@ const MENU_WIDTHS = {
     default: 'small',
     valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
+
+const MIN_SIZE_EXPANDED = 810;
 
 const RESET_BUTTON_POSITION = {
     default: 'bottom',
@@ -1070,7 +1073,7 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get computedIsExpanded() {
-        const isSmallScreen = window.innerWidth < 760;
+        const isSmallScreen = window.innerWidth < MIN_SIZE_EXPANDED;
         return this.computedTypeAttributes.isExpanded && !isSmallScreen;
     }
 
@@ -1100,6 +1103,15 @@ export default class FilterMenu extends LightningElement {
             this.iconName === 'utility:down' ||
             this.iconName === 'utility:chevrondown'
         );
+    }
+
+    /**
+     * Computed timezone
+     *
+     * @type {string}
+     */
+    get computedTimezone() {
+        return this.computedTypeAttributes.timezone || DEFAULT_TIME_ZONE;
     }
 
     /**
@@ -1704,13 +1716,13 @@ export default class FilterMenu extends LightningElement {
             const date = new Date(value);
             if (this.isDateRange && value && !isNaN(date)) {
                 // Date range
-                const { dateStyle, timeStyle, timezone, type } =
+                const { dateStyle, timeStyle, type } =
                     this.computedTypeAttributes;
                 normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle,
-                    timeZone: timezone
+                    timeZone: this.computedTimezone
                 });
             } else if (this.isRange && !isNaN(value)) {
                 // Range

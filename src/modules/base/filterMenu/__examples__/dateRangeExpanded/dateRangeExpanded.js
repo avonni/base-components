@@ -5,8 +5,7 @@ export default class FilterMenuDateRangeExpanded extends LightningElement {
         isExpanded: true,
         labelStartDate: 'Start',
         labelEndDate: 'End',
-        showRangeOptions: true,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        showRangeOptions: true
     };
 
     value = [new Date(2022, 10, 16, 11), new Date(2022, 10, 20, 15, 30)];

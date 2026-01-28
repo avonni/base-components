@@ -26,6 +26,7 @@ const DATE_TYPES = {
     default: 'date'
 };
 const DEFAULT_REQUIRED_ALTERNATIVE_TEXT = 'Required';
+const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const DEFAULT_TODAY_BUTTON_LABEL = 'Today';
 const DEFAULT_WEEK_START_DAY = 0;
 
@@ -576,6 +577,15 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Computed timezone
+     *
+     * @type {string}
+     */
+    get computedTimezone() {
+        return this._timezone || DEFAULT_TIME_ZONE;
+    }
+
+    /**
      * Gets FieldConstraintApi.
      *
      * @type {object}
@@ -850,6 +860,25 @@ export default class InputDateRange extends LightningElement {
      */
 
     /**
+     * Add the offset timezone to the given so it can be converted to ISO string.
+     *
+     * @param {Date} dateObject Date to get the ISO string for.
+     * @returns {Date} The date with the offset timezone.
+     */
+    addOffsetTimezone(dateObject) {
+        const date = getFormattedDate({
+            date: dateObject,
+            format: 'yyyy-MM-dd'
+        });
+        const offset = getFormattedDate({
+            date,
+            timeZone: this.computedTimezone,
+            format: 'ZZ'
+        });
+        return new Date(`${date}T00:00:00.000${offset}`);
+    }
+
+    /**
      * Change the date format depending on date style.
      *
      * @param {date} value date object
@@ -879,7 +908,11 @@ export default class InputDateRange extends LightningElement {
      * @returns {string} formatted date
      */
     formatDate(date, format) {
-        return getFormattedDate({ date, format, timeZone: this.timezone });
+        return getFormattedDate({
+            date,
+            format,
+            timeZone: this.computedTimezone
+        });
     }
 
     /**
@@ -966,8 +999,8 @@ export default class InputDateRange extends LightningElement {
     setPredefinedTodayRange() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        this._startDate = new Date(today);
-        this._endDate = new Date(today);
+        this._startDate = this.addOffsetTimezone(today);
+        this._endDate = this.addOffsetTimezone(today);
     }
 
     /**
@@ -994,8 +1027,8 @@ export default class InputDateRange extends LightningElement {
         endOfWeek.setDate(startOfWeek.getDate() + 6);
         endOfWeek.setHours(0, 0, 0, 0);
 
-        this._startDate = startOfWeek;
-        this._endDate = endOfWeek;
+        this._startDate = this.addOffsetTimezone(startOfWeek);
+        this._endDate = this.addOffsetTimezone(endOfWeek);
     }
 
     /**
@@ -1019,8 +1052,11 @@ export default class InputDateRange extends LightningElement {
         const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
         endOfMonth.setHours(0, 0, 0, 0);
 
-        this._startDate = startOfMonth;
-        this._endDate = isToDate && offset <= 0 ? today : endOfMonth;
+        this._startDate = this.addOffsetTimezone(startOfMonth);
+        this._endDate =
+            isToDate && offset <= 0
+                ? this.addOffsetTimezone(today)
+                : this.addOffsetTimezone(endOfMonth);
     }
 
     /**
@@ -1048,8 +1084,11 @@ export default class InputDateRange extends LightningElement {
         const endOfQuarter = new Date(d.getFullYear(), endMonth, 0);
         endOfQuarter.setHours(0, 0, 0, 0);
 
-        this._startDate = startOfQuarter;
-        this._endDate = isToDate && offset <= 0 ? today : endOfQuarter;
+        this._startDate = this.addOffsetTimezone(startOfQuarter);
+        this._endDate =
+            isToDate && offset <= 0
+                ? this.addOffsetTimezone(today)
+                : this.addOffsetTimezone(endOfQuarter);
     }
 
     /**
@@ -1072,8 +1111,11 @@ export default class InputDateRange extends LightningElement {
         const endOfYear = new Date(d.getFullYear(), 11, 31);
         endOfYear.setHours(0, 0, 0, 0);
 
-        this._startDate = startOfYear;
-        this._endDate = isToDate && offset <= 0 ? today : endOfYear;
+        this._startDate = this.addOffsetTimezone(startOfYear);
+        this._endDate =
+            isToDate && offset <= 0
+                ? this.addOffsetTimezone(today)
+                : this.addOffsetTimezone(endOfYear);
     }
 
     /**
@@ -1084,8 +1126,8 @@ export default class InputDateRange extends LightningElement {
         yesterday.setDate(yesterday.getDate() - 1);
         yesterday.setHours(0, 0, 0, 0);
 
-        this._startDate = new Date(yesterday);
-        this._endDate = new Date(yesterday);
+        this._startDate = this.addOffsetTimezone(yesterday);
+        this._endDate = this.addOffsetTimezone(yesterday);
     }
 
     /**
@@ -1190,7 +1232,7 @@ export default class InputDateRange extends LightningElement {
         if (!dateObject) {
             return null;
         }
-        const date = new DateTime(dateObject, this.timezone).toISO();
+        const date = new DateTime(dateObject, this.computedTimezone).toISO();
         const time = timeString ? `T${timeString}` : 'T00:00:00.000';
         return date.replace(/T[0-9:.]+/, time);
     }
@@ -2004,7 +2046,9 @@ export default class InputDateRange extends LightningElement {
      * Click the today button on end calendar
      */
     handleSelectEndToday() {
-        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this._endDate = this.addOffsetTimezone(today);
         this.optionRangeValue = 'custom';
 
         if (this._endDate < this._startDate) {
@@ -2043,7 +2087,9 @@ export default class InputDateRange extends LightningElement {
      * Click the today button on start calendar
      */
     handleSelectStartToday() {
-        this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this._startDate = this.addOffsetTimezone(today);
         this.optionRangeValue = 'custom';
 
         if (this._startDate > this._endDate) this._endDate = null;

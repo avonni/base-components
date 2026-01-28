@@ -1,4 +1,5 @@
 import InputDateRange from 'avonni/inputDateRange';
+import { getFormattedDate } from 'c/dateTimeUtils';
 import { createElement } from 'lwc';
 
 // Not tested:
@@ -1844,12 +1845,19 @@ describe('Input Date Range', () => {
                                 }
                             })
                         );
+                        const offset = getFormattedDate({
+                            date: new Date('7/25/2022'),
+                            timeZone:
+                                Intl.DateTimeFormat().resolvedOptions()
+                                    .timeZone,
+                            format: 'ZZ'
+                        });
                         expect(handler).toHaveBeenCalledTimes(1);
                         expect(
                             handler.mock.calls[0][0].detail.startDate
-                        ).toEqual('2022-07-25T00:00:00.000Z');
+                        ).toEqual(`2022-07-25T00:00:00.000${offset}`);
                         expect(handler.mock.calls[0][0].detail.endDate).toEqual(
-                            '2022-07-25T00:00:00.000Z'
+                            `2022-07-25T00:00:00.000${offset}`
                         );
                     });
             });
@@ -1892,12 +1900,19 @@ describe('Input Date Range', () => {
                                 }
                             })
                         );
+                        const offset = getFormattedDate({
+                            date: new Date('7/25/2022'),
+                            timeZone:
+                                Intl.DateTimeFormat().resolvedOptions()
+                                    .timeZone,
+                            format: 'ZZ'
+                        });
                         expect(handler).toHaveBeenCalledTimes(1);
                         expect(
                             handler.mock.calls[0][0].detail.startDate
-                        ).toEqual('2022-07-28T00:00:00.000Z');
+                        ).toEqual(`2022-07-28T00:00:00.000${offset}`);
                         expect(handler.mock.calls[0][0].detail.endDate).toEqual(
-                            '2022-07-28T00:00:00.000Z'
+                            `2022-07-28T00:00:00.000${offset}`
                         );
                     });
             });

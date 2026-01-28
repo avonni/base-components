@@ -405,8 +405,7 @@ DateRange.args = {
     typeAttributes: {
         labelStartDate: 'Start',
         labelEndDate: 'End',
-        showRangeOptions: true,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        showRangeOptions: true
     },
     weekStartDay: 1,
     buttonVariant: 'container',
@@ -423,8 +422,7 @@ DateRangeExpanded.args = {
         isExpanded: true,
         labelStartDate: 'Start',
         labelEndDate: 'End',
-        showRangeOptions: true,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        showRangeOptions: true
     },
     weekStartDay: 1,
     buttonVariant: 'container',
