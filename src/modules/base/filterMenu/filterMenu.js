@@ -1000,7 +1000,7 @@ export default class FilterMenu extends LightningElement {
         const alignment = this.dropdownAlignment;
         const nubbin = this.dropdownNubbin;
         const isDateTime = this.computedTypeAttributes.type === 'datetime';
-        const isExpanded = this.computedTypeAttributes.isExpanded;
+        const isExpanded = this.computedIsExpanded;
         const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
 
         const classes = classSet('slds-dropdown slds-p-around_none').add({
@@ -1062,6 +1062,16 @@ export default class FilterMenu extends LightningElement {
                     this.isList && length === '10-items'
             })
             .toString();
+    }
+
+    /**
+     * Computed isExpanded attribute with the type atrribute and the window inner width
+     *
+     * @type {boolean}
+     */
+    get computedIsExpanded() {
+        const isSmallScreen = window.innerWidth < 760;
+        return this.computedTypeAttributes.isExpanded && !isSmallScreen;
     }
 
     get computedNoResultsMessage() {
