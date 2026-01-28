@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import PrimitiveRelationshipGraphGroup from 'c/primitiveRelationshipGraphGroup';
+import { createElement } from 'lwc';
 
 // Not tested due to impossibility of targetting child component (mediaObject) slot content:
 // avatarFallbackIconName
@@ -45,6 +45,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             expect(element.noResultsMessage).toBe('No items to display.');
             expect(element.selected).toBeFalsy();
             expect(element.shrinkIconName).toBe('utility:chevrondown');
+            expect(element.target).toBeUndefined();
             expect(element.variant).toBe('horizontal');
         });
 
@@ -360,12 +361,14 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         describe('href', () => {
             it('defined', () => {
                 element.href = 'https://www.avonni.app/';
+                element.target = '_blank';
 
                 return Promise.resolve().then(() => {
                     const link = element.shadowRoot.querySelector(
                         '[data-element-id="title"]'
                     );
                     expect(link.href).toBe('https://www.avonni.app/');
+                    expect(link.target).toBe('_blank');
                 });
             });
 
@@ -433,6 +436,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
                             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
                         avatarFallbackIconName: 'standard:user',
                         href: 'https://www.avonni.app/',
+                        target: '_blank',
                         data: [
                             {
                                 label: 'A string label',
@@ -488,6 +492,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
                         items[0].avatarFallbackIconName
                     );
                     expect(itemsComponents[0].href).toBe(items[0].href);
+                    expect(itemsComponents[0].target).toBe(items[0].target);
                     expect(itemsComponents[0].contentData).toMatchObject(
                         items[0].data
                     );

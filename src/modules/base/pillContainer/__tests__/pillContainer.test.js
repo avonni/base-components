@@ -23,6 +23,7 @@ const ACTIONS = [
 const ITEMS = [
     {
         href: '#first-pill',
+        target: '_blank',
         label: 'First pill',
         name: 'first',
         avatar: {

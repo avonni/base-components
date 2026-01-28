@@ -30,6 +30,7 @@ export default class PrimitivePill extends LightningElement {
     _actions = [];
     _avatar;
     _href;
+    _target;
     _variant = VARIANTS.default;
 
     _focusedActions = false;
@@ -90,6 +91,20 @@ export default class PrimitivePill extends LightningElement {
     }
     set href(value) {
         this._href = value;
+    }
+
+    /**
+     * Target attribute for the link.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get target() {
+        return this._target;
+    }
+    set target(value) {
+        this._target = value;
     }
 
     /**

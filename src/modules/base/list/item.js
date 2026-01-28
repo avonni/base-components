@@ -47,6 +47,7 @@ export default class Item {
         this.label = value.label;
         this.name = value.name;
         this.disableDescriptionLinkify = value.disableDescriptionLinkify;
+        this.target = value.target;
     }
 
     /**

@@ -11,7 +11,12 @@
                 src={avatarSrc}
             ></avonni-avatar>
             <h1 class="slds-text-heading_small">
-                <a if:true={href} href={href} onclick={handleAnchorTagClick}>
+                <a
+                    if:true={href}
+                    href={href}
+                    target={target}
+                    onclick={handleAnchorTagClick}
+                >
                     {label}
                 </a>
                 <span if:false={href}>{label}</span>

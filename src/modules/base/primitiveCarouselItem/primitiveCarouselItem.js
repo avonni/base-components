@@ -44,6 +44,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
     @api noImageLabel = DEFAULT_NO_IMAGE_LABEL;
     @api panelIndex;
     @api panelItems;
+    @api target;
     @api title;
 
     _actions = [];

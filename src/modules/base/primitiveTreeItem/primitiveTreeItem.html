@@ -93,6 +93,7 @@
                                 if:true={showLink}
                                 class="avonni-primitive-item__link"
                                 href={href}
+                                target={target}
                                 data-element-id="a-label-link"
                                 data-group-name="link"
                                 onclick={handleAnchorTagClick}
@@ -205,6 +206,7 @@
                         if:true={showLink}
                         class="avonni-primitive-item__link"
                         href={href}
+                        target={target}
                         data-group-name="link"
                         onmousedown={handleLinkMouseDown}
                     >
@@ -367,6 +369,7 @@
                     show-checkbox={showCheckbox}
                     slottable-types={item.slottableTypes}
                     sortable={sortable}
+                    target={item.target}
                     type={item.type}
                     unselectable={item.unselectable}
                     data-element-id="avonni-primitive-tree-item"

@@ -1,5 +1,5 @@
-import { createElement } from 'lwc';
 import Avatar from 'c/avatar';
+import { createElement } from 'lwc';
 
 let element;
 describe('Avatar', () => {
@@ -43,6 +43,7 @@ describe('Avatar', () => {
             expect(element.statusPosition).toBe('top-right');
             expect(element.statusTitle).toBe('Status');
             expect(element.tags).toMatchObject([]);
+            expect(element.target).toBeUndefined();
             expect(element.tertiaryText).toBeUndefined();
             expect(element.textPosition).toBe('right');
             expect(element.variant).toBe('square');
@@ -308,6 +309,7 @@ describe('Avatar', () => {
             it('url', () => {
                 element.fallbackIconName = 'standard:account';
                 element.href = 'url';
+                element.target = '_blank';
                 element.hideAvatarDetails = true;
 
                 return Promise.resolve().then(() => {
@@ -315,6 +317,7 @@ describe('Avatar', () => {
                         '[data-element-id="avonni-primitive-avatar-no-details"]'
                     );
                     expect(avatar.href).toBe('url');
+                    expect(avatar.target).toBe('_blank');
                 });
             });
         });

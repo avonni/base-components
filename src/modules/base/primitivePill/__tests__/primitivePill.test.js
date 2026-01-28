@@ -39,6 +39,7 @@ describe('Primitive Pill', () => {
             expect(element.actions).toEqual([]);
             expect(element.avatar).toBeUndefined();
             expect(element.href).toBeUndefined();
+            expect(element.target).toBeUndefined();
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.variant).toBe('base');
@@ -128,6 +129,7 @@ describe('Primitive Pill', () => {
             it('Passed to the component', () => {
                 element.href = 'https://avonni.app/';
                 element.label = 'Some label';
+                element.target = '_blank';
 
                 return Promise.resolve()
                     .then(() => {
@@ -143,6 +145,7 @@ describe('Primitive Pill', () => {
                         expect(label).toBeFalsy();
                         expect(link).toBeTruthy();
                         expect(link.href).toBe('https://avonni.app/');
+                        expect(link.target).toBe('_blank');
                         expect(link.title).toBe('Some label');
                         expect(link.textContent).toBe('Some label');
                         expect(wrapper.classList).toContain(

@@ -29,6 +29,7 @@ const items = [
         imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
+        target: '_blank',
         actions: bareActions
     },
     {
@@ -39,6 +40,7 @@ const items = [
         imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
+        target: '_self',
         actions: bareActions
     },
     {
@@ -364,6 +366,20 @@ describe('Carousel', () => {
                         '[data-element-id^="lightning-button-icon"]'
                     );
                     expect(buttons).toHaveLength(1);
+                });
+            });
+        });
+
+        describe('Href', () => {
+            it('href', () => {
+                element.items = items;
+
+                return Promise.resolve().then(() => {
+                    const item = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(item.href).toBe('https://www.salesforce.com');
+                    expect(item.target).toBe('_blank');
                 });
             });
         });
