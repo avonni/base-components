@@ -37,6 +37,10 @@ const LABEL_VARIANTS = {
 
 const RANGES_OPTIONS = [
     {
+        label: 'Custom',
+        value: 'custom'
+    },
+    {
         label: 'Today',
         value: 'today'
     },
@@ -87,10 +91,6 @@ const RANGES_OPTIONS = [
     {
         label: 'Last year',
         value: 'lastYear'
-    },
-    {
-        label: 'Custom',
-        value: 'custom'
     }
 ];
 
@@ -1905,7 +1905,7 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput?.blur();
         }
 
-        const range = event.detail.value;
+        const range = event.detail.name;
         this.optionRangeValue = range;
         switch (range) {
             case 'today':

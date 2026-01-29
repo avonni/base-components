@@ -47,18 +47,14 @@
     box-shadow: #ba0517 0 0 0 1px inset;
 }
 
-.avonni-input-date-range__input-choice-set-container {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+.avonni-input-date-range__vertical-navigation-container {
+    width: 200px;
 }
 
-.avonni-input-date-range__calendar-end-container {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+.slds-nav-vertical__item {
+    list-style: none;
 }
 
-.avonni-input-date-range__date-container
-    > .avonni-input-date-range__calendar-expanded-container:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+lightning-vertical-navigation-item:first-of-type {
+    border-bottom: 1px solid var(--lwc-colorBorder, #dddbda);
 }

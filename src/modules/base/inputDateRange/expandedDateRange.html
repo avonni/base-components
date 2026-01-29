@@ -180,32 +180,25 @@
             <div
                 if:true={showRangeOptions}
                 class="
-                    avonni-input-date-range__input-choice-set-container
-                    slds-box slds-box_x-small
+                    avonni-input-date-range__vertical-navigation-container
+                    slds-border_right
                 "
             >
-                <c-input-choice-set
-                    disabled={disabled}
-                    name="predefined-ranges"
-                    options={rangeOptions}
-                    orientation="vertical"
-                    readonly={readOnly}
-                    type="button"
-                    value={optionRangeValue}
-                    variant="label-hidden"
-                    data-element-id="avonni-input-date-range__combobox-range-options"
-                    data-is-focusable
-                    onblur={handleBlur}
-                    onchange={handleChangeRangeOption}
-                    onfocus={handleFocus}
-                ></c-input-choice-set>
+                <lightning-vertical-navigation
+                    selected-item={optionRangeValue}
+                    onselect={handleChangeRangeOption}
+                >
+                    <template for:each={rangeOptions} for:item="option">
+                        <lightning-vertical-navigation-item
+                            key={option.value}
+                            label={option.label}
+                            name={option.value}
+                        >
+                        </lightning-vertical-navigation-item>
+                    </template>
+                </lightning-vertical-navigation>
             </div>
-            <div
-                class="
-                    avonni-input-date-range__calendar-expanded-container
-                    slds-box
-                "
-            >
+            <div class="avonni-input-date-range__calendar-expanded-container">
                 <c-calendar
                     aria-label="Date input calendar"
                     disabled={disabledOrReadOnly}
