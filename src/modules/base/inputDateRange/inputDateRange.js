@@ -1280,25 +1280,20 @@ export default class InputDateRange extends LightningElement {
      * @returns {Date} Clamped date
      */
     validateDate(date) {
-        const min = this.expandedCalendar?.min ?? new Date(1900, 0, 1);
-        const max = this.expandedCalendar?.max ?? new Date(2099, 11, 31);
+        const min = new Date(1900, 0, 1);
+        const max = new Date(2099, 11, 31);
 
-        let computedMin = new Date(min);
-        computedMin.setHours(0, 0, 0, 0);
-        computedMin = this.addOffsetTimezone(computedMin);
-
-        let computedMax = new Date(max);
-        computedMax.setHours(0, 0, 0, 0);
-        computedMax = this.addOffsetTimezone(computedMax);
+        min.setHours(0, 0, 0, 0);
+        max.setHours(0, 0, 0, 0);
 
         const value = new Date(date);
 
-        if (value < computedMin) {
-            return computedMin;
+        if (value < min) {
+            return min;
         }
 
-        if (value > computedMax) {
-            return computedMax;
+        if (value > max) {
+            return max;
         }
 
         return value;
@@ -1466,8 +1461,9 @@ export default class InputDateRange extends LightningElement {
         const value = event.target.value;
         let parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
-            parsedDate = this.addOffsetTimezone(parsedDate);
-            this._endDate = this.validateDate(parsedDate);
+            this._endDate = this.addOffsetTimezone(
+                this.validateDate(parsedDate)
+            );
             if (
                 this._startDate &&
                 this._startDate.getTime() > this._endDate.getTime()
@@ -1714,9 +1710,9 @@ export default class InputDateRange extends LightningElement {
         const value = event.target.value;
         let parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
-            parsedDate = this.addOffsetTimezone(parsedDate);
-            this._startDate = this.validateDate(parsedDate);
-
+            this._startDate = this.addOffsetTimezone(
+                this.validateDate(parsedDate)
+            );
             if (
                 this._endDate &&
                 this._startDate.getTime() > this._endDate.getTime()
@@ -1728,11 +1724,13 @@ export default class InputDateRange extends LightningElement {
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._startDate);
         } else if (!value?.trim()) {
-            this.optionRangeValue = 'custom';
             this._startDate = null;
+            this.optionRangeValue = 'custom';
             this.setValidTimeRange();
             this._dispatchChange();
-            this.goToExpandedCalendarDate(this._endDate);
+            if (this._endDate) {
+                this.goToExpandedCalendarDate(this._endDate);
+            }
         } else {
             // returns to old value
             this._startDate = this._startDate
