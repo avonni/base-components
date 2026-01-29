@@ -1050,11 +1050,30 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Computed Dropdown Content class styling.
+     * Computed Item List Class styling.
      *
      * @type {string}
      */
     get computedDropdownContentClass() {
+        const length = this.computedTypeAttributes.dropdownLength;
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-dropdown_length-with-icon-5':
+                    this.isList && length === '5-items',
+                'slds-dropdown_length-with-icon-7':
+                    this.isList && (!length || length === '7-items'),
+                'slds-dropdown_length-with-icon-10':
+                    this.isList && length === '10-items'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Dropdown Content class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownContentContainerClass() {
         return classSet('')
             .add({
                 'slds-p-vertical_xx-small': !(

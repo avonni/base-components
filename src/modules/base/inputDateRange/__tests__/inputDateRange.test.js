@@ -1464,9 +1464,9 @@ describe('Input Date Range', () => {
                         .mockImplementation(() => {});
 
                     rangeOptions.dispatchEvent(
-                        new CustomEvent('change', {
+                        new CustomEvent('select', {
                             detail: {
-                                value: 'today'
+                                name: 'today'
                             }
                         })
                     );
