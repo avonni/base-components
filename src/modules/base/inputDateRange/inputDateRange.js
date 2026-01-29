@@ -530,16 +530,48 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Class of the expanded calendar container.
+     *
+     * @type {string}
+     */
+    get computedCalendarExpandedContainerClass() {
+        return classSet('avonni-input-date-range__calendar-expanded-container')
+            .add({
+                'slds-p-top_small': this.showRangeOptions
+            })
+            .toString();
+    }
+
+    /**
+     * Class of the range options container
+     *
+     * @type {string}
+     */
+    get computedRangeOptionClass() {
+        return classSet('')
+            .add({
+                'avonni-input-date-range__vertical-navigation-container slds-border_right slds-m-right_x-small':
+                    this.isExpanded,
+                'slds-grid slds-wrap slds-m-bottom_x-small': !this.isExpanded
+            })
+            .toString();
+    }
+
+    /**
      * Class of the label container.
      *
      * @type {string}
      */
     get computedLabelClass() {
+        const hasHeight =
+            !!this.label || this.required || !!this.fieldLevelHelp;
         return classSet('avonni-date-range__label-container')
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden',
                 'slds-m-bottom_xxx-small':
-                    this.showRangeOptions && !this.isExpanded
+                    hasHeight &&
+                    this.showRangeOptions &&
+                    (this.isExpanded || !this.readOnly)
             })
             .toString();
     }
@@ -1865,7 +1897,7 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput?.blur();
         }
 
-        const range = event.detail.name;
+        const range = event.detail.name || event.detail.value;
         this.optionRangeValue = range;
         switch (range) {
             case 'today':

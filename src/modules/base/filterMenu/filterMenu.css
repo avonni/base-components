@@ -31,3 +31,7 @@
 .slds-dropdown.avonni-filter-menu__dropdown-min-width {
     min-width: 790px;
 }
+
+.avonni-filter-menu__menu-divider-expanded {
+    margin-top: calc(-1 * var(--lwc-spacingXSmall, 0.5rem));
+}

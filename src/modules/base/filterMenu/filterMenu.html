@@ -64,7 +64,11 @@
             onkeyup={handleDropdownKeyUp}
         >
             <c-focus-trap data-element-id="avonni-focus-trap">
-                <div class="slds-p-vertical_xx-small" role="menu">
+                <div
+                    class={computedDropdownContentClass}
+                    role="menu"
+                    data-element-id="avonni-filter-menu__dropdown-content"
+                >
                     <!-- Search box -->
                     <lightning-input
                         if:true={computedTypeAttributes.allowSearch}
@@ -224,7 +228,7 @@
                             <!-- Date Range -->
                             <c-input-date-range
                                 if:true={isDateRange}
-                                class="slds-show slds-p-around_small"
+                                class={computedDateRangeClass}
                                 date-style={computedTypeAttributes.dateStyle}
                                 end-date={dateRangeEndDate}
                                 is-expanded={computedIsExpanded}
@@ -326,6 +330,7 @@
                     <!-- Reset and apply buttons -->
                     <lightning-menu-divider
                         if:true={showApplyResetButtons}
+                        class={computedMenuDividerClass}
                     ></lightning-menu-divider>
                     <div
                         if:true={showApplyResetButtons}

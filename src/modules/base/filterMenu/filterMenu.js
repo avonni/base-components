@@ -994,6 +994,21 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed Date Range class styling.
+     *
+     * @type {string}
+     */
+    get computedDateRangeClass() {
+        return classSet('slds-show')
+            .add({
+                'slds-p-around_small': !this.computedIsExpanded,
+                'slds-p-right_small slds-p-left_xxx-small':
+                    this.isDateRange && this.computedIsExpanded
+            })
+            .toString();
+    }
+
+    /**
      * Computed Dropdown class styling.
      *
      * @type {string}
@@ -1035,6 +1050,35 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed Dropdown Content class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownContentClass() {
+        return classSet('')
+            .add({
+                'slds-p-vertical_xx-small': !(
+                    this.isDateRange && this.computedIsExpanded
+                )
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Menu Divider class styling.
+     *
+     * @type {string}
+     */
+    get computedMenuDividerClass() {
+        return classSet('')
+            .add({
+                'avonni-filter-menu__menu-divider-expanded':
+                    this.isDateRange && this.computedIsExpanded
+            })
+            .toString();
+    }
+
+    /**
      * Computed Menu Label with selected items.
      *
      * @type {string}
@@ -1043,25 +1087,6 @@ export default class FilterMenu extends LightningElement {
         return classSet('slds-dropdown__list')
             .add({
                 'slds-text-title_bold': this.selectedItemLabels.length > 0
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Item List Class styling.
-     *
-     * @type {string}
-     */
-    get computedDropdownContentClass() {
-        const length = this.computedTypeAttributes.dropdownLength;
-        return classSet('slds-dropdown__list')
-            .add({
-                'slds-dropdown_length-with-icon-5':
-                    this.isList && length === '5-items',
-                'slds-dropdown_length-with-icon-7':
-                    this.isList && (!length || length === '7-items'),
-                'slds-dropdown_length-with-icon-10':
-                    this.isList && length === '10-items'
             })
             .toString();
     }
@@ -2183,7 +2208,6 @@ export default class FilterMenu extends LightningElement {
      */
     handleDropdownFocusOut() {
         this._dropdownIsFocused = false;
-
         requestAnimationFrame(() => {
             if (!this._dropdownIsFocused) {
                 this._close();
