@@ -1851,6 +1851,181 @@ describe('Filter Menu', () => {
                 });
             });
 
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = left', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'left';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = bottom-left', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'bottom-left';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = right', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'right';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(false);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = bottom-right', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'bottom-right';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(false);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = center', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'right';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(false);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = bottom-center', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'bottom-center';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(false);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = auto', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'auto';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
             it('typeAttributes for time-range', () => {
                 const typeAttributes = {
                     labelStartTime: 'Start time',
