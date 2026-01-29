@@ -49,6 +49,10 @@
 
 .avonni-input-date-range__vertical-navigation-container {
     width: 200px;
+    order: 1;
+}
+.avonni-input-date-range__calendar-expanded-container {
+    order: 2;
 }
 
 .slds-nav-vertical__item {
