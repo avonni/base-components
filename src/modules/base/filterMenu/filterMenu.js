@@ -106,7 +106,6 @@ const TYPE_ATTRIBUTES = {
         'isExpanded',
         'labelEndDate',
         'labelEndTime',
-        'labelRangeOptions',
         'labelStartDate',
         'labelStartTime',
         'showRangeOptions',

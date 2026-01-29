@@ -7,22 +7,6 @@ import { createElement } from 'lwc';
 
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
-const RANGE_OPTIONS_LABELS_MAP = {
-    today: 'Today',
-    yesterday: 'Yesterday',
-    thisWeek: 'This week',
-    lastWeek: 'Last week',
-    thisMonth: 'This month',
-    monthToDate: 'Month-to-date',
-    lastMonth: 'Last month',
-    thisQuarter: 'This quarter',
-    quarterToDate: 'Quarter-to-date',
-    lastQuarter: 'Last quarter',
-    thisYear: 'This year',
-    yearToDate: 'Year-to-date',
-    lastYear: 'Last year',
-    custom: 'Custom'
-};
 
 let element;
 describe('Input Date Range', () => {
@@ -54,7 +38,6 @@ describe('Input Date Range', () => {
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.isExpanded).toBeFalsy();
             expect(element.label).toBeUndefined();
-            expect(element.labelRangeOptions).toEqual(RANGE_OPTIONS_LABELS_MAP);
             expect(element.labelEndDate).toBeUndefined();
             expect(element.labelEndTime).toBeUndefined();
             expect(element.labelStartDate).toBeUndefined();

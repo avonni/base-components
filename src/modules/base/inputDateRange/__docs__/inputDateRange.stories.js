@@ -1,17 +1,5 @@
 import { InputDateRange } from '../__examples__/inputDateRange';
-const DEFAULT_RANGE_OPTIONS_LABEL = {
-    today: 'Today',
-    yesterday: 'Yesterday',
-    thisWeek: 'This week',
-    lastWeek: 'Last week',
-    thisMonth: 'This month',
-    lastMonth: 'Last month',
-    thisQuarter: 'This quarter',
-    lastQuarter: 'Last quarter',
-    thisYear: 'This year',
-    lastYear: 'Last year',
-    custom: 'Custom'
-};
+
 export default {
     title: 'Example/Input Date Range',
     argTypes: {
@@ -104,16 +92,6 @@ export default {
                 'If type is datetime, text label for the end time input.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        labelRangeOptions: {
-            name: 'label-range-options',
-            control: {
-                type: 'object'
-            },
-            description: 'Labels for the range options.',
-            table: {
-                type: { summary: 'object' }
             }
         },
 
@@ -281,7 +259,6 @@ export default {
         dateStyle: 'medium',
         disabled: false,
         isExpanded: false,
-        labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',

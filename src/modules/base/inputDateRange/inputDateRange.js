@@ -94,23 +94,6 @@ const RANGES_OPTIONS = [
     }
 ];
 
-const RANGE_OPTIONS_LABELS_MAP = {
-    today: 'Today',
-    yesterday: 'Yesterday',
-    thisWeek: 'This week',
-    lastWeek: 'Last week',
-    thisMonth: 'This month',
-    monthToDate: 'Month-to-date',
-    lastMonth: 'Last month',
-    thisQuarter: 'This quarter',
-    quarterToDate: 'Quarter-to-date',
-    lastQuarter: 'Last quarter',
-    thisYear: 'This year',
-    yearToDate: 'Year-to-date',
-    lastYear: 'Last year',
-    custom: 'Custom'
-};
-
 /**
  * @class
  * @public
@@ -148,21 +131,6 @@ export default class InputDateRange extends LightningElement {
      * @public
      */
     @api labelEndTime;
-    /**
-     * Labels for the range options.
-     *
-     * This object must be a map where:
-     * - the **key** is the range option `value`
-     * - the **value** is the label displayed to the user
-     *
-     * Expected keys: today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, monthToDate, quarterToDate, yearToDate and custom.
-     *
-     * Any missing key will fall back to the default label.
-     *
-     * @type {Object<string, string>}
-     * @public
-     */
-    @api labelRangeOptions = RANGE_OPTIONS_LABELS_MAP;
     /**
      * Text label for the start input.
      *
@@ -698,15 +666,7 @@ export default class InputDateRange extends LightningElement {
      * @type {Array}
      */
     get rangeOptions() {
-        return RANGES_OPTIONS.map((option) => {
-            const customLabel = this.labelRangeOptions?.[option.value];
-
-            return {
-                ...option,
-                label:
-                    typeof customLabel === 'string' ? customLabel : option.label
-            };
-        });
+        return RANGES_OPTIONS;
     }
 
     /**
