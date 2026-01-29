@@ -93,7 +93,7 @@ const MENU_WIDTHS = {
     valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
 
-const MIN_SIZE_EXPANDED = 810;
+const MIN_SIZE_EXPANDED = 805;
 
 const RESET_BUTTON_POSITION = {
     default: 'bottom',
@@ -1111,13 +1111,30 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Computed isExpanded attribute with the type atrribute and the window inner width
+     * Computed isExpanded attribute based on dropdown alignment
+     * and actual viewport visibility.
      *
      * @type {boolean}
      */
     get computedIsExpanded() {
-        const isSmallScreen = window.innerWidth < MIN_SIZE_EXPANDED;
-        return this.computedTypeAttributes.isExpanded && !isSmallScreen;
+        if (!this.computedTypeAttributes.isExpanded) {
+            return false;
+        }
+
+        const host = this.template.host;
+        if (!host) {
+            return false;
+        }
+
+        const rect = host.getBoundingClientRect();
+        const alignment = this.dropdownAlignment;
+
+        const isVisible =
+            alignment === 'auto'
+                ? this._isDropdownVisibleAuto(rect)
+                : this._isDropdownVisibleForAlignment(rect, alignment);
+
+        return isVisible;
     }
 
     get computedNoResultsMessage() {
@@ -1896,6 +1913,56 @@ export default class FilterMenu extends LightningElement {
             }
         }
         return visibleItems;
+    }
+
+    /**
+     * Check if dropdown is in the viewport for at least one alignment.
+     */
+    _isDropdownVisibleAuto(rect) {
+        return ['left', 'right', 'center'].some((alignment) =>
+            this._isDropdownVisibleForAlignment(rect, alignment)
+        );
+    }
+
+    /**
+     * Check if dropdown fits horizontally in the viewport
+     * for a given alignment.
+     */
+    _isDropdownVisibleForAlignment(rect, alignment) {
+        const width = MIN_SIZE_EXPANDED;
+        const viewportWidth = window.innerWidth;
+
+        let left;
+        let right;
+
+        switch (alignment) {
+            case 'left':
+            case 'bottom-left': {
+                left = rect.left;
+                right = left + width;
+                break;
+            }
+
+            case 'right':
+            case 'bottom-right': {
+                right = rect.right;
+                left = right - width;
+                break;
+            }
+
+            case 'center':
+            case 'bottom-center': {
+                const center = (rect.left + rect.right) / 2;
+                left = center - width / 2;
+                right = center + width / 2;
+                break;
+            }
+
+            default:
+                return false;
+        }
+
+        return left >= 0 && right <= viewportWidth;
     }
 
     /**

@@ -1283,14 +1283,15 @@ export default class InputDateRange extends LightningElement {
         const min = this.expandedCalendar?.min ?? new Date(1900, 0, 1);
         const max = this.expandedCalendar?.max ?? new Date(2099, 11, 31);
 
-        const computedMin = new Date(min);
+        let computedMin = new Date(min);
         computedMin.setHours(0, 0, 0, 0);
+        computedMin = this.addOffsetTimezone(computedMin);
 
-        const computedMax = new Date(max);
+        let computedMax = new Date(max);
         computedMax.setHours(0, 0, 0, 0);
+        computedMax = this.addOffsetTimezone(computedMax);
 
         const value = new Date(date);
-        value.setHours(0, 0, 0, 0);
 
         if (value < computedMin) {
             return computedMin;
@@ -1463,8 +1464,9 @@ export default class InputDateRange extends LightningElement {
     handleChangeEndDateInput(event) {
         event.stopPropagation();
         const value = event.target.value;
-        const parsedDate = this.dateStringFormat(value);
+        let parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
+            parsedDate = this.addOffsetTimezone(parsedDate);
             this._endDate = this.validateDate(parsedDate);
             if (
                 this._startDate &&
@@ -1710,8 +1712,9 @@ export default class InputDateRange extends LightningElement {
     handleChangeStartDateInput(event) {
         event.stopPropagation();
         const value = event.target.value;
-        const parsedDate = this.dateStringFormat(value);
+        let parsedDate = this.dateStringFormat(value);
         if (parsedDate && !isNaN(parsedDate.getTime())) {
+            parsedDate = this.addOffsetTimezone(parsedDate);
             this._startDate = this.validateDate(parsedDate);
 
             if (
