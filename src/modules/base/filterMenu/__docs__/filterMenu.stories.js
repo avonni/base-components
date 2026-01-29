@@ -404,7 +404,9 @@ export const DateRange = Template.bind({});
 DateRange.args = {
     typeAttributes: {
         labelStartDate: 'Start',
-        labelEndDate: 'End'
+        labelEndDate: 'End',
+        showRangeOptions: true,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     },
     weekStartDay: 1,
     buttonVariant: 'container',

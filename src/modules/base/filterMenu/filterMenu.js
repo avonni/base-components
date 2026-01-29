@@ -102,8 +102,10 @@ const TYPE_ATTRIBUTES = {
         'dateStyle',
         'labelEndDate',
         'labelEndTime',
+        'labelRangeOptions',
         'labelStartDate',
         'labelStartTime',
+        'showRangeOptions',
         'timeStyle',
         'timezone',
         'type'
