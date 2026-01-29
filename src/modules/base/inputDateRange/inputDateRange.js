@@ -543,21 +543,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Class of the range options container
-     *
-     * @type {string}
-     */
-    get computedRangeOptionClass() {
-        return classSet('')
-            .add({
-                'avonni-input-date-range__vertical-navigation-container slds-border_right slds-m-right_x-small':
-                    this.isExpanded,
-                'slds-grid slds-wrap slds-m-bottom_x-small': !this.isExpanded
-            })
-            .toString();
-    }
-
-    /**
      * Class of the label container.
      *
      * @type {string}
@@ -577,7 +562,31 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Computed timezone
+     * Computed option range value.
+     *
+     * @type {string}
+     */
+    get computedOptionRangeValue() {
+        return this.disabledOrReadOnly ? '' : this.optionRangeValue;
+    }
+
+    /**
+     * Class of the range options container.
+     *
+     * @type {string}
+     */
+    get computedRangeOptionClass() {
+        return classSet('')
+            .add({
+                'avonni-input-date-range__vertical-navigation-container slds-border_right slds-m-right_x-small':
+                    this.isExpanded,
+                'slds-grid slds-wrap slds-m-bottom_x-small': !this.isExpanded
+            })
+            .toString();
+    }
+
+    /**
+     * Computed timezone.
      *
      * @type {string}
      */

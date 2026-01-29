@@ -227,11 +227,13 @@
                 "
             >
                 <lightning-vertical-navigation
-                    selected-item={optionRangeValue}
+                    selected-item={computedOptionRangeValue}
                     onselect={handleChangeRangeOption}
                 >
                     <template for:each={rangeOptions} for:item="option">
                         <lightning-vertical-navigation-item
+                            aria-disabled={disabled}
+                            aria-readonly={readOnly}
                             key={option.value}
                             label={option.label}
                             name={option.value}

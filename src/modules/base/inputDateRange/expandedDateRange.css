@@ -62,3 +62,16 @@
 lightning-vertical-navigation-item:first-of-type {
     border-bottom: 1px solid var(--lwc-colorBorder, #dddbda);
 }
+
+lightning-vertical-navigation-item[aria-disabled='true'],
+lightning-vertical-navigation-item[aria-readonly='true'] {
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-color: var(--slds-g-color-border-base-1, #c9c9c9);
+    color: var(--slds-g-color-neutral-base-50, #444);
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
