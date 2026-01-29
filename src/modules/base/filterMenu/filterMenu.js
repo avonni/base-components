@@ -1111,8 +1111,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Computed isExpanded attribute based on dropdown alignment
-     * and actual viewport visibility.
+     * Returns true, if the expanded input date range dropdown would be visible.
      *
      * @type {boolean}
      */
