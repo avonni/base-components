@@ -93,7 +93,8 @@ const MENU_WIDTHS = {
     valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
 
-const MIN_SIZE_EXPANDED = 805;
+const MIN_SIZE_EXPANDED = 645;
+const MIN_SIZE_EXPANDED_OPTIONS = 805;
 
 const RESET_BUTTON_POSITION = {
     default: 'bottom',
@@ -999,11 +1000,16 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedDateRangeClass() {
+        const isExpandedDateRange = this.isDateRange && this.computedIsExpanded;
         return classSet('slds-show')
             .add({
-                'slds-p-around_small': !this.computedIsExpanded,
+                'slds-p-around_small':
+                    !this.computedIsExpanded ||
+                    (isExpandedDateRange &&
+                        !this.computedTypeAttributes.showRangeOptions),
                 'slds-p-right_small slds-p-left_xxx-small':
-                    this.isDateRange && this.computedIsExpanded
+                    isExpandedDateRange &&
+                    this.computedTypeAttributes.showRangeOptions
             })
             .toString();
     }
@@ -1017,8 +1023,9 @@ export default class FilterMenu extends LightningElement {
         const alignment = this.dropdownAlignment;
         const nubbin = this.dropdownNubbin;
         const isDateTime = this.computedTypeAttributes.type === 'datetime';
-        const isExpanded = this.computedIsExpanded;
+        const isExpandedDateRange = this.computedIsExpanded && this.isDateRange;
         const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
+        const hasRangeOptions = this.computedTypeAttributes.showRangeOptions;
 
         const classes = classSet('slds-dropdown slds-p-around_none').add({
             'slds-dropdown_left': alignment === 'left' || this.isAutoAlignment,
@@ -1038,7 +1045,10 @@ export default class FilterMenu extends LightningElement {
             'slds-dropdown_small': isSmallRange,
             'slds-dropdown_large':
                 (this.isDateRange && !isDateTime) || this.isTimeRange,
-            'avonni-filter-menu__dropdown-min-width': isExpanded
+            'avonni-filter-menu__dropdown-expanded':
+                isExpandedDateRange && !hasRangeOptions,
+            'avonni-filter-menu__dropdown-expanded-options':
+                isExpandedDateRange && hasRangeOptions
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
@@ -1079,20 +1089,6 @@ export default class FilterMenu extends LightningElement {
                 'slds-p-vertical_xx-small': !(
                     this.isDateRange && this.computedIsExpanded
                 )
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Menu Divider class styling.
-     *
-     * @type {string}
-     */
-    get computedMenuDividerClass() {
-        return classSet('')
-            .add({
-                'avonni-filter-menu__menu-divider-expanded':
-                    this.isDateRange && this.computedIsExpanded
             })
             .toString();
     }
@@ -1928,7 +1924,9 @@ export default class FilterMenu extends LightningElement {
      * for a given alignment.
      */
     _isDropdownVisibleForAlignment(rect, alignment) {
-        const width = MIN_SIZE_EXPANDED;
+        const width = this.computedTypeAttributes.showRangeOptions
+            ? MIN_SIZE_EXPANDED_OPTIONS
+            : MIN_SIZE_EXPANDED;
         const viewportWidth = window.innerWidth;
 
         let left;

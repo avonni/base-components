@@ -28,10 +28,14 @@
     min-width: 0;
 }
 
-.slds-dropdown.avonni-filter-menu__dropdown-min-width {
+.slds-dropdown.avonni-filter-menu__dropdown-expanded {
+    min-width: 630px;
+}
+
+.slds-dropdown.avonni-filter-menu__dropdown-expanded-options {
     min-width: 790px;
 }
 
-.avonni-filter-menu__menu-divider-expanded {
+.avonni-filter-menu__dropdown-expanded-options > * lightning-menu-divider {
     margin-top: calc(-1 * var(--lwc-spacingXSmall, 0.5rem));
 }
