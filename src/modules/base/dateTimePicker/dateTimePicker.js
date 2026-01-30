@@ -43,6 +43,7 @@ const DEFAULT_END_TIME = '18:00';
 const DEFAULT_INLINE_DATE_PICKER_VISIBLE_DAYS = 7;
 const DEFAULT_MAX = '2099-12-31';
 const DEFAULT_MIN = '1900-01-01';
+const DEFAULT_NEXT_BUTTON_LABEL = 'Next';
 const DEFAULT_NEXT_DATES_BUTTON_ALTERNATIVE_TEXT = 'Next dates';
 const DEFAULT_NEXT_WEEK_BUTTON_ALTERNATIVE_TEXT = 'Next week';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No available time slots for this period.';
@@ -104,6 +105,14 @@ export default class DateTimePicker extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * Label for the next button.
+     *
+     * @type {string}
+     * @public
+     * @default Next
+     */
+    @api nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
     /**
      * Alternative text for the next dates button.
      *
@@ -189,6 +198,7 @@ export default class DateTimePicker extends LightningElement {
     _datePickerVariant = DATE_PICKER_VARIANTS.default;
     _disabled = false;
     _disabledDateTimes = [];
+    _displayNextButton = false;
     _endTime = DEFAULT_END_TIME;
     _hideDateLabel = false;
     _hideDatePicker = false;
@@ -496,6 +506,25 @@ export default class DateTimePicker extends LightningElement {
             requestAnimationFrame(() => {
                 this._queueRecompute();
             });
+        }
+    }
+
+    /**
+     * If present, display a next button after selecting a time slot.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get displayNextButton() {
+        return this._displayNextButton;
+    }
+    set displayNextButton(value) {
+        this._displayNextButton = normalizeBoolean(value);
+
+        if (this._connected) {
+            this._generateTable();
         }
     }
 
@@ -1822,6 +1851,9 @@ export default class DateTimePicker extends LightningElement {
             if (selected) {
                 dayTime.selected = true;
             }
+            const renderNextButton =
+                this.displayNextButton && this.type === 'radio';
+            const displayNextButton = renderNextButton && selected;
             const startTimeLabel = day.toLocaleString({
                 hour: this.timeFormatHour,
                 minute: this.timeFormatMinute,
@@ -1850,7 +1882,23 @@ export default class DateTimePicker extends LightningElement {
                 disabled,
                 selected: selected || undefined,
                 show: !disabled || this.showDisabledDates,
-                computedAriaLabel: `${timeLabel}, ${dateLabel}`
+                computedAriaLabel: `${timeLabel}, ${dateLabel}`,
+                renderNextButton,
+                buttonClass: classSet().add({
+                    'avonni-date-time-picker__time-button': !displayNextButton,
+                    'avonni-date-time-picker__selected-time-button-with-next':
+                        displayNextButton,
+                    'slds-p-around_medium': this.isTimeline,
+                    'slds-p-around_small slds-theme_default': !this.isTimeline
+                }),
+                nextColClass: classSet(
+                    'avonni-date-time-picker__next-col slds-p-left_xx-small slds-col'
+                ).add({
+                    'avonni-date-time-picker__next-col_hidden':
+                        !displayNextButton,
+                    'avonni-date-time-picker__next-col_visible':
+                        displayNextButton
+                })
             };
 
             // If the variant is 'timeline', pushes a two-level deep object into dayTime.times
@@ -2190,6 +2238,13 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Handles the onclick event of the next button of a selected time slot.
+     */
+    handleNextButtonClick() {
+        this._dispatchNextButtonClick();
+    }
+
+    /**
      * Handles the onclick event of the button for time slots.
      */
     handleTimeSlotClick(event) {
@@ -2323,6 +2378,24 @@ export default class DateTimePicker extends LightningElement {
                 detail: {
                     date: this.firstWeekDay.toISO()
                 }
+            })
+        );
+    }
+
+    _dispatchNextButtonClick() {
+        /**
+         * The event fired when the user clicks on the next button of a selected time slot.
+         *
+         * @event
+         * @name nextbuttonclick
+         * @public
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('nextbuttonclick', {
+                bubbles: true,
+                composed: true
             })
         );
     }

@@ -8,6 +8,7 @@
  * @property {string} imageAssistiveText Image alt text, if not present the heading will be used instead.
  * @property {string} href Item link.
  * @property {string} src URL of the item image.
+ * @property {string} target Target for the item link.
  * @property {object[]} actions Array of action objects for the item.
  */
 /**

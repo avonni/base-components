@@ -1,7 +1,7 @@
-import { createElement } from 'lwc';
-import { ITEMS, ITEMS_WITHOUT_ICONS, ACTIONS, ACTION } from './data';
-import { callObserver } from 'c/resizeObserver';
 import List from 'c/list';
+import { callObserver } from 'c/resizeObserver';
+import { createElement } from 'lwc';
+import { ACTION, ACTIONS, ITEMS, ITEMS_WITHOUT_ICONS } from './data';
 
 // Not tested:
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
@@ -36,6 +36,7 @@ describe('List', () => {
             expect(element.alternativeText).toBeUndefined();
             expect(element.cols).toBe(1);
             expect(element.enableInfiniteLoading).toBeFalsy();
+            expect(element.equalHeights).toBeFalsy();
             expect(element.fieldAttributes).toEqual({
                 cols: 12,
                 largeContainerCols: 4,
@@ -226,6 +227,20 @@ describe('List', () => {
             });
         });
 
+        describe('Equal Heights', () => {
+            it('Equal Heights = true', () => {
+                element.items = ITEMS;
+                element.equalHeights = true;
+
+                return Promise.resolve().then(() => {
+                    const listElem = element.shadowRoot.querySelector(
+                        '[data-element-id="list-element"]'
+                    );
+                    expect(listElem.equalHeights).toBeTruthy();
+                });
+            });
+        });
+
         describe('Field Attributes', () => {
             it('Field Attributes, cols', () => {
                 element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
@@ -347,7 +362,14 @@ describe('List', () => {
 
         describe('Items', () => {
             it('Items', () => {
-                element.items = ITEMS;
+                element.items = [
+                    {
+                        ...ITEMS[0],
+                        href: 'https://www.google.com/',
+                        target: '_blank'
+                    },
+                    ...ITEMS.slice(1)
+                ];
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
@@ -358,6 +380,12 @@ describe('List', () => {
                     );
                     expect(items).toHaveLength(5);
                     expect(itemsLabels).toHaveLength(5);
+
+                    const itemHeaderLink = items[0].querySelector(
+                        '[data-element-id="a-item-header-link"]'
+                    );
+                    expect(itemHeaderLink.href).toBe('https://www.google.com/');
+                    expect(itemHeaderLink.target).toBe('_blank');
 
                     items.forEach((item, index) => {
                         const originalItem = ITEMS[index];
@@ -403,7 +431,11 @@ describe('List', () => {
                     {
                         name: 'item-1',
                         infos: [
-                            { label: 'Info 1', href: 'https://www.google.com' },
+                            {
+                                label: 'Info 1',
+                                href: 'https://www.google.com',
+                                target: '_blank'
+                            },
                             { label: 'Info 2' }
                         ]
                     }
@@ -422,6 +454,7 @@ describe('List', () => {
                     );
                     expect(firstLink).toBeTruthy();
                     expect(firstLink.href).toBe('https://www.google.com/');
+                    expect(firstLink.target).toBe('_blank');
                     expect(firstLink.textContent).toBe('Info 1');
                     expect(firstSpan).toBeFalsy();
 
@@ -706,28 +739,50 @@ describe('List', () => {
                 });
             });
 
-            it('Description', () => {
-                element.items = [
-                    {
-                        name: 'item-1',
-                        description: '<b>Content</b>'
-                    },
-                    {
-                        name: 'item-2',
-                        description: 'Content'
-                    }
-                ];
+            describe('Description', () => {
+                it('Description', () => {
+                    element.items = [
+                        {
+                            name: 'item-1',
+                            description: '<b>Content</b>'
+                        },
+                        {
+                            name: 'item-2',
+                            description: 'Content'
+                        }
+                    ];
 
-                return Promise.resolve().then(() => {
-                    const itemdDescriptions =
-                        element.shadowRoot.querySelectorAll(
-                            '[data-element-id="lightning-formatted-rich-text-description"]'
+                    return Promise.resolve().then(() => {
+                        const itemdDescriptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id="lightning-formatted-rich-text-description"]'
+                            );
+                        expect(itemdDescriptions).toHaveLength(2);
+                        expect(itemdDescriptions[0].value).toBe(
+                            '<b>Content</b>'
                         );
-                    expect(itemdDescriptions).toHaveLength(2);
-                    expect(itemdDescriptions[0].value).toBe('<b>Content</b>');
-                    expect(itemdDescriptions[0].title).toBe('Content');
-                    expect(itemdDescriptions[1].value).toBe('Content');
-                    expect(itemdDescriptions[1].title).toBe('Content');
+                        expect(itemdDescriptions[0].title).toBe('Content');
+                        expect(itemdDescriptions[1].value).toBe('Content');
+                        expect(itemdDescriptions[1].title).toBe('Content');
+                    });
+                });
+
+                it('Description with linkify disabled', () => {
+                    element.items = [
+                        {
+                            name: 'item-1',
+                            description: '<b>Content</b>',
+                            disableDescriptionLinkify: true
+                        }
+                    ];
+
+                    return Promise.resolve().then(() => {
+                        const itemdDescription =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="lightning-formatted-rich-text-description"]'
+                            );
+                        expect(itemdDescription.disableLinkify).toBeTruthy();
+                    });
                 });
             });
         });

@@ -1,5 +1,10 @@
 import { computeSldsClass, isActionIconType } from 'c/iconUtils';
-import { classSet, normalizeArray, normalizeString } from 'c/utils';
+import {
+    classSet,
+    handleHTMLAnchorTagClick,
+    normalizeArray,
+    normalizeString
+} from 'c/utils';
 import { isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
@@ -45,6 +50,7 @@ export default class PrimitiveAvatar extends LightningElement {
     @api entityIconName;
     @api entityInitials;
     @api entitySrc;
+    @api target;
 
     _actionMenuIcon = DEFAULT_ICON_MENU_ICON;
     _actionPosition = POSITIONS.actionDefault;
@@ -557,13 +563,7 @@ export default class PrimitiveAvatar extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     handleImageError(event) {

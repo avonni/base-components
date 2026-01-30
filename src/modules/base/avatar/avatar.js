@@ -1,10 +1,10 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const AVATAR_SIZES = {
     valid: [
@@ -124,6 +124,13 @@ export default class Avatar extends LightningElement {
      * @type {string}
      */
     @api secondaryText;
+    /**
+     * The target of the link.
+     *
+     * @public
+     * @type {string}
+     */
+    @api target;
     /**
      * Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large, xx-large and xxx-large.
      *

@@ -6,6 +6,7 @@ export default class PrimitivePill extends LightningElement {
     @api href;
     @api label;
     @api name;
+    @api target;
     @api variant;
 
     @api focusLink() {}

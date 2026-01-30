@@ -55,6 +55,7 @@
                         <a
                             if:true={href}
                             href={href}
+                            target={target}
                             data-element-id="title"
                             onclick={handleAnchorTagClick}
                         >
@@ -170,6 +171,7 @@
                     label={item.label}
                     name={item.name}
                     selected={item.selected}
+                    target={item.target}
                     variant={variant}
                     data-element-id="avonni-primitive-relationship-graph-item"
                     onactionclick={dispatchActionClickEvent}

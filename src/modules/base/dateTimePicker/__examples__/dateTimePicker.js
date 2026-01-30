@@ -14,6 +14,7 @@ export const DateTimePicker = ({
     datePickerVariant,
     disabled,
     disabledDateTimes,
+    displayNextButton,
     endTime,
     fieldLevelHelp,
     hideDateLabel,
@@ -25,6 +26,7 @@ export const DateTimePicker = ({
     messageWhenValueMissing,
     min,
     name,
+    nextButtonLabel,
     nextDatesButtonAlternativeText,
     nextWeekButtonAlternativeText,
     noResultsMessage,
@@ -60,6 +62,7 @@ export const DateTimePicker = ({
     element.datePickerVariant = datePickerVariant;
     element.disabled = disabled;
     element.disabledDateTimes = disabledDateTimes;
+    element.displayNextButton = displayNextButton;
     element.endTime = endTime;
     element.fieldLevelHelp = fieldLevelHelp;
     element.hideDateLabel = hideDateLabel;
@@ -70,6 +73,7 @@ export const DateTimePicker = ({
     element.max = max;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.min = min;
+    element.nextButtonLabel = nextButtonLabel;
     element.nextDatesButtonAlternativeText = nextDatesButtonAlternativeText;
     element.nextWeekButtonAlternativeText = nextWeekButtonAlternativeText;
     element.noResultsMessage = noResultsMessage;

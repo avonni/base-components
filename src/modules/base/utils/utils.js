@@ -1,13 +1,13 @@
 export { classSet } from './classSet';
-export { convertHTMLToPlainText } from './htmlUtils';
-export { queryFocusable } from './queryFocusable';
-export { formatLabel } from './labelUtils';
+export { convertHTMLToPlainText, handleHTMLAnchorTagClick } from './htmlUtils';
 export { generateUUID } from './idGenerator';
-export { deepCopy } from './utility';
+export { formatLabel } from './labelUtils';
 export {
-    normalizeBoolean,
-    normalizeString,
-    normalizeArray,
     normalizeAriaAttribute,
-    normalizeObject
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
 } from './normalize';
+export { queryFocusable } from './queryFocusable';
+export { deepCopy } from './utility';

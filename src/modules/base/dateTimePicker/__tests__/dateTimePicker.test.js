@@ -38,6 +38,7 @@ describe('DateTimePicker', () => {
             expect(element.datePickerVariant).toBe('input');
             expect(element.disabled).toBeFalsy();
             expect(element.disabledDateTimes).toMatchObject([]);
+            expect(element.displayNextButton).toBeFalsy();
             expect(element.endTime).toBe('18:00');
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.hideDateLabel).toBeFalsy();
@@ -49,6 +50,7 @@ describe('DateTimePicker', () => {
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.min).toBe('1900-01-01');
             expect(element.name).toBeUndefined();
+            expect(element.nextButtonLabel).toBe('Next');
             expect(element.nextDatesButtonAlternativeText).toBe('Next dates');
             expect(element.nextWeekButtonAlternativeText).toBe('Next week');
             expect(element.noResultsMessage).toBe(
@@ -626,6 +628,43 @@ describe('DateTimePicker', () => {
                         expect(emptyMessage).toBeTruthy();
                         expect(hours.length).toBeFalsy();
                     });
+            });
+        });
+
+        describe('Display next button', () => {
+            it('true', () => {
+                element.displayNextButton = true;
+                element.nextButtonLabel = 'Next button label';
+
+                let buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button-default"]'
+                );
+                expect(buttons.length).toBeGreaterThan(0);
+                buttons[0].click();
+
+                return Promise.resolve().then(() => {
+                    const nextButtons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="lightning-button-next"]'
+                    );
+                    expect(nextButtons.length).toBeGreaterThan(0);
+                    expect(nextButtons[0].label).toBe('Next button label');
+
+                    buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="button-default"]'
+                    );
+                    expect(buttons[0].className).toContain(
+                        'avonni-date-time-picker__selected-time-button-with-next'
+                    );
+                    expect(buttons[0].className).not.toContain(
+                        'avonni-date-time-picker__time-button'
+                    );
+                    expect(buttons[1].className).toContain(
+                        'avonni-date-time-picker__time-button'
+                    );
+                    expect(buttons[1].className).not.toContain(
+                        'avonni-date-time-picker__selected-time-button-with-next'
+                    );
+                });
             });
         });
 
@@ -1963,6 +2002,34 @@ describe('DateTimePicker', () => {
                     expect(date.getYear()).toEqual(today.getYear());
                 });
             });
+        });
+
+        it('nextbuttonclick', () => {
+            const handler = jest.fn();
+            element.addEventListener('nextbuttonclick', handler);
+
+            element.displayNextButton = true;
+
+            let buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            expect(buttons.length).toBeGreaterThan(0);
+            buttons[0].click();
+
+            return Promise.resolve()
+                .then(() => {
+                    const nextButton = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-next"]'
+                    );
+                    nextButton.click();
+                })
+                .then(() => {
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeTruthy();
+                    expect(call.composed).toBeTruthy();
+                    expect(call.cancelable).toBeFalsy();
+                });
         });
     });
 });

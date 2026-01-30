@@ -48,6 +48,7 @@
             <c-layout
                 class={computedListClass}
                 direction={layoutDirection}
+                equal-heights={equalHeights}
                 multiple-rows={isNotSingleLine}
                 role="list"
                 vertical-align="stretch"
@@ -259,6 +260,8 @@
                                                             avonni-list__item-header-link
                                                         "
                                                         href={item.href}
+                                                        target={item.target}
+                                                        data-element-id="a-item-header-link"
                                                         onclick={handleAnchorTagClick}
                                                         onmousedown={stopPropagation}
                                                     >
@@ -326,6 +329,7 @@
                                                 "
                                             >
                                                 <lightning-formatted-rich-text
+                                                    disable-linkify={item.disableDescriptionLinkify}
                                                     title={item.descriptionTitle}
                                                     value={item.description}
                                                     data-element-id="lightning-formatted-rich-text-description"
@@ -359,6 +363,7 @@
                                                                 avonni-list__item-info-link
                                                             "
                                                             href={info.href}
+                                                            target={info.target}
                                                             data-element-id="a-info"
                                                             onclick={handleAnchorTagClick}
                                                             onmousedown={stopPropagation}

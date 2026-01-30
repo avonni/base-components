@@ -2,6 +2,7 @@
  * @typedef {Object} ListItem
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
+ * @property {boolean} disableDescriptionLinkify If true, URLs and email addresses in the description won't be converted into clickable links.
  * @property {boolean} checked If true, the checkbox to the left of the item will be checked.
  * @property {string} description Description of the item.
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data">Output Data</a> for valid keys. The fields are displayed in the details section.
@@ -12,8 +13,10 @@
  * @property {object} infos List of additional information to display. Valid keys:
  * - label: string
  * - href: string
+ * - target: string
  * @property {string} label Required. Label of the item.
  * @property {string} name Name to identify the item in the list.
+ * @property {string} target The target attribute for the link.
  */
 /**
  * @typedef {Object} ListAction

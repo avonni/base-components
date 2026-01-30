@@ -23,6 +23,7 @@ export default class PrimitiveAvatar extends LightningElement {
     @api status;
     @api statusPosition;
     @api statusTitle;
+    @api target;
     @api variant;
 
     @api

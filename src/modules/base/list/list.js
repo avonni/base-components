@@ -3,6 +3,7 @@ import {
     classSet,
     deepCopy,
     generateUUID,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -135,6 +136,7 @@ export default class List extends LightningElement {
     _cols = 1;
     _divider = DIVIDER.default;
     _enableInfiniteLoading = false;
+    _equalHeights = false;
     _fieldAttributes = {
         cols: DEFAULT_FIELD_COLUMNS.default,
         largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
@@ -406,6 +408,25 @@ export default class List extends LightningElement {
             if (previousPageStart >= 0) {
                 this._singleLinePageFirstIndex = previousPageStart;
             }
+        }
+    }
+
+    /**
+     * If true, all items have the same height.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get equalHeights() {
+        return this._equalHeights;
+    }
+    set equalHeights(value) {
+        this._equalHeights = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.setItemProperties();
         }
     }
 
@@ -2537,13 +2558,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**

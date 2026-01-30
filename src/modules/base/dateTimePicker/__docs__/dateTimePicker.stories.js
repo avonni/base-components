@@ -518,6 +518,18 @@ export default {
             table: {
                 type: { summary: 'number' }
             }
+        },
+        displayNextButton: {
+            name: 'display-next-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, display a next button after selecting a time slot.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -526,6 +538,7 @@ export default {
         dateFormatWeekday: 'short',
         datePickerVariant: 'input',
         disabled: false,
+        displayNextButton: false,
         endTime: '18:00',
         hideDateLabel: false,
         hideDatePicker: false,
@@ -533,7 +546,12 @@ export default {
         hideNavigation: false,
         max: '2099-12-31',
         min: '1900-01-01',
+        nextButtonLabel: 'Next',
+        nextDatesButtonAlternativeText: 'Next dates',
+        nextWeekButtonAlternativeText: 'Next week',
         noResultsMessage: 'No available time slots for this period.',
+        previousDatesButtonAlternativeText: 'Previous dates',
+        previousWeekButtonAlternativeText: 'Previous week',
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',
