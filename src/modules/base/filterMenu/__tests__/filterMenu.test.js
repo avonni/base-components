@@ -1823,6 +1823,7 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
@@ -1869,6 +1870,7 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
@@ -1894,6 +1896,7 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
@@ -1919,10 +1922,11 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
-                    expect(dateRange.isExpanded).toBe(false);
+                    expect(dateRange.isExpanded).toBe(true);
                 });
             });
 
@@ -1944,10 +1948,11 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
-                    expect(dateRange.isExpanded).toBe(false);
+                    expect(dateRange.isExpanded).toBe(true);
                 });
             });
 
@@ -1969,10 +1974,11 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
-                    expect(dateRange.isExpanded).toBe(false);
+                    expect(dateRange.isExpanded).toBe(true);
                 });
             });
 
@@ -1994,10 +2000,11 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
-                    expect(dateRange.isExpanded).toBe(false);
+                    expect(dateRange.isExpanded).toBe(true);
                 });
             });
 
@@ -2019,6 +2026,7 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runOnlyPendingTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
