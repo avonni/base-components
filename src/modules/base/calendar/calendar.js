@@ -89,10 +89,8 @@ export default class Calendar extends LightningElement {
     computedMax;
     computedMin;
     computedValue = [];
-    day;
     displayDate; // The calendar displays this date's month
     month;
-    months = MONTHS;
     year;
 
     /*
@@ -862,12 +860,8 @@ export default class Calendar extends LightningElement {
             );
         });
 
-        // First-time initialization
-        if (!this.displayDate) {
-            this.displayDate = new Date(this.computedValue[0]);
-        }
-        // Update only if ALL values are outside ALL calendars
-        else if (!isAnyValueVisible) {
+        // First-time initialization or update only if ALL values are outside ALL calendars
+        if (!this.displayDate || !isAnyValueVisible) {
             this.displayDate = new Date(this.computedValue[0]);
         }
     }
@@ -878,7 +872,6 @@ export default class Calendar extends LightningElement {
     updateDateParameters() {
         this.year = this.displayDate.getFullYear();
         this.month = MONTHS[this.displayDate.getMonth()];
-        this.day = this.displayDate.getDay();
         this.updateSelectYear();
         this.generateViewData();
     }
@@ -973,12 +966,11 @@ export default class Calendar extends LightningElement {
                         maxValue
                     );
                 }
-                if (
-                    this.isMultiCalendars &&
-                    !equal(initComputedValue, this.computedValue)
-                ) {
-                    this.displayDate = new Date(this.computedValue[0]);
-                } else if (!this.isMultiCalendars) {
+                const shouldUpdateDisplayDate =
+                    !this.isMultiCalendars ||
+                    (this.isMultiCalendars &&
+                        !equal(initComputedValue, this.computedValue));
+                if (shouldUpdateDisplayDate) {
                     this.displayDate = new Date(this.computedValue[0]);
                 }
                 this.updateDateParameters();
@@ -998,12 +990,11 @@ export default class Calendar extends LightningElement {
         );
 
         if (this.computedValue.length) {
-            if (
-                this.isMultiCalendars &&
-                !equal(initComputedValue, this.computedValue)
-            ) {
-                this.displayDate = new Date(this.computedValue[0]);
-            } else if (!this.isMultiCalendars) {
+            const shouldUpdateDisplayDate =
+                !this.isMultiCalendars ||
+                (this.isMultiCalendars &&
+                    !equal(initComputedValue, this.computedValue));
+            if (shouldUpdateDisplayDate) {
                 this.displayDate = new Date(this.computedValue[0]);
             }
             this.updateDateParameters();
