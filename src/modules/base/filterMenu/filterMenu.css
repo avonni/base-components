@@ -29,11 +29,7 @@
 }
 
 .slds-dropdown.avonni-filter-menu__dropdown-expanded {
-    min-width: 630px;
-}
-
-.slds-dropdown.avonni-filter-menu__dropdown-expanded-options {
-    min-width: 790px;
+    min-width: fit-content;
 }
 
 .avonni-filter-menu__dropdown-expanded-options > * lightning-menu-divider {

@@ -48,6 +48,8 @@ const BUTTON_VARIANTS = {
     ]
 };
 
+const DATE_RANGE_OVERFLOW_OFFSET = 10;
+
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
@@ -92,9 +94,6 @@ const MENU_WIDTHS = {
     default: 'small',
     valid: ['large', 'medium', 'small', 'x-small', 'xx-small']
 };
-
-const MIN_SIZE_EXPANDED = 645;
-const MIN_SIZE_EXPANDED_OPTIONS = 805;
 
 const RESET_BUTTON_POSITION = {
     default: 'bottom',
@@ -222,6 +221,7 @@ export default class FilterMenu extends LightningElement {
     _allowBlur = true;
     _dateRangeFrames = [];
     _dropdownIsFocused = false;
+    _isSmallDateRange = false;
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
@@ -1045,8 +1045,7 @@ export default class FilterMenu extends LightningElement {
             'slds-dropdown_small': isSmallRange,
             'slds-dropdown_large':
                 (this.isDateRange && !isDateTime) || this.isTimeRange,
-            'avonni-filter-menu__dropdown-expanded':
-                isExpandedDateRange && !hasRangeOptions,
+            'avonni-filter-menu__dropdown-expanded': isExpandedDateRange,
             'avonni-filter-menu__dropdown-expanded-options':
                 isExpandedDateRange && hasRangeOptions
         });
@@ -1112,24 +1111,9 @@ export default class FilterMenu extends LightningElement {
      * @type {boolean}
      */
     get computedIsExpanded() {
-        if (!this.computedTypeAttributes.isExpanded) {
-            return false;
-        }
-
-        const host = this.template.host;
-        if (!host) {
-            return false;
-        }
-
-        const rect = host.getBoundingClientRect();
-        const alignment = this.dropdownAlignment;
-
-        const isVisible =
-            alignment === 'auto'
-                ? this._isDropdownVisibleAuto(rect)
-                : this._isDropdownVisibleForAlignment(rect, alignment);
-
-        return isVisible;
+        return (
+            this.computedTypeAttributes.isExpanded && !this._isSmallDateRange
+        );
     }
 
     get computedNoResultsMessage() {
@@ -1678,6 +1662,54 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Compute the expansion of the date range dropdown.
+     */
+    _computeDateRangeExpansion() {
+        if (!this.isDateRange || !this.computedTypeAttributes.isExpanded) {
+            return;
+        }
+        this._isSmallDateRange = false;
+
+        requestAnimationFrame(() => {
+            if (!this.dropdownElement || !this.template.host) {
+                this._isSmallDateRange = true;
+                return;
+            }
+            const width =
+                this.dropdownElement.getBoundingClientRect().width +
+                DATE_RANGE_OVERFLOW_OFFSET;
+            const host = this.template.host;
+
+            const rect = host.getBoundingClientRect();
+            const alignment = this.dropdownAlignment;
+
+            let isVisible = false;
+
+            if (alignment === 'auto') {
+                isVisible = this._isDropdownVisibleAuto(rect, width);
+            } else {
+                isVisible = this._isDropdownVisibleForAlignment(
+                    rect,
+                    alignment,
+                    width
+                );
+            }
+            this._isSmallDateRange = !isVisible;
+
+            requestAnimationFrame(() => {
+                if (this.dropdownVisible) {
+                    this._focusDropdown();
+                }
+            });
+        });
+
+        if (this.dropdownVisible) {
+            // If the items are set while the popover is open, prevent losing focus
+            this._focusDropdown();
+        }
+    }
+
+    /**
      * Create the computed list items, based on the given items.
      */
     _computeListItems() {
@@ -1913,9 +1945,9 @@ export default class FilterMenu extends LightningElement {
     /**
      * Check if dropdown is in the viewport for at least one alignment.
      */
-    _isDropdownVisibleAuto(rect) {
+    _isDropdownVisibleAuto(rect, width) {
         return ['left', 'right', 'center'].some((alignment) =>
-            this._isDropdownVisibleForAlignment(rect, alignment)
+            this._isDropdownVisibleForAlignment(rect, alignment, width)
         );
     }
 
@@ -1923,10 +1955,7 @@ export default class FilterMenu extends LightningElement {
      * Check if dropdown fits horizontally in the viewport
      * for a given alignment.
      */
-    _isDropdownVisibleForAlignment(rect, alignment) {
-        const width = this.computedTypeAttributes.showRangeOptions
-            ? MIN_SIZE_EXPANDED_OPTIONS
-            : MIN_SIZE_EXPANDED;
+    _isDropdownVisibleForAlignment(rect, alignment, width) {
         const viewportWidth = window.innerWidth;
 
         let left;
@@ -2138,10 +2167,12 @@ export default class FilterMenu extends LightningElement {
                 this.currentValue = [...this.value];
                 this._computeListItems();
                 this._focusDropdown();
+                this._computeDateRangeExpansion();
             } else {
                 this._stopPositioning();
                 this._dispatchClose();
                 this._previousScroll = undefined;
+                this._isSmallDateRange = false;
             }
         }
     }
