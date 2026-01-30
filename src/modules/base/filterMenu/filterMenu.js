@@ -1943,7 +1943,12 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Check if dropdown is in the viewport for at least one alignment.
+     * Check if the dropdown can be displayed fully within the viewport
+     * for at least one horizontal alignment.
+     *
+     * @param {DOMRect} rect - Bounding client rectangle of the viewport.
+     * @param {number} width - Width of the dropdown.
+     * @returns {boolean} True if the dropdown fits within the viewport for at least one alignment, false otherwise.
      */
     _isDropdownVisibleAuto(rect, width) {
         return ['left', 'right', 'center'].some((alignment) =>
@@ -1952,8 +1957,11 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Check if dropdown fits horizontally in the viewport
-     * for a given alignment.
+     * Check if the dropdown can be displayed fully within the viewport for a specific alignement.
+     *
+     * @param {DOMRect} rect - Bounding client rectangle of the viewport.
+     * @param {number} width - Width of the dropdown.
+     * @returns {boolean} True if the dropdown fits within the viewport, false otherwise.
      */
     _isDropdownVisibleForAlignment(rect, alignment, width) {
         const viewportWidth = window.innerWidth;
