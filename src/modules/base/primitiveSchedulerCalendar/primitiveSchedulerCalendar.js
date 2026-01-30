@@ -581,7 +581,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     get computedWrapperClass() {
         return classSet(
-            'slds-is-relative avonni-scheduler__wrapper slds-scrollable_x'
+            'slds-template__container avonni-scheduler__wrapper slds-scrollable_x'
         )
             .add({
                 'avonni-scheduler__wrapper_month': this.isMonth
