@@ -91,6 +91,9 @@
             onprivateselect={handleMenuItemSelect}
         >
             <slot></slot>
+            <div if:true={showFooter} class="slds-popover__footer">
+                <slot name="footer"></slot>
+            </div>
         </div>
     </div>
 </template>

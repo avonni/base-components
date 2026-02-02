@@ -167,6 +167,7 @@ export default class ButtonMenu extends ButtonMenuBase {
     _variant = BUTTON_VARIANTS.default;
 
     _autoPosition;
+    showFooter = true;
     _dropdownIsFocused = false;
     _dropdownVisible = false;
 
@@ -190,6 +191,9 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     renderedCallback() {
         super.renderedCallback();
+        if (this.footerSlot) {
+            this.showFooter = this.footerSlot.assignedElements().length !== 0;
+        }
         this.initTooltip();
     }
 
@@ -620,6 +624,15 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     get dropdownOpened() {
         return this._dropdownVisible;
+    }
+
+    /**
+     * Footer Slot DOM element
+     *
+     * @type {HTMLElement}
+     */
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
     }
 
     /**

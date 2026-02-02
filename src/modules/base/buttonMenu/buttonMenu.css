@@ -1290,3 +1290,7 @@
         var(--slds-s-button-radius-border, 0.25rem)
     );
 }
+
+.slds-popover__footer {
+    background-color: transparent;
+}

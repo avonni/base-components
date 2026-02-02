@@ -1,0 +1,56 @@
+<template>
+    <avonni-button-menu
+        access-key={accessKey}
+        alternative-text={alternativeText}
+        disabled={disabled}
+        draft-alternative-text={draftAlternativeText}
+        hide-down-arrow={hideDownArrow}
+        icon-name={iconName}
+        icon-size={iconSize}
+        icon-src={iconSrc}
+        is-draft={isDraft}
+        is-button-loading={isButtonLoading}
+        is-loading={isLoading}
+        label={label}
+        loading-state-alternative-text={loadingStateAlternativeText}
+        menu-alignment={menuAlignment}
+        nubbin={nubbin}
+        prefix-icon-name={prefixIconName}
+        title={title}
+        tooltip={tooltip}
+        triggers={triggers}
+        value={value}
+        variant={variant}
+    >
+        <lightning-menu-item
+            value="MenuItemOne"
+            label="Menu Item One"
+        ></lightning-menu-item>
+        <lightning-menu-item
+            value="MenuItemTwo"
+            label="Menu Item Two"
+        ></lightning-menu-item>
+        <lightning-menu-item
+            value="MenuItemThree"
+            label="Menu Item Three"
+        ></lightning-menu-item>
+        <lightning-menu-item
+            value="MenuItemFour"
+            label="Menu Item Four"
+        ></lightning-menu-item>
+        <div slot="footer" style="display: flex; flex-direction: column">
+            <lightning-button
+                label="Favorite this page"
+                icon-name="utility:add"
+                variant="base"
+                type="reset"
+            ></lightning-button>
+            <lightning-button
+                label="Edit Favorites"
+                icon-name="utility:edit"
+                variant="base"
+                type="reset"
+            ></lightning-button>
+        </div>
+    </avonni-button-menu>
+</template>

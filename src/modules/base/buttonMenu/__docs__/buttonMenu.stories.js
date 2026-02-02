@@ -1,4 +1,5 @@
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
+import { ButtonMenuFooter } from '../__examples__/buttonMenuFooter';
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import ButtonMenuSizesComponent from '../__examples__/sizes/sizes';
 import ButtonMenuVariantsComponent from '../__examples__/variants/variants';
@@ -287,6 +288,7 @@ export default {
 };
 
 const Template = (args) => ButtonMenuBase(args);
+const TemplateFooter = (args) => ButtonMenuFooter(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
 const darkBackground = {
     backgrounds: {
@@ -458,6 +460,11 @@ SuccessWithLabel.args = {
     label: 'Menu'
 };
 export const Illustration = TemplateIllustration.bind({});
+
+export const Footer = TemplateFooter.bind({});
+Footer.args = {
+    variant: 'bare'
+};
 
 /**
  * Example with different combinations of sizes, fallback icon types.
