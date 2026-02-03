@@ -183,11 +183,11 @@ export default class AvatarGroup extends LightningElement {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
         } else if (!this._resizeObserver && this._layout !== 'list') {
-            this._resizeObserver = this.initResizeObserver();
+            this._resizeObserver = this._initResizeObserver();
         }
 
         if (this.isNotList) {
-            this.updateVisibleMaxCount();
+            this._updateVisibleMaxCount();
         } else {
             this.handleListScroll();
         }
@@ -204,7 +204,7 @@ export default class AvatarGroup extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
-        this.destroyTooltip();
+        this._destroyTooltip();
     }
 
     /*
@@ -229,7 +229,7 @@ export default class AvatarGroup extends LightningElement {
         this._enableInfiniteLoading = normalizeBoolean(value);
 
         if (this._connected && this.isNotList) {
-            this.updateVisibleMaxCount();
+            this._updateVisibleMaxCount();
         } else if (this._connected) {
             this.handleListScroll();
         }
@@ -266,7 +266,7 @@ export default class AvatarGroup extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-        this.keepFocusOnHiddenItems();
+        this._keepFocusOnHiddenItems();
     }
 
     /**
@@ -279,10 +279,10 @@ export default class AvatarGroup extends LightningElement {
         return this._items;
     }
     set items(value) {
-        this.keepFocusOnHiddenItems();
+        this._keepFocusOnHiddenItems();
         this._items = normalizeArray(value);
 
-        this.destroyTooltip();
+        this._destroyTooltip();
 
         if (
             this.showHiddenItems &&
@@ -292,7 +292,7 @@ export default class AvatarGroup extends LightningElement {
             // The hidden items popover was open but empty.
             // Set the focus on the first hidden item added.
             this._lastHiddenItemIndex = this.hiddenItems[0].index;
-            this.switchFocus(this._lastHiddenItemIndex);
+            this._switchFocus(this._lastHiddenItemIndex);
         }
     }
 
@@ -642,8 +642,8 @@ export default class AvatarGroup extends LightningElement {
         return this.items.map((item) => {
             return {
                 ...item,
-                class: this.getAvatarClass(item, false),
-                computedAriaLabel: this.computeAriaLabel(item)
+                class: this._getAvatarClass(item, false),
+                computedAriaLabel: this._computeAriaLabel(item)
             };
         });
     }
@@ -804,8 +804,8 @@ export default class AvatarGroup extends LightningElement {
             return {
                 ...item,
                 index: index + this._hiddenItemsStartIndex,
-                class: this.getAvatarClass(item, true),
-                computedAriaLabel: this.computeAriaLabel(item)
+                class: this._getAvatarClass(item, true),
+                computedAriaLabel: this._computeAriaLabel(item)
             };
         });
     }
@@ -978,7 +978,7 @@ export default class AvatarGroup extends LightningElement {
      *
      * @type {string}
      */
-    computeAriaLabel(item) {
+    _computeAriaLabel(item) {
         const primaryText = item.primaryText || item.alternativeText;
         const initials = item.initials;
         const secondaryText = item.secondaryText;
@@ -1007,7 +1007,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Clear all tooltips and remove all event listeners.
      */
-    destroyTooltip() {
+    _destroyTooltip() {
         if (this._tooltipTimeout) {
             clearTimeout(this._tooltipTimeout);
         }
@@ -1019,7 +1019,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Set the focus on the item at the saved focused index.
      */
-    focusItem() {
+    _focusItem() {
         const focusedItem = this.template.querySelector(
             `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
         );
@@ -1035,7 +1035,7 @@ export default class AvatarGroup extends LightningElement {
      * @param {boolean} isHidden True if the avatar is hidden.
      * @returns {string} Class of the avatar.
      */
-    getAvatarClass(item, isHidden) {
+    _getAvatarClass(item, isHidden) {
         let avatarClass = isHidden
             ? this.computedHiddenAvatarInlineClass
             : this.computedAvatarInlineClass;
@@ -1046,49 +1046,24 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Find the item at the given position.
-     *
-     * @param {number} y Position of the item on the Y axis.
-     * @returns {object} Object with two keys: index and offset (position of the given y compared to the top of the item).
-     */
-    getHiddenItemFromPosition(y) {
-        const elements = this.template.querySelectorAll(
-            '[data-element-id="li-hidden"]'
-        );
-
-        for (let i = 0; i < elements.length; i++) {
-            const el = elements[i];
-            const position = el.getBoundingClientRect();
-
-            if (y + 1 >= position.top && y - 1 <= position.bottom) {
-                return {
-                    index: Number(el.dataset.index),
-                    offset: y - position.top
-                };
-            }
-        }
-        return null;
-    }
-
-    /**
      * Initialize the screen resize observer.
      *
      * @returns {AvonniResizeObserver} Resize observer.
      */
-    initResizeObserver() {
+    _initResizeObserver() {
         if (!this.wrapperElement) {
             return null;
         }
         return new AvonniResizeObserver(this.wrapperElement, () => {
-            this.updateVisibleMaxCount();
-            this.destroyTooltip();
+            this._updateVisibleMaxCount();
+            this._destroyTooltip();
         });
     }
 
     /**
      * Set the focus on the last hidden item, to keep the popover open.
      */
-    keepFocusOnHiddenItems() {
+    _keepFocusOnHiddenItems() {
         if (!this.showHiddenItems) {
             this._lastHiddenItemIndex = undefined;
             return;
@@ -1097,12 +1072,12 @@ export default class AvatarGroup extends LightningElement {
         this._lastHiddenItemIndex = lastHiddenItem
             ? lastHiddenItem.index
             : undefined;
-        this.switchFocus(this._lastHiddenItemIndex);
+        this._switchFocus(this._lastHiddenItemIndex);
 
         // Wait for rerender to set the focus
         cancelAnimationFrame(this._focusAnimationFrame);
         this._focusAnimationFrame = requestAnimationFrame(() => {
-            this.focusItem();
+            this._focusItem();
             this._lastHiddenItemIndex = undefined;
         });
     }
@@ -1112,7 +1087,7 @@ export default class AvatarGroup extends LightningElement {
      *
      * @param {number} index Index to normalize.
      */
-    normalizeFocusedIndex(index) {
+    _normalizeFocusedIndex(index) {
         let position = 'INDEX';
         const popoverOpen = this.showHiddenItems && this.isNotList;
 
@@ -1147,7 +1122,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Diplay the item popover.
      */
-    showPopover(itemIndex, target) {
+    _showPopover(itemIndex, target) {
         const item = this.isClassic
             ? itemIndex === 0
                 ? this.primaryItem
@@ -1184,7 +1159,7 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
-    startPositioning() {
+    _startPositioning() {
         const popover = this.template.querySelector(
             '[data-element-id="div-hidden-items-popover"]'
         );
@@ -1217,7 +1192,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Stop the positioning of the popover.
      */
-    stopPositioning() {
+    _stopPositioning() {
         if (this._autoPosition) {
             this._autoPosition.stop();
         }
@@ -1228,13 +1203,13 @@ export default class AvatarGroup extends LightningElement {
      *
      * @param {number} index Index of the new focused item.
      */
-    switchFocus(index) {
+    _switchFocus(index) {
         const list = this.template.querySelector('[data-element-id="ul"]');
         if (list) {
             list.tabIndex = '-1';
         }
 
-        const normalizedIndex = this.normalizeFocusedIndex(index);
+        const normalizedIndex = this._normalizeFocusedIndex(index);
 
         // remove focus from current item
         const previousItem = this.template.querySelector(
@@ -1259,13 +1234,13 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Toggle the visibility of the hidden items popover.
      */
-    toggleItemsVisibility() {
+    _toggleItemsVisibility() {
         this.showHiddenItems = !this.showHiddenItems;
 
         if (this.showHiddenItems) {
             if (this.isNotList) {
                 requestAnimationFrame(() => {
-                    this.startPositioning();
+                    this._startPositioning();
                 });
             }
 
@@ -1275,16 +1250,16 @@ export default class AvatarGroup extends LightningElement {
             if (!this.hiddenItems.length && this.enableInfiniteLoading) {
                 // If the popover is open but there are no hidden items,
                 // dispatch the loadmore event
-                this.dispatchLoadMore();
+                this._dispatchLoadMore();
             }
         } else {
-            this.stopPositioning();
+            this._stopPositioning();
             this._focusedIndex = this.computedMaxCount - 1;
         }
 
         requestAnimationFrame(() => {
             if (this.showHiddenItems) {
-                this.focusItem();
+                this._focusItem();
 
                 if (this.enableInfiniteLoading) {
                     // If the popover is open and there are hidden items but no scroll bar,
@@ -1296,7 +1271,7 @@ export default class AvatarGroup extends LightningElement {
                         popover &&
                         popover.scrollHeight === popover.clientHeight;
                     if (noScrollBar) {
-                        this.dispatchLoadMore();
+                        this._dispatchLoadMore();
                     }
                 }
             } else {
@@ -1314,7 +1289,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Update the number of visible and collapsed items, depending on the available space.
      */
-    updateVisibleMaxCount() {
+    _updateVisibleMaxCount() {
         const firstVisibleItem = this.template.querySelector(
             '[data-element-id="li-visible"]'
         );
@@ -1325,7 +1300,7 @@ export default class AvatarGroup extends LightningElement {
         ) {
             if (this.enableInfiniteLoading && !this.isLoading) {
                 // If there is no items, dispatch the loadmore event
-                this.dispatchLoadMore();
+                this._dispatchLoadMore();
             }
             return;
         }
@@ -1372,13 +1347,13 @@ export default class AvatarGroup extends LightningElement {
         ) {
             // If there is room for more items,
             // dispatch the loadmore event
-            this.dispatchLoadMore();
+            this._dispatchLoadMore();
         }
     }
 
     /*
      * ------------------------------------------------------------
-     *  EVENT HANDLERS AND DISPATCHERS
+     *  EVENT HANDLERS
      * -------------------------------------------------------------
      */
 
@@ -1386,23 +1361,7 @@ export default class AvatarGroup extends LightningElement {
      * Dispatch the actionclick event.
      */
     handleActionClick() {
-        const name = this.name;
-
-        /**
-         * The event fired when the user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name The avatar group name.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name
-                }
-            })
-        );
+        this._dispatchActionClick();
     }
 
     /**
@@ -1412,26 +1371,7 @@ export default class AvatarGroup extends LightningElement {
         const name = event.detail.name;
         const index = Number(event.target.dataset.index);
         const item = this.items[index];
-
-        /**
-         * The event fired when the user clicks on an avatar action.
-         *
-         * @event
-         * @name avataractionclick
-         * @param {object} item The avatar detail.
-         * @param {string} name The action name.
-         * @param {string} targetName Name of the avatar.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('avataractionclick', {
-                detail: {
-                    item,
-                    name,
-                    targetName: item.name
-                }
-            })
-        );
+        this._dispatchAvatarActionClick(name, item);
     };
 
     /**
@@ -1445,33 +1385,12 @@ export default class AvatarGroup extends LightningElement {
 
         const index = Number(event.target.dataset.index);
         const item = this.items[index];
-
-        /**
-         * The event fired when the user click on an avatar.
-         *
-         * @event
-         * @name avatarclick
-         * @param {object} item The avatar detail.
-         * @param {string} name Name of the avatar.
-         * @bubbles
-         * @cancelable
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('avatarclick', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    item,
-                    name: item.name
-                }
-            })
-        );
+        this._dispatchAvatarClick(item);
 
         if (this.isNotList && this.showHiddenItems) {
             this.handleToggleShowHiddenItems();
         } else if (!this.isClassic) {
-            this.switchFocus(index);
+            this._switchFocus(index);
         }
     }
 
@@ -1524,7 +1443,7 @@ export default class AvatarGroup extends LightningElement {
         const loadDown = scrolledDistance >= bottomLimit;
 
         if (loadDown) {
-            this.dispatchLoadMore();
+            this._dispatchLoadMore();
         }
     }
 
@@ -1537,7 +1456,7 @@ export default class AvatarGroup extends LightningElement {
         if (this.isClassic || this.isNotList) {
             const target = event.currentTarget;
             const index = Number(event.currentTarget.dataset.index);
-            this.showPopover(index, target);
+            this._showPopover(index, target);
         }
     }
 
@@ -1549,11 +1468,11 @@ export default class AvatarGroup extends LightningElement {
     handleItemFocus(event) {
         const index = Number(event.currentTarget.dataset.index);
         if (index !== this._focusedIndex) {
-            this.switchFocus(index);
+            this._switchFocus(index);
         }
         if (this.isClassic || this.isNotList) {
             const target = event.currentTarget;
-            this.showPopover(index, target);
+            this._showPopover(index, target);
         }
     }
 
@@ -1564,7 +1483,7 @@ export default class AvatarGroup extends LightningElement {
      */
     handleItemLeave() {
         if (this.isClassic || this.isNotList) {
-            this.destroyTooltip();
+            this._destroyTooltip();
         }
     }
 
@@ -1579,16 +1498,16 @@ export default class AvatarGroup extends LightningElement {
             case keyValues.up: {
                 // Prevent the page from scrolling
                 event.preventDefault();
-                this.switchFocus(this._focusedIndex - 1);
-                this.focusItem();
+                this._switchFocus(this._focusedIndex - 1);
+                this._focusItem();
                 break;
             }
             case keyValues.right:
             case keyValues.down: {
                 // Prevent the page from scrolling
                 event.preventDefault();
-                this.switchFocus(this._focusedIndex + 1);
-                this.focusItem();
+                this._switchFocus(this._focusedIndex + 1);
+                this._focusItem();
                 break;
             }
             case keyValues.space:
@@ -1606,6 +1525,10 @@ export default class AvatarGroup extends LightningElement {
             default:
                 break;
         }
+    }
+
+    handleListFocus() {
+        this._focusItem();
     }
 
     /**
@@ -1627,7 +1550,7 @@ export default class AvatarGroup extends LightningElement {
         const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
 
         if (offsetFromBottom <= this.loadMoreOffset || noScrollBar) {
-            this.dispatchLoadMore();
+            this._dispatchLoadMore();
         }
     }
 
@@ -1647,6 +1570,101 @@ export default class AvatarGroup extends LightningElement {
      * Toggle the hidden extra avatars popover
      */
     handleToggleShowHiddenItems() {
+        this._dispatchItemsVisibilityToggle();
+    }
+
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event Event to stop.
+     */
+    stopPropagation(event) {
+        event.stopPropagation();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * ------------------------------------------------------------
+     */
+
+    _dispatchActionClick() {
+        /**
+         * The event fired when the user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name The avatar group name.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: { name: this.name }
+            })
+        );
+    }
+
+    _dispatchAvatarActionClick(name, item) {
+        /**
+         * The event fired when the user clicks on an avatar action.
+         *
+         * @event
+         * @name avataractionclick
+         * @param {object} item The avatar detail.
+         * @param {string} name The action name.
+         * @param {string} targetName Name of the avatar.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('avataractionclick', {
+                detail: {
+                    item,
+                    name,
+                    targetName: item.name
+                }
+            })
+        );
+    }
+
+    _dispatchAvatarClick(item) {
+        /**
+         * The event fired when the user click on an avatar.
+         *
+         * @event
+         * @name avatarclick
+         * @param {object} item The avatar detail.
+         * @param {string} name Name of the avatar.
+         * @bubbles
+         * @cancelable
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('avatarclick', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    item,
+                    name: item.name
+                }
+            })
+        );
+    }
+
+    /**
+     * Dispatch the `loadmore` event
+     */
+    _dispatchLoadMore() {
+        /**
+         * The event fired when you scroll to the end of the avatar group. This event is fired only if `enable-infinite-loading` is true.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
+    }
+
+    _dispatchItemsVisibilityToggle() {
         /**
          * The event fired when you click on the show more/less button that appears at the end of the list `layout`, if a `max-count` value is present and `enable-infinite-loading` is not present.
          *
@@ -1667,30 +1685,7 @@ export default class AvatarGroup extends LightningElement {
         this.dispatchEvent(event);
 
         if (!event.defaultPrevented) {
-            this.toggleItemsVisibility();
+            this._toggleItemsVisibility();
         }
-    }
-
-    /**
-     * Stop the propagation of an event.
-     *
-     * @param {Event} event Event to stop.
-     */
-    stopPropagation(event) {
-        event.stopPropagation();
-    }
-
-    /**
-     * Dispatch the `loadmore` event
-     */
-    dispatchLoadMore() {
-        /**
-         * The event fired when you scroll to the end of the avatar group. This event is fired only if `enable-infinite-loading` is true.
-         *
-         * @event
-         * @name loadmore
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('loadmore'));
     }
 }
