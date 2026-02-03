@@ -75,25 +75,43 @@
     >
         <div class="avonni-button-menu__dropdown-gap-cover"></div>
         <lightning-spinner
-            if:true={isLoading}
+            if:true={showOnlyLoading}
             alternative-text={computedLoadingStateAlternativeText}
             size="small"
             data-element-id="lightning-spinner"
         ></lightning-spinner>
         <div
-            if:false={isLoading}
-            class="slds-dropdown__list"
-            role="menu"
-            data-element-id="dropdown-list"
-            onkeydown={handleMenuItemKeyDown}
-            onmouseover={handleMenuItemMouseOver}
-            onprivatehover={handleMenuItemHover}
-            onprivateselect={handleMenuItemSelect}
+            if:false={showOnlyLoading}
+            class={computedDropdownContentClass}
+            data-element-id="div-dropdown-content"
+            onscroll={handleScroll}
         >
-            <slot></slot>
-            <div if:true={showFooter} class="slds-popover__footer">
-                <slot name="footer"></slot>
+            <div
+                class="slds-dropdown__list"
+                role="menu"
+                data-element-id="dropdown-list"
+                onkeydown={handleMenuItemKeyDown}
+                onmouseover={handleMenuItemMouseOver}
+                onprivatehover={handleMenuItemHover}
+                onprivateselect={handleMenuItemSelect}
+                onscroll={handleScroll}
+            >
+                <slot></slot>
             </div>
+            <!-- Loading spinner -->
+            <div
+                if:true={showInfiniteLoading}
+                class="slds-is-relative slds-p-vertical_large"
+            >
+                <lightning-spinner
+                    alternative-text={computedLoadingStateAlternativeText}
+                    size="small"
+                    data-element-id="lightning-spinner-infinite"
+                ></lightning-spinner>
+            </div>
+        </div>
+        <div if:true={showFooter} class="slds-popover__footer">
+            <slot name="footer"></slot>
         </div>
     </div>
 </template>

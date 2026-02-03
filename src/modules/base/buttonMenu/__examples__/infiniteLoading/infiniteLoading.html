@@ -1,0 +1,47 @@
+<template>
+    <avonni-button-menu
+        access-key={accessKey}
+        alternative-text={alternativeText}
+        disabled={disabled}
+        draft-alternative-text={draftAlternativeText}
+        enable-infinite-loading={enableInfiniteLoading}
+        hide-down-arrow={hideDownArrow}
+        icon-name={iconName}
+        icon-size={iconSize}
+        icon-src={iconSrc}
+        is-draft={isDraft}
+        is-button-loading={isButtonLoading}
+        is-loading={isLoading}
+        label={label}
+        loading-state-alternative-text={loadingStateAlternativeText}
+        menu-alignment={menuAlignment}
+        nubbin={nubbin}
+        prefix-icon-name={prefixIconName}
+        title={title}
+        tooltip={tooltip}
+        triggers={triggers}
+        value={value}
+        variant={variant}
+        onclose={handleClose}
+        onloadmore={handleLoadMore}
+        onopen={handleOpen}
+        onsearch={handleSearch}
+    >
+        <template for:each={items} for:item="item">
+            <lightning-menu-item
+                if:false={item.hidden}
+                key={item.value}
+                checked={item.checked}
+                disabled={item.disabled}
+                draft-alternative-text={item.draftAlternativeText}
+                href={item.href}
+                is-draft={item.isDraft}
+                label={item.label}
+                prefix-icon-name={item.prefixIconName}
+                target={item.target}
+                value={item.value}
+                data-element-id="lightning-menu-item"
+            ></lightning-menu-item>
+        </template>
+    </avonni-button-menu>
+</template>

@@ -5,6 +5,7 @@ export default class ButtonMenu extends LightningElement {
     @api alternativeText;
     @api disabled;
     @api draftAlternativeText;
+    @api enableInfiniteLoading;
     @api groupOrder;
     @api hideDownArrow;
     @api iconName;
@@ -14,6 +15,7 @@ export default class ButtonMenu extends LightningElement {
     @api label;
     @api loadingStateAlternativeText;
     @api menuAlignment;
+    @api menuLength;
     @api nubbin;
     @api title;
     @api tooltip;

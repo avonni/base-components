@@ -31,6 +31,8 @@ const i18n = {
     showMenu: 'Show Menu'
 };
 
+const LOAD_MORE_OFFSET = 20;
+
 const MENU_ALIGNMENTS = {
     valid: [
         'auto',
@@ -42,6 +44,11 @@ const MENU_ALIGNMENTS = {
         'bottom-right'
     ],
     default: 'left'
+};
+
+const MENU_LENGTHS = {
+    valid: ['5-items', '7-items', '10-items'],
+    default: '7-items'
 };
 
 const MENU_TRIGGERS = {
@@ -161,6 +168,7 @@ export default class ButtonMenu extends ButtonMenuBase {
     _isDraft = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
+    _menuLength = MENU_LENGTHS.default;
     _nubbin = false;
     _tooltip;
     _triggers = MENU_TRIGGERS.default;
@@ -170,6 +178,7 @@ export default class ButtonMenu extends ButtonMenuBase {
     showFooter = true;
     _dropdownIsFocused = false;
     _dropdownVisible = false;
+    _previousScroll = undefined;
 
     /*
      * ------------------------------------------------------------
@@ -194,7 +203,13 @@ export default class ButtonMenu extends ButtonMenuBase {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
-        this.initTooltip();
+        if (
+            this.enableInfiniteLoading &&
+            this.dropdownElement &&
+            this.dropdownElement.scrollTop === 0
+        ) {
+            this.handleScroll();
+        }
     }
 
     disconnectedCallback() {
@@ -208,6 +223,21 @@ export default class ButtonMenu extends ButtonMenuBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, you can load a subset of items and then display more when users scroll to the end of the button menu. Use with the `loadmore` event to retrieve more items.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
 
     /**
      * If present, the small down arrow normaly displayed to the right of a custom icon is hidden. Without a custom icon-name this does nothing.
@@ -306,6 +336,24 @@ export default class ButtonMenu extends ButtonMenuBase {
         this._menuAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
             validValues: MENU_ALIGNMENTS.valid
+        });
+    }
+
+    /**
+     * Maximum length of the menu. Valid values include 5-items, 7-items and 10-items.
+     *
+     * @type {string}
+     * @default 7-items
+     * @public
+     */
+    @api
+    get menuLength() {
+        return this._menuLength;
+    }
+    set menuLength(value) {
+        this._menuLength = normalizeString(value, {
+            fallbackValue: MENU_LENGTHS.default,
+            validValues: MENU_LENGTHS.valid
         });
     }
 
@@ -544,7 +592,25 @@ export default class ButtonMenu extends ButtonMenuBase {
                     this.nubbin && this.menuAlignment === 'bottom-right',
                 'slds-nubbin_bottom':
                     this.nubbin && this.menuAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading
+                // The condition on enable infinite loading prevent the menu from growing suddenly
+                'slds-p-vertical_large':
+                    this.isLoading && !this.enableInfiniteLoading
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Item List Class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownContentClass() {
+        const length = this.menuLength;
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-dropdown_length-with-icon-5': length === '5-items',
+                'slds-dropdown_length-with-icon-7': length === '7-items',
+                'slds-dropdown_length-with-icon-10': length === '10-items'
             })
             .toString();
     }
@@ -622,6 +688,17 @@ export default class ButtonMenu extends ButtonMenuBase {
         });
     }
 
+    /**
+     * HTML element of the dropdown.
+     *
+     * @type {HTMLElement}
+     */
+    get dropdownElement() {
+        return this.template.querySelector(
+            '[data-element-id="div-dropdown-content"]'
+        );
+    }
+
     get dropdownOpened() {
         return this._dropdownVisible;
     }
@@ -666,12 +743,44 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * True if the end of the list is reached.
+     *
+     * @type {boolean}
+     */
+    get scrolledToEnd() {
+        const fullHeight = this.dropdownElement.scrollHeight;
+        const scrolledDistance = this.dropdownElement.scrollTop;
+        const visibleHeight = this.dropdownElement.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + LOAD_MORE_OFFSET >= fullHeight
+        );
+    }
+
+    /**
      * Display icon only if iconName is set and src is not set.
      *
      * @type {boolean}
      */
     get showIcon() {
         return this.iconName && !this.iconSrc;
+    }
+
+    /**
+     * Display the loading spinner that hides the items.
+     *
+     * @type {boolean}
+     */
+    get showOnlyLoading() {
+        return !this.enableInfiniteLoading && this.isLoading;
+    }
+
+    /**
+     * Display the infinite loading spinner that is visible below the items.
+     *
+     * @type {boolean}
+     */
+    get showInfiniteLoading() {
+        return this.enableInfiniteLoading && this.isLoading;
     }
 
     /**
@@ -799,6 +908,7 @@ export default class ButtonMenu extends ButtonMenuBase {
             } else {
                 this.stopAutoPositioning();
                 this.dispatchClose();
+                this._previousScroll = undefined;
             }
 
             this.classList.toggle('slds-is-open');
@@ -907,6 +1017,28 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     handleDropdownScroll(event) {
         event.stopPropagation();
+    }
+
+    /**
+     * Handle a scroll movement in the dropdown menu.
+     */
+    handleScroll() {
+        if (!this.enableInfiniteLoading || this.isLoading) {
+            return;
+        }
+
+        const fullHeight = this.dropdownElement.scrollHeight;
+        const visibleHeight = this.dropdownElement.offsetHeight;
+        const loadLimit = fullHeight - visibleHeight - LOAD_MORE_OFFSET;
+        const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
+
+        if (
+            this.scrolledToEnd &&
+            (!this._previousScroll || firstTimeReachingTheEnd)
+        ) {
+            this.dispatchLoadMore();
+        }
+        this._previousScroll = this.dropdownElement.scrollTop;
     }
 
     /**
@@ -1021,6 +1153,20 @@ export default class ButtonMenu extends ButtonMenuBase {
          * @public
          */
         this.dispatchEvent(new CustomEvent('close'));
+    }
+
+    /**
+     * Menu load more dispatch method.
+     */
+    dispatchLoadMore() {
+        /**
+         * The event fired when you scroll to the end of the dropdown menu. This event is fired only if `enable-infinite-loading` is true.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
     }
 
     /**

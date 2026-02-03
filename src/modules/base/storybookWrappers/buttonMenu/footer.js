@@ -15,6 +15,7 @@ export default class ButtonMenuFooter extends LightningElement {
     @api label;
     @api loadingStateAlternativeText;
     @api menuAlignment;
+    @api menuLength;
     @api nubbin;
     @api prefixIconName;
     @api title;

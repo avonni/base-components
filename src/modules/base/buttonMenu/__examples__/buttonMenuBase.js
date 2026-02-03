@@ -10,6 +10,7 @@ export const ButtonMenuBase = ({
     alternativeText,
     disabled,
     draftAlternatveText,
+    enableInfiniteLoading,
     hideDownArrow,
     iconName,
     iconSize,
@@ -20,6 +21,7 @@ export const ButtonMenuBase = ({
     label,
     loadingStateAlternativeText,
     menuAlignment,
+    menuLength,
     nubbin,
     prefixIconName,
     title,
@@ -33,6 +35,7 @@ export const ButtonMenuBase = ({
     element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.draftAlternatveText = draftAlternatveText;
+    element.enableInfiniteLoading = enableInfiniteLoading;
     element.hideDownArrow = hideDownArrow;
     element.iconName = iconName;
     element.iconSize = iconSize;
@@ -43,6 +46,7 @@ export const ButtonMenuBase = ({
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.menuAlignment = menuAlignment;
+    element.menuLength = menuLength;
     element.nubbin = nubbin;
     element.prefixIconName = prefixIconName;
     element.title = title;

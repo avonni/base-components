@@ -1,11 +1,11 @@
-import Component from '../../storybookWrappers/buttonMenu/illustration';
+import Component from '../../storybookWrappers/buttonMenu/infiniteLoading';
 
 customElements.define(
-    'ac-button-menu-illustration',
+    'ac-button-menu-infinite-loading',
     Component.CustomElementConstructor
 );
 
-export const ButtonMenuIllustration = ({
+export const ButtonMenuInfiniteLoading = ({
     accessKey,
     alternativeText,
     disabled,
@@ -30,7 +30,7 @@ export const ButtonMenuIllustration = ({
     value,
     variant
 }) => {
-    const element = document.createElement('ac-button-menu-illustration');
+    const element = document.createElement('ac-button-menu-infinite-loading');
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
     element.disabled = disabled;
