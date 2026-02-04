@@ -1,14 +1,6 @@
 <template>
-    <label
-        class="slds-form-element__label avonni-range__label"
-        for="input"
-        data-element-id="label"
-    >
-        <span class="slds-slider-label">
-            <span class={computedLabelClass} data-element-id="span-label"
-                >{label}
-            </span>
-        </span>
+    <label class={computedLabelClass} for="input" data-element-id="label">
+        <span data-element-id="span-label">{label}</span>
     </label>
     <div
         if:true={isVertical}

@@ -8,7 +8,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { keyValues } from 'c/utilsPrivate';
+import { isOrgSlds2, keyValues } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import inline from './inline.html';
 import standard from './standard.html';
@@ -941,7 +941,9 @@ export default class ColorPicker extends LightningElement {
             'slds-form-element__label avonni-color-picker__label slds-no-flex'
         )
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .toString();
     }

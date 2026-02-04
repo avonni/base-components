@@ -1,7 +1,23 @@
-.avonni-combobox__label {
+.avonni-combobox__label.slds1 {
     color: var(--avonni-combobox-label-text-color, #3e3e3c);
     font-size: var(--avonni-combobox-label-font-size, 0.75rem);
     font-weight: var(--avonni-combobox-label-font-weight, 400);
+    font-style: var(--avonni-combobox-label-font-style, normal);
+}
+
+.avonni-combobox__label.slds2 {
+    color: var(
+        --avonni-combobox-label-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-combobox-label-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-weight: var(
+        --avonni-combobox-label-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
     font-style: var(--avonni-combobox-label-font-style, normal);
 }
 

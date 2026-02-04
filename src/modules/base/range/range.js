@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 
 const DEFAULT_MAX = 100;
 const DEFAULT_MIN = 0;
@@ -410,13 +411,19 @@ export default class Range extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const classes = classSet('avonni-slider__label');
+        const classes = classSet(
+            'avonni-slider__label slds-form-element__label avonni-range__label'
+        );
 
         classes.add(
             this.variant === 'label-hidden'
                 ? 'slds-assistive-text'
                 : 'slds-slider-label__label'
         );
+        classes.add({
+            slds1: !isOrgSlds2(),
+            slds2: isOrgSlds2()
+        });
 
         return classes.toString();
     }
