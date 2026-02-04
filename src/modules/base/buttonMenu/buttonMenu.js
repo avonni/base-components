@@ -839,15 +839,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Display the search bar
-     *
-     * @type {boolean}
-     */
-    get showSearch() {
-        return !this.showOnlyLoading && this._allowSearch;
-    }
-
-    /**
      * Display the infinite loading spinner that is visible below the items.
      *
      * @type {boolean}
@@ -911,6 +902,21 @@ export default class ButtonMenu extends ButtonMenuBase {
         }
     }
 
+    /**
+     * Set the focus on the search input.
+     *
+     * @public
+     */
+    @api
+    focusSearchInput() {
+        const search = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        if (search) {
+            search.focus();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -931,7 +937,7 @@ export default class ButtonMenu extends ButtonMenuBase {
             const focusTrap = this.template.querySelector(
                 '[data-element-id="avonni-focus-trap"]'
             );
-            if (focusTrap && this.showSearch) {
+            if (focusTrap && this.allowSearch) {
                 this._dropdownIsFocused = true;
                 focusTrap.focus();
             } else {
