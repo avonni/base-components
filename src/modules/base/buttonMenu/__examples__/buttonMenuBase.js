@@ -7,6 +7,7 @@ customElements.define(
 
 export const ButtonMenuBase = ({
     accessKey,
+    allowSearch,
     alternativeText,
     disabled,
     draftAlternatveText,
@@ -24,6 +25,7 @@ export const ButtonMenuBase = ({
     menuLength,
     nubbin,
     prefixIconName,
+    searchInputPlaceholder,
     title,
     tooltip,
     triggers,
@@ -32,6 +34,7 @@ export const ButtonMenuBase = ({
 }) => {
     const element = document.createElement('ac-button-menu-base');
     element.accessKey = accessKey;
+    element.allowSearch = allowSearch;
     element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.draftAlternatveText = draftAlternatveText;
@@ -49,6 +52,7 @@ export const ButtonMenuBase = ({
     element.menuLength = menuLength;
     element.nubbin = nubbin;
     element.prefixIconName = prefixIconName;
+    element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;
     element.tooltip = tooltip;
     element.triggers = triggers;

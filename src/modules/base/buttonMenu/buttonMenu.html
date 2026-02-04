@@ -68,50 +68,70 @@
         if:true={dropdownOpened}
         class={computedDropdownClass}
         data-element-id="dropdown"
+        tabindex="0"
         onfocus={handleDropdownFocus}
         onfocusin={handleDropdownFocusIn}
         onfocusout={handleDropdownFocusOut}
+        onkeydown={handleDropdownKeyDown}
         onscroll={handleDropdownScroll}
     >
-        <div class="avonni-button-menu__dropdown-gap-cover"></div>
-        <lightning-spinner
-            if:true={showOnlyLoading}
-            alternative-text={computedLoadingStateAlternativeText}
-            size="small"
-            data-element-id="lightning-spinner"
-        ></lightning-spinner>
-        <div
-            if:false={showOnlyLoading}
-            class={computedDropdownContentClass}
-            data-element-id="div-dropdown-content"
-            onscroll={handleScroll}
-        >
+        <c-focus-trap data-element-id="avonni-focus-trap">
+            <div class="avonni-button-menu__dropdown-gap-cover"></div>
+            <lightning-spinner
+                if:true={showOnlyLoading}
+                alternative-text={computedLoadingStateAlternativeText}
+                size="small"
+                data-element-id="lightning-spinner"
+            ></lightning-spinner>
+            <lightning-input
+                if:true={showSearch}
+                class="slds-p-around_small"
+                label={searchInputPlaceholder}
+                placeholder={searchInputPlaceholder}
+                variant="label-hidden"
+                type="search"
+                value={searchTerm}
+                autocomplete="off"
+                data-element-id="lightning-input"
+                data-is-focusable
+                onchange={handleSearch}
+            ></lightning-input>
             <div
-                class="slds-dropdown__list"
-                role="menu"
-                data-element-id="dropdown-list"
-                onkeydown={handleMenuItemKeyDown}
-                onmouseover={handleMenuItemMouseOver}
-                onprivatehover={handleMenuItemHover}
-                onprivateselect={handleMenuItemSelect}
+                if:false={showOnlyLoading}
+                class={computedDropdownContentClass}
+                data-element-id="div-dropdown-content"
+                tabindex="-1"
                 onscroll={handleScroll}
             >
-                <slot></slot>
+                <div
+                    class="slds-dropdown__list"
+                    role="menu"
+                    data-element-id="dropdown-list"
+                    onkeydown={handleMenuItemKeyDown}
+                    onmouseover={handleMenuItemMouseOver}
+                    onprivatehover={handleMenuItemHover}
+                    onprivateselect={handleMenuItemSelect}
+                >
+                    <slot></slot>
+                </div>
+                <!-- Loading spinner -->
+                <div
+                    if:true={showInfiniteLoading}
+                    class="slds-is-relative slds-p-vertical_large"
+                >
+                    <lightning-spinner
+                        alternative-text={computedLoadingStateAlternativeText}
+                        size="small"
+                        data-element-id="lightning-spinner-infinite"
+                    ></lightning-spinner>
+                </div>
             </div>
-            <!-- Loading spinner -->
-            <div
-                if:true={showInfiniteLoading}
-                class="slds-is-relative slds-p-vertical_large"
-            >
-                <lightning-spinner
-                    alternative-text={computedLoadingStateAlternativeText}
-                    size="small"
-                    data-element-id="lightning-spinner-infinite"
-                ></lightning-spinner>
+            <div class={computedFooterContainerClass}>
+                <slot
+                    name="footer"
+                    onslotchange={handleFooterSlotChange}
+                ></slot>
             </div>
-        </div>
-        <div if:true={showFooter} class="slds-popover__footer">
-            <slot name="footer"></slot>
-        </div>
+        </c-focus-trap>
     </div>
 </template>

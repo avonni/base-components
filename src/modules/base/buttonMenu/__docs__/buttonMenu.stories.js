@@ -18,6 +18,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        allowSearch: {
+            name: 'allow-search',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display search box.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         alternativeText: {
             name: 'alternative-text',
             control: {
@@ -228,6 +239,18 @@ export default {
                 category: 'icon'
             }
         },
+        searchInputPlaceholder: {
+            name: 'search-input-placeholder',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
+            table: {
+                defaultValue: { summary: 'Search…' },
+                type: { summary: 'string' }
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -298,6 +321,7 @@ export default {
         }
     },
     args: {
+        allowSearch: false,
         alternativeText: 'Show Menu',
         disabled: false,
         hideDownArrow: false,
@@ -498,7 +522,8 @@ Footer.args = {
 export const InfiniteLoading = TemplateInfiniteLoading.bind({});
 InfiniteLoading.args = {
     label: 'Infinite Loading',
-    enableInfiniteLoading: true
+    enableInfiniteLoading: true,
+    allowSearch: true
 };
 
 /**

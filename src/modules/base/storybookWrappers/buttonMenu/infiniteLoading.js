@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class ButtonMenuInfiniteLoading extends LightningElement {
     @api accessKey;
+    @api allowSearch;
     @api alternativeText;
     @api disabled;
     @api draftAlternativeText;
@@ -17,6 +18,7 @@ export default class ButtonMenuInfiniteLoading extends LightningElement {
     @api menuLength;
     @api nubbin;
     @api prefixIconName;
+    @api searchInputPlaceholder;
     @api title;
     @api tooltip;
     @api triggers;
@@ -64,7 +66,7 @@ export default class ButtonMenuInfiniteLoading extends LightningElement {
         clearTimeout(this._loadMoreTimeOut);
         this.items = [];
         this._enableInfiniteLoading = true;
-        this._handleLoadMore();
+        this.handleLoadMore();
     }
 
     handleClose() {
@@ -89,10 +91,13 @@ export default class ButtonMenuInfiniteLoading extends LightningElement {
             this.generateNewItems();
             this.items = [...this.items];
             this._isLoading = false;
-        }, 1000);
+        }, 500);
     }
 
     handleSearch(event) {
         this._searchTerm = event.detail.value;
+        this.items = [];
+        this._enableInfiniteLoading = true;
+        this.handleLoadMore();
     }
 }

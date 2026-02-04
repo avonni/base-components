@@ -26,6 +26,8 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
+
 const i18n = {
     loading: 'Loading',
     showMenu: 'Show Menu'
@@ -162,6 +164,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @default neutral
      */
 
+    _allowSearch = false;
     _hideDownArrow = false;
     _iconName = DEFAULT_ICON_NAME;
     _iconSize = ICON_SIZES.default;
@@ -171,14 +174,19 @@ export default class ButtonMenu extends ButtonMenuBase {
     _menuLength = MENU_LENGTHS.default;
     _nubbin = false;
     _tooltip;
+    _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _triggers = MENU_TRIGGERS.default;
     _variant = BUTTON_VARIANTS.default;
 
     _autoPosition;
-    showFooter = true;
+    _connected = false;
     _dropdownIsFocused = false;
     _dropdownVisible = false;
     _previousScroll = undefined;
+    _searchTimeOut;
+    _showFooter = false;
+
+    searchTerm;
 
     /*
      * ------------------------------------------------------------
@@ -196,19 +204,22 @@ export default class ButtonMenu extends ButtonMenuBase {
 
         this.addEventListener('mouseenter', this.handleMouseEnter);
         this.addEventListener('mouseleave', this.handleMouseLeave);
+        this._connected = true;
     }
 
     renderedCallback() {
         super.renderedCallback();
-        if (this.footerSlot) {
-            this.showFooter = this.footerSlot.assignedElements().length !== 0;
-        }
         if (
             this.enableInfiniteLoading &&
             this.dropdownElement &&
             this.dropdownElement.scrollTop === 0
         ) {
             this.handleScroll();
+        }
+
+        const menuItem = this.getMenuItemByIndex(0);
+        if (menuItem && menuItem.tabIndex !== '0') {
+            menuItem.tabIndex = '0';
         }
     }
 
@@ -223,6 +234,21 @@ export default class ButtonMenu extends ButtonMenuBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, display a search box.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get allowSearch() {
+        return this._allowSearch;
+    }
+    set allowSearch(value) {
+        this._allowSearch = normalizeBoolean(value);
+    }
 
     /**
      * If present, you can load a subset of items and then display more when users scroll to the end of the button menu. Use with the `loadmore` event to retrieve more items.
@@ -319,6 +345,13 @@ export default class ButtonMenu extends ButtonMenuBase {
     set isLoading(value) {
         const normalizedValue = normalizeBoolean(value);
         this._isLoading = normalizedValue;
+        if (this._connected && !this._isLoading) {
+            requestAnimationFrame(() => {
+                if (this._dropdownVisible && !this._dropdownIsFocused) {
+                    this.focusDropdown();
+                }
+            });
+        }
     }
 
     /**
@@ -370,6 +403,24 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
     set nubbin(value) {
         this._nubbin = normalizeBoolean(value);
+    }
+
+    /**
+     * Deprecated. Set the search input placeholder in the type attributes.
+     *
+     * @type {string}
+     * @default Search...
+     * @deprecated
+     */
+    @api
+    get searchInputPlaceholder() {
+        return this._searchInputPlaceholder;
+    }
+    set searchInputPlaceholder(value) {
+        this._searchInputPlaceholder =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     }
 
     /**
@@ -616,6 +667,19 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Computed Footer Container Class styling.
+     *
+     * @type {string}
+     */
+    get computedFooterContainerClass() {
+        return classSet('slds-popover__footer')
+            .add({
+                'slds-hide': !this._showFooter
+            })
+            .toString();
+    }
+
+    /**
      * Show downwards icon on button.
      *
      * @type {boolean}
@@ -775,6 +839,15 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Display the search bar
+     *
+     * @type {boolean}
+     */
+    get showSearch() {
+        return !this.showOnlyLoading && this._allowSearch;
+    }
+
+    /**
      * Display the infinite loading spinner that is visible below the items.
      *
      * @type {boolean}
@@ -853,6 +926,20 @@ export default class ButtonMenu extends ButtonMenuBase {
         }
     }
 
+    focusDropdown() {
+        requestAnimationFrame(() => {
+            const focusTrap = this.template.querySelector(
+                '[data-element-id="avonni-focus-trap"]'
+            );
+            if (focusTrap && this.showSearch) {
+                this._dropdownIsFocused = true;
+                focusTrap.focus();
+            } else {
+                this.focusOnMenuItem(0);
+            }
+        });
+    }
+
     startAutoPositionning() {
         if (!this.isAutoAlignment || !this._dropdownVisible) {
             return;
@@ -905,6 +992,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 requestAnimationFrame(() => {
                     this.startAutoPositionning();
                 });
+                this.focusDropdown();
             } else {
                 this.stopAutoPositioning();
                 this.dispatchClose();
@@ -941,9 +1029,7 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleButtonClick() {
         if (!this.computedDisabled && this.isTriggerClick) {
             this.toggleMenuVisibility();
-            requestAnimationFrame(() => {
-                this.focusOnMenuItem(0);
-            });
+            this.focusDropdown();
         }
     }
 
@@ -964,7 +1050,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             this.toggleMenuVisibility();
             requestAnimationFrame(() => {
-                this.focusOnMenuItem(0);
+                this.focusDropdown();
             });
         }
     }
@@ -982,14 +1068,12 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             event.preventDefault();
             this.toggleMenuVisibility();
-            requestAnimationFrame(() => {
-                this.focusOnMenuItem(0);
-            });
+            this.focusDropdown();
         }
     }
 
     handleDropdownFocus() {
-        this.focusOnMenuItem(0);
+        this.focusDropdown();
     }
 
     handleDropdownFocusIn() {
@@ -1011,12 +1095,58 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Dropdown keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleDropdownKeyDown(event) {
+        switch (event.key) {
+            case keyValues.escape: {
+                if (this._dropdownVisible && !this.isTriggerFocus) {
+                    this.preventDefaultAndStopPropagation(event);
+                    this.toggleMenuVisibility();
+                    this.button.focus();
+                }
+                break;
+            }
+            default:
+        }
+    }
+
+    /**
+     * Handle the slot change of the footer.
+     *
+     */
+    handleFooterSlotChange() {
+        if (this.footerSlot) {
+            this._showFooter = this.footerSlot.assignedElements().length !== 0;
+        } else {
+            this._showFooter = false;
+        }
+    }
+
+    /**
      * Dropdown menu scroll event handler.
      *
      * @param {Event} event
      */
     handleDropdownScroll(event) {
         event.stopPropagation();
+    }
+
+    /**
+     * Handle an input in the search box.
+     *
+     * @param {Event} event change event.
+     */
+    handleSearch(event) {
+        event.stopPropagation();
+        this.searchTerm = event.detail.value;
+
+        clearTimeout(this._searchTimeOut);
+        this._searchTimeOut = setTimeout(() => {
+            this.dispatchSearch();
+        }, 500);
     }
 
     /**
@@ -1153,6 +1283,28 @@ export default class ButtonMenu extends ButtonMenuBase {
          * @public
          */
         this.dispatchEvent(new CustomEvent('close'));
+    }
+
+    /**
+     * Menu search dispatch method.
+     */
+    dispatchSearch() {
+        /**
+         * The event fired when the search input value is changed.
+         *
+         * @event
+         * @name search
+         * @param {string} value The value of the search input.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('search', {
+                detail: {
+                    value: this.searchTerm
+                }
+            })
+        );
     }
 
     /**

@@ -8,6 +8,7 @@ customElements.define(
 export const ButtonMenuInfiniteLoading = ({
     accessKey,
     alternativeText,
+    allowSearch,
     disabled,
     draftAlternatveText,
     enableInfiniteLoading,
@@ -24,6 +25,7 @@ export const ButtonMenuInfiniteLoading = ({
     menuLength,
     nubbin,
     prefixIconName,
+    searchInputPlaceholder,
     title,
     tooltip,
     triggers,
@@ -33,6 +35,7 @@ export const ButtonMenuInfiniteLoading = ({
     const element = document.createElement('ac-button-menu-infinite-loading');
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
+    element.allowSearch = allowSearch;
     element.disabled = disabled;
     element.draftAlternatveText = draftAlternatveText;
     element.enableInfiniteLoading = enableInfiniteLoading;
@@ -49,6 +52,7 @@ export const ButtonMenuInfiniteLoading = ({
     element.menuLength = menuLength;
     element.nubbin = nubbin;
     element.prefixIconName = prefixIconName;
+    element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;
     element.tooltip = tooltip;
     element.triggers = triggers;

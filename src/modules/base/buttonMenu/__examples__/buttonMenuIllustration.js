@@ -7,6 +7,7 @@ customElements.define(
 
 export const ButtonMenuIllustration = ({
     accessKey,
+    allowSearch,
     alternativeText,
     disabled,
     draftAlternatveText,
@@ -24,6 +25,7 @@ export const ButtonMenuIllustration = ({
     menuLength,
     nubbin,
     prefixIconName,
+    searchInputPlaceholder,
     title,
     tooltip,
     triggers,
@@ -33,6 +35,7 @@ export const ButtonMenuIllustration = ({
     const element = document.createElement('ac-button-menu-illustration');
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
+    element.allowSearch = allowSearch;
     element.disabled = disabled;
     element.draftAlternatveText = draftAlternatveText;
     element.enableInfiniteLoading = enableInfiniteLoading;
@@ -49,6 +52,7 @@ export const ButtonMenuIllustration = ({
     element.menuLength = menuLength;
     element.nubbin = nubbin;
     element.prefixIconName = prefixIconName;
+    element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;
     element.tooltip = tooltip;
     element.triggers = triggers;
