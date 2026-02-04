@@ -937,11 +937,18 @@ export default class ButtonMenu extends ButtonMenuBase {
             const focusTrap = this.template.querySelector(
                 '[data-element-id="avonni-focus-trap"]'
             );
+            const menuItem = this.getMenuItemByIndex(0);
+            this._dropdownIsFocused = true;
             if (focusTrap && this.allowSearch) {
-                this._dropdownIsFocused = true;
                 focusTrap.focus();
+            } else if (menuItem) {
+                menuItem.focus();
             } else {
-                this.focusOnMenuItem(0);
+                // Allows to have the dropdown focused there are no items in the dropdown.
+                const dropdown = this.template.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                dropdown?.focus();
             }
         });
     }
