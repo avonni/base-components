@@ -7,13 +7,23 @@
     display: flex;
 }
 
+.avonni-input-time-range__label {
+    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
+    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
 .avonni-input-time-range__label.slds1 {
     color: var(--avonni-input-time-range-header-text-color, #3e3e3c);
     font-size: var(--avonni-input-time-range-header-font-size, 0.75rem);
     font-style: var(--avonni-input-time-range-header-font-style, normal);
     font-weight: var(--avonni-input-time-range-header-font-weight, 400);
-    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
-    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
+.avonni-input-time-range__label.slds1 {
+    color: var(--avonni-input-time-range-header-text-color, #3e3e3c);
+    font-size: var(--avonni-input-time-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-input-time-range-header-font-style, normal);
+    font-weight: var(--avonni-input-time-range-header-font-weight, 400);
 }
 
 .avonni-input-time-range__label.slds2 {
