@@ -1291,6 +1291,8 @@
     );
 }
 
+/* We force the background-color and border so that it is consistent in SLDS1 and SLDS2 */
 .slds-popover__footer {
     background-color: transparent;
+    border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
 }
