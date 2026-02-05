@@ -1,6 +1,7 @@
 import { FieldConstraintApi, InteractingState, VARIANT } from 'c/inputUtils';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
 import { api, LightningElement } from 'lwc';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 
 const DEFAULT_INVALID_TIME_RANGE_MESSAGE =
     'End time must be after or equal to the start time.';
@@ -255,6 +256,14 @@ export default class InputTimeRange extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    get computedLabelClass() {
+        return classSet(
+            'slds-form-element__label avonni-input-time-range__label'
+        )
+            .add({ slds1: !isOrgSlds2(), slds2: isOrgSlds2() })
+            .toString();
     }
 
     get computedLegendClass() {

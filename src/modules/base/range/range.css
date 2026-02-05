@@ -163,7 +163,7 @@
     transform: rotate(90deg);
 }
 
-.avonni-range__label {
+.avonni-range__label.slds1 {
     color: var(
         --avonni-range-header-text-color,
         var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
@@ -171,6 +171,22 @@
     font-size: var(--avonni-range-header-font-size, 0.75rem);
     font-style: var(--avonni-range-header-font-style, normal);
     font-weight: var(--avonni-range-header-font-weight, 400);
+}
+
+.avonni-range__label.slds2 {
+    color: var(
+        --avonni-range-header-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-range-header-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-weight: var(
+        --avonni-range-header-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
+    font-style: var(--avonni-range-header-font-style, normal);
 }
 
 .avonni-range__slider-left {

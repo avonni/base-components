@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { equal, getListHeight } from 'c/utilsPrivate';
+import { equal, getListHeight, isOrgSlds2 } from 'c/utilsPrivate';
 import {
     classSet,
     deepCopy,
@@ -742,7 +742,11 @@ export default class DualListbox extends LightningElement {
         return classSet(
             'slds-form-element__label slds-form-element__legend avonni-dual-listbox__header'
         )
-            .add({ 'slds-assistive-text': this.isLabelHidden })
+            .add({
+                'slds-assistive-text': this.isLabelHidden,
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
+            })
             .toString();
     }
 

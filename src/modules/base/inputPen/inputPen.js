@@ -7,6 +7,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import { SmoothToolManager } from './smoothToolManager';
 import { StraightToolManager } from './straightToolManager';
@@ -611,6 +612,18 @@ export default class InputPen extends LightningElement {
         return classSet('avonni-input-pen__canvas slds-is-absolute').add({
             'avonni-input-pen__canvas_disabled': this._disabled
         });
+    }
+
+    /**
+     * Computed class of the label.
+     */
+    get computedLabelClass() {
+        return classSet('avonni-input-pen__label slds-no-flex')
+            .add({
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
+            })
+            .toString();
     }
 
     /**

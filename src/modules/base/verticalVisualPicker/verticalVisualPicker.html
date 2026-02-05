@@ -11,13 +11,7 @@
             aria-required={required}
             data-element-id="fieldset"
         >
-            <legend
-                class="
-                    slds-form-element__legend slds-form-element__label
-                    avonni-vertical-visual-picker__label
-                "
-                data-element-id="legend"
-            >
+            <legend class={computedLegendClass} data-element-id="legend">
                 <abbr
                     if:true={required}
                     class="slds-required"
