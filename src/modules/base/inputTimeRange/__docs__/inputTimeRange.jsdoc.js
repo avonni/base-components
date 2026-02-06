@@ -4,13 +4,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-input-time-range-header-text-color
- * @default #080707
+ * @default #3e3e3c
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-input-time-range-header-font-size
- * @default 0.8125rem
+ * @default 0.75rem
  * @type font
  */
 /**

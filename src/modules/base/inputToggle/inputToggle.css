@@ -66,7 +66,7 @@ label.slds-grid .faux_small {
     display: none;
 }
 
-.avonni-input-toggle__label {
+.avonni-input-toggle__label.slds1 {
     color: var(
         --avonni-input-toggle-header-text-color,
         var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
@@ -74,4 +74,20 @@ label.slds-grid .faux_small {
     font-size: var(--avonni-input-toggle-header-font-size, 0.75rem);
     font-style: var(--avonni-input-toggle-header-font-style, normal);
     font-weight: var(--avonni-input-toggle-header-font-weight, 400);
+}
+
+.avonni-input-toggle__label.slds2 {
+    color: var(
+        --avonni-input-toggle-header-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-input-toggle-header-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-style: var(--avonni-input-toggle-header-font-style, normal);
+    font-weight: var(
+        --avonni-input-toggle-header-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
 }

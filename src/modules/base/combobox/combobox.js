@@ -5,7 +5,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { classListMutation } from 'c/utilsPrivate';
+import { classListMutation, isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const DEFAULT_BACK_ACTION = {
@@ -775,7 +775,11 @@ export default class Combobox extends LightningElement {
      */
     get computedLabelClass() {
         return classSet('slds-form-element__label avonni-combobox__label')
-            .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
+            })
             .toString();
     }
 

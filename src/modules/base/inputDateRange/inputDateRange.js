@@ -2,7 +2,7 @@ import {
     DateTime,
     getFormattedDate,
     parseFormattedDateString
-} from 'c/dateTimeUtils';
+} from 'c/avonniDateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     Direction,
@@ -10,11 +10,16 @@ import {
     stopPositioning
 } from 'c/positionLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import inputDateRange from './inputDateRange.html';
-import expandedDateRange from './expandedDateRange.html';
-
-import { animationFrame, keyValues, timeout, equal } from 'c/utilsPrivate';
+import {
+    animationFrame,
+    equal,
+    isOrgSlds2,
+    keyValues,
+    timeout
+} from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
+import expandedDateRange from './avonniExpandedDateRange.html';
+import inputDateRange from './avonniInputDateRange.html';
 
 const DATE_STYLES = {
     valid: ['short', 'medium', 'long'],
@@ -556,7 +561,9 @@ export default class InputDateRange extends LightningElement {
                 'slds-m-bottom_xxx-small':
                     hasHeight &&
                     this.showRangeOptions &&
-                    (this.isExpanded || !this.readOnly)
+                    (this.isExpanded || !this.readOnly),
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .toString();
     }

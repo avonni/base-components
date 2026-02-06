@@ -1,6 +1,6 @@
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { classListMutation } from 'c/utilsPrivate';
+import { classListMutation, isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import {
     formatNumber,
@@ -451,7 +451,9 @@ export default class InputCounter extends LightningElement {
             'slds-form-element__label slds-no-flex avonni-input-counter__label'
         )
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .toString();
     }

@@ -8,7 +8,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { equal } from 'c/utilsPrivate';
+import { equal, isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const BORDER_RADIUS_REM = 0.5;
@@ -641,9 +641,13 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet('avonni-slider__label slds-slider-label__label').add({
-            'slds-assistive-text': this.variant === 'label-hidden'
-        });
+        return classSet('avonni-slider__label slds-slider-label__label')
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
+            })
+            .toString();
     }
 
     /**
