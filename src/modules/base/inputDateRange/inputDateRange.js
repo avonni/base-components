@@ -2,7 +2,7 @@ import {
     DateTime,
     getFormattedDate,
     parseFormattedDateString
-} from 'c/avonniDateTimeUtils';
+} from 'c/dateTimeUtils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     Direction,
@@ -18,8 +18,8 @@ import {
     timeout
 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
-import expandedDateRange from './avonniExpandedDateRange.html';
-import inputDateRange from './avonniInputDateRange.html';
+import expandedDateRange from './expandedDateRange.html';
+import inputDateRange from './inputDateRange.html';
 
 const DATE_STYLES = {
     valid: ['short', 'medium', 'long'],
