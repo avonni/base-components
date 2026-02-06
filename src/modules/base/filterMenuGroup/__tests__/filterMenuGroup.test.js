@@ -1,8 +1,8 @@
 import FilterMenuGroup from 'c/filterMenuGroup';
-import { createElement } from 'lwc';
-import { MENUS, VALUE } from './data';
 import { callObserver } from 'c/resizeObserver';
 import { deepCopy } from 'c/utils';
+import { createElement } from 'lwc';
+import { MENUS, VALUE } from './data';
 
 let element;
 describe('FilterMenuGroup', () => {
@@ -326,11 +326,9 @@ describe('FilterMenuGroup', () => {
                 const buttonGroupRow = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
                 );
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetHeight',
-                    'get'
-                ).mockImplementation(() => 32);
+                buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                    height: 32
+                }));
                 element.singleLine = true;
                 element.menus = MENUS;
 
@@ -358,16 +356,10 @@ describe('FilterMenuGroup', () => {
                 const buttonGroupRow = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
                 );
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetWidth',
-                    'get'
-                ).mockImplementation(() => 120);
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetHeight',
-                    'get'
-                ).mockImplementation(() => 32);
+                buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                    width: 120,
+                    height: 32
+                }));
                 element.menus = MENUS;
 
                 return Promise.resolve()
@@ -377,13 +369,9 @@ describe('FilterMenuGroup', () => {
                         );
                         menus.forEach((menu) => {
                             menu.getBoundingClientRect = jest.fn(() => ({
+                                height: 32,
                                 width: 40
                             }));
-                            jest.spyOn(
-                                menu,
-                                'offsetHeight',
-                                'get'
-                            ).mockImplementation(() => 32);
                         });
                         element.singleLine = true;
                     })
@@ -407,20 +395,16 @@ describe('FilterMenuGroup', () => {
                         expect(overflowMenus.length).toBe(3);
                     })
                     .then(async () => {
-                        jest.spyOn(
-                            buttonGroupRow,
-                            'offsetHeight',
-                            'get'
-                        ).mockImplementation(() => 1);
+                        buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                            height: 1
+                        }));
                         callObserver();
                         await flushPromises();
                     })
                     .then(async () => {
-                        jest.spyOn(
-                            buttonGroupRow,
-                            'offsetWidth',
-                            'get'
-                        ).mockImplementation(() => 0);
+                        buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                            width: 0
+                        }));
                         callObserver();
                         await flushPromises();
                     })
@@ -977,11 +961,9 @@ describe('FilterMenuGroup', () => {
                 const buttonGroupRow = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
                 );
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetHeight',
-                    'get'
-                ).mockImplementation(() => 32);
+                buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                    height: 32
+                }));
                 element.singleLine = true;
                 element.menus = MENUS;
                 const handler = jest.fn();
@@ -1016,11 +998,9 @@ describe('FilterMenuGroup', () => {
                 const buttonGroupRow = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
                 );
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetHeight',
-                    'get'
-                ).mockImplementation(() => 32);
+                buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                    height: 32
+                }));
                 element.singleLine = true;
                 element.menus = MENUS;
                 const openHandler = jest.fn();
@@ -1062,11 +1042,9 @@ describe('FilterMenuGroup', () => {
                 const buttonGroupRow = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
                 );
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetHeight',
-                    'get'
-                ).mockImplementation(() => 32);
+                buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                    height: 32
+                }));
                 element.singleLine = true;
                 element.menus = MENUS;
                 element.value = VALUE;
@@ -1276,11 +1254,9 @@ describe('FilterMenuGroup', () => {
                 const buttonGroupRow = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
                 );
-                jest.spyOn(
-                    buttonGroupRow,
-                    'offsetHeight',
-                    'get'
-                ).mockImplementation(() => 32);
+                buttonGroupRow.getBoundingClientRect = jest.fn(() => ({
+                    height: 32
+                }));
                 element.singleLine = true;
                 element.menus = MENUS;
                 const handler = jest.fn();
