@@ -30,6 +30,7 @@ describe('Calendar', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.disabledDates).toMatchObject([]);
             expect(element.hideNavigation).toBeFalsy();
+            expect(element.nbMonthCalendars).toBe(1);
             expect(element.markedDates).toMatchObject([]);
             expect(element.max).toMatchObject(new Date(2099, 11, 31));
             expect(element.min).toMatchObject(new Date(1900, 0, 1));
@@ -56,16 +57,10 @@ describe('Calendar', () => {
                 ];
 
                 return Promise.resolve().then(() => {
-                    const day26Label = element.shadowRoot.querySelector(
-                        '[data-element-id="chip-date-label"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(day26Label).toBeTruthy();
-                    expect(day26Label.variant).toBe('base');
-                    expect(day26Label.outline).toBeFalsy();
-                    expect(day26Label.label).toBe('26 may');
-                    expect(day26Label.className).toBe(
-                        'avonni-calendar__chip-label avonni-calendar__chip-without-icon'
-                    );
+                    expect(calendar.dateLabels).toEqual(element.dateLabels);
                 });
             });
         });
@@ -85,12 +80,11 @@ describe('Calendar', () => {
                         '[data-element-id="select-year"]'
                     );
                     expect(year.disabled).toBeTruthy();
-                    const tds = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="span-day-label"]'
+
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    tds.forEach((td) => {
-                        expect(td.className).toContain('slds-day');
-                    });
+                    expect(calendar.disabled).toBe(true);
                 });
             });
         });
@@ -103,14 +97,12 @@ describe('Calendar', () => {
                 element.max = new Date('05/25/2021');
 
                 return Promise.resolve().then(() => {
-                    const dates = [];
-                    const disabledDates = element.shadowRoot.querySelectorAll(
-                        '.avonni-calendar__disabled-cell'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    disabledDates.forEach((date) => {
-                        dates.push(date.getAttribute('data-date'));
-                    });
-                    expect(dates.includes('6')).toBeTruthy();
+                    expect(calendar.disabledDates).toEqual([
+                        new Date('05/06/2021')
+                    ]);
                 });
             });
         });
@@ -134,15 +126,14 @@ describe('Calendar', () => {
 
                 return Promise.resolve().then(() => {
                     const date = new Date(2022, 8, 8);
-                    const day8 = element.shadowRoot.querySelector(
-                        `td[data-full-date="${date.getTime()}"]`
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const spy8 = jest.spyOn(day8, 'focus');
-
+                    const spy8 = jest.spyOn(calendar, 'focusDate');
                     element.focusDate(date);
                     jest.runAllTimers();
 
-                    expect(spy8).toHaveBeenCalled();
+                    expect(spy8).toHaveBeenCalledWith(date, true);
                 });
             });
         });
@@ -206,258 +197,6 @@ describe('Calendar', () => {
             });
         });
 
-        describe('keyboard accessibility', () => {
-            it('[left]', () => {
-                element.value = '05/09/2021';
-
-                return Promise.resolve().then(() => {
-                    const day8 =
-                        element.shadowRoot.querySelector('td[data-date="8"]');
-                    const spy8 = jest.spyOn(day8, 'focus');
-
-                    jest.runOnlyPendingTimers();
-                    const day9 =
-                        element.shadowRoot.querySelector('td[tabindex="0"]');
-                    day9.dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'ArrowLeft',
-                            bubbles: true
-                        })
-                    );
-                    jest.runOnlyPendingTimers();
-
-                    expect(spy8).toHaveBeenCalled();
-                });
-            });
-
-            it('[right]', () => {
-                element.value = '05/09/2021';
-
-                return Promise.resolve().then(() => {
-                    const day10 =
-                        element.shadowRoot.querySelector('td[data-date="10"]');
-                    const spy10 = jest.spyOn(day10, 'focus');
-
-                    jest.runOnlyPendingTimers();
-                    const day9 =
-                        element.shadowRoot.querySelector('td[tabindex="0"]');
-                    day9.dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'ArrowRight',
-                            bubbles: true
-                        })
-                    );
-                    jest.runOnlyPendingTimers();
-
-                    expect(spy10).toHaveBeenCalled();
-                });
-            });
-
-            it('[up]', () => {
-                element.value = '05/09/2021';
-
-                return Promise.resolve().then(() => {
-                    const day2 =
-                        element.shadowRoot.querySelector('td[data-date="2"]');
-                    const spy2 = jest.spyOn(day2, 'focus');
-
-                    jest.runOnlyPendingTimers();
-                    const day9 =
-                        element.shadowRoot.querySelector('td[tabindex="0"]');
-                    day9.dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'ArrowUp',
-                            bubbles: true
-                        })
-                    );
-                    jest.runOnlyPendingTimers();
-
-                    expect(spy2).toHaveBeenCalled();
-                });
-            });
-
-            it('[down]', () => {
-                element.value = '05/09/2021';
-
-                return Promise.resolve().then(() => {
-                    const day16 =
-                        element.shadowRoot.querySelector('td[data-date="16"]');
-                    const spy16 = jest.spyOn(day16, 'focus');
-
-                    jest.runOnlyPendingTimers();
-                    const day9 =
-                        element.shadowRoot.querySelector('td[tabindex="0"]');
-                    day9.dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'ArrowDown',
-                            bubbles: true
-                        })
-                    );
-                    jest.runOnlyPendingTimers();
-
-                    expect(spy16).toHaveBeenCalled();
-                });
-            });
-
-            it('go to Sunday [home]', () => {
-                element.value = '05/10/2022';
-
-                return Promise.resolve().then(() => {
-                    const day8 =
-                        element.shadowRoot.querySelector('td[data-date="8"]');
-                    const spy8 = jest.spyOn(day8, 'focus');
-
-                    jest.runAllTimers();
-                    const day9 =
-                        element.shadowRoot.querySelector('td[tabindex="0"]');
-                    day9.dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'Home',
-                            bubbles: true
-                        })
-                    );
-                    jest.runAllTimers();
-
-                    expect(spy8).toHaveBeenCalled();
-                });
-            });
-
-            it('Calendar: keyboard accessibility - go to Saturday [end]', () => {
-                element.value = '05/09/2022';
-
-                return Promise.resolve().then(() => {
-                    const day14 =
-                        element.shadowRoot.querySelector('td[data-date="14"]');
-                    const spy14 = jest.spyOn(day14, 'focus');
-
-                    jest.runAllTimers();
-                    const day9 =
-                        element.shadowRoot.querySelector('td[tabindex="0"]');
-                    day9.dispatchEvent(
-                        new KeyboardEvent('keydown', {
-                            key: 'End',
-                            bubbles: true
-                        })
-                    );
-                    jest.runAllTimers();
-
-                    expect(spy14).toHaveBeenCalled();
-                });
-            });
-
-            it('Month down [PageDown]', () => {
-                element.value = '05/09/2022';
-
-                return Promise.resolve()
-                    .then(() => {
-                        const day9 =
-                            element.shadowRoot.querySelector(
-                                'td[data-date="9"]'
-                            );
-                        day9.dispatchEvent(
-                            new KeyboardEvent('keydown', {
-                                key: 'PageDown',
-                                bubbles: true
-                            })
-                        );
-                    })
-                    .then(() => {
-                        const monthLabel = element.shadowRoot.querySelector(
-                            '[data-element-id="h2"]'
-                        );
-                        expect(monthLabel.textContent).toBe('April');
-                        // value should not change with month change
-                        expect(new Date(element.value)).toEqual(
-                            new Date('05/09/2022')
-                        );
-                    });
-            });
-
-            it('Month up [PageUp]', () => {
-                element.value = '05/09/2022';
-
-                return Promise.resolve()
-                    .then(() => {
-                        const day9 =
-                            element.shadowRoot.querySelector(
-                                'td[data-date="9"]'
-                            );
-                        day9.dispatchEvent(
-                            new KeyboardEvent('keydown', {
-                                key: 'PageUp',
-                                bubbles: true
-                            })
-                        );
-                    })
-                    .then(() => {
-                        const monthLabel = element.shadowRoot.querySelector(
-                            '[data-element-id="h2"]'
-                        );
-
-                        expect(monthLabel.textContent).toBe('June');
-                        expect(new Date(element.value)).toEqual(
-                            new Date('05/09/2022')
-                        );
-                    });
-            });
-
-            it('Year up [alt + PageDown]', () => {
-                element.value = '05/09/2022';
-
-                return Promise.resolve()
-                    .then(() => {
-                        const day9 =
-                            element.shadowRoot.querySelector(
-                                'td[data-date="9"]'
-                            );
-                        day9.dispatchEvent(
-                            new KeyboardEvent('keydown', {
-                                key: 'PageDown',
-                                altKey: true,
-                                bubbles: true
-                            })
-                        );
-                    })
-                    .then(() => {
-                        const year2023 = element.shadowRoot.querySelector(
-                            '[data-element-id="option-year"][value="2023"]'
-                        );
-                        expect(year2023.selected).toBeTruthy();
-                        expect(new Date(element.value)).toEqual(
-                            new Date('05/09/2022')
-                        );
-                    });
-            });
-
-            it('Year down [alt + PageUp]', () => {
-                element.value = '05/09/2022';
-
-                return Promise.resolve()
-                    .then(() => {
-                        const day9 =
-                            element.shadowRoot.querySelector(
-                                'td[data-date="9"]'
-                            );
-                        day9.dispatchEvent(
-                            new KeyboardEvent('keydown', {
-                                key: 'PageUp',
-                                altKey: true,
-                                bubbles: true
-                            })
-                        );
-                    })
-                    .then(() => {
-                        const year2021 = element.shadowRoot.querySelector(
-                            '[data-element-id="option-year"][value="2021"]'
-                        );
-                        expect(year2021.selected).toBeTruthy();
-                        expect(new Date(element.value)).toEqual(
-                            new Date('05/09/2022')
-                        );
-                    });
-            });
-        });
-
         describe('marked dates', () => {
             it('Passed to the component', () => {
                 element.value = '05/09/2021';
@@ -473,82 +212,101 @@ describe('Calendar', () => {
                 element.max = new Date('05/31/2021');
 
                 return Promise.resolve().then(() => {
-                    const markedDates = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="div-marked-cells"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(markedDates).toHaveLength(3);
-                    expect(markedDates[0].style.background).toBe(
-                        'rgb(255, 0, 0)'
-                    );
-                    expect(markedDates[1].style.background).toBe(
-                        'rgb(0, 0, 0)'
-                    );
-                    expect(markedDates[2].style.background).toBe(
-                        'rgb(255, 255, 255)'
-                    );
-                });
-            });
-
-            it('A maximum of 3 per date is displayed', () => {
-                element.value = '05/09/2021';
-                element.markedDates = [
-                    { date: new Date('05/05/2021'), color: 'tomato' },
-                    { date: new Date('05/05/2021'), color: 'blue' },
-                    { date: new Date('05/05/2021'), color: 'violet' },
-                    { date: new Date('05/05/2021'), color: 'purple' },
-                    { date: new Date('05/05/2021'), color: 'orange' }
-                ];
-
-                return Promise.resolve().then(() => {
-                    const markedDates = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="div-marked-cells"]'
-                    );
-                    expect(markedDates).toHaveLength(3);
-                });
-            });
-        });
-
-        describe('enable current month only', () => {
-            it('Passed to the component', () => {
-                element.value = '05/09/2021';
-                return Promise.resolve().then(() => {
-                    const dateArray = [];
-                    const dates = element.shadowRoot.querySelectorAll(
-                        ':not(.slds-day_adjacent-month) > .slds-day'
-                    );
-                    dates.forEach((date) => {
-                        dateArray.push(date.textContent);
-                    });
-                    expect(dateArray.slice(0, 1)[0]).toBe('1');
-                    expect(dateArray.slice(-1)[0]).toBe('31');
+                    expect(calendar.markedDates).toEqual(element.markedDates);
                 });
             });
         });
 
         describe('min max', () => {
-            it('Click only inside min-max', () => {
+            it('Passed to component', () => {
                 element.value = '05/16/2021';
                 element.min = new Date('05/15/2021');
                 element.max = new Date('05/23/2021');
-                element.selectionMode = 'single';
 
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const day18 = element.shadowRoot.querySelector(
-                        'span[data-date="18"]'
-                    );
-                    const day24 = element.shadowRoot.querySelector(
-                        'span[data-date="24"]'
-                    );
-                    day14.click();
-                    day18.click();
-                    day24.click();
-                    expect(new Date(element.value)).toEqual(
-                        new Date('05/18/2021')
-                    );
+
+                    expect(calendar.min).toEqual(new Date('05/15/2021'));
+                    expect(calendar.max).toEqual(new Date('05/23/2021'));
                 });
+            });
+        });
+
+        describe('nbMonthCalendars', () => {
+            it('Passed to the component', () => {
+                element.value = '05/09/2021';
+                element.nbMonthCalendars = 2;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+
+                        expect(calendars.length).toBe(2);
+
+                        calendars.forEach((calendar, index) => {
+                            const date = new Date('05/01/2021');
+                            const displayDate = new Date(
+                                new Date(date).setMonth(date.getMonth() + index)
+                            );
+
+                            expect(calendar.isMultiCalendars).toBe(true);
+                            expect(calendar.value).toEqual([
+                                new Date('05/09/2021')
+                            ]);
+                            expect(calendar.displayDate).toEqual(displayDate);
+                        });
+
+                        element.value = '06/09/2021';
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+
+                        expect(calendars.length).toBe(2);
+
+                        calendars.forEach((calendar, index) => {
+                            const date = new Date('05/01/2021');
+                            const displayDate = new Date(
+                                new Date(date).setMonth(date.getMonth() + index)
+                            );
+
+                            expect(calendar.isMultiCalendars).toBe(true);
+                            expect(calendar.value).toEqual([
+                                new Date('06/09/2021')
+                            ]);
+                            expect(calendar.displayDate).toEqual(displayDate);
+                        });
+
+                        element.value = '07/09/2021';
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+
+                        expect(calendars.length).toBe(2);
+
+                        calendars.forEach((calendar, index) => {
+                            const date = new Date('07/01/2021');
+                            const displayDate = new Date(
+                                new Date(date).setMonth(date.getMonth() + index)
+                            );
+
+                            expect(calendar.isMultiCalendars).toBe(true);
+                            expect(calendar.value).toEqual([
+                                new Date('07/09/2021')
+                            ]);
+                            expect(calendar.displayDate).toEqual(displayDate);
+                        });
+                    });
             });
         });
 
@@ -562,23 +320,10 @@ describe('Calendar', () => {
                 element.timezone = 'Pacific/Noumea';
 
                 return Promise.resolve().then(() => {
-                    const selected = element.shadowRoot.querySelector(
-                        '[data-element-id="td"][data-selected="true"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const selectedDayLabel = selected.querySelector(
-                        '[data-element-id="span-day-label"]'
-                    );
-                    expect(selectedDayLabel.textContent).toBe('19');
-
-                    const day15 = element.shadowRoot.querySelector(
-                        '[data-element-id="span-day-label"][data-date="15"]'
-                    );
-                    expect(day15.dataset.disabled).toBe('true');
-
-                    const day23 = element.shadowRoot.querySelector(
-                        '[data-element-id="span-day-label"][data-date="23"]'
-                    );
-                    expect(day23.dataset.disabled).toBe('false');
+                    expect(calendar.timezone).toBe('Pacific/Noumea');
                 });
             });
         });
@@ -588,12 +333,10 @@ describe('Calendar', () => {
                 element.selectionMode = 'single';
                 element.value = '04/15/2021';
                 return Promise.resolve().then(() => {
-                    const selected =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    const selectedDayLabel = selected.querySelector(
-                        '[data-element-id="span-day-label"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(selectedDayLabel.textContent).toBe('15');
+                    expect(calendar.value).toEqual([new Date('04/15/2021')]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -611,9 +354,13 @@ describe('Calendar', () => {
                 element.max = new Date('12/31/2030');
                 element.value = '11/11/2040';
                 return Promise.resolve().then(() => {
-                    const day =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    expect(day).toBeNull();
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([]);
+                    expect(calendar.displayDate).toEqual(
+                        new Date('12/01/2030')
+                    );
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -630,9 +377,13 @@ describe('Calendar', () => {
                 element.max = new Date('12/31/2030');
                 element.value = '04/04/100';
                 return Promise.resolve().then(() => {
-                    const day =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    expect(day).toBeNull();
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([]);
+                    expect(calendar.displayDate).toEqual(
+                        new Date('01/01/2020')
+                    );
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -651,13 +402,18 @@ describe('Calendar', () => {
                     month: 'long'
                 });
                 element.min = new Date('01/01/2020');
-                element.max = new Date('12/31/2030');
+                element.max = new Date('12/31/2099');
                 element.value = '00/00/2022';
 
                 return Promise.resolve().then(() => {
-                    const day =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    expect(day).toBeNull();
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const today = new Date();
+                    today.setDate(1);
+                    today.setHours(0, 0, 0, 0);
+                    expect(calendar.value).toEqual([]);
+                    expect(calendar.displayDate).toEqual(today);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -682,12 +438,13 @@ describe('Calendar', () => {
                     '09/10/2444'
                 ];
                 return Promise.resolve().then(() => {
-                    const selected =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    const selectedDayLabel = selected.querySelector(
-                        '[data-element-id="span-day-label"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(selectedDayLabel.textContent).toBe('6');
+                    expect(calendar.displayDate).toEqual(
+                        new Date('05/01/2022')
+                    );
+                    expect(calendar.value).toEqual([new Date('05/06/2022')]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -706,17 +463,13 @@ describe('Calendar', () => {
                 element.value = ['02/11/1000', '01/10/2020'];
 
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelectorAll(
-                            '.slds-is-selected'
-                        );
-                    expect(days.length).toBe(10);
-                    for (let i = 0; i < days.length; ++i) {
-                        const dayLabel = days[i].querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        expect(dayLabel.textContent).toBe((i + 1).toString());
-                    }
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([
+                        new Date('01/01/2020'),
+                        new Date('01/10/2020')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -735,17 +488,13 @@ describe('Calendar', () => {
                 element.value = ['12/29/2021', '01/10/2025'];
 
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelectorAll(
-                            '.slds-is-selected'
-                        );
-                    expect(days.length).toBe(3);
-                    for (let i = 0; i < days.length; ++i) {
-                        const dayLabel = days[i].querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        expect(dayLabel.textContent).toBe((i + 29).toString());
-                    }
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([
+                        new Date('12/29/2021'),
+                        new Date('12/31/2021')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -764,9 +513,10 @@ describe('Calendar', () => {
                 element.value = ['12/29/1000', '01/10/2000'];
 
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    expect(days).toBeNull();
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -785,9 +535,10 @@ describe('Calendar', () => {
                 element.value = ['12/29/2022', '01/10/2024'];
 
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelector('.slds-is-selected');
-                    expect(days).toBeNull();
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -806,17 +557,13 @@ describe('Calendar', () => {
                 element.value = ['12/29/1000', '01/10/2025'];
 
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelectorAll(
-                            '.slds-is-selected'
-                        );
-                    expect(days.length).toBe(31);
-                    for (let i = 0; i < days.length; ++i) {
-                        const dayLabel = days[i].querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        expect(dayLabel.textContent).toBe((i + 1).toString());
-                    }
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([
+                        new Date('01/01/2020'),
+                        new Date('01/31/2020')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -835,17 +582,13 @@ describe('Calendar', () => {
                 element.value = ['04/22/2022', '04/02/2022'];
 
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelectorAll(
-                            '.slds-is-selected'
-                        );
-                    expect(days.length).toBe(21);
-                    for (let i = 0; i < days.length; ++i) {
-                        const dayLabel = days[i].querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        expect(dayLabel.textContent).toBe((i + 2).toString());
-                    }
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([
+                        new Date('04/02/2022'),
+                        new Date('04/22/2022')
+                    ]);
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
                     );
@@ -862,11 +605,20 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'single';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day14.click();
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(new Date(element.value)).toEqual(
                         new Date('05/14/2021')
                     );
@@ -877,11 +629,20 @@ describe('Calendar', () => {
                 element.value = '05/14/2021';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day14.click();
+                    expect(calendar.value).toEqual([new Date('05/14/2021')]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toBeNull();
                 });
             });
@@ -890,21 +651,14 @@ describe('Calendar', () => {
                 element.value = ['04/15/2021', '04/16/2021', '04/17/2021'];
                 element.selectionMode = 'multiple';
                 return Promise.resolve().then(() => {
-                    const days =
-                        element.shadowRoot.querySelectorAll(
-                            '.slds-is-selected'
-                        );
-                    const dates = [];
-                    days.forEach((day) => {
-                        const dayLabel = day.querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        dates.push(dayLabel.textContent);
-                    });
-
-                    expect(dates.includes('15')).toBeTruthy();
-                    expect(dates.includes('16')).toBeTruthy();
-                    expect(dates.includes('17')).toBeTruthy();
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    expect(calendar.value).toEqual([
+                        new Date('04/15/2021'),
+                        new Date('04/16/2021'),
+                        new Date('04/17/2021')
+                    ]);
 
                     const month = element.shadowRoot.querySelector(
                         '[data-element-id="h2"]'
@@ -922,11 +676,20 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'multiple';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day14.click();
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toHaveLength(2);
                     expect(new Date(element.value[0])).toEqual(
                         new Date('05/15/2021')
@@ -942,13 +705,29 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day14.click();
+                    expect(calendar.value).toEqual([new Date('05/14/2021')]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toEqual([]);
-                    day14.click();
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(new Date(element.value)).toEqual(
                         new Date('05/14/2021')
                     );
@@ -960,11 +739,20 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day14.click();
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toHaveLength(2);
                     expect(new Date(element.value[0])).toEqual(
                         new Date('05/14/2021')
@@ -980,11 +768,20 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day17 = new Date('05/17/2021');
                 return Promise.resolve().then(() => {
-                    const day17 = element.shadowRoot.querySelector(
-                        'span[data-date="17"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day17.click();
+                    expect(calendar.value).toEqual([new Date('05/15/2021')]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day17.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toHaveLength(2);
                     expect(new Date(element.value[0])).toEqual(
                         new Date('05/15/2021')
@@ -1000,11 +797,23 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day17 = new Date('05/17/2021');
                 return Promise.resolve().then(() => {
-                    const day17 = element.shadowRoot.querySelector(
-                        'span[data-date="17"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day17.click();
+                    expect(calendar.value).toEqual([
+                        new Date('05/15/2021'),
+                        new Date('05/16/2021')
+                    ]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day17.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toHaveLength(2);
                     expect(new Date(element.value[0])).toEqual(
                         new Date('05/15/2021')
@@ -1020,11 +829,23 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day14 = new Date('05/14/2021');
                 return Promise.resolve().then(() => {
-                    const day14 = element.shadowRoot.querySelector(
-                        'span[data-date="14"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day14.click();
+                    expect(calendar.value).toEqual([
+                        new Date('05/15/2021'),
+                        new Date('05/16/2021')
+                    ]);
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day14.getTime()),
+                                disabled: false
+                            }
+                        })
+                    );
                     expect(element.value).toHaveLength(2);
                     expect(new Date(element.value[0])).toEqual(
                         new Date('05/14/2021')
@@ -1044,24 +865,10 @@ describe('Calendar', () => {
                 element.weekNumber = true;
 
                 return Promise.resolve().then(() => {
-                    const weekNumbers = [];
-                    const weeks = element.shadowRoot.querySelectorAll(
-                        '.avonni-calendar__week-cell'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(weeks).toHaveLength(6);
-
-                    weeks.forEach((week) => {
-                        const dayLabel = week.querySelector(
-                            '[data-element-id="span-day-label"]'
-                        );
-                        weekNumbers.push(dayLabel.textContent);
-                    });
-                    expect(weekNumbers.includes('16')).toBeTruthy();
-                    expect(weekNumbers.includes('17')).toBeTruthy();
-                    expect(weekNumbers.includes('18')).toBeTruthy();
-                    expect(weekNumbers.includes('19')).toBeTruthy();
-                    expect(weekNumbers.includes('20')).toBeTruthy();
-                    expect(weekNumbers.includes('21')).toBeTruthy();
+                    expect(calendar.weekNumber).toEqual(true);
                 });
             });
         });
@@ -1072,28 +879,10 @@ describe('Calendar', () => {
                 element.value = '2025-10-10T00:00:00Z';
 
                 return Promise.resolve().then(() => {
-                    const headers = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="th"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    expect(headers).toHaveLength(7);
-                    expect(headers[0].textContent).toBe('Tue');
-                    expect(headers[1].textContent).toBe('Wed');
-                    expect(headers[2].textContent).toBe('Thu');
-                    expect(headers[3].textContent).toBe('Fri');
-                    expect(headers[4].textContent).toBe('Sat');
-                    expect(headers[5].textContent).toBe('Sun');
-                    expect(headers[6].textContent).toBe('Mon');
-
-                    const days = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="td"]'
-                    );
-                    const firstDay = new Date(2025, 8, 30).getTime().toString();
-                    expect(days[0].dataset.fullDate).toBe(firstDay);
-
-                    const lastDay = new Date(2025, 10, 10).getTime().toString();
-                    expect(days[days.length - 1].dataset.fullDate).toBe(
-                        lastDay
-                    );
+                    expect(calendar.weekStartDay).toBe(2);
                 });
             });
         });
@@ -1156,21 +945,29 @@ describe('Calendar', () => {
                 element.value = '05/09/2021';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
-
+                const day7 = new Date('05/07/2021');
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
 
                 return Promise.resolve().then(() => {
-                    const days = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="span-day-label"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const day7 = days[12];
-                    day7.click();
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day7.getTime()),
+                                disabled: false,
+                                bounds: { x: 1, y: 1 }
+                            }
+                        })
+                    );
 
                     expect(handler).toHaveBeenCalled();
                     const call = handler.mock.calls[0][0];
                     const normalizedDate = new Date('05/07/2021');
                     expect(typeof call.detail.value).toBe('string');
+                    expect(call.detail.bounds).toEqual({ x: 1, y: 1 });
                     expect(new Date(call.detail.value)).toEqual(normalizedDate);
                     expect(call.bubbles).toBeFalsy();
                     expect(call.composed).toBeFalsy();
@@ -1183,20 +980,29 @@ describe('Calendar', () => {
                 element.selectionMode = 'multiple';
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
+                const day7 = new Date('05/07/2021');
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
 
                 return Promise.resolve().then(() => {
-                    const days = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="span-day-label"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    const day7 = days[12];
-                    day7.click();
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day7.getTime()),
+                                disabled: day7.disabled,
+                                bounds: { x: 1, y: 1 }
+                            }
+                        })
+                    );
 
                     expect(handler).toHaveBeenCalled();
                     const call = handler.mock.calls[0][0];
                     expect(call.detail.value).toHaveLength(2);
+                    expect(call.detail.bounds).toEqual({ x: 1, y: 1 });
                     call.detail.value.forEach((val) => {
                         expect(typeof val).toBe('string');
                     });
@@ -1214,19 +1020,32 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'multiple';
+                const day9 = new Date('05/09/2021');
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
 
                 return Promise.resolve().then(() => {
-                    const day9 = element.shadowRoot.querySelector(
-                        'span[data-date="9"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day9.click();
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day9.getTime()),
+                                disabled: false,
+                                bounds: { x: 1, y: 1 }
+                            }
+                        })
+                    );
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toMatchObject(
                         []
                     );
+                    expect(handler.mock.calls[0][0].detail.bounds).toEqual({
+                        x: 1,
+                        y: 1
+                    });
                 });
             });
 
@@ -1235,15 +1054,24 @@ describe('Calendar', () => {
                 element.min = new Date('05/01/2021');
                 element.max = new Date('05/31/2021');
                 element.selectionMode = 'interval';
+                const day11 = new Date('05/11/2021');
 
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
 
                 return Promise.resolve().then(() => {
-                    const day11 = element.shadowRoot.querySelector(
-                        'span[data-date="11"]'
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
                     );
-                    day11.click();
+                    calendar.dispatchEvent(
+                        new CustomEvent('selectdate', {
+                            detail: {
+                                fullDate: String(day11.getTime()),
+                                disabled: false,
+                                bounds: { x: 1, y: 1 }
+                            }
+                        })
+                    );
                     expect(handler).toHaveBeenCalled();
                     const value = handler.mock.calls[0][0].detail.value;
                     expect(value).toHaveLength(2);
@@ -1252,6 +1080,10 @@ describe('Calendar', () => {
                     });
                     expect(new Date(value[0])).toEqual(new Date('05/09/2021'));
                     expect(new Date(value[1])).toEqual(new Date('05/11/2021'));
+                    expect(handler.mock.calls[0][0].detail.bounds).toEqual({
+                        x: 1,
+                        y: 1
+                    });
                 });
             });
         });
@@ -1293,323 +1125,319 @@ describe('Calendar', () => {
                 });
             });
 
-            describe('Using keyboard', () => {
-                it('Previous month - [left]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/01/2022';
-                    element.addEventListener('navigate', handler);
+            it('Fired on year change', () => {
+                element.value = '05/09/2021';
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="1"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'ArrowLeft',
-                                    bubbles: true
-                                })
-                            );
-                        })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('04/01/2022')
-                            );
-                        });
+                return Promise.resolve().then(() => {
+                    const selectYear = element.shadowRoot.querySelector(
+                        '[data-element-id="select-year"]'
+                    );
+                    selectYear.value = '2025';
+                    selectYear.dispatchEvent(new CustomEvent('change'));
+
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(new Date(date)).toEqual(new Date('05/01/2025'));
                 });
+            });
+        });
 
-                it('Next month - [right]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/31/2022';
-                    element.addEventListener('navigate', handler);
+        describe('keydowndate', () => {
+            it('Dispatch navigate on different month/year', () => {
+                element.value = '05/08/2022';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="31"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'ArrowRight',
-                                    bubbles: true
-                                })
-                            );
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('06/08/2022')
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('06/01/2022')
-                            );
-                        });
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(typeof date).toBe('string');
+                    expect(new Date(date)).toEqual(new Date('06/01/2022'));
+                    jest.runAllTimers();
+                    expect(focusDateSpy).toHaveBeenCalledWith(
+                        new Date('06/08/2022'),
+                        true
+                    );
                 });
+            });
 
-                it('Previous month - [up]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/07/2022';
-                    element.addEventListener('navigate', handler);
+            it('Does not dispatch navigate on same month/year', () => {
+                element.value = '05/08/2022';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="7"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'ArrowUp',
-                                    bubbles: true
-                                })
-                            );
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('05/09/2022')
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('04/01/2022')
-                            );
-                        });
+                    );
+                    expect(handler).not.toHaveBeenCalled();
+                    jest.runAllTimers();
+                    expect(focusDateSpy).toHaveBeenCalledWith(
+                        new Date('05/09/2022'),
+                        true
+                    );
                 });
+            });
 
-                it('Next month - [down]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/28/2022';
-                    element.addEventListener('navigate', handler);
+            it('Next date above max', () => {
+                element.value = '05/08/2022';
+                element.max = '12/31/2099';
+                element.min = '01/01/2000';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="28"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'ArrowDown',
-                                    bubbles: true
-                                })
-                            );
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('05/08/2100')
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('06/01/2022')
-                            );
-                        });
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(typeof date).toBe('string');
+                    expect(new Date(date)).toEqual(new Date('05/01/2100'));
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    jest.runAllTimers();
+                    const lastCall =
+                        focusDateSpy.mock.calls[
+                            focusDateSpy.mock.calls.length - 1
+                        ];
+                    expect(lastCall).toEqual([new Date('12/31/2099'), true]);
                 });
+            });
 
-                it('Previous month - [home]', () => {
-                    const handler = jest.fn();
-                    element.value = '06/04/2022';
-                    element.addEventListener('navigate', handler);
+            it('Next date below min', () => {
+                element.value = '05/08/2022';
+                element.max = '12/31/2099';
+                element.min = '01/01/2000';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="4"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'Home',
-                                    bubbles: true
-                                })
-                            );
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/08/2022'),
+                                nextDate: new Date('05/08/1999')
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('05/01/2022')
-                            );
-                        });
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    const date = handler.mock.calls[0][0].detail.date;
+                    expect(typeof date).toBe('string');
+                    expect(new Date(date)).toEqual(new Date('05/01/1999'));
+                    const focusDateSpy = jest.spyOn(calendar, 'focusDate');
+                    jest.runAllTimers();
+                    const lastCall =
+                        focusDateSpy.mock.calls[
+                            focusDateSpy.mock.calls.length - 1
+                        ];
+                    expect(lastCall).toEqual([new Date('01/01/2000'), true]);
                 });
+            });
 
-                it('Previous month - [home] - custom week start day', () => {
-                    const handler = jest.fn();
-                    element.value = new Date(2025, 9, 10);
-                    element.weekStartDay = 2;
-                    element.addEventListener('navigate', handler);
+            it('Dispatch navigate on multi calendars if next date not visible', () => {
+                element.value = '05/08/2022';
+                element.nbMonthCalendars = 2;
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="4"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'Home',
-                                    bubbles: true
-                                })
-                            );
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        calendars[1].dispatchEvent(
+                            new CustomEvent('keydowndate', {
+                                detail: {
+                                    fullDate: new Date('06/08/2022'),
+                                    nextDate: new Date('07/08/2022')
+                                }
+                            })
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        const date = handler.mock.calls[0][0].detail.date;
+                        expect(typeof date).toBe('string');
+                        expect(new Date(date)).toEqual(new Date('06/01/2022'));
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        const focusDateSpy = jest.spyOn(
+                            calendars[1],
+                            'focusDate'
+                        );
+                        jest.runAllTimers();
+                        const lastCall =
+                            focusDateSpy.mock.calls[
+                                focusDateSpy.mock.calls.length - 1
+                            ];
+                        expect(lastCall).toEqual([
+                            new Date('07/08/2022'),
+                            true
+                        ]);
+                    });
+            });
+
+            it('Dispatch not navigate on multi calendars if next date visible', () => {
+                element.value = '05/08/2022';
+                element.nbMonthCalendars = 2;
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        calendars[1].dispatchEvent(
+                            new CustomEvent('keydowndate', {
+                                detail: {
+                                    fullDate: new Date('05/08/2022'),
+                                    nextDate: new Date('06/08/2022')
+                                }
+                            })
+                        );
+                        expect(handler).not.toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        const calendars = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="avonni-calendar__primitive-calendar"]'
+                        );
+                        const focusDateSpy = jest.spyOn(
+                            calendars[1],
+                            'focusDate'
+                        );
+                        jest.runAllTimers();
+                        const lastCall =
+                            focusDateSpy.mock.calls[
+                                focusDateSpy.mock.calls.length - 1
+                            ];
+                        expect(lastCall).toEqual([
+                            new Date('06/08/2022'),
+                            true
+                        ]);
+                    });
+            });
+
+            it('Does not dispatch navigate if initial date is NaN', () => {
+                element.value = '05/08/2022';
+
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: NaN,
+                                nextDate: new Date('05/09/2022')
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            const firstDay = element.shadowRoot.querySelector(
-                                '[data-element-id="td"]'
-                            );
-                            expect(firstDay.dataset.fullDate).toBe(
-                                new Date(2025, 7, 26).getTime().toString()
-                            );
-                        });
+                    );
+                    expect(handler).not.toHaveBeenCalled();
                 });
+            });
 
-                it('Next month - [end]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/29/2022';
-                    element.addEventListener('navigate', handler);
+            it('Does not dispatch navigate if next date is NaN', () => {
+                element.value = '05/08/2022';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="29"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'End',
-                                    bubbles: true
-                                })
-                            );
+                const handler = jest.fn();
+                element.addEventListener('navigate', handler);
+
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    calendar.dispatchEvent(
+                        new CustomEvent('keydowndate', {
+                            detail: {
+                                fullDate: new Date('05/09/2022'),
+                                nextDate: NaN
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('06/01/2022')
-                            );
-                        });
+                    );
+                    expect(handler).not.toHaveBeenCalled();
                 });
+            });
+        });
 
-                it('Next month - [PageDown]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/29/2022';
-                    element.addEventListener('navigate', handler);
+        describe('mouseoutdate', () => {
+            it('Mouse out date', () => {
+                element.value = '05/08/2022';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="29"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'End',
-                                    bubbles: true
-                                })
-                            );
-                        })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('06/01/2022')
-                            );
-                        });
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const spy = jest.spyOn(calendar, 'mouseOutDate');
+                    calendar.dispatchEvent(new CustomEvent('mouseoutdate'));
+                    expect(spy).toHaveBeenCalledTimes(1);
                 });
+            });
+        });
 
-                it('Previous month - [PageUp]', () => {
-                    const handler = jest.fn();
-                    element.value = '05/29/2022';
-                    element.addEventListener('navigate', handler);
+        describe('mouseoverdate', () => {
+            it('Mouse over date', () => {
+                element.value = '05/08/2022';
 
-                    return Promise.resolve()
-                        .then(() => {
-                            const day9 =
-                                element.shadowRoot.querySelector(
-                                    'td[data-date="29"]'
-                                );
-                            day9.dispatchEvent(
-                                new KeyboardEvent('keydown', {
-                                    key: 'PageDown',
-                                    bubbles: true
-                                })
-                            );
+                return Promise.resolve().then(() => {
+                    const calendar = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-calendar__primitive-calendar"]'
+                    );
+                    const spyMouseOut = jest.spyOn(calendar, 'mouseOutDate');
+                    const spyMouseOver = jest.spyOn(calendar, 'mouseOverDate');
+                    calendar.dispatchEvent(
+                        new CustomEvent('mouseoverdate', {
+                            detail: {
+                                day: new Date('05/10/2022').getTime()
+                            }
                         })
-                        .then(() => {
-                            expect(handler).toHaveBeenCalled();
-                            expect(
-                                handler.mock.calls[0][0].bubbles
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].composed
-                            ).toBeFalsy();
-                            expect(
-                                handler.mock.calls[0][0].cancelable
-                            ).toBeFalsy();
-                            const date = handler.mock.calls[0][0].detail.date;
-                            expect(new Date(date)).toEqual(
-                                new Date('04/01/2022')
-                            );
-                        });
+                    );
+                    expect(spyMouseOut).toHaveBeenCalledTimes(1);
+                    expect(spyMouseOver).toHaveBeenCalledTimes(1);
                 });
             });
         });

@@ -44,10 +44,11 @@ export default class CalendarDateLabel {
     }
 
     get computedClass() {
-        return classSet('avonni-calendar__chip-label')
+        return classSet('avonni-primitive-calendar__chip-label')
             .add({
-                'avonni-calendar__chip-icon-only': this.iconName && !this.label,
-                'avonni-calendar__chip-without-icon': !this.iconName
+                'avonni-primitive-calendar__chip-icon-only':
+                    this.iconName && !this.label,
+                'avonni-primitive-calendar__chip-without-icon': !this.iconName
             })
             .toString();
     }

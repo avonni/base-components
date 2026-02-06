@@ -1,14 +1,14 @@
 import { LightningElement, api } from 'lwc';
 
-export default class Calendar extends LightningElement {
+export default class PrimitiveCalendar extends LightningElement {
     @api dateLabels;
-    @api disabled;
     @api disabledDates;
-    @api hideNavigation;
+    @api disabled;
+    @api displayDate;
+    @api isMultiCalendars;
     @api markedDates;
     @api max;
     @api min;
-    @api nbMonthCalendars;
     @api selectionMode;
     @api timezone;
     @api value;
@@ -16,8 +16,6 @@ export default class Calendar extends LightningElement {
     @api weekStartDay;
 
     @api focusDate() {}
-    @api focus() {}
-    @api goToDate() {}
-    @api nextMonth() {}
-    @api previousMonth() {}
+    @api mouseOutDate() {}
+    @api mouseOverDate() {}
 }
