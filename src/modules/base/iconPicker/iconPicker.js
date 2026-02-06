@@ -6,7 +6,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { keyValues } from 'c/utilsPrivate';
+import { isOrgSlds2, keyValues } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 import { ICON_TYPES } from './icons/salesforceIcons';
 
@@ -560,12 +560,14 @@ export default class IconPicker extends LightningElement {
      *
      * @type {string}
      */
-    get computedLegendClass() {
+    get computedLabelClass() {
         return classSet(
             'slds-form-element__label avonni-icon-picker__label slds-no-flex'
         )
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .toString();
     }

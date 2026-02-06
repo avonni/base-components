@@ -6,6 +6,7 @@ import {
     normalizeString
 } from 'c/utils';
 import { LightningElement, api } from 'lwc';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 import Item from './item';
 
 const DEFAULT_MAX = 5;
@@ -358,7 +359,9 @@ export default class Rating extends LightningElement {
             'slds-form-element__label slds-no-flex avonni-rating__label'
         )
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .toString();
     }

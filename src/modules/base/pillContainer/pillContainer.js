@@ -848,7 +848,7 @@ export default class PillContainer extends LightningElement {
         event.stopPropagation();
         const { name, targetName } = event.detail;
         const index = Number(event.currentTarget.dataset.index);
-        this.dispatchActionClick({ name, targetName, index });
+        this._dispatchActionClick({ name, targetName, index });
     }
 
     /**
@@ -859,7 +859,7 @@ export default class PillContainer extends LightningElement {
     handleActionSelect(event) {
         const name = event.detail.name;
         const { targetName, index } = this._selectedAction;
-        this.dispatchActionClick({ name, targetName, index });
+        this._dispatchActionClick({ name, targetName, index });
     }
 
     /**
@@ -973,7 +973,7 @@ export default class PillContainer extends LightningElement {
                 break;
             }
             case 'Enter': {
-                this.dispatchItemClick({
+                this._dispatchItemClick({
                     index,
                     targetName: this._items[index].name
                 });
@@ -1208,7 +1208,7 @@ export default class PillContainer extends LightningElement {
         const { initialIndex, isDragging } = this._dragState;
         const index = Number(event.currentTarget.dataset.index);
         if (isDragging || initialIndex !== index) return;
-        this.dispatchItemClick({
+        this._dispatchItemClick({
             targetName: this._items[initialIndex].name,
             index: initialIndex
         });
@@ -1297,7 +1297,7 @@ export default class PillContainer extends LightningElement {
      *
      * @param {object} detail Detail of the event.
      */
-    dispatchActionClick(detail) {
+    _dispatchActionClick(detail) {
         /**
          * The event fired when a user clicks on an action.
          *
@@ -1316,7 +1316,7 @@ export default class PillContainer extends LightningElement {
      *
      * @param {object} detail Detail of the event.
      */
-    dispatchItemClick(detail) {
+    _dispatchItemClick(detail) {
         /**
          * The event fired when a user clicks on an action.
          *

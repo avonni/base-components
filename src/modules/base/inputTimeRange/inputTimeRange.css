@@ -8,21 +8,38 @@
 }
 
 .avonni-input-time-range__label {
+    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
+    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
+.avonni-input-time-range__label.slds1 {
+    color: var(--avonni-input-time-range-header-text-color, #3e3e3c);
+    font-size: var(--avonni-input-time-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-input-time-range-header-font-style, normal);
+    font-weight: var(--avonni-input-time-range-header-font-weight, 400);
+}
+
+.avonni-input-time-range__label.slds1 {
+    color: var(--avonni-input-time-range-header-text-color, #3e3e3c);
+    font-size: var(--avonni-input-time-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-input-time-range-header-font-style, normal);
+    font-weight: var(--avonni-input-time-range-header-font-weight, 400);
+}
+
+.avonni-input-time-range__label.slds2 {
     color: var(
         --avonni-input-time-range-header-text-color,
-        var(--slds-s-label-color, var(--slds-g-color-on-surface-2, #080707))
+        var(--slds-g-color-on-surface-2, #2e2e2e)
     );
     font-size: var(
         --avonni-input-time-range-header-font-size,
-        var(--slds-g-font-scale-1, 0.8125rem)
+        var(--slds-g-font-scale-base, 0.8125rem)
     );
     font-style: var(--avonni-input-time-range-header-font-style, normal);
     font-weight: var(
         --avonni-input-time-range-header-font-weight,
-        var(--slds-g-font-weight-6, 400)
+        var(--slds-g-font-weight-6, 600)
     );
-    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
-    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
 }
 
 .avonni-input-time-range__input-labels {

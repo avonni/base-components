@@ -6,7 +6,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { equal } from 'c/utilsPrivate';
+import { equal, isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Item from './item';
 
@@ -436,6 +436,22 @@ export default class VerticalVisualPicker extends LightningElement {
             );
         }
         return classes.toString();
+    }
+
+    /**
+     * Computed legend class styling.
+     *
+     * @type {string}
+     */
+    get computedLegendClass() {
+        return classSet(
+            'slds-form-element__legend slds-form-element__label avonni-vertical-visual-picker__label'
+        )
+            .add({
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
+            })
+            .toString();
     }
 
     /**

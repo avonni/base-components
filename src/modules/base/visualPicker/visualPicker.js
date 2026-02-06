@@ -8,7 +8,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import { equal } from 'c/utilsPrivate';
+import { equal, isOrgSlds2 } from 'c/utilsPrivate';
 import { LightningElement, api, track } from 'lwc';
 
 const AVATAR_POSITION = {
@@ -723,6 +723,19 @@ export default class VisualPicker extends LightningElement {
             .add(
                 `avonni-visual-picker__figure-image_object-fit-${this.imageAttributes.cropFit}`
             )
+            .toString();
+    }
+
+    /**
+     * Computed legend class styling.
+     *
+     * @type {string}
+     */
+    get computedLegendClass() {
+        return classSet(
+            'slds-form-element__legend slds-form-element__label avonni-visual-picker__label'
+        )
+            .add({ slds1: !isOrgSlds2(), slds2: isOrgSlds2() })
             .toString();
     }
 

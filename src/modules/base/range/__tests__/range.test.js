@@ -411,7 +411,7 @@ describe('Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '[data-element-id="span-label"]'
+                        '[data-element-id="label"]'
                     );
                     expect(label.classList).not.toContain(
                         'slds-assistive-text'
@@ -428,7 +428,7 @@ describe('Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '[data-element-id="span-label"]'
+                        '[data-element-id="label"]'
                     );
                     expect(label.classList).toContain('slds-assistive-text');
                     expect(label.classList).not.toContain(
