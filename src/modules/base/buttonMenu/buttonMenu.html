@@ -112,7 +112,7 @@
                     onprivatehover={handleMenuItemHover}
                     onprivateselect={handleMenuItemSelect}
                 >
-                    <slot></slot>
+                    <slot onslotchange={handleItemsSlotChange}></slot>
                 </div>
                 <!-- Loading spinner -->
                 <div
@@ -126,7 +126,10 @@
                     ></lightning-spinner>
                 </div>
             </div>
-            <div class={computedFooterContainerClass}>
+            <div
+                class={computedFooterContainerClass}
+                data-element-id="avonni-button-menu__footer-container"
+            >
                 <slot
                     name="footer"
                     onslotchange={handleFooterSlotChange}

@@ -216,11 +216,6 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             this.handleScroll();
         }
-
-        const menuItem = this.getMenuItemByIndex(0);
-        if (menuItem && menuItem.tabIndex !== '0') {
-            menuItem.tabIndex = '0';
-        }
     }
 
     disconnectedCallback() {
@@ -1123,6 +1118,20 @@ export default class ButtonMenu extends ButtonMenuBase {
                 break;
             }
             default:
+        }
+    }
+
+    /**
+     * Handle the slot change of the items.
+     *
+     */
+    handleItemsSlotChange() {
+        const menuItem = this.getMenuItemByIndex(0);
+        if (menuItem && menuItem.tabIndex !== '0') {
+            menuItem.tabIndex = '0';
+        }
+        if (this.template.activeElement?.dataset?.elementId === 'dropdown') {
+            this.focusDropdown();
         }
     }
 
