@@ -27,4 +27,5 @@ export default class ButtonMenu extends LightningElement {
     @api click() {}
     @api close() {}
     @api focus() {}
+    @api focusSearchInput() {}
 }
