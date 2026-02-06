@@ -112,7 +112,10 @@
                     onprivatehover={handleMenuItemHover}
                     onprivateselect={handleMenuItemSelect}
                 >
-                    <slot onslotchange={handleItemsSlotChange}></slot>
+                    <slot
+                        onslotchange={handleItemsSlotChange}
+                        data-element-id="slot-default"
+                    ></slot>
                 </div>
                 <!-- Loading spinner -->
                 <div
@@ -132,6 +135,7 @@
             >
                 <slot
                     name="footer"
+                    data-element-id="slot-footer"
                     onslotchange={handleFooterSlotChange}
                 ></slot>
             </div>

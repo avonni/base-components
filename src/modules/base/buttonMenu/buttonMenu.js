@@ -768,7 +768,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @type {HTMLElement}
      */
     get footerSlot() {
-        return this.template.querySelector('slot[name=footer]');
+        return this.template.querySelector('[data-element-id="slot-footer"]');
     }
 
     /**
@@ -1140,11 +1140,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      *
      */
     handleFooterSlotChange() {
-        if (this.footerSlot) {
-            this._showFooter = this.footerSlot.assignedElements().length !== 0;
-        } else {
-            this._showFooter = false;
-        }
+        this._showFooter = this.footerSlot?.assignedElements().length > 0;
     }
 
     /**

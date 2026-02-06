@@ -15,6 +15,7 @@ describe('Button Menu', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
@@ -23,14 +24,20 @@ describe('Button Menu', () => {
         });
         document.body.appendChild(element);
         Tooltip.mockClear();
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.accessKey).toBeUndefined();
+            expect(element.allowSearch).toBeFalsy();
             expect(element.alternativeText).toBe('Show Menu');
             expect(element.disabled).toBeFalsy();
             expect(element.draftAlternativeText).toBeUndefined();
+            expect(element.enableInfiniteLoading).toBeFalsy();
             expect(element.groupOrder).toBeUndefined();
             expect(element.hideDownArrow).toBeFalsy();
             expect(element.iconName).toBe('utility:down');
@@ -40,9 +47,11 @@ describe('Button Menu', () => {
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
             expect(element.menuAlignment).toBe('left');
+            expect(element.menuLength).toBe('7-items');
             expect(element.nubbin).toBeFalsy();
             expect(element.prefixIconName).toBeFalsy();
             expect(element.stretch).toBeFalsy();
+            expect(element.searchInputPlaceholder).toBe('Search…');
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.value).toBeUndefined();
@@ -58,6 +67,23 @@ describe('Button Menu', () => {
 
                 return Promise.resolve().then(() => {
                     expect(button.accessKey).toBe('K');
+                });
+            });
+        });
+
+        describe('Allow Search', () => {
+            it('Display a search bar if present', () => {
+                element.allowSearch = true;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const searchInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    expect(searchInput).toBeTruthy();
                 });
             });
         });
@@ -782,6 +808,54 @@ describe('Button Menu', () => {
             });
         });
 
+        describe('Menu Length', () => {
+            it('5-items', () => {
+                element.menuLength = '5-items';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+                return Promise.resolve().then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown-content"]'
+                    );
+                    expect(dropdown.classList).toContain(
+                        'slds-dropdown_length-with-icon-5'
+                    );
+                });
+            });
+            it('7-items', () => {
+                element.menuLength = '7-items';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+                return Promise.resolve().then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown-content"]'
+                    );
+                    expect(dropdown.classList).toContain(
+                        'slds-dropdown_length-with-icon-7'
+                    );
+                });
+            });
+            it('10-items', () => {
+                element.menuLength = '10-items';
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+                return Promise.resolve().then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown-content"]'
+                    );
+                    expect(dropdown.classList).toContain(
+                        'slds-dropdown_length-with-icon-10'
+                    );
+                });
+            });
+        });
+
         describe('Prefix Icon Name', () => {
             it('Display an icon if present', () => {
                 element.prefixIconName = 'standard:account';
@@ -792,6 +866,40 @@ describe('Button Menu', () => {
                     );
                     expect(icon).toBeTruthy();
                     expect(icon.iconName).toBe('standard:account');
+                });
+            });
+        });
+
+        describe('Search Input Placeholder', () => {
+            it('Passed to component', () => {
+                element.searchInputPlaceholder = 'placeholder';
+                element.allowSearch = true;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const searchInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    expect(searchInput.placeholder).toBe('placeholder');
+                });
+            });
+
+            it('Fallback to default when falsy', () => {
+                element.searchInputPlaceholder = null;
+                element.allowSearch = true;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const searchInput = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    expect(searchInput.placeholder).toBe('Search…');
                 });
             });
         });
@@ -1321,9 +1429,143 @@ describe('Button Menu', () => {
                 expect(focusEvent).toBeTruthy();
             });
         });
+
+        it('focusSearchInput', () => {
+            element.allowSearch = true;
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+
+            return Promise.resolve().then(() => {
+                const search = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                const spy = jest.spyOn(search, 'focus');
+                element.focusSearchInput();
+                expect(spy).toHaveBeenCalled();
+            });
+        });
     });
 
     describe('Events', () => {
+        it('focus after setting isLoading to false', () => {
+            element.allowSearch = true;
+            element.isLoading = true;
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+            jest.runAllTimers();
+
+            return Promise.resolve()
+                .then(() => {
+                    jest.runAllTimers();
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    dropdown.dispatchEvent(
+                        new FocusEvent('focusout', { relatedTarget: button })
+                    );
+                    element.isLoading = false;
+                })
+                .then(() => {
+                    const focusTrap = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-focus-trap"]'
+                    );
+                    const spy = jest.spyOn(focusTrap, 'focus');
+                    jest.runAllTimers();
+                    expect(spy).toHaveBeenCalled();
+                });
+        });
+        it('loadmore event', () => {
+            const handler = jest.fn();
+            element.addEventListener('loadmore', handler);
+
+            expect(handler).not.toHaveBeenCalled();
+
+            element.enableInfiniteLoading = true;
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+            return Promise.resolve()
+                .then(() => {
+                    // Dispatch loadmore when there are no items on opening
+                    expect(handler).toHaveBeenCalledTimes(1);
+                    const call = handler.mock.calls[0][0];
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                })
+                .then(() => {
+                    // Dispatch loadmore when reaching the end of the list
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown-content"]'
+                    );
+                    jest.spyOn(dropdown, 'scrollHeight', 'get').mockReturnValue(
+                        100
+                    );
+                    jest.spyOn(dropdown, 'offsetHeight', 'get').mockReturnValue(
+                        80
+                    );
+                    dropdown.scrollTop = 20;
+
+                    dropdown.dispatchEvent(new CustomEvent('scroll'));
+                    expect(handler).toHaveBeenCalledTimes(2);
+
+                    element.isLoading = true;
+                })
+                .then(() => {
+                    // Do not dispatch loadmore when loading
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="div-dropdown-content"]'
+                    );
+                    jest.spyOn(dropdown, 'scrollHeight', 'get').mockReturnValue(
+                        100
+                    );
+                    jest.spyOn(dropdown, 'offsetHeight', 'get').mockReturnValue(
+                        80
+                    );
+                    dropdown.scrollTop = 20;
+
+                    dropdown.dispatchEvent(new CustomEvent('scroll'));
+                    expect(handler).toHaveBeenCalledTimes(2);
+                });
+        });
+        it('search', () => {
+            const handler = jest.fn();
+            element.addEventListener('search', handler);
+
+            element.allowSearch = true;
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+
+            return Promise.resolve().then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                input.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: 'Searchable'
+                        }
+                    })
+                );
+
+                jest.runAllTimers();
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.value).toBe('Searchable');
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+        });
         it('Trigger Click, close', () => {
             const handler = jest.fn();
             element.addEventListener('close', handler);
@@ -1344,9 +1586,6 @@ describe('Button Menu', () => {
         });
 
         it('Trigger Click, close, focus out', () => {
-            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(
-                (cb) => Promise.resolve().then(() => cb())
-            );
             const handler = jest.fn();
             element.triggers = 'click';
             element.addEventListener('close', handler);
@@ -1358,9 +1597,11 @@ describe('Button Menu', () => {
                         '[data-element-id="dropdown"]'
                     );
                     expect(dropdown).not.toBeNull();
+                    jest.runAllTimers();
                     dropdown.dispatchEvent(new CustomEvent('focusout'));
                 })
                 .then(() => {
+                    jest.runAllTimers();
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -1570,14 +1811,11 @@ describe('Button Menu', () => {
         });
 
         it('Trigger Focus, does not close when focus out on button', () => {
-            jest.spyOn(window, 'requestAnimationFrame').mockImplementation(
-                (cb) => Promise.resolve().then(() => cb())
-            );
             const handler = jest.fn();
             element.triggers = 'focus';
             element.addEventListener('close', handler);
             element.focus();
-
+            jest.runAllTimers();
             return Promise.resolve()
                 .then(() => {
                     const dropdown = element.shadowRoot.querySelector(
@@ -1592,6 +1830,7 @@ describe('Button Menu', () => {
                     );
                 })
                 .then(() => {
+                    jest.runAllTimers();
                     expect(handler).not.toHaveBeenCalled();
                 });
         });
@@ -1663,6 +1902,68 @@ describe('Button Menu', () => {
             button.dispatchEvent(event);
 
             expect(handler).toHaveBeenCalled();
+        });
+    });
+
+    describe('Slots', () => {
+        it('footer slot visibility', () => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+            return Promise.resolve()
+                .then(() => {
+                    const footerSlotContainer =
+                        element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-button-menu__footer-container"]'
+                        );
+                    expect(footerSlotContainer.classList).toContain(
+                        'slds-hide'
+                    );
+                    const footerSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="slot-footer"]'
+                    );
+                    footerSlot.assignedElements = jest.fn(() => {
+                        return { length: 1 };
+                    });
+                    footerSlot.dispatchEvent(new CustomEvent('slotchange'));
+                })
+                .then(() => {
+                    const footerSlotContainer =
+                        element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-button-menu__footer-container"]'
+                        );
+                    expect(footerSlotContainer.classList).not.toContain(
+                        'slds-hide'
+                    );
+                });
+        });
+
+        it('default slot focus trap', () => {
+            element.allowSearch = true;
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+            return Promise.resolve()
+                .then(() => {
+                    const dropdown = element.shadowRoot.querySelector(
+                        '[data-element-id="dropdown"]'
+                    );
+                    dropdown.focus();
+                    const defaultSlot = element.shadowRoot.querySelector(
+                        '[data-element-id="slot-default"]'
+                    );
+                    defaultSlot.dispatchEvent(new CustomEvent('slotchange'));
+                })
+                .then(() => {
+                    const focusTrap = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-focus-trap"]'
+                    );
+                    const spy = jest.spyOn(focusTrap, 'focus');
+                    jest.runAllTimers();
+                    expect(spy).toHaveBeenCalled();
+                });
         });
     });
 });
