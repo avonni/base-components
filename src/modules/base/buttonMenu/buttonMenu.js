@@ -165,6 +165,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
 
     _allowSearch = false;
+    _enableInfiniteLoading = false;
     _hideDownArrow = false;
     _iconName = DEFAULT_ICON_NAME;
     _iconSize = ICON_SIZES.default;
@@ -209,6 +210,7 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     renderedCallback() {
         super.renderedCallback();
+        this.initTooltip();
         if (
             this.enableInfiniteLoading &&
             this.dropdownElement &&
@@ -222,6 +224,9 @@ export default class ButtonMenu extends ButtonMenuBase {
         super.disconnectedCallback();
         this.removeEventListener('mouseenter', this.handleMouseEnter);
         this.removeEventListener('mouseleave', this.handleMouseLeave);
+        clearTimeout(this._searchTimeOut);
+        this._previousScroll = undefined;
+        this._connected = false;
     }
 
     /*
@@ -1005,6 +1010,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 this.stopAutoPositioning();
                 this.dispatchClose();
                 this._previousScroll = undefined;
+                clearTimeout(this._searchTimeOut);
             }
 
             this.classList.toggle('slds-is-open');
@@ -1037,7 +1043,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleButtonClick() {
         if (!this.computedDisabled && this.isTriggerClick) {
             this.toggleMenuVisibility();
-            this.focusDropdown();
         }
     }
 
@@ -1057,9 +1062,6 @@ export default class ButtonMenu extends ButtonMenuBase {
             !this.computedDisabled
         ) {
             this.toggleMenuVisibility();
-            requestAnimationFrame(() => {
-                this.focusDropdown();
-            });
         }
     }
 
@@ -1076,7 +1078,6 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             event.preventDefault();
             this.toggleMenuVisibility();
-            this.focusDropdown();
         }
     }
 
@@ -1127,7 +1128,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     handleItemsSlotChange() {
         const menuItem = this.getMenuItemByIndex(0);
-        if (menuItem && menuItem.tabIndex !== '0') {
+        if (menuItem && String(menuItem.tabIndex) !== '0') {
             menuItem.tabIndex = '0';
         }
         if (this.template.activeElement?.dataset?.elementId === 'dropdown') {
@@ -1159,7 +1160,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     handleSearch(event) {
         event.stopPropagation();
-        this.searchTerm = event.detail.value;
+        this.searchTerm = event.detail.value ?? null;
 
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
@@ -1304,28 +1305,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Menu search dispatch method.
-     */
-    dispatchSearch() {
-        /**
-         * The event fired when the search input value is changed.
-         *
-         * @event
-         * @name search
-         * @param {string} value The value of the search input.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('search', {
-                detail: {
-                    value: this.searchTerm
-                }
-            })
-        );
-    }
-
-    /**
      * Menu load more dispatch method.
      */
     dispatchLoadMore() {
@@ -1351,6 +1330,28 @@ export default class ButtonMenu extends ButtonMenuBase {
          * @public
          */
         this.dispatchEvent(new CustomEvent('open'));
+    }
+
+    /**
+     * Menu search dispatch method.
+     */
+    dispatchSearch() {
+        /**
+         * The event fired when the search input value is changed.
+         *
+         * @event
+         * @name search
+         * @param {string} value The value of the search input.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('search', {
+                detail: {
+                    value: this.searchTerm
+                }
+            })
+        );
     }
 
     /**
