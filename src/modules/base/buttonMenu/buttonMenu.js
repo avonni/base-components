@@ -1160,7 +1160,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     handleSearch(event) {
         event.stopPropagation();
-        this.searchTerm = event.detail.value ?? null;
+        this.searchTerm = event.detail.value || null;
 
         clearTimeout(this._searchTimeOut);
         this._searchTimeOut = setTimeout(() => {
