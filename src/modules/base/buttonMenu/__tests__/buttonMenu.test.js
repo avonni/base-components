@@ -1514,7 +1514,7 @@ describe('Button Menu', () => {
                     dropdown.scrollTop = 20;
 
                     dropdown.dispatchEvent(new CustomEvent('scroll'));
-                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler).toHaveBeenCalledTimes(1);
 
                     element.isLoading = true;
                 })
@@ -1532,7 +1532,7 @@ describe('Button Menu', () => {
                     dropdown.scrollTop = 20;
 
                     dropdown.dispatchEvent(new CustomEvent('scroll'));
-                    expect(handler).toHaveBeenCalledTimes(2);
+                    expect(handler).toHaveBeenCalledTimes(1);
                 });
         });
         it('search', () => {

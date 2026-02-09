@@ -1114,7 +1114,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 if (this._dropdownVisible && !this.isTriggerFocus) {
                     this.preventDefaultAndStopPropagation(event);
                     this.toggleMenuVisibility();
-                    this.button.focus();
+                    this.button?.focus();
                 }
                 break;
             }
@@ -1183,7 +1183,7 @@ export default class ButtonMenu extends ButtonMenuBase {
 
         if (
             this.scrolledToEnd &&
-            (!this._previousScroll || firstTimeReachingTheEnd)
+            (this._previousScroll == null || firstTimeReachingTheEnd)
         ) {
             this.dispatchLoadMore();
         }
@@ -1206,7 +1206,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 if (this._dropdownVisible && !this.isTriggerFocus) {
                     this.preventDefaultAndStopPropagation(event);
                     this.toggleMenuVisibility();
-                    this.button.focus();
+                    this.button?.focus();
                 }
                 break;
             }
@@ -1244,7 +1244,7 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleMenuItemSelect(event) {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
-            this.button.focus();
+            this.button?.focus();
         }
 
         event.stopPropagation();
