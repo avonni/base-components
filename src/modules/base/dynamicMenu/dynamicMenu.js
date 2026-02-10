@@ -201,6 +201,12 @@ export default class DynamicMenu extends LightningElement {
         if (this._deRegistrationCallback) {
             this._deRegistrationCallback();
         }
+
+        clearTimeout(this._buttonTimeout);
+        this._itemTimeouts.forEach((timeout) => {
+            clearTimeout(timeout);
+        });
+        this._itemTimeouts.clear();
     }
 
     /**
