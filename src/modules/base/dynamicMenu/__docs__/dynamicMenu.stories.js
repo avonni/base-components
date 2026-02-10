@@ -220,6 +220,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        selectOnHover: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the menu items are selected when hovered over.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -294,6 +305,7 @@ export default {
         menuWidth: 'small',
         nubbin: false,
         searchInputPlaceholder: 'Search…',
+        selectOnHover: false,
         variant: 'border'
     }
 };
