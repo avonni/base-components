@@ -331,7 +331,7 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         menuAlignment: 'left',
-        menuLength: '7-items',
+        menuLength: 'none',
         nubbin: false,
         triggers: 'click',
         variant: 'border'

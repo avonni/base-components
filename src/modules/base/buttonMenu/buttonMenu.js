@@ -49,8 +49,8 @@ const MENU_ALIGNMENTS = {
 };
 
 const MENU_LENGTHS = {
-    valid: ['5-items', '7-items', '10-items'],
-    default: '7-items'
+    valid: ['none', '5-items', '7-items', '10-items'],
+    default: 'none'
 };
 
 const MENU_TRIGGERS = {
@@ -374,10 +374,10 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Maximum length of the menu. Valid values include 5-items, 7-items and 10-items.
+     * Maximum length of the menu. Valid values include none, 5-items, 7-items and 10-items.
      *
      * @type {string}
-     * @default 7-items
+     * @default none
      * @public
      */
     @api

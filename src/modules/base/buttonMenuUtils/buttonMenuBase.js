@@ -92,7 +92,9 @@ export class ButtonMenuBase extends PrimitiveButton {
      * @return {object[]}
      */
     getMenuItems() {
-        const slot = this.template.querySelector('slot');
+        const slot = this.template.querySelector(
+            '[data-element-id="slot-default"]'
+        );
         if (!slot) return [];
 
         const slottedElements = slot.assignedElements();
