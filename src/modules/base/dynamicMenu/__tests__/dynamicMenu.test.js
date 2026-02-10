@@ -46,6 +46,7 @@ describe('Dynamic Menu', () => {
             expect(element.menuWidth).toBe('small');
             expect(element.nubbin).toBeFalsy();
             expect(element.searchInputPlaceholder).toBe('Search…');
+            expect(element.selectOnHover).toBeFalsy();
             expect(element.title).toBeUndefined();
             expect(element.tooltip).toBeUndefined();
             expect(element.value).toBeUndefined();
@@ -754,6 +755,129 @@ describe('Dynamic Menu', () => {
                         expect(searchInput.placeholder).toBe(
                             'This is a search input placeholder'
                         );
+                    });
+            });
+        });
+
+        describe('Select On Hover', () => {
+            it('Should open menu on button hover when selectOnHover is true', () => {
+                element.selectOnHover = true;
+                element.label = 'Hover Menu';
+                element.items = baseItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).not.toBeNull();
+                    });
+            });
+
+            it('Should select item on hover when selectOnHover is true', () => {
+                element.selectOnHover = true;
+                element.label = 'Hover Menu';
+                element.items = baseItems;
+                element.value = null;
+
+                let selectedValue;
+                element.addEventListener('select', (event) => {
+                    selectedValue = event.detail.value;
+                });
+
+                return Promise.resolve()
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+                    })
+                    .then(() => {
+                        const menuItems = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(menuItems.length).toBeGreaterThan(0);
+
+                        // Hover over the first item
+                        const firstItem = menuItems[0];
+                        firstItem.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+
+                        // Should trigger selection
+                        expect(selectedValue).toBe(baseItems[0].value);
+                    });
+            });
+
+            it('Should not open menu on button hover when selectOnHover is false', () => {
+                element.selectOnHover = false;
+                element.label = 'Normal Menu';
+                element.items = baseItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                    });
+            });
+
+            it('Should not select item on hover when selectOnHover is false', () => {
+                element.selectOnHover = false;
+                element.label = 'Normal Menu';
+                element.items = baseItems;
+                element.value = null;
+
+                let selectionTriggered = false;
+                element.addEventListener('select', () => {
+                    selectionTriggered = true;
+                });
+
+                return Promise.resolve()
+                    .then(() => {
+                        // Open the menu manually
+                        element.click();
+                    })
+                    .then(() => {
+                        const menuItems = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        expect(menuItems.length).toBeGreaterThan(0);
+
+                        // Hover over the first item
+                        const firstItem = menuItems[0];
+                        firstItem.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+
+                        // Should not trigger selection
+                        expect(selectionTriggered).toBeFalsy();
                     });
             });
         });
