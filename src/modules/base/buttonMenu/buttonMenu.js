@@ -1111,14 +1111,23 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleDropdownKeyDown(event) {
         switch (event.key) {
             case keyValues.escape: {
-                if (this._dropdownVisible && !this.isTriggerFocus) {
-                    this.preventDefaultAndStopPropagation(event);
-                    this.toggleMenuVisibility();
-                    this.button?.focus();
-                }
+                this.handleEscapeKey(event);
                 break;
             }
             default:
+        }
+    }
+
+    /**
+     * Escape keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleEscapeKey(event) {
+        if (this._dropdownVisible && !this.isTriggerFocus) {
+            this.preventDefaultAndStopPropagation(event);
+            this.toggleMenuVisibility();
+            this.button?.focus();
         }
     }
 
@@ -1204,11 +1213,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 break;
             }
             case keyValues.escape: {
-                if (this._dropdownVisible && !this.isTriggerFocus) {
-                    this.preventDefaultAndStopPropagation(event);
-                    this.toggleMenuVisibility();
-                    this.button?.focus();
-                }
+                this.handleEscapeKey(event);
                 break;
             }
             default:
