@@ -1343,7 +1343,6 @@ export default class ButtonMenu extends ButtonMenuBase {
          * @name search
          * @param {string} value The value of the search input.
          * @public
-         * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('search', {
