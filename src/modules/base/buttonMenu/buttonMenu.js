@@ -1181,9 +1181,10 @@ export default class ButtonMenu extends ButtonMenuBase {
         const loadLimit = fullHeight - visibleHeight - LOAD_MORE_OFFSET;
         const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
 
+        // We must use !this._previousScroll to dispatch load more
         if (
             this.scrolledToEnd &&
-            (this._previousScroll == null || firstTimeReachingTheEnd)
+            (!this._previousScroll || firstTimeReachingTheEnd)
         ) {
             this.dispatchLoadMore();
         }
