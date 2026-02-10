@@ -345,12 +345,13 @@ export default class ButtonMenu extends ButtonMenuBase {
     set isLoading(value) {
         const normalizedValue = normalizeBoolean(value);
         this._isLoading = normalizedValue;
-        if (this._connected && !this._isLoading) {
-            requestAnimationFrame(() => {
-                if (this._dropdownVisible && !this._dropdownIsFocused) {
-                    this.focusDropdown();
-                }
-            });
+        if (
+            this._connected &&
+            !this._isLoading &&
+            this._dropdownVisible &&
+            !this._dropdownIsFocused
+        ) {
+            this.focusDropdown();
         }
     }
 
