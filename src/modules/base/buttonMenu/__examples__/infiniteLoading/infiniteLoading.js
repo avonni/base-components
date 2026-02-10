@@ -94,6 +94,7 @@ export default class ButtonMenuInfiniteLoading extends LightningElement {
 
     handleSearch(event) {
         this._searchTerm = event.detail.value;
+        this._enableInfiniteLoading = true;
         this.items = [];
         this.handleLoadMore();
     }
