@@ -21,6 +21,8 @@
         onclick={handleButtonClick}
         onfocus={focus}
         onmousedown={handleButtonMouseDown}
+        onmouseenter={handleButtonMouseEnter}
+        onmouseleave={handleButtonMouseLeave}
     ></c-button>
     <c-button-icon
         if:false={label}
@@ -43,6 +45,8 @@
         onclick={handleButtonClick}
         onfocus={focus}
         onmousedown={handleButtonMouseDown}
+        onmouseenter={handleButtonMouseEnter}
+        onmouseleave={handleButtonMouseLeave}
     ></c-button-icon>
     <div
         if:true={dropdownOpened}
