@@ -897,6 +897,12 @@ export default class DynamicMenu extends LightningElement {
             }
 
             this.classList.toggle('slds-is-open');
+
+            clearTimeout(this._buttonTimeout);
+            this._itemTimeouts.forEach((timeout) => {
+                clearTimeout(timeout);
+            });
+            this._itemTimeouts.clear();
         }
     }
 
@@ -944,7 +950,7 @@ export default class DynamicMenu extends LightningElement {
      * Button Mouse enter event handler.
      */
     handleButtonMouseEnter() {
-        if (!this.selectOnHover) {
+        if (!this.selectOnHover || this.disabled) {
             return;
         }
         clearTimeout(this._buttonTimeout);
@@ -957,7 +963,7 @@ export default class DynamicMenu extends LightningElement {
      * Button Mouse leave event handler.
      */
     handleButtonMouseLeave() {
-        if (!this.selectOnHover) {
+        if (!this.selectOnHover || this.disabled) {
             return;
         }
         clearTimeout(this._buttonTimeout);
@@ -1135,7 +1141,7 @@ export default class DynamicMenu extends LightningElement {
             'avonni-dynamic-menu__display_action'
         );
 
-        if (!this.selectOnHover) {
+        if (!this.selectOnHover || this.disabled) {
             return;
         }
         clearTimeout(this._itemTimeouts.get(event.currentTarget));
@@ -1163,7 +1169,7 @@ export default class DynamicMenu extends LightningElement {
         event.currentTarget.classList.remove(
             'avonni-dynamic-menu__display_action'
         );
-        if (!this.selectOnHover) {
+        if (!this.selectOnHover || this.disabled) {
             return;
         }
         clearTimeout(this._itemTimeouts.get(event.currentTarget));
