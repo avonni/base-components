@@ -418,10 +418,10 @@ export default class ButtonMenu extends ButtonMenuBase {
         return this._searchInputPlaceholder;
     }
     set searchInputPlaceholder(value) {
-        this._searchInputPlaceholder =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+        const normalizedValue = typeof value === 'string' ? value.trim() : '';
+        this._searchInputPlaceholder = normalizedValue
+            ? normalizedValue
+            : DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     }
 
     /**
@@ -935,6 +935,9 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     focusDropdown() {
         requestAnimationFrame(() => {
+            if (!this._dropdownVisible) {
+                return;
+            }
             const focusTrap = this.template.querySelector(
                 '[data-element-id="avonni-focus-trap"]'
             );
