@@ -223,8 +223,8 @@ export default class ButtonMenu extends ButtonMenuBase {
         if (
             this.enableInfiniteLoading &&
             !this.isNoneLength &&
-            this.dropdownElement &&
-            this.dropdownElement.scrollTop === 0
+            this.dropdownContentElement &&
+            this.dropdownContentElement.scrollTop === 0
         ) {
             this.handleScroll();
         }
@@ -764,14 +764,23 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * HTML element of the dropdown content.
+     *
+     * @type {HTMLElement}
+     */
+    get dropdownContentElement() {
+        return this.template.querySelector(
+            '[data-element-id="div-dropdown-content"]'
+        );
+    }
+
+    /**
      * HTML element of the dropdown.
      *
      * @type {HTMLElement}
      */
     get dropdownElement() {
-        return this.template.querySelector(
-            '[data-element-id="div-dropdown-content"]'
-        );
+        return this.template.querySelector('[data-element-id="dropdown"]');
     }
 
     get dropdownOpened() {
@@ -832,11 +841,22 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @type {boolean}
      */
     get scrolledToEnd() {
-        const fullHeight = this.dropdownElement.scrollHeight;
-        const scrolledDistance = this.dropdownElement.scrollTop;
-        const visibleHeight = this.dropdownElement.offsetHeight;
+        const fullHeight = this.dropdownContentElement.scrollHeight;
+        const scrolledDistance = this.dropdownContentElement.scrollTop;
+        const visibleHeight = this.dropdownContentElement.offsetHeight;
         return (
             visibleHeight + scrolledDistance + LOAD_MORE_OFFSET >= fullHeight
+        );
+    }
+
+    /**
+     * Search Input DOM element
+     *
+     * @type {HTMLElement}
+     */
+    get searchInput() {
+        return this.template.querySelector(
+            '[data-element-id="lightning-input"]'
         );
     }
 
@@ -940,12 +960,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     @api
     focusSearchInput() {
-        const search = this.template.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
-        if (search) {
-            search.focus();
-        }
+        this.searchInput?.focus();
     }
 
     /*
@@ -965,7 +980,10 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     focusDropdown() {
         requestAnimationFrame(() => {
-            if (!this._dropdownVisible) {
+            if (
+                !this._dropdownVisible ||
+                (this.isLoading && !this.enableInfiniteLoading)
+            ) {
                 return;
             }
             const focusTrap = this.template.querySelector(
@@ -979,10 +997,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 menuItem.focus();
             } else {
                 // Allows to have the dropdown focused there are no items in the dropdown.
-                const dropdown = this.template.querySelector(
-                    '[data-element-id="dropdown"]'
-                );
-                dropdown?.focus();
+                this.dropdownElement?.focus();
             }
         });
     }
@@ -995,9 +1010,7 @@ export default class ButtonMenu extends ButtonMenuBase {
             this._autoPosition = new AutoPosition(this);
         }
 
-        const dropdown = this.template.querySelector(
-            '[data-element-id="dropdown"]'
-        );
+        const dropdown = this.dropdownElement;
         this._autoPosition.start({
             target: () => this.button,
             element: () => dropdown,
@@ -1064,10 +1077,13 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleButtonBlur(event) {
         const isMenuItemFocused =
             event.relatedTarget && this.isValidMenuItem(event.relatedTarget);
-        if (this.isTriggerFocus && !isMenuItemFocused) {
+        const isSearch =
+            event.relatedTarget && event.relatedTarget === this.searchInput;
+        const isOutsideItem = !isMenuItemFocused && !isSearch;
+        if (this.isTriggerFocus && isOutsideItem) {
             this.toggleMenuVisibility();
         }
-        if (!isMenuItemFocused) {
+        if (isOutsideItem) {
             this.dispatchEvent(new CustomEvent('blur'));
         }
     }
@@ -1225,13 +1241,14 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleScroll() {
         if (
             !this.enableInfiniteLoading ||
-            (this.isLoading && this.menuLength === 'none')
+            this.isLoading ||
+            this.isNoneLength
         ) {
             return;
         }
 
-        const fullHeight = this.dropdownElement.scrollHeight;
-        const visibleHeight = this.dropdownElement.offsetHeight;
+        const fullHeight = this.dropdownContentElement.scrollHeight;
+        const visibleHeight = this.dropdownContentElement.offsetHeight;
         const loadLimit = fullHeight - visibleHeight - LOAD_MORE_OFFSET;
         const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
 
@@ -1242,7 +1259,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             this.dispatchLoadMore();
         }
-        this._previousScroll = this.dropdownElement.scrollTop;
+        this._previousScroll = this.dropdownContentElement.scrollTop;
     }
 
     /**
