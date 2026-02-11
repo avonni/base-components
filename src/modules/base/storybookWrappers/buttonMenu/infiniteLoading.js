@@ -72,6 +72,7 @@ export default class ButtonMenuInfiniteLoading extends LightningElement {
 
     handleClose() {
         clearTimeout(this._loadMoreTimeOut);
+        this._searchTerm = null;
         this.items = [];
         this._isLoading = false;
         this._enableInfiniteLoading = false;
