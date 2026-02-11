@@ -21,6 +21,7 @@ export const ButtonMenuInfiniteLoading = ({
     isLoading,
     label,
     loadingStateAlternativeText,
+    loadMoreButtonLabel,
     menuAlignment,
     menuLength,
     nubbin,
@@ -48,6 +49,7 @@ export const ButtonMenuInfiniteLoading = ({
     element.isLoading = isLoading;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.loadMoreButtonLabel = loadMoreButtonLabel;
     element.menuAlignment = menuAlignment;
     element.menuLength = menuLength;
     element.nubbin = nubbin;

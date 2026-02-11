@@ -26,6 +26,7 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
+const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load more';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 
 const i18n = {
@@ -134,6 +135,14 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @default Loading...
      */
     /**
+     * Label for the load more button.
+     *
+     * @type {string}
+     * @public
+     * @default 'Load more'
+     */
+    @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
+    /**
      * The Lightning Design System name of the icon positionned before the label.
      *
      * @type {string}
@@ -213,6 +222,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         this.initTooltip();
         if (
             this.enableInfiniteLoading &&
+            !this.isNoneLength &&
             this.dropdownElement &&
             this.dropdownElement.scrollTop === 0
         ) {
@@ -787,6 +797,15 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Returns true if menu length is none.
+     *
+     * @type {boolean}
+     */
+    get isNoneLength() {
+        return this.menuLength === 'none';
+    }
+
+    /**
      * Returns true if icon is a down icon.
      *
      * @type {boolean}
@@ -818,6 +837,17 @@ export default class ButtonMenu extends ButtonMenuBase {
         const visibleHeight = this.dropdownElement.offsetHeight;
         return (
             visibleHeight + scrolledDistance + LOAD_MORE_OFFSET >= fullHeight
+        );
+    }
+
+    /**
+     * True if the load more button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLoadMoreButton() {
+        return (
+            this.enableInfiniteLoading && !this.isLoading && this.isNoneLength
         );
     }
 
@@ -1011,6 +1041,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 });
                 this.focusDropdown();
             } else {
+                // We don't want to clear the search term.
                 this.stopAutoPositioning();
                 this.dispatchClose();
                 this._previousScroll = undefined;
@@ -1167,6 +1198,13 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Handle a click on the load more button.
+     */
+    handleLoadMore() {
+        this.focusDropdown();
+        this.dispatchLoadMore();
+    }
+    /**
      * Handle an input in the search box.
      *
      * @param {Event} event change event.
@@ -1185,7 +1223,10 @@ export default class ButtonMenu extends ButtonMenuBase {
      * Handle a scroll movement in the dropdown menu.
      */
     handleScroll() {
-        if (!this.enableInfiniteLoading || this.isLoading) {
+        if (
+            !this.enableInfiniteLoading ||
+            (this.isLoading && this.menuLength === 'none')
+        ) {
             return;
         }
 
@@ -1319,7 +1360,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     dispatchLoadMore() {
         /**
-         * The event fired when you scroll to the end of the dropdown menu. This event is fired only if `enable-infinite-loading` is true.
+         * The event fired when you scroll to the end of the dropdown menu or on a click of the load more button. This event is fired only if `enable-infinite-loading` is true.
          *
          * @event
          * @name loadmore

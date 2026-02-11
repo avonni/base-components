@@ -46,8 +46,9 @@ describe('Button Menu', () => {
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
+            expect(element.loadMoreButtonLabel).toBe('Load more');
             expect(element.menuAlignment).toBe('left');
-            expect(element.menuLength).toBe('7-items');
+            expect(element.menuLength).toBe('none');
             expect(element.nubbin).toBeFalsy();
             expect(element.prefixIconName).toBeFalsy();
             expect(element.stretch).toBeFalsy();
@@ -1479,12 +1480,39 @@ describe('Button Menu', () => {
                     expect(spy).toHaveBeenCalled();
                 });
         });
-        it('loadmore event', () => {
+        it('loadmore event click', () => {
             const handler = jest.fn();
             element.addEventListener('loadmore', handler);
 
             expect(handler).not.toHaveBeenCalled();
 
+            element.menuLength = 'none';
+            element.enableInfiniteLoading = true;
+
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            button.click();
+            return Promise.resolve().then(() => {
+                const buttonLoadmore = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-load-more"]'
+                );
+                buttonLoadmore.click();
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+        });
+
+        it('loadmore event scroll', () => {
+            const handler = jest.fn();
+            element.addEventListener('loadmore', handler);
+
+            expect(handler).not.toHaveBeenCalled();
+
+            element.menuLength = '7-items';
             element.enableInfiniteLoading = true;
 
             const button = element.shadowRoot.querySelector(

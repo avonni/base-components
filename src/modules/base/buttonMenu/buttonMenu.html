@@ -116,6 +116,14 @@
                         data-element-id="slot-default"
                     ></slot>
                 </div>
+                <lightning-button
+                    if:true={showLoadMoreButton}
+                    class="slds-p-around_small"
+                    label={loadMoreButtonLabel}
+                    variant="base"
+                    data-element-id="lightning-button-load-more"
+                    onclick={handleLoadMore}
+                ></lightning-button>
                 <!-- Loading spinner -->
                 <div
                     if:true={showInfiniteLoading}

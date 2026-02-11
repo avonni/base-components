@@ -180,6 +180,17 @@ export default {
                 category: 'menu'
             }
         },
+        loadMoreButtonLabel: {
+            name: 'load-more-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label for the load more button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Load more' }
+            }
+        },
         menuAlignment: {
             name: 'menu-alignment',
             control: {
@@ -207,12 +218,12 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['5-items', '7-items', '10-items'],
+            options: ['none', '5-items', '7-items', '10-items'],
             description:
-                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
+                'Maximum length of the dropdown menu. Valid values include none, 5-items, 7-items and 10-items.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '7-items' }
+                defaultValue: { summary: 'none' }
             }
         },
         nubbin: {
@@ -330,6 +341,7 @@ export default {
         isDraft: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
+        loadMoreButtonLabel: 'Load more',
         menuAlignment: 'left',
         menuLength: 'none',
         nubbin: false,
