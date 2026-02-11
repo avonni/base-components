@@ -223,7 +223,8 @@ export default {
                 'Maximum length of the dropdown menu. Valid values include none, 5-items, 7-items and 10-items.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'none' }
+                defaultValue: { summary: 'none' },
+                category: 'menu'
             }
         },
         nubbin: {
@@ -335,6 +336,7 @@ export default {
         allowSearch: false,
         alternativeText: 'Show Menu',
         disabled: false,
+        enableInfiniteLoading: false,
         hideDownArrow: false,
         iconName: 'utility:down',
         iconSize: 'medium',

@@ -1821,7 +1821,7 @@ describe('Button Menu', () => {
             element.triggers = 'focus';
             element.addEventListener('close', handler);
             element.focus();
-
+            jest.runAllTimers();
             return Promise.resolve()
                 .then(() => {
                     const dropdown = element.shadowRoot.querySelector(

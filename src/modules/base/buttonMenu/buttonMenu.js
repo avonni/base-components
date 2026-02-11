@@ -788,6 +788,17 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * HTML element of focus trap.
+     *
+     * @type {HTMLElement}
+     */
+    get focusTrap() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-focus-trap"]'
+        );
+    }
+
+    /**
      * Footer Slot DOM element
      *
      * @type {HTMLElement}
@@ -986,13 +997,11 @@ export default class ButtonMenu extends ButtonMenuBase {
             ) {
                 return;
             }
-            const focusTrap = this.template.querySelector(
-                '[data-element-id="avonni-focus-trap"]'
-            );
+
             const menuItem = this.getMenuItemByIndex(0);
             this._dropdownIsFocused = true;
-            if (focusTrap && this.allowSearch) {
-                focusTrap.focus();
+            if (this.focusTrap && this.allowSearch) {
+                this.focusTrap.focus();
             } else if (menuItem) {
                 menuItem.focus();
             } else {
@@ -1059,11 +1068,11 @@ export default class ButtonMenu extends ButtonMenuBase {
                     this.focusDropdown();
                 }
             } else {
-                // We don't want to clear the search term.
                 this.stopAutoPositioning();
                 this.dispatchClose();
                 this._previousScroll = undefined;
                 clearTimeout(this._searchTimeOut);
+                this.searchTerm = null;
             }
 
             this.classList.toggle('slds-is-open');
@@ -1087,14 +1096,13 @@ export default class ButtonMenu extends ButtonMenuBase {
         const isSearch = related && related === this.searchInput;
 
         const isFooterItem = related && this.footerSlot?.contains(related);
-
-        const isOutsideItem = !isMenuItemFocused && !isSearch && !isFooterItem;
-
-        if (this.isTriggerFocus && isOutsideItem) {
+        // If the focused item is not the search, footer or menu item, focus out
+        const isFocusOut = !isMenuItemFocused && !isSearch && !isFooterItem;
+        if (this.isTriggerFocus && isFocusOut) {
             this.toggleMenuVisibility();
         }
 
-        if (isOutsideItem) {
+        if (isFocusOut) {
             this.dispatchEvent(new CustomEvent('blur'));
         }
     }
