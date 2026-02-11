@@ -1036,8 +1036,11 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     /**
      * Menu visibility toggle handler.
+     * @param {boolean} [applyFocusDropdown=true]
+     *  Whether focus should be moved to the dropdown after it becomes visible.
+     *  Defaults to true.
      */
-    toggleMenuVisibility() {
+    toggleMenuVisibility(applyFocusDropdown = true) {
         if (!this.computedDisabled) {
             this._dropdownVisible = !this._dropdownVisible;
 
@@ -1052,7 +1055,9 @@ export default class ButtonMenu extends ButtonMenuBase {
                 requestAnimationFrame(() => {
                     this.startAutoPositionning();
                 });
-                this.focusDropdown();
+                if (applyFocusDropdown) {
+                    this.focusDropdown();
+                }
             } else {
                 // We don't want to clear the search term.
                 this.stopAutoPositioning();
@@ -1338,7 +1343,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             return;
         }
-        this.toggleMenuVisibility();
+        this.toggleMenuVisibility(false);
     };
 
     handleMouseLeave = () => {
@@ -1349,7 +1354,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             return;
         }
-        this.toggleMenuVisibility();
+        this.toggleMenuVisibility(false);
     };
 
     /*

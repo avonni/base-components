@@ -6,6 +6,7 @@ export default class ButtonMenuIllustration extends LightningElement {
     @api alternativeText;
     @api disabled;
     @api draftAlternativeText;
+    @api enableInfiniteLoading;
     @api hideDownArrow;
     @api iconName;
     @api iconSize;
