@@ -1240,7 +1240,12 @@ export default class ButtonMenu extends ButtonMenuBase {
      * Handle a click on the load more button.
      */
     handleLoadMore() {
-        this.focusDropdown();
+        const menuItem = this.getMenuItemByIndex(0);
+        if (menuItem) {
+            this.focusOnMenuItem(this.getMenuItems().length - 1);
+        } else {
+            this.dropdownElement?.focus();
+        }
         this.dispatchLoadMore();
     }
     /**
