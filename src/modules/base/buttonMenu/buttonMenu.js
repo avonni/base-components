@@ -1004,6 +1004,11 @@ export default class ButtonMenu extends ButtonMenuBase {
                 this.focusTrap.focus();
             } else if (menuItem) {
                 menuItem.focus();
+            }
+            // We stay focus on the button is there is no menu items
+            else if (this.isTriggerFocus) {
+                this._dropdownIsFocused = false;
+                this.button?.focus();
             } else {
                 // Allows to have the dropdown focused there are no items in the dropdown.
                 this.dropdownElement?.focus();
@@ -1095,9 +1100,8 @@ export default class ButtonMenu extends ButtonMenuBase {
 
         const isSearch = related && related === this.searchInput;
 
-        const isFooterItem = related && this.footerSlot?.contains(related);
-        // If the focused item is not the search, footer or menu item, focus out
-        const isFocusOut = !isMenuItemFocused && !isSearch && !isFooterItem;
+        // The only items focused by `focusDropdown` are the menu items and the search.
+        const isFocusOut = !isMenuItemFocused && !isSearch;
         if (this.isTriggerFocus && isFocusOut) {
             this.toggleMenuVisibility();
         }
