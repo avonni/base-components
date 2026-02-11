@@ -1080,14 +1080,20 @@ export default class ButtonMenu extends ButtonMenuBase {
      * Blur handler.
      */
     handleButtonBlur(event) {
-        const isMenuItemFocused =
-            event.relatedTarget && this.isValidMenuItem(event.relatedTarget);
-        const isSearch =
-            event.relatedTarget && event.relatedTarget === this.searchInput;
-        const isOutsideItem = !isMenuItemFocused && !isSearch;
+        const related = event.relatedTarget;
+
+        const isMenuItemFocused = related && this.isValidMenuItem(related);
+
+        const isSearch = related && related === this.searchInput;
+
+        const isFooterItem = related && this.footerSlot?.contains(related);
+
+        const isOutsideItem = !isMenuItemFocused && !isSearch && !isFooterItem;
+
         if (this.isTriggerFocus && isOutsideItem) {
             this.toggleMenuVisibility();
         }
+
         if (isOutsideItem) {
             this.dispatchEvent(new CustomEvent('blur'));
         }
