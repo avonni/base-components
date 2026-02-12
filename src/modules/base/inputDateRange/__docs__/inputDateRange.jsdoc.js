@@ -3,6 +3,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-calendar-container-spacing-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-date-range-header-text-color
  * @default #080707
  * @type color

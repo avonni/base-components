@@ -564,19 +564,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Class of the expanded calendar container.
-     *
-     * @type {string}
-     */
-    get computedCalendarExpandedContainerClass() {
-        return classSet('avonni-input-date-range__calendar-expanded-container')
-            .add({
-                'slds-p-top_small': this.showRangeOptions
-            })
-            .toString();
-    }
-
-    /**
      * Class of the label container.
      *
      * @type {string}

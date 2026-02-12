@@ -66,6 +66,9 @@
 }
 .avonni-input-date-range__calendar-expanded-container {
     order: 2;
+    padding-top: var(
+        --avonni-input-date-range-expanded-calendar-container-spacing-block-start
+    );
 }
 
 lightning-vertical-navigation .slds-nav-vertical__item {
