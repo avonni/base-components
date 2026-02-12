@@ -1,10 +1,12 @@
 /**
  * @typedef {Object} DynamicMenuItem
  * @name items
+ * @property {object[]} actions Array of action objects for the item.
+ * @property {object} avatar Avatar object.
+ * @property {boolean} disabled If true, the item is shown as disabled and is not selectable. Defaults to false.
  * @property {string} label Item label.
  * @property {string[]} meta An array of descriptive meta tags text.
  * @property {string} value Item text value.
- * @property {object} avatar avatar object.
  */
 /**
  * @typedef {Object} DynamicMenuAction
@@ -930,6 +932,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-color-background-disabled
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-dynamic-menu-item-color-background-hover
  * @default #f3f2f2
  * @type color
@@ -942,8 +950,20 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-check-mark-color-disabled
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-dynamic-menu-item-text-color
  * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-text-color-disabled
+ * @default #dddbda
  * @type color
  */
 /**
