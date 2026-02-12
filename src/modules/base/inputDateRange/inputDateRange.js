@@ -20,6 +20,7 @@ import {
 import { LightningElement, api } from 'lwc';
 import expandedDateRange from './expandedDateRange.html';
 import inputDateRange from './inputDateRange.html';
+import { normalizeObject } from '../utils/normalize';
 
 const DATE_STYLES = {
     valid: ['short', 'medium', 'long'],
@@ -176,6 +177,7 @@ export default class InputDateRange extends LightningElement {
     _disabled = false;
     _endDate;
     _isExpanded = false;
+    _labelRangeOptions = {};
     _readOnly = false;
     _required = false;
     _showRangeOptions = false;
@@ -292,6 +294,29 @@ export default class InputDateRange extends LightningElement {
         if (this._connected) {
             this.initEndDate();
         }
+    }
+
+    /**
+     * Labels for the range options.
+     *
+     * This object must be a map where:
+     * - the **key** is the range option `value`
+     * - the **value** is the label displayed to the user
+     *
+     * Expected keys: today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, monthToDate, quarterToDate, yearToDate and custom.
+     *
+     * Any missing key will fall back to the default label.
+     *
+     * @type {Object<string, string>}
+     * @default {}
+     * @public
+     */
+    @api
+    get labelRangeOptions() {
+        return this._labelRangeOptions;
+    }
+    set labelRangeOptions(value) {
+        this._labelRangeOptions = normalizeObject(value);
     }
 
     /**
@@ -569,6 +594,54 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Computed label end date.
+     *
+     * @type {string}
+     */
+    get computedLabelEndDate() {
+        if (this.hasInputLabel) {
+            return this.labelEndDate || '\u00A0';
+        }
+        return this.labelEndDate;
+    }
+
+    /**
+     * Computed label end time.
+     *
+     * @type {string}
+     */
+    get computedLabelEndTime() {
+        if (this.hasInputLabel) {
+            return this.labelEndTime || '\u00A0';
+        }
+        return this.labelEndTime;
+    }
+
+    /**
+     * Computed label start date.
+     *
+     * @type {string}
+     */
+    get computedLabelStartDate() {
+        if (this.hasInputLabel) {
+            return this.labelStartDate || '\u00A0';
+        }
+        return this.labelStartDate;
+    }
+
+    /**
+     * Computed label start date.
+     *
+     * @type {string}
+     */
+    get computedLabelStartTime() {
+        if (this.hasInputLabel) {
+            return this.labelStartTime || '\u00A0';
+        }
+        return this.labelStartTime;
+    }
+
+    /**
      * Computed option range value.
      *
      * @type {string}
@@ -687,6 +760,20 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Returns true there is a label for any of the inputs.
+     *
+     * @type {boolean}
+     */
+    get hasInputLabel() {
+        return !!(
+            this.labelStartDate ||
+            this.labelStartTime ||
+            this.labelEndDate ||
+            this.labelEndTime
+        );
+    }
+
+    /**
      * True if time range is valid.
      *
      * @type {boolean}
@@ -708,13 +795,16 @@ export default class InputDateRange extends LightningElement {
         return true;
     }
 
-    /**
-     * Range options available.
-     *
-     * @type {Array}
-     */
     get rangeOptions() {
-        return RANGES_OPTIONS;
+        return RANGES_OPTIONS.map((option) => {
+            const customLabel = this.labelRangeOptions[option.value];
+            const normalizeCustomLabel =
+                typeof customLabel === 'string' ? customLabel.trim() : '';
+            return {
+                ...option,
+                label: normalizeCustomLabel ? customLabel : option.label
+            };
+        });
     }
 
     /**

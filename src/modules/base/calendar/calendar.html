@@ -12,99 +12,6 @@
                 data-element-id="avonni-calendar__keyboard-handler"
             >
                 <div class="slds-datepicker">
-                    <!-- Top navigation -->
-                    <div
-                        if:false={hideNavigation}
-                        class="slds-datepicker__filter slds-grid"
-                        data-element-id="avonni-calendar__header"
-                    >
-                        <div
-                            class="
-                                slds-datepicker__filter_month
-                                slds-grid slds-grid_align-spread
-                                slds-grow
-                            "
-                        >
-                            <div class="slds-align-middle">
-                                <lightning-button-icon
-                                    alternative-text={previousMonthButtonAlternativeText}
-                                    disabled={disabledPrevious}
-                                    icon-name="utility:left"
-                                    title={previousMonthButtonAlternativeText}
-                                    variant="container"
-                                    data-element-id="previous-lightning-button-icon"
-                                    onblur={handleBlur}
-                                    onclick={handlerPreviousMonth}
-                                    onfocus={handleFocus}
-                                ></lightning-button-icon>
-                            </div>
-                            <h2
-                                if:false={isMultiCalendars}
-                                class="
-                                    slds-align-middle
-                                    avonni-calendar__month_color
-                                "
-                                data-element-id="h2"
-                            >
-                                {month}
-                            </h2>
-                            <div class="slds-align-middle">
-                                <lightning-button-icon
-                                    alternative-text={nextMonthButtonAlternativeText}
-                                    disabled={disabledNext}
-                                    icon-name="utility:right"
-                                    title={nextMonthButtonAlternativeText}
-                                    variant="container"
-                                    data-element-id="next-lightning-button-icon"
-                                    onblur={handleBlur}
-                                    onclick={handlerNextMonth}
-                                    onfocus={handleFocus}
-                                ></lightning-button-icon>
-                            </div>
-                        </div>
-                        <label class="slds-is-relative">
-                            <span
-                                class="slds-assistive-text"
-                                data-element-id="year-select-assistive-text"
-                            >
-                                {yearSelectAssistiveText}
-                            </span>
-                            <select
-                                class="
-                                    slds-select
-                                    avonni-calendar__year-select
-                                    slds-var-p-right_x-large
-                                    slds-var-p-left_small
-                                "
-                                disabled={disabled}
-                                data-element-id="select-year"
-                                onblur={handleBlur}
-                                onchange={handleYearChange}
-                                onfocus={handleFocus}
-                            >
-                                <template for:each={yearsList} for:item="year">
-                                    <option
-                                        key={year.value}
-                                        selected={year.selected}
-                                        value={year.value}
-                                        data-element-id="option-year"
-                                    >
-                                        {year.value}
-                                    </option>
-                                </template>
-                            </select>
-                            <c-primitive-icon
-                                class="
-                                    slds-is-absolute
-                                    avonni-calendar__year-select-icon
-                                "
-                                aria-hidden="true"
-                                icon-name="utility:down"
-                                size="xx-small"
-                            ></c-primitive-icon>
-                        </label>
-                    </div>
-
                     <ul class="slds-grid">
                         <template
                             for:each={calendarDataList}
@@ -118,19 +25,113 @@
                                     avonni-calendar__month-container
                                 "
                             >
-                                <h2
-                                    if:true={isMultiCalendars}
-                                    class="
-                                        slds-text-align_center
-                                        slds-p-bottom_xx-small
-                                        avonni-calendar__month_color
-                                    "
-                                    data-element-id="h2"
-                                    data-index={index}
-                                >
-                                    {item.month}
-                                </h2>
+                                <!-- Top navigation -->
 
+                                <div
+                                    if:false={hideNavigation}
+                                    class="slds-datepicker__filter slds-grid"
+                                    data-element-id="avonni-calendar__header"
+                                >
+                                    <div
+                                        class="
+                                            slds-datepicker__filter_month
+                                            slds-grid slds-grid_align-spread
+                                            slds-grow
+                                        "
+                                    >
+                                        <div
+                                            class={item.computedPreviousButtonClass}
+                                        >
+                                            <lightning-button-icon
+                                                alternative-text={previousMonthButtonAlternativeText}
+                                                disabled={disabledPrevious}
+                                                icon-name="utility:left"
+                                                title={previousMonthButtonAlternativeText}
+                                                variant="container"
+                                                data-element-id="previous-lightning-button-icon"
+                                                onblur={handleBlur}
+                                                onclick={handlerPreviousMonth}
+                                                onfocus={handleFocus}
+                                            ></lightning-button-icon>
+                                        </div>
+                                        <h2
+                                            class="
+                                                slds-align-middle
+                                                avonni-calendar__month_color
+                                            "
+                                            data-element-id="h2"
+                                        >
+                                            {item.month}
+                                        </h2>
+
+                                        <div
+                                            class={item.computedNextButtonClass}
+                                        >
+                                            <lightning-button-icon
+                                                alternative-text={nextMonthButtonAlternativeText}
+                                                disabled={disabledNext}
+                                                icon-name="utility:right"
+                                                title={nextMonthButtonAlternativeText}
+                                                variant="container"
+                                                data-element-id="next-lightning-button-icon"
+                                                onblur={handleBlur}
+                                                onclick={handlerNextMonth}
+                                                onfocus={handleFocus}
+                                            ></lightning-button-icon>
+                                        </div>
+                                    </div>
+                                    <label
+                                        if:true={item.hasYearSelectOption}
+                                        class="slds-is-relative"
+                                    >
+                                        <span
+                                            class="slds-assistive-text"
+                                            data-element-id="year-select-assistive-text"
+                                        >
+                                            {yearSelectAssistiveText}
+                                        </span>
+                                        <select
+                                            if:true={item.hasYearSelectOption}
+                                            class="
+                                                slds-select
+                                                avonni-calendar__year-select
+                                                slds-var-p-right_x-large
+                                                slds-var-p-left_small
+                                            "
+                                            disabled={disabled}
+                                            data-element-id="select-year"
+                                            onblur={handleBlur}
+                                            onchange={handleYearChange}
+                                            onfocus={handleFocus}
+                                        >
+                                            <template
+                                                for:each={yearsList}
+                                                for:item="year"
+                                            >
+                                                <option
+                                                    key={year.value}
+                                                    selected={year.selected}
+                                                    value={year.value}
+                                                    data-element-id="option-year"
+                                                >
+                                                    {year.value}
+                                                </option>
+                                            </template>
+                                        </select>
+                                        <c-primitive-icon
+                                            if:true={item.hasYearSelectOption}
+                                            class="
+                                                slds-is-absolute
+                                                avonni-calendar__year-select-icon
+                                            "
+                                            aria-hidden="true"
+                                            icon-name="utility:down"
+                                            size="xx-small"
+                                        ></c-primitive-icon>
+                                    </label>
+                                </div>
+
+                                <!-- Calendar Grid -->
                                 <c-primitive-calendar
                                     class="avonni-calendar__primitive-calendar"
                                     date-labels={computedDateLabels}

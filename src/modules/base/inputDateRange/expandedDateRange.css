@@ -3,6 +3,11 @@
 }
 
 .avonni-date-range__label-container p {
+    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
+    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
+.avonni-date-range__label-container.slds1 p {
     color: var(
         --avonni-input-date-range-header-text-color,
         var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
@@ -10,14 +15,22 @@
     font-size: var(--avonni-input-date-range-header-font-size, 0.75rem);
     font-style: var(--avonni-input-date-range-header-font-style, normal);
     font-weight: var(--avonni-input-date-range-header-font-weight, 400);
-    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
-    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
 }
 
-.slds-button {
-    min-width: 150px;
-    min-height: 32px;
-    justify-content: center;
+.avonni-date-range__label-container.slds2 p {
+    color: var(
+        --avonni-input-date-range-header-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-input-date-range-header-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-style: var(--avonni-input-date-range-header-font-style, normal);
+    font-weight: var(
+        --avonni-input-date-range-header-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
 }
 
 .avonni-input-date-range__button-container {
@@ -55,7 +68,7 @@
     order: 2;
 }
 
-.slds-nav-vertical__item {
+lightning-vertical-navigation .slds-nav-vertical__item {
     list-style: none;
 }
 

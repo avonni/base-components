@@ -193,7 +193,7 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set max(value) {
         this._max = isInvalidDate(value) ? DEFAULT_MAX : value;
-        this._computedMax = new Date(this._max);
+        this._computedMax = setDate(this._max, 'hours', 0, 0, 0, 0);
         if (this._connected) {
             this.generateViewData();
         }
@@ -231,7 +231,7 @@ export default class PrimitiveCalendar extends LightningElement {
     }
     set min(value) {
         this._min = isInvalidDate(value) ? DEFAULT_MIN : value;
-        this._computedMin = new Date(this._min);
+        this._computedMin = setDate(this._min, 'hours', 0, 0, 0, 0);
 
         if (this._connected) {
             this.generateViewData();

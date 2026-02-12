@@ -88,3 +88,7 @@ div:focus {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+.avonni-calendar__month-container:not(:last-child) {
+    padding-right: var(--lwc-spacingXSmall, 0.5rem);
+}

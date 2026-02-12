@@ -8,6 +8,23 @@ import { createElement } from 'lwc';
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
 
+const RANGE_OPTIONS_LABELS_MAP = {
+    today: 'Today Custom',
+    yesterday: 'Yesterday Custom',
+    thisWeek: 'This week Custom',
+    lastWeek: 'Last week Custom',
+    thisMonth: 'This month Custom',
+    monthToDate: 'Month-to-date Custom',
+    lastMonth: 'Last month Custom',
+    thisQuarter: 'This quarter Custom',
+    quarterToDate: 'Quarter-to-date Custom',
+    lastQuarter: 'Last quarter Custom',
+    thisYear: 'This year Custom',
+    yearToDate: 'Year-to-date Custom',
+    lastYear: 'Last yea Custom',
+    custom: 'Custom Custom'
+};
+
 let element;
 describe('Input Date Range', () => {
     afterEach(() => {
@@ -40,6 +57,7 @@ describe('Input Date Range', () => {
             expect(element.label).toBeUndefined();
             expect(element.labelEndDate).toBeUndefined();
             expect(element.labelEndTime).toBeUndefined();
+            expect(element.labelRangeOptions).toEqual({});
             expect(element.labelStartDate).toBeUndefined();
             expect(element.labelStartTime).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
@@ -279,7 +297,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="start-date-input-label"]'
                     );
                     expect(label.textContent).toBe(
                         'This is a label start date'
@@ -295,7 +313,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="start-time-input-label"]'
                     );
                     expect(label.textContent).toBe(
                         'This is a label start time'
@@ -310,7 +328,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="end-date-input-label"]'
                     );
                     expect(label.textContent).toBe('This is a label end date');
                 });
@@ -324,9 +342,41 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="end-time-input-label"]'
                     );
                     expect(label.textContent).toBe('This is a label end time');
+                });
+            });
+        });
+
+        describe('Label Range Options', () => {
+            it('Passed to the component', () => {
+                element.showRangeOptions = true;
+                element.labelRangeOptions = RANGE_OPTIONS_LABELS_MAP;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    expect(rangeOptions.options).toEqual([
+                        { label: 'Custom Custom', value: 'custom' },
+                        { label: 'Today Custom', value: 'today' },
+                        { label: 'Yesterday Custom', value: 'yesterday' },
+                        { label: 'This week Custom', value: 'thisWeek' },
+                        { label: 'Last week Custom', value: 'lastWeek' },
+                        { label: 'This month Custom', value: 'thisMonth' },
+                        { label: 'Month-to-date Custom', value: 'monthToDate' },
+                        { label: 'Last month Custom', value: 'lastMonth' },
+                        { label: 'This quarter Custom', value: 'thisQuarter' },
+                        {
+                            label: 'Quarter-to-date Custom',
+                            value: 'quarterToDate'
+                        },
+                        { label: 'Last quarter Custom', value: 'lastQuarter' },
+                        { label: 'This year Custom', value: 'thisYear' },
+                        { label: 'Year-to-date Custom', value: 'yearToDate' },
+                        { label: 'Last yea Custom', value: 'lastYear' }
+                    ]);
                 });
             });
         });

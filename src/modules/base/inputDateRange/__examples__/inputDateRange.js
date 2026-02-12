@@ -14,6 +14,7 @@ export const InputDateRange = ({
     label,
     labelEndDate,
     labelEndTime,
+    labelRangeOptions,
     labelStartDate,
     labelStartTime,
     messageWhenValueMissing,
@@ -38,6 +39,7 @@ export const InputDateRange = ({
     element.label = label;
     element.labelEndDate = labelEndDate;
     element.labelEndTime = labelEndTime;
+    element.labelRangeOptions = labelRangeOptions;
     element.labelStartDate = labelStartDate;
     element.labelStartTime = labelStartTime;
     element.messageWhenValueMissing = messageWhenValueMissing;

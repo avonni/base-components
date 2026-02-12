@@ -487,7 +487,7 @@ export default class Calendar extends LightningElement {
      * @return {boolean}
      */
     get isMultiCalendars() {
-        return this._nbMonthCalendars > 1;
+        return this.nbMonthCalendars > 1;
     }
 
     /**
@@ -591,6 +591,20 @@ export default class Calendar extends LightningElement {
      */
 
     /**
+     * Compute the class for a month button.
+     *
+     * @param {boolean} hasButton If present, the button is visible.
+     * @returns {string} The computed month button class.
+     */
+    computeMonthButtonClass(hasButton) {
+        return classSet('slds-align-middle')
+            .add({
+                'slds-hidden': !hasButton
+            })
+            .toString();
+    }
+
+    /**
      * Place focus according to keyboard selection
      *
      * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
@@ -665,6 +679,8 @@ export default class Calendar extends LightningElement {
     generateViewData() {
         const calendarDataList = [];
 
+        const firstIndex = 0;
+        const lastIndex = this._nbMonthCalendars - 1;
         for (
             let monthOffset = 0;
             monthOffset < this._nbMonthCalendars;
@@ -677,10 +693,23 @@ export default class Calendar extends LightningElement {
             const year = displayDate.getFullYear();
             const monthIndex = displayDate.getMonth();
             const month = MONTHS[monthIndex];
+            const hasPreviousButton = monthOffset === firstIndex;
+            const hasNextButton = monthOffset === lastIndex;
+            const hasYearSelectOption = monthOffset === lastIndex;
+            const computedPreviousButtonClass =
+                this.computeMonthButtonClass(hasPreviousButton);
+            const computedNextButtonClass =
+                this.computeMonthButtonClass(hasNextButton);
 
-            // The list uses the year-month-index as key, so each time the month change, the primitive calendars are destroyed.
+            // We have to use the monthOffset has a key, otherwise we lose focus on the next/previous buttons
+            // Since we have a if _connected for each api of avonni-primitive-calendar to generate the view, it won't cause a problem.
             calendarDataList.push({
-                id: `${year}-${monthIndex}`,
+                id: `${monthOffset}`,
+                hasPreviousButton,
+                hasNextButton,
+                computedPreviousButtonClass,
+                computedNextButtonClass,
+                hasYearSelectOption,
                 year,
                 month,
                 monthIndex,
