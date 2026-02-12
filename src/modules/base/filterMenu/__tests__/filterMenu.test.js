@@ -1807,6 +1807,7 @@ describe('Filter Menu', () => {
                     dateStyle: 'long',
                     isExpanded: true,
                     labelEndDate: 'End date',
+                    labelRangeOptions: { custom: 'myCustomLabel' },
                     labelStartDate: 'Start date',
                     labelStartTime: 'Start time',
                     labelEndTime: 'End time',
@@ -1842,6 +1843,9 @@ describe('Filter Menu', () => {
                     );
                     expect(dateRange.labelStartTime).toBe(
                         typeAttributes.labelStartTime
+                    );
+                    expect(dateRange.labelRangeOptions).toEqual(
+                        typeAttributes.labelRangeOptions
                     );
                     expect(dateRange.showRangeOptions).toBe(
                         typeAttributes.showRangeOptions
