@@ -430,6 +430,7 @@ export default class Calendar extends LightningElement {
      * Disable interaction on next date layout.
      */
     get disabledNext() {
+        // Even with multiple calendars, the button next month is properly disabled.
         let disabled = this.disabled;
         const month = this.displayDate.getMonth() + 1;
         const nextDate = setDate(this.displayDate, 'month', month, 1);
@@ -446,6 +447,7 @@ export default class Calendar extends LightningElement {
      * Disable interaction on previous date layout.
      */
     get disabledPrevious() {
+        // Even with multiple calendars, the button previous month is properly disabled.
         let disabled = this.disabled;
         const month = this.displayDate.getMonth() - 1;
         const previousDate = setDate(this.displayDate, 'month', month, 1);
@@ -716,6 +718,8 @@ export default class Calendar extends LightningElement {
                 displayDate
             });
         }
+        // Even if the next months exceed the max date, those months are properly disabled.
+        // We don't care about displaying months that are completely disabled.
         this.calendarDataList = calendarDataList;
     }
 
