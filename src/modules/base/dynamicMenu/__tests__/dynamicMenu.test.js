@@ -369,7 +369,7 @@ describe('Dynamic Menu', () => {
                                 'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background';
                             if (item.getAttribute('aria-disabled') === 'true') {
                                 expectedClass +=
-                                    ' avonni-dynamic-menu__option_disabled';
+                                    ' avonni-dynamic-menu__item_disabled';
                             }
                             expect(item.className).toEqual(expectedClass);
                         });

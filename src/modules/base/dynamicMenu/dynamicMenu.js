@@ -576,7 +576,7 @@ export default class DynamicMenu extends LightningElement {
             const computedItemWrapperClass = classSet(
                 'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background'
             ).add({
-                'avonni-dynamic-menu__option_disabled': disabled
+                'avonni-dynamic-menu__item_disabled': disabled
             });
             const computedItemClass = classSet(
                 'slds-listbox__option slds-media slds-media_center slds-listbox__option_plain'
