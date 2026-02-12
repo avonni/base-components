@@ -573,6 +573,11 @@ export default class DynamicMenu extends LightningElement {
             const metaJoin = meta ? meta.join(' • ') : null;
             const selected = this.value === value;
             const displayFigure = avatar || !this.hideCheckMark;
+            const computedItemWrapperClass = classSet(
+                'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background'
+            ).add({
+                'avonni-dynamic-menu__option_disabled': item.disabled
+            });
             const computedItemClass = classSet(
                 'slds-listbox__option slds-media slds-media_center slds-listbox__option_plain'
             ).add({
@@ -587,7 +592,8 @@ export default class DynamicMenu extends LightningElement {
                 selected,
                 value,
                 computedItemClass,
-                displayFigure
+                displayFigure,
+                computedItemWrapperClass
             };
         });
     }

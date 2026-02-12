@@ -958,3 +958,25 @@ div:focus {
     font-style: var(--avonni-dynamic-menu-item-font-style, normal);
     font-weight: var(--avonni-dynamic-menu-item-font-weight, 400);
 }
+
+.avonni-dynamic-menu__option_disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.avonni-dynamic-menu__item_color-background.avonni-dynamic-menu__option_disabled {
+    background: var(
+        --avonni-dynamic-menu-item-color-background-disabled,
+        transparent
+    );
+}
+
+.avonni-dynamic-menu__option_disabled
+    .slds-is-selected
+    .avonni-dynamic-menu__check-mark_color {
+    color: var(--avonni-dynamic-menu-item-check-mark-color-disabled, #dddbda);
+}
+
+.avonni-dynamic-menu__option_disabled .avonni-dynamic-menu__item-label {
+    color: var(--avonni-dynamic-menu-item-text-color-disabled, #dddbda);
+}
