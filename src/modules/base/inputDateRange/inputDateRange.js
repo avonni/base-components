@@ -9,7 +9,12 @@ import {
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
-import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
+import {
+    classSet,
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utils';
 import {
     animationFrame,
     equal,
@@ -20,7 +25,6 @@ import {
 import { LightningElement, api } from 'lwc';
 import expandedDateRange from './expandedDateRange.html';
 import inputDateRange from './inputDateRange.html';
-import { normalizeObject } from '../utils/normalize';
 
 const DATE_STYLES = {
     valid: ['short', 'medium', 'long'],
