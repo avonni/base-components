@@ -36,6 +36,6 @@
     margin-top: calc(-1 * var(--lwc-spacingXSmall, 0.5rem));
 }
 
-[data-element-id='avonni-input-date-range'] {
+.avonni-filter-menu__input-date-range {
     --avonni-input-date-range-expanded-calendar-container-spacing-block-start: 0.75rem;
 }

@@ -682,10 +682,10 @@ export default class Calendar extends LightningElement {
         const calendarDataList = [];
 
         const firstIndex = 0;
-        const lastIndex = this._nbMonthCalendars - 1;
+        const lastIndex = this.nbMonthCalendars - 1;
         for (
             let monthOffset = 0;
-            monthOffset < this._nbMonthCalendars;
+            monthOffset < this.nbMonthCalendars;
             monthOffset++
         ) {
             const displayDate = new Date(this.displayDate);

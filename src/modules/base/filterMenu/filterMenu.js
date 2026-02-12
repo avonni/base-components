@@ -1002,7 +1002,7 @@ export default class FilterMenu extends LightningElement {
      */
     get computedDateRangeClass() {
         const isExpandedDateRange = this.isDateRange && this.computedIsExpanded;
-        return classSet('slds-show')
+        return classSet('avonni-filter-menu__input-date-range slds-show')
             .add({
                 'slds-p-around_small':
                     !this.computedIsExpanded ||
@@ -2291,8 +2291,7 @@ export default class FilterMenu extends LightningElement {
         this._dateRangeFrames = [];
 
         // The expanded mode isn't implemented in vertical
-        const isExpanded =
-            this.computedTypeAttributes.isExpanded && !this.isVertical;
+        const isExpanded = this.computedIsExpanded && !this.isVertical;
 
         // In the input date range, after the dispatch change,
         // a request animation frame is used to show the next calendar.
