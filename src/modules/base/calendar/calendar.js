@@ -904,7 +904,6 @@ export default class Calendar extends LightningElement {
      */
     updateDateParameters() {
         this.year = this.displayDate.getFullYear();
-        this.month = MONTHS[this.displayDate.getMonth()];
         this.updateSelectYear();
         this.generateViewData();
     }

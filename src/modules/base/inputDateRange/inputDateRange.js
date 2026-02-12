@@ -1989,6 +1989,9 @@ export default class InputDateRange extends LightningElement {
 
     handleChangeRangeOption(event) {
         event.stopPropagation();
+        if (this.disabled) {
+            return;
+        }
         // The focus on the date ranges needs to be blurred to avoid setting one of the dates to null
         if (!this.isExpanded) {
             this.startDateInput?.blur();
