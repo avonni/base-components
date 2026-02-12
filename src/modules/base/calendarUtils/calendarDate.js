@@ -42,6 +42,8 @@ export class CalendarDate {
     get computedAriaLabel() {
         if (this.isWeekNumber && !this.isDateHidden) {
             return `Week ${this._dateTime.isoWeek}`;
+        } else if (this.isDateHidden) {
+            return '';
         }
         const dateLabel = this.date?.toLocaleString('en-EN', {
             year: 'numeric',
