@@ -1354,6 +1354,9 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handleYearChange(event) {
+        // The display date is always based on the first calendar, even with multiple calendars are displayed.
+        // The current year is also based on the first calendar, even if the last calendar has a different year than the first calendar.
+        // There is at most one select year option.
         this.displayDate = setDate(
             this.displayDate,
             'year',
