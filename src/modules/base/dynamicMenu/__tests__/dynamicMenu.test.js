@@ -353,24 +353,27 @@ describe('Dynamic Menu', () => {
 
         describe('Disabled Item', () => {
             it('Renders disabled item', () => {
+                element.label = 'label';
                 element.items = listViewItems;
-                return Promise.resolve().then(() => {
-                    const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="item"]'
-                    );
-                    items.forEach((item) => {
-                        const itemInListViewItems = listViewItems.find(
-                            (i) => i.value === item.getAttribute('data-value')
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
                         );
-                        let expectedClass =
-                            'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background';
-                        if (itemInListViewItems.disabled) {
-                            expectedClass +=
-                                ' avonni-dynamic-menu__option_disabled';
-                        }
-                        expect(item.className).toEqual(expectedClass);
+                        items.forEach((item) => {
+                            let expectedClass =
+                                'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background';
+                            if (item.getAttribute('aria-disabled') === 'true') {
+                                expectedClass +=
+                                    ' avonni-dynamic-menu__option_disabled';
+                            }
+                            expect(item.className).toEqual(expectedClass);
+                        });
                     });
-                });
             });
         });
 
