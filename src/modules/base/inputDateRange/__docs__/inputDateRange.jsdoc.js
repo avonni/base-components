@@ -118,18 +118,6 @@
 
 /**
  * @memberof stylingHooks
- * @name --avonni-input-date-range-expanded-calendar-container-spacing-inline-end
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-input-date-range-expanded-calendar-container-spacing-inline-start
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-input-date-range-expanded-calendar-container-spacing-block-end
  * @type dimension
  * @default 0
@@ -137,6 +125,18 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-input-date-range-expanded-calendar-container-spacing-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-calendar-container-spacing-inline-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-calendar-container-spacing-inline-start
  * @type dimension
  * @default 0
  */
