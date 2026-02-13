@@ -90,7 +90,6 @@ export default class Calendar extends LightningElement {
     computedMin;
     computedValue = [];
     displayDate; // The calendar displays this date's month
-    month;
     year;
 
     /*
