@@ -211,7 +211,7 @@
     >
         <c-primitive-scheduler-timeline
             if:true={showTimeline}
-            class="avonni-scheduler__schedule slds-show"
+            class="slds-template__container slds-show"
             available-days-of-the-week={availableDaysOfTheWeek}
             available-months={availableMonths}
             available-time-frames={availableTimeFrames}
@@ -264,8 +264,9 @@
         <c-primitive-scheduler-calendar
             if:true={isCalendar}
             class="
-                avonni-scheduler__calendar avonni-scheduler__schedule
-                slds-is-relative slds-show
+                avonni-scheduler__calendar
+                slds-template__container
+                slds-show
             "
             available-days-of-the-week={availableDaysOfTheWeek}
             available-months={availableMonths}
@@ -311,7 +312,7 @@
 
         <c-primitive-scheduler-agenda
             if:true={isAgenda}
-            class="avonni-scheduler__schedule slds-show"
+            class="slds-template__container slds-show"
             available-days-of-the-week={availableDaysOfTheWeek}
             available-months={availableMonths}
             available-time-frames={availableTimeFrames}
