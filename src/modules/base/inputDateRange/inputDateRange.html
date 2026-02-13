@@ -1,9 +1,5 @@
 <template>
-    <div
-        class={computedWrapperClass}
-        data-element-id="div-wrapper"
-        onfocusout={handleFocusOut}
-    >
+    <div data-element-id="div-wrapper" onfocusout={handleFocusOut}>
         <div class={computedLabelClass}>
             <abbr
                 if:true={required}
@@ -19,6 +15,22 @@
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
         </div>
+        <div
+            if:true={showOptions}
+            class="slds-grid slds-wrap slds-m-bottom_x-small"
+        >
+            <c-combobox
+                disabled={disabled}
+                name="predefined-ranges"
+                options={rangeOptions}
+                value={optionRangeValue}
+                variant="label-hidden"
+                data-element-id="avonni-input-date-range__combobox-range-options"
+                onblur={handleBlur}
+                onchange={handleChangeRangeOption}
+                onfocus={handleFocus}
+            ></c-combobox>
+        </div>
         <div class="slds-grid slds-wrap">
             <div class="slds-grid slds-wrap">
                 <div
@@ -29,14 +41,15 @@
                     "
                 >
                     <label
-                        if:true={labelStartDate}
+                        if:true={hasInputLabel}
                         class="
                             slds-form-element__label
                             avonni-input-date-range__labels
                         "
                         for="start-date"
                         id="start-date-input-label"
-                        >{labelStartDate}
+                        data-element-id="start-date-input-label"
+                        >{computedLabelStartDate}
                     </label>
                     <div
                         if:false={readOnly}
@@ -84,9 +97,10 @@
                             onkeydown={handleCalendarDialogKeyDown}
                         >
                             <c-calendar
+                                class="avonni-input-date-range__calendar"
                                 aria-label="Start date input calendar"
                                 selection-mode={selectionModeStartDate}
-                                timezone={timezone}
+                                timezone={computedTimezone}
                                 value={calendarValue}
                                 week-start-day={weekStartDay}
                                 data-element-id="calendar-start-date"
@@ -114,13 +128,14 @@
                 </div>
                 <div if:true={showTime} class="slds-form-element">
                     <label
-                        if:true={labelStartTime}
+                        if:true={hasInputLabel}
                         class="
                             slds-form-element__label
                             avonni-input-date-range__labels
                         "
                         for="start-time"
-                        >{labelStartTime}
+                        data-element-id="start-time-input-label"
+                        >{computedLabelStartTime}
                     </label>
                     <lightning-input
                         if:false={readOnly}
@@ -151,13 +166,14 @@
                     "
                 >
                     <label
-                        if:true={labelEndDate}
+                        if:true={hasInputLabel}
                         class="
                             slds-form-element__label
                             avonni-input-date-range__labels
                         "
                         for="end-date"
-                        >{labelEndDate}
+                        data-element-id="end-date-input-label"
+                        >{computedLabelEndDate}
                     </label>
                     <div
                         if:false={readOnly}
@@ -204,9 +220,10 @@
                             onkeydown={handleCalendarDialogKeyDown}
                         >
                             <c-calendar
+                                class="avonni-input-date-range__calendar"
                                 aria-label="End date input calendar"
                                 selection-mode={selectionModeEndDate}
-                                timezone={timezone}
+                                timezone={computedTimezone}
                                 value={calendarValue}
                                 week-start-day={weekStartDay}
                                 data-element-id="calendar-end-date"
@@ -234,13 +251,14 @@
                 </div>
                 <div if:true={showTime} class="slds-form-element">
                     <label
-                        if:true={labelEndTime}
+                        if:true={hasInputLabel}
                         class="
                             slds-form-element__label
                             avonni-input-date-range__labels
                         "
                         for="end-time"
-                        >{labelEndTime}
+                        data-element-id="end-time-input-label"
+                        >{computedLabelEndTime}
                     </label>
                     <lightning-input
                         if:false={readOnly}

@@ -48,12 +48,15 @@ const BUTTON_VARIANTS = {
     ]
 };
 
+const DATE_RANGE_OVERFLOW_OFFSET = 10;
+
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
+const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const DEFAULT_WEEK_START_DAY = 0;
 
@@ -100,10 +103,13 @@ const RESET_BUTTON_POSITION = {
 const TYPE_ATTRIBUTES = {
     'date-range': [
         'dateStyle',
+        'isExpanded',
         'labelEndDate',
         'labelEndTime',
+        'labelRangeOptions',
         'labelStartDate',
         'labelStartTime',
+        'showRangeOptions',
         'timeStyle',
         'timezone',
         'type'
@@ -216,6 +222,7 @@ export default class FilterMenu extends LightningElement {
     _allowBlur = true;
     _dateRangeFrames = [];
     _dropdownIsFocused = false;
+    _isSmallDateRange = false;
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
@@ -989,6 +996,26 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed Date Range class styling.
+     *
+     * @type {string}
+     */
+    get computedDateRangeClass() {
+        const isExpandedDateRange = this.isDateRange && this.computedIsExpanded;
+        return classSet('avonni-filter-menu__input-date-range slds-show')
+            .add({
+                'slds-p-around_small':
+                    !this.computedIsExpanded ||
+                    (isExpandedDateRange &&
+                        !this.computedTypeAttributes.showRangeOptions),
+                'slds-p-right_small slds-p-left_xxx-small':
+                    isExpandedDateRange &&
+                    this.computedTypeAttributes.showRangeOptions
+            })
+            .toString();
+    }
+
+    /**
      * Computed Dropdown class styling.
      *
      * @type {string}
@@ -997,7 +1024,9 @@ export default class FilterMenu extends LightningElement {
         const alignment = this.dropdownAlignment;
         const nubbin = this.dropdownNubbin;
         const isDateTime = this.computedTypeAttributes.type === 'datetime';
+        const isExpandedDateRange = this.computedIsExpanded && this.isDateRange;
         const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
+        const hasRangeOptions = this.computedTypeAttributes.showRangeOptions;
 
         const classes = classSet('slds-dropdown slds-p-around_none').add({
             'slds-dropdown_left': alignment === 'left' || this.isAutoAlignment,
@@ -1016,7 +1045,10 @@ export default class FilterMenu extends LightningElement {
             'slds-nubbin_bottom': nubbin && alignment === 'bottom-center',
             'slds-dropdown_small': isSmallRange,
             'slds-dropdown_large':
-                (this.isDateRange && !isDateTime) || this.isTimeRange
+                (this.isDateRange && !isDateTime) || this.isTimeRange,
+            'avonni-filter-menu__dropdown-expanded': isExpandedDateRange,
+            'avonni-filter-menu__dropdown-expanded-options':
+                isExpandedDateRange && hasRangeOptions
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
@@ -1025,19 +1057,6 @@ export default class FilterMenu extends LightningElement {
             );
         }
         return classes.toString();
-    }
-
-    /**
-     * Computed Menu Label with selected items.
-     *
-     * @type {string}
-     */
-    get computedMenuLabelClass() {
-        return classSet('slds-dropdown__list')
-            .add({
-                'slds-text-title_bold': this.selectedItemLabels.length > 0
-            })
-            .toString();
     }
 
     /**
@@ -1057,6 +1076,45 @@ export default class FilterMenu extends LightningElement {
                     this.isList && length === '10-items'
             })
             .toString();
+    }
+
+    /**
+     * Computed Dropdown Content class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownContentContainerClass() {
+        return classSet('')
+            .add({
+                'slds-p-vertical_xx-small': !(
+                    this.isDateRange && this.computedIsExpanded
+                )
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Menu Label with selected items.
+     *
+     * @type {string}
+     */
+    get computedMenuLabelClass() {
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-text-title_bold': this.selectedItemLabels.length > 0
+            })
+            .toString();
+    }
+
+    /**
+     * Returns true, if the expanded input date range dropdown would be visible.
+     *
+     * @type {boolean}
+     */
+    get computedIsExpanded() {
+        return (
+            this.computedTypeAttributes.isExpanded && !this._isSmallDateRange
+        );
     }
 
     get computedNoResultsMessage() {
@@ -1085,6 +1143,15 @@ export default class FilterMenu extends LightningElement {
             this.iconName === 'utility:down' ||
             this.iconName === 'utility:chevrondown'
         );
+    }
+
+    /**
+     * Computed timezone
+     *
+     * @type {string}
+     */
+    get computedTimezone() {
+        return this.computedTypeAttributes.timezone || DEFAULT_TIME_ZONE;
     }
 
     /**
@@ -1596,6 +1663,54 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Compute the expansion of the date range dropdown.
+     */
+    _computeDateRangeExpansion() {
+        if (!this.isDateRange || !this.computedTypeAttributes.isExpanded) {
+            return;
+        }
+        this._isSmallDateRange = false;
+
+        requestAnimationFrame(() => {
+            if (!this.dropdownElement || !this.template.host) {
+                this._isSmallDateRange = true;
+                return;
+            }
+            const width =
+                this.dropdownElement.getBoundingClientRect().width +
+                DATE_RANGE_OVERFLOW_OFFSET;
+            const host = this.template.host;
+
+            const rect = host.getBoundingClientRect();
+            const alignment = this.dropdownAlignment;
+
+            let isVisible = false;
+
+            if (alignment === 'auto') {
+                isVisible = this._isDropdownVisibleAuto(rect, width);
+            } else {
+                isVisible = this._isDropdownVisibleForAlignment(
+                    rect,
+                    alignment,
+                    width
+                );
+            }
+            this._isSmallDateRange = !isVisible;
+
+            requestAnimationFrame(() => {
+                if (this.dropdownVisible) {
+                    this._focusDropdown();
+                }
+            });
+        });
+
+        if (this.dropdownVisible) {
+            // If the items are set while the popover is open, prevent losing focus
+            this._focusDropdown();
+        }
+    }
+
+    /**
      * Create the computed list items, based on the given items.
      */
     _computeListItems() {
@@ -1689,13 +1804,13 @@ export default class FilterMenu extends LightningElement {
             const date = new Date(value);
             if (this.isDateRange && value && !isNaN(date)) {
                 // Date range
-                const { dateStyle, timeStyle, timezone, type } =
+                const { dateStyle, timeStyle, type } =
                     this.computedTypeAttributes;
                 normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle,
-                    timeZone: timezone
+                    timeZone: this.computedTimezone
                 });
             } else if (this.isRange && !isNaN(value)) {
                 // Range
@@ -1826,6 +1941,63 @@ export default class FilterMenu extends LightningElement {
             }
         }
         return visibleItems;
+    }
+
+    /**
+     * Check if the dropdown can be displayed fully within the viewport
+     * for at least one horizontal alignment.
+     *
+     * @param {DOMRect} rect - Bounding client rectangle of the viewport.
+     * @param {number} width - Width of the dropdown.
+     * @returns {boolean} True if the dropdown fits within the viewport for at least one alignment, false otherwise.
+     */
+    _isDropdownVisibleAuto(rect, width) {
+        return ['left', 'right', 'center'].some((alignment) =>
+            this._isDropdownVisibleForAlignment(rect, alignment, width)
+        );
+    }
+
+    /**
+     * Check if the dropdown can be displayed fully within the viewport for a specific alignement.
+     *
+     * @param {DOMRect} rect - Bounding client rectangle of the viewport.
+     * @param {number} width - Width of the dropdown.
+     * @returns {boolean} True if the dropdown fits within the viewport, false otherwise.
+     */
+    _isDropdownVisibleForAlignment(rect, alignment, width) {
+        const viewportWidth = window.innerWidth;
+
+        let left;
+        let right;
+
+        switch (alignment) {
+            case 'left':
+            case 'bottom-left': {
+                left = rect.left;
+                right = left + width;
+                break;
+            }
+
+            case 'right':
+            case 'bottom-right': {
+                right = rect.right;
+                left = right - width;
+                break;
+            }
+
+            case 'center':
+            case 'bottom-center': {
+                const center = (rect.left + rect.right) / 2;
+                left = center - width / 2;
+                right = center + width / 2;
+                break;
+            }
+
+            default:
+                return false;
+        }
+
+        return left >= 0 && right <= viewportWidth;
     }
 
     /**
@@ -2004,10 +2176,12 @@ export default class FilterMenu extends LightningElement {
                 this.currentValue = [...this.value];
                 this._computeListItems();
                 this._focusDropdown();
+                this._computeDateRangeExpansion();
             } else {
                 this._stopPositioning();
                 this._dispatchClose();
                 this._previousScroll = undefined;
+                this._isSmallDateRange = false;
             }
         }
     }
@@ -2116,23 +2290,27 @@ export default class FilterMenu extends LightningElement {
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
         this._dateRangeFrames = [];
 
+        // The expanded mode isn't implemented in vertical
+        const isExpanded = this.computedIsExpanded && !this.isVertical;
+
         // In the input date range, after the dispatch change,
         // a request animation frame is used to show the next calendar.
         // So we have to wait the 2 next frames to blur the date range.
+        // If the case of an expanded date range, we don't have to force a focus and blur.
         this._dateRangeFrames[0] = requestAnimationFrame(() => {
             this._dateRangeFrames[1] = requestAnimationFrame(() => {
                 const dateRange = this.template.querySelector(
                     '[data-element-id="avonni-input-date-range"]'
                 );
-                if (!this.isVertical) {
+                if (!this.isVertical && !isExpanded) {
                     this._focusDropdown();
                 }
-                if (dateRange) {
+                if (dateRange && !isExpanded) {
                     dateRange.blur();
                 }
                 this._dateRangeFrames[2] = requestAnimationFrame(() => {
                     this._dispatchSelect();
-                    if (!this.isVertical) {
+                    if (!this.isVertical && !isExpanded) {
                         this._focusDropdown();
                     }
                 });
@@ -2152,7 +2330,6 @@ export default class FilterMenu extends LightningElement {
      */
     handleDropdownFocusOut() {
         this._dropdownIsFocused = false;
-
         requestAnimationFrame(() => {
             if (!this._dropdownIsFocused) {
                 this._close();
