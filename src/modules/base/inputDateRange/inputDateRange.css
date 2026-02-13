@@ -59,3 +59,63 @@
     font-style: var(--avonni-input-date-range-labels-font-style, normal);
     font-weight: var(--avonni-input-date-range-labels-font-weight, 400);
 }
+
+.avonni-input-date-range__calendar {
+    --avonni-calendar-color-background: var(
+        --avonni-input-date-range-calendar-color-background
+    );
+    --avonni-calendar-date-text-color: var(
+        --avonni-input-date-range-calendar-date-text-color
+    );
+    --avonni-calendar-date-disabled-text-color: var(
+        --avonni-input-date-range-calendar-date-disabled-text-color
+    );
+    --avonni-calendar-weekdays-text-color: var(
+        --avonni-input-date-range-calendar-weekdays-text-color
+    );
+    --avonni-calendar-month-text-color: var(
+        --avonni-input-date-range-calendar-month-text-color
+    );
+    --avonni-calendar-today-color-background: var(
+        --avonni-input-date-range-calendar-today-color-background
+    );
+    --avonni-calendar-today-text-color: var(
+        --avonni-input-date-range-calendar-today-text-color
+    );
+    --avonni-calendar-date-color-background-hover: var(
+        --avonni-input-date-range-calendar-date-color-background-hover
+    );
+    --avonni-calendar-selected-date-color-background: var(
+        --avonni-input-date-range-calendar-selected-date-color-background
+    );
+    --avonni-calendar-selected-date-color-background-focus: var(
+        --avonni-input-date-range-calendar-selected-date-color-background-focus
+    );
+    --avonni-calendar-selected-date-color-background-hover: var(
+        --avonni-input-date-range-calendar-selected-date-color-background-hover
+    );
+    --avonni-calendar-selected-date-text-color: var(
+        --avonni-input-date-range-calendar-selected-date-text-color
+    );
+    --avonni-calendar-selected-date-text-color-focus: var(
+        --avonni-input-date-range-calendar-selected-date-text-color-focus
+    );
+    --avonni-calendar-selected-date-text-color-hover: var(
+        --avonni-input-date-range-calendar-selected-date-text-color-hover
+    );
+    --avonni-calendar-multi-selected-color-border-hover: var(
+        --avonni-input-date-range-calendar-multi-selected-color-border-hover
+    );
+    --avonni-calendar-multi-selected-styling-border-hover: var(
+        --avonni-input-date-range-calendar-multi-selected-styling-border-hover
+    );
+    --avonni-calendar-week-label-text-color: var(
+        --avonni-input-date-range-calendar-week-label-text-color
+    );
+    --avonni-calendar-week-label-font-size: var(
+        --avonni-input-date-range-calendar-week-label-font-size
+    );
+    --avonni-calendar-week-label-font-weight: var(
+        --avonni-input-date-range-calendar-week-label-font-weight
+    );
+}
