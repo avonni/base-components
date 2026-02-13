@@ -180,17 +180,6 @@ export default {
                 category: 'menu'
             }
         },
-        loadMoreButtonLabel: {
-            name: 'load-more-button-label',
-            control: {
-                type: 'text'
-            },
-            description: 'Label for the load more button.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Load more' }
-            }
-        },
         menuAlignment: {
             name: 'menu-alignment',
             control: {
@@ -218,12 +207,12 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['none', '5-items', '7-items', '10-items'],
+            options: ['5-items', '7-items', '10-items'],
             description:
-                'Maximum length of the dropdown menu. Valid values include none, 5-items, 7-items and 10-items.',
+                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'none' },
+                defaultValue: { summary: '7-items' },
                 category: 'menu'
             }
         },
@@ -257,7 +246,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
+                'Text that is displayed in the search input when the input is empty.',
             table: {
                 defaultValue: { summary: 'Search…' },
                 type: { summary: 'string' }
@@ -343,9 +332,8 @@ export default {
         isDraft: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
-        loadMoreButtonLabel: 'Load more',
         menuAlignment: 'left',
-        menuLength: 'none',
+        menuLength: '7-items',
         nubbin: false,
         triggers: 'click',
         variant: 'border'

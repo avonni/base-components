@@ -14,7 +14,6 @@ export default class ButtonMenuInfiniteLoading extends LightningElement {
     @api isButtonLoading;
     @api label;
     @api loadingStateAlternativeText;
-    @api loadMoreButtonLabel;
     @api menuAlignment;
     @api menuLength;
     @api nubbin;

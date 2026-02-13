@@ -46,9 +46,8 @@ describe('Button Menu', () => {
             expect(element.isLoading).toBeFalsy();
             expect(element.label).toBeUndefined();
             expect(element.loadingStateAlternativeText).toBe('Loading...');
-            expect(element.loadMoreButtonLabel).toBe('Load more');
             expect(element.menuAlignment).toBe('left');
-            expect(element.menuLength).toBe('none');
+            expect(element.menuLength).toBe('7-items');
             expect(element.nubbin).toBeFalsy();
             expect(element.prefixIconName).toBeFalsy();
             expect(element.stretch).toBeFalsy();
@@ -821,7 +820,7 @@ describe('Button Menu', () => {
                         '[data-element-id="div-dropdown-content"]'
                     );
                     expect(dropdown.classList).toContain(
-                        'slds-dropdown_length-with-icon-5'
+                        'slds-dropdown_length-5'
                     );
                 });
             });
@@ -836,7 +835,7 @@ describe('Button Menu', () => {
                         '[data-element-id="div-dropdown-content"]'
                     );
                     expect(dropdown.classList).toContain(
-                        'slds-dropdown_length-with-icon-7'
+                        'slds-dropdown_length-7'
                     );
                 });
             });
@@ -851,7 +850,7 @@ describe('Button Menu', () => {
                         '[data-element-id="div-dropdown-content"]'
                     );
                     expect(dropdown.classList).toContain(
-                        'slds-dropdown_length-with-icon-10'
+                        'slds-dropdown_length-10'
                     );
                 });
             });
@@ -1479,31 +1478,6 @@ describe('Button Menu', () => {
                     jest.runAllTimers();
                     expect(spy).toHaveBeenCalled();
                 });
-        });
-        it('loadmore event click', () => {
-            const handler = jest.fn();
-            element.addEventListener('loadmore', handler);
-
-            expect(handler).not.toHaveBeenCalled();
-
-            element.menuLength = 'none';
-            element.enableInfiniteLoading = true;
-
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            button.click();
-            return Promise.resolve().then(() => {
-                const buttonLoadmore = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-load-more"]'
-                );
-                buttonLoadmore.click();
-                expect(handler).toHaveBeenCalledTimes(1);
-                const call = handler.mock.calls[0][0];
-                expect(call.bubbles).toBeFalsy();
-                expect(call.cancelable).toBeFalsy();
-                expect(call.composed).toBeFalsy();
-            });
         });
 
         it('loadmore event scroll', () => {

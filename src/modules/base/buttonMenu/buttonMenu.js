@@ -26,7 +26,6 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
-const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load more';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 
 const i18n = {
@@ -50,8 +49,8 @@ const MENU_ALIGNMENTS = {
 };
 
 const MENU_LENGTHS = {
-    valid: ['none', '5-items', '7-items', '10-items'],
-    default: 'none'
+    valid: ['5-items', '7-items', '10-items'],
+    default: '7-items'
 };
 
 const MENU_TRIGGERS = {
@@ -135,14 +134,6 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @default Loading...
      */
     /**
-     * Label for the load more button.
-     *
-     * @type {string}
-     * @public
-     * @default 'Load more'
-     */
-    @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
-    /**
      * The Lightning Design System name of the icon positionned before the label.
      *
      * @type {string}
@@ -222,7 +213,6 @@ export default class ButtonMenu extends ButtonMenuBase {
         this.initTooltip();
         if (
             this.enableInfiniteLoading &&
-            !this.isNoneLength &&
             this.dropdownContentElement &&
             this.dropdownContentElement.scrollTop === 0
         ) {
@@ -384,10 +374,10 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Maximum length of the menu. Valid values include none, 5-items, 7-items and 10-items.
+     * Maximum length of the menu. Valid values include 5-items, 7-items and 10-items.
      *
      * @type {string}
-     * @default none
+     * @default 7-items
      * @public
      */
     @api
@@ -417,11 +407,10 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Deprecated. Set the search input placeholder in the type attributes.
+     * Text that is displayed in the search input when the input is empty.
      *
      * @type {string}
      * @default Search...
-     * @deprecated
      */
     @api
     get searchInputPlaceholder() {
@@ -670,9 +659,9 @@ export default class ButtonMenu extends ButtonMenuBase {
         const length = this.menuLength;
         return classSet('slds-dropdown__list')
             .add({
-                'slds-dropdown_length-with-icon-5': length === '5-items',
-                'slds-dropdown_length-with-icon-7': length === '7-items',
-                'slds-dropdown_length-with-icon-10': length === '10-items'
+                'slds-dropdown_length-5': length === '5-items',
+                'slds-dropdown_length-7': length === '7-items',
+                'slds-dropdown_length-10': length === '10-items'
             })
             .toString();
     }
@@ -683,7 +672,9 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @type {string}
      */
     get computedFooterContainerClass() {
-        return classSet('slds-popover__footer')
+        return classSet(
+            'avonni_button_menu__footer-container slds-popover__footer'
+        )
             .add({
                 'slds-hide': !this._showFooter
             })
@@ -817,15 +808,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Returns true if menu length is none.
-     *
-     * @type {boolean}
-     */
-    get isNoneLength() {
-        return this.menuLength === 'none';
-    }
-
-    /**
      * Returns true if icon is a down icon.
      *
      * @type {boolean}
@@ -868,17 +850,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     get searchInput() {
         return this.template.querySelector(
             '[data-element-id="lightning-input"]'
-        );
-    }
-
-    /**
-     * True if the load more button should be visible.
-     *
-     * @type {boolean}
-     */
-    get showLoadMoreButton() {
-        return (
-            this.enableInfiniteLoading && !this.isLoading && this.isNoneLength
         );
     }
 
@@ -1237,18 +1208,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
-     * Handle a click on the load more button.
-     */
-    handleLoadMore() {
-        const menuItem = this.getMenuItemByIndex(0);
-        if (menuItem) {
-            this.focusOnMenuItem(this.getMenuItems().length - 1);
-        } else {
-            this.dropdownElement?.focus();
-        }
-        this.dispatchLoadMore();
-    }
-    /**
      * Handle an input in the search box.
      *
      * @param {Event} event change event.
@@ -1267,11 +1226,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      * Handle a scroll movement in the dropdown menu.
      */
     handleScroll() {
-        if (
-            !this.enableInfiniteLoading ||
-            this.isLoading ||
-            this.isNoneLength
-        ) {
+        if (!this.enableInfiniteLoading || this.isLoading) {
             return;
         }
 
@@ -1405,7 +1360,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     dispatchLoadMore() {
         /**
-         * The event fired when you scroll to the end of the dropdown menu or on a click of the load more button. This event is fired only if `enable-infinite-loading` is true.
+         * The event fired when you scroll to the end of the dropdown menu. This event is fired only if `enable-infinite-loading` is true.
          *
          * @event
          * @name loadmore

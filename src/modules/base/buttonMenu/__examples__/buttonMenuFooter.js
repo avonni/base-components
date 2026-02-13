@@ -21,7 +21,6 @@ export const ButtonMenuFooter = ({
     isLoading,
     label,
     loadingStateAlternativeText,
-    loadMoreButtonLabel,
     menuAlignment,
     menuLength,
     nubbin,
@@ -49,7 +48,6 @@ export const ButtonMenuFooter = ({
     element.isLoading = isLoading;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.loadMoreButtonLabel = loadMoreButtonLabel;
     element.menuAlignment = menuAlignment;
     element.menuLength = menuLength;
     element.nubbin = nubbin;
