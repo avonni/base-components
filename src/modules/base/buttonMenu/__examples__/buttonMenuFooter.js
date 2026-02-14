@@ -1,14 +1,14 @@
-import Component from '../../storybookWrappers/buttonMenu/base';
+import Component from '../../storybookWrappers/buttonMenu/footer';
 
 customElements.define(
-    'ac-button-menu-base',
+    'ac-button-menu-footer',
     Component.CustomElementConstructor
 );
 
-export const ButtonMenuBase = ({
+export const ButtonMenuFooter = ({
     accessKey,
-    allowSearch,
     alternativeText,
+    allowSearch,
     disabled,
     draftAlternatveText,
     enableInfiniteLoading,
@@ -32,10 +32,10 @@ export const ButtonMenuBase = ({
     value,
     variant
 }) => {
-    const element = document.createElement('ac-button-menu-base');
+    const element = document.createElement('ac-button-menu-footer');
     element.accessKey = accessKey;
-    element.allowSearch = allowSearch;
     element.alternativeText = alternativeText;
+    element.allowSearch = allowSearch;
     element.disabled = disabled;
     element.draftAlternatveText = draftAlternatveText;
     element.enableInfiniteLoading = enableInfiniteLoading;
