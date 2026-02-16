@@ -410,7 +410,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      * Text that is displayed in the search input when the input is empty.
      *
      * @type {string}
-     * @default Search...
+     * @default Search…
      */
     @api
     get searchInputPlaceholder() {
