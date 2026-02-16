@@ -571,7 +571,7 @@ export default class PrimitiveAvatar extends LightningElement {
         console.warn(
             `Avatar component Image with src="${event.target.src}" failed to load.`
         );
-        if (event.target.src === this.src) {
+        if (event.target.getAttribute('src') === this.src) {
             this._src = '';
         }
     }
