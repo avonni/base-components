@@ -38,4 +38,6 @@
 
 .avonni-filter-menu__input-date-range {
     --avonni-input-date-range-expanded-calendar-container-spacing-block-start: 0.75rem;
+    --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-start: 0.25rem;
+    --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-end: 0.25rem;
 }

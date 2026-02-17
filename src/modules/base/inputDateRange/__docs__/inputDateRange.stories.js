@@ -163,6 +163,34 @@ export default {
                 category: 'Validation'
             }
         },
+        rangeOptionValue: {
+            name: 'range-option-value',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'today',
+                'yesterday',
+                'thisWeek',
+                'lastWeek',
+                'thisMonth',
+                'lastMonth',
+                'thisQuarter',
+                'lastQuarter',
+                'thisYear',
+                'lastYear',
+                'monthToDate',
+                'quarterToDate',
+                'yearToDate',
+                'custom'
+            ],
+            description:
+                'The value of the range option. If the value is other than custom and `startDate` and `endDate` are not defined, `startDate` and `endDate` are initialized according to the value.. Valid values are today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, monthToDate, quarterToDate, yearToDate and custom',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'short' }
+            }
+        },
         required: {
             control: {
                 type: 'boolean'
@@ -282,6 +310,7 @@ export default {
         disabled: false,
         isExpanded: false,
         labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
+        rangeOptionValue: 'custom',
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',

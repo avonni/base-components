@@ -15,13 +15,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utils';
-import {
-    animationFrame,
-    equal,
-    isOrgSlds2,
-    keyValues,
-    timeout
-} from 'c/utilsPrivate';
+import { animationFrame, isOrgSlds2, keyValues, timeout } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import expandedDateRange from './expandedDateRange.html';
 import inputDateRange from './inputDateRange.html';
@@ -104,6 +98,25 @@ const RANGES_OPTIONS = [
     }
 ];
 
+const RANGES_VALUES = {
+    valid: [
+        'today',
+        'yesterday',
+        'thisWeek',
+        'lastWeek',
+        'thisMonth',
+        'lastMonth',
+        'thisQuarter',
+        'lastQuarter',
+        'thisYear',
+        'lastYear',
+        'monthToDate',
+        'quarterToDate',
+        'yearToDate',
+        'custom'
+    ],
+    default: 'custom'
+};
 /**
  * @class
  * @public
@@ -182,6 +195,7 @@ export default class InputDateRange extends LightningElement {
     _endDate;
     _isExpanded = false;
     _labelRangeOptions = {};
+    _rangeOptionValue = RANGES_VALUES.default;
     _readOnly = false;
     _required = false;
     _showRangeOptions = false;
@@ -199,21 +213,20 @@ export default class InputDateRange extends LightningElement {
     isOpenEndDate = false;
     isOpenStartDate = false;
     helpMessage;
-    optionRangeValue = 'custom';
     savedFocus;
     showEndDate = false;
     showStartDate = false;
     selectionModeEndDate = 'interval';
     selectionModeStartDate = 'interval';
     startTime;
+
     _autoPosition;
     _cancelBlurEndDate = false;
     _cancelBlurStartDate = false;
     _connected = false;
+    _displayDate;
     _focusEndDate;
     _focusStartDate;
-
-    _displayDate;
 
     /*
      * ------------------------------------------------------------
@@ -224,6 +237,7 @@ export default class InputDateRange extends LightningElement {
     connectedCallback() {
         this.initStartDate();
         this.initEndDate();
+        this.initRangeOptionValue();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
@@ -289,9 +303,6 @@ export default class InputDateRange extends LightningElement {
     }
     set endDate(value) {
         const date = new Date(value);
-        if (!equal(this._endDate, date)) {
-            this.optionRangeValue = 'custom';
-        }
         this._endDate = !value || isNaN(date) ? null : date;
         this._initialEndDate = !this._endDate ? null : new Date(date);
 
@@ -336,6 +347,29 @@ export default class InputDateRange extends LightningElement {
     }
     set isExpanded(value) {
         this._isExpanded = normalizeBoolean(value);
+    }
+
+    /**
+     * The value of the range option. If the value is other than custom and `startDate` and `endDate` are not defined, `startDate` and `endDate` are initialized according to the value.
+     * Valid values are today, yesterday, thisWeek, lastWeek, thisMonth, lastMonth, thisQuarter, lastQuarter, thisYear, lastYear, monthToDate, quarterToDate, yearToDate and custom.
+     *
+     * @type {string}
+     * @default custom
+     * @public
+     */
+    @api
+    get rangeOptionValue() {
+        return this._rangeOptionValue;
+    }
+    set rangeOptionValue(value) {
+        this._rangeOptionValue = normalizeString(value, {
+            fallbackValue: RANGES_VALUES.default,
+            validValues: RANGES_VALUES.valid,
+            toLowerCase: false
+        });
+        if (this._connected) {
+            this.initRangeOptionValue();
+        }
     }
 
     /**
@@ -395,9 +429,6 @@ export default class InputDateRange extends LightningElement {
     }
     set startDate(value) {
         const date = new Date(value);
-        if (!equal(this._startDate, date)) {
-            this.optionRangeValue = 'custom';
-        }
         this._startDate = !value || isNaN(date) ? null : date;
         this._initialStartDate = !this._startDate ? null : new Date(date);
 
@@ -553,17 +584,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Combobox range options.
-     *
-     * @type {element}
-     */
-    get comboboxRangeOptions() {
-        return this.template.querySelector(
-            '[data-element-id="avonni-input-date-range__combobox-range-options"]'
-        );
-    }
-
-    /**
      * Class of the label container.
      *
      * @type {string}
@@ -633,15 +653,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Computed option range value.
-     *
-     * @type {string}
-     */
-    get computedOptionRangeValue() {
-        return this.disabledOrReadOnly ? '' : this.optionRangeValue;
-    }
-
-    /**
      * Class of the range options container.
      *
      * @type {string}
@@ -654,6 +665,15 @@ export default class InputDateRange extends LightningElement {
                 'slds-grid slds-wrap slds-m-bottom_x-small': !this.isExpanded
             })
             .toString();
+    }
+
+    /**
+     * Computed range option value.
+     *
+     * @type {string}
+     */
+    get computedRangeOptionValue() {
+        return this.disabledOrReadOnly ? '' : this._rangeOptionValue;
     }
 
     /**
@@ -786,6 +806,11 @@ export default class InputDateRange extends LightningElement {
         return true;
     }
 
+    /**
+     * Options for the combobox and vertical navigation.
+     *
+     * @type {boolean}
+     */
     get rangeOptions() {
         return RANGES_OPTIONS.map((option) => {
             const customLabel = this.labelRangeOptions[option.value];
@@ -796,6 +821,17 @@ export default class InputDateRange extends LightningElement {
                 label: normalizeCustomLabel ? customLabel : option.label
             };
         });
+    }
+
+    /**
+     * Range options element.
+     *
+     * @type {element}
+     */
+    get rangeOptionsElement() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-input-date-range__range-options"]'
+        );
     }
 
     /**
@@ -879,7 +915,7 @@ export default class InputDateRange extends LightningElement {
     blur() {
         this.startDateInput?.blur();
         this.endDateInput?.blur();
-        this.comboboxRangeOptions?.blur();
+        this.rangeOptionsElement?.blur();
         this.showStartDate = false;
         this.showEndDate = false;
         this.stopPositioning();
@@ -1053,6 +1089,22 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Initialize a predefined range value.
+     */
+    initRangeOptionValue() {
+        if (
+            this.showRangeOptions &&
+            this.rangeOptionValue !== 'custom' &&
+            !this.startDate &&
+            !this.endDate
+        ) {
+            this.setPredefinedRangeOption(this.rangeOptionValue);
+            this.initStartDate();
+            this.initEndDate();
+        }
+    }
+
+    /**
      * Initialize the start time.
      */
     initStartDate() {
@@ -1080,6 +1132,84 @@ export default class InputDateRange extends LightningElement {
                 targetCalendar.focusDate(date);
             }
         });
+    }
+
+    /**
+     * Sets the date range to a full calendar month.
+     *
+     * @param {number} [offset=0] Number of months to offset from the current month.
+     * @param {boolean} [isToDate] If present, the end date should be today.
+     */
+    setPredefinedMonthRange(offset = 0, isToDate = false) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const d = new Date();
+        d.setDate(1);
+        d.setHours(0, 0, 0, 0);
+
+        d.setMonth(d.getMonth() + offset);
+
+        const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+        endOfMonth.setHours(0, 0, 0, 0);
+
+        this._startDate = this.addOffsetTimezone(startOfMonth);
+        this._endDate =
+            isToDate && offset <= 0
+                ? this.addOffsetTimezone(today)
+                : this.addOffsetTimezone(endOfMonth);
+    }
+
+    /**
+     * Sets the date range.
+     *
+     * @param {string}
+     */
+    setPredefinedRangeOption(rangeOption) {
+        switch (rangeOption) {
+            case 'today':
+                this.setPredefinedTodayRange();
+                break;
+            case 'yesterday':
+                this.setPredefinedYesterdayRange();
+                break;
+            case 'lastWeek':
+                this.setPredefinedWeekRange(-1);
+                break;
+            case 'lastMonth':
+                this.setPredefinedMonthRange(-1);
+                break;
+            case 'lastQuarter':
+                this.setPredefinedQuarterRange(-1);
+                break;
+            case 'lastYear':
+                this.setPredefinedYearRange(-1);
+                break;
+            case 'thisWeek':
+                this.setPredefinedWeekRange(0);
+                break;
+            case 'thisMonth':
+                this.setPredefinedMonthRange(0);
+                break;
+            case 'thisQuarter':
+                this.setPredefinedQuarterRange(0);
+                break;
+            case 'thisYear':
+                this.setPredefinedYearRange(0);
+                break;
+            case 'monthToDate':
+                this.setPredefinedMonthRange(0, true);
+                break;
+            case 'quarterToDate':
+                this.setPredefinedQuarterRange(0, true);
+                break;
+            case 'yearToDate':
+                this.setPredefinedYearRange(0, true);
+                break;
+            default:
+        }
     }
 
     /**
@@ -1118,34 +1248,6 @@ export default class InputDateRange extends LightningElement {
 
         this._startDate = this.addOffsetTimezone(startOfWeek);
         this._endDate = this.addOffsetTimezone(endOfWeek);
-    }
-
-    /**
-     * Sets the date range to a full calendar month.
-     *
-     * @param {number} [offset=0] Number of months to offset from the current month.
-     * @param {boolean} [isToDate] If present, the end date should be today.
-     */
-    setPredefinedMonthRange(offset = 0, isToDate = false) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const d = new Date();
-        d.setDate(1);
-        d.setHours(0, 0, 0, 0);
-
-        d.setMonth(d.getMonth() + offset);
-
-        const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
-        startOfMonth.setHours(0, 0, 0, 0);
-
-        const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
-        endOfMonth.setHours(0, 0, 0, 0);
-
-        this._startDate = this.addOffsetTimezone(startOfMonth);
-        this._endDate =
-            isToDate && offset <= 0
-                ? this.addOffsetTimezone(today)
-                : this.addOffsetTimezone(endOfMonth);
     }
 
     /**
@@ -1494,7 +1596,7 @@ export default class InputDateRange extends LightningElement {
             state = 'DESELECT_END';
         }
 
-        this.optionRangeValue = 'custom';
+        this._rangeOptionValue = 'custom';
 
         // Case execution
         switch (state) {
@@ -1558,13 +1660,13 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._startDate = null;
             }
-            this.optionRangeValue = 'custom';
+            this._rangeOptionValue = 'custom';
             this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
         } else if (!value?.trim()) {
             this._endDate = null;
-            this.optionRangeValue = 'custom';
+            this._rangeOptionValue = 'custom';
             this.setValidTimeRange();
             this._dispatchChange();
             if (this._startDate) {
@@ -1606,7 +1708,7 @@ export default class InputDateRange extends LightningElement {
             return date ? new Date(date) : null;
         });
 
-        this.optionRangeValue = 'custom';
+        this._rangeOptionValue = 'custom';
         const [start, end] = dates ?? [];
         const clickedOnFirstValue =
             dates[0] && clickedDate.getTime() === dates[0].getTime();
@@ -1742,7 +1844,7 @@ export default class InputDateRange extends LightningElement {
         ) {
             state = 'DESELECT_START';
         }
-        this.optionRangeValue = 'custom';
+        this._rangeOptionValue = 'custom';
 
         // Case execution
         switch (state) {
@@ -1807,13 +1909,13 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._endDate = null;
             }
-            this.optionRangeValue = 'custom';
+            this._rangeOptionValue = 'custom';
             this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._startDate);
         } else if (!value?.trim()) {
             this._startDate = null;
-            this.optionRangeValue = 'custom';
+            this._rangeOptionValue = 'custom';
             this.setValidTimeRange();
             this._dispatchChange();
             if (this._endDate) {
@@ -1925,7 +2027,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.endDate) {
             this._endDate = null;
-            this.optionRangeValue = 'custom';
+            this._rangeOptionValue = 'custom';
             this._dispatchChange();
         }
 
@@ -1967,7 +2069,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.startDate) {
             this._startDate = null;
-            this.optionRangeValue = 'custom';
+            this._rangeOptionValue = 'custom';
             this._dispatchChange();
         }
 
@@ -1989,7 +2091,8 @@ export default class InputDateRange extends LightningElement {
 
     handleChangeRangeOption(event) {
         event.stopPropagation();
-        if (this.disabled) {
+        const range = event.detail.name || event.detail.value;
+        if (this.disabled || range === this._rangeOptionValue || !range) {
             return;
         }
         // The focus on the date ranges needs to be blurred to avoid setting one of the dates to null
@@ -1998,51 +2101,9 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput?.blur();
         }
 
-        const range = event.detail.name || event.detail.value;
-        this.optionRangeValue = range;
-        switch (range) {
-            case 'today':
-                this.setPredefinedTodayRange();
-                break;
-            case 'yesterday':
-                this.setPredefinedYesterdayRange();
-                break;
-            case 'lastWeek':
-                this.setPredefinedWeekRange(-1);
-                break;
-            case 'lastMonth':
-                this.setPredefinedMonthRange(-1);
-                break;
-            case 'lastQuarter':
-                this.setPredefinedQuarterRange(-1);
-                break;
-            case 'lastYear':
-                this.setPredefinedYearRange(-1);
-                break;
-            case 'thisWeek':
-                this.setPredefinedWeekRange(0);
-                break;
-            case 'thisMonth':
-                this.setPredefinedMonthRange(0);
-                break;
-            case 'thisQuarter':
-                this.setPredefinedQuarterRange(0);
-                break;
-            case 'thisYear':
-                this.setPredefinedYearRange(0);
-                break;
-            case 'monthToDate':
-                this.setPredefinedMonthRange(0, true);
-                break;
-            case 'quarterToDate':
-                this.setPredefinedQuarterRange(0, true);
-                break;
-            case 'yearToDate':
-                this.setPredefinedYearRange(0, true);
-                break;
-            default:
-                return;
-        }
+        this.setPredefinedRangeOption(range);
+
+        this._rangeOptionValue = range;
         this.setValidTimeRange();
         this.interactingState.enter();
         this.updateClassListWhenError();
@@ -2142,7 +2203,7 @@ export default class InputDateRange extends LightningElement {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         this._endDate = this.addOffsetTimezone(today);
-        this.optionRangeValue = 'custom';
+        this._rangeOptionValue = 'custom';
 
         if (this._endDate < this._startDate) {
             this._startDate = null;
@@ -2168,7 +2229,7 @@ export default class InputDateRange extends LightningElement {
     handleSelectExpandedToday() {
         this.setPredefinedTodayRange();
         this.setValidTimeRange();
-        this.optionRangeValue = 'custom';
+        this._rangeOptionValue = 'custom';
         this._dispatchChange();
         if (this.isExpanded) {
             this._displayDate = this._startDate;
@@ -2183,7 +2244,7 @@ export default class InputDateRange extends LightningElement {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         this._startDate = this.addOffsetTimezone(today);
-        this.optionRangeValue = 'custom';
+        this._rangeOptionValue = 'custom';
 
         if (this._startDate > this._endDate) this._endDate = null;
         this.setValidTimeRange();
@@ -2260,6 +2321,7 @@ export default class InputDateRange extends LightningElement {
     _dispatchChange() {
         const startDate = this.toISOString(this.startDate, this.startTime);
         const endDate = this.toISOString(this.endDate, this.endTime);
+        const rangeOptionValue = this.rangeOptionValue;
 
         /**
          * The event fired when the value changed.
@@ -2268,13 +2330,16 @@ export default class InputDateRange extends LightningElement {
          * @name change
          * @param {string} startDate Start date, as an ISO8601 formatted string.
          * @param {string} endDate End date, as an ISO8601 formatted string.
+         * @param {string} rangeOptionValue The value of the range option.
+
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
                     startDate,
-                    endDate
+                    endDate,
+                    rangeOptionValue
                 }
             })
         );

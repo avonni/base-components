@@ -51,6 +51,7 @@ const BUTTON_VARIANTS = {
 const DATE_RANGE_OVERFLOW_OFFSET = 10;
 
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
+const DEFAULT_DATE_RANGE_OPTION_VALUE = 'custom';
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No matches found';
 const DEFAULT_RANGE_VALUE = [0, 100];
@@ -226,10 +227,12 @@ export default class FilterMenu extends LightningElement {
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
+    _rangeOptionValue = 'custom';
     _searchTimeOut;
 
     @track computedItems = [];
     computedTypeAttributes = {};
+    currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
@@ -837,6 +840,8 @@ export default class FilterMenu extends LightningElement {
         }
         this._value = deepCopy(array);
         this.currentValue = deepCopy(array);
+        this.currentRangeOptionValue = 'custom';
+        this._rangeOptionValue = 'custom';
 
         if (this._connected) {
             this._computeListItems();
@@ -1567,6 +1572,7 @@ export default class FilterMenu extends LightningElement {
     @api
     apply() {
         this._value = [...this.currentValue];
+        this._rangeOptionValue = this.currentRangeOptionValue;
         this._computeSelectedItems();
         this._close();
     }
@@ -1580,6 +1586,8 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
+        this.currentRangeOptionValue = 'custom';
+        this._rangeOptionValue = 'custom';
         this._computeListItems();
         this._computeSelectedItems();
 
@@ -1642,6 +1650,7 @@ export default class FilterMenu extends LightningElement {
     @api
     reset() {
         this.currentValue = [];
+        this.currentRangeOptionValue = 'custom';
         if (this.isList) {
             this._computeListItems();
         }
@@ -2174,6 +2183,7 @@ export default class FilterMenu extends LightningElement {
 
                 this._pollBoundingRect();
                 this.currentValue = [...this.value];
+                this.currentRangeOptionValue = this._rangeOptionValue;
                 this._computeListItems();
                 this._focusDropdown();
                 this._computeDateRangeExpansion();
@@ -2285,8 +2295,9 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event change event.
      */
     handleDateRangeChange(event) {
-        const { startDate, endDate } = event.detail;
+        const { startDate, endDate, rangeOptionValue } = event.detail;
         this.currentValue = !startDate && !endDate ? [] : [startDate, endDate];
+        this.currentRangeOptionValue = rangeOptionValue;
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
         this._dateRangeFrames = [];
 
@@ -2565,6 +2576,8 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
+        this.currentRangeOptionValue = 'custom';
+        this._rangeOptionValue = 'custom';
         this._computeListItems();
         this._dispatchApply();
     }
@@ -2786,6 +2799,7 @@ export default class FilterMenu extends LightningElement {
         // Save the selection immediately
         if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = [...this.currentValue];
+            this._rangeOptionValue = this.currentRangeOptionValue;
             this._computeSelectedItems();
             this._dispatchApply();
 

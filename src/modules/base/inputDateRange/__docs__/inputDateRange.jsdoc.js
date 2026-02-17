@@ -143,6 +143,31 @@
 
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-vertical-navigation-container-spacing-inline-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-date-range-expanded-vertical-navigation-container-spacing-inline-start
+ * @type dimension
+ * @default 0
+ */
+
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-date-range-header-text-color
  * @default #080707
  * @type color

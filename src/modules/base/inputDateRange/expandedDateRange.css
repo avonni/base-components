@@ -63,6 +63,22 @@
 .avonni-input-date-range__vertical-navigation-container {
     width: 200px;
     order: 1;
+    padding-right: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-inline-start,
+        0
+    );
+    padding-top: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-end,
+        0
+    );
 }
 
 .avonni-input-date-range__vertical-navigation-container

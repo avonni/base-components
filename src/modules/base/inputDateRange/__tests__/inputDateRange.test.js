@@ -61,6 +61,7 @@ describe('Input Date Range', () => {
             expect(element.labelStartDate).toBeUndefined();
             expect(element.labelStartTime).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
+            expect(element.rangeOptionValue).toBe('custom');
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
             expect(element.requiredAlternativeText).toBe('Required');
@@ -356,7 +357,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     expect(rangeOptions.options).toEqual([
                         { label: 'Custom Custom', value: 'custom' },
@@ -377,6 +378,32 @@ describe('Input Date Range', () => {
                         { label: 'Year-to-date Custom', value: 'yearToDate' },
                         { label: 'Last yea Custom', value: 'lastYear' }
                     ]);
+                });
+            });
+        });
+
+        describe('Option Range Value', () => {
+            it('Passed to the component', () => {
+                element.showRangeOptions = true;
+                element.rangeOptionValue = 'today';
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__range-options"]'
+                    );
+                    expect(rangeOptions.value).toBe('today');
+                });
+            });
+            it('Passed to the component in expanded', () => {
+                element.showRangeOptions = true;
+                element.rangeOptionValue = 'today';
+                element.isExpanded = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__range-options"]'
+                    );
+                    expect(rangeOptions.selectedItem).toBe('today');
                 });
             });
         });
@@ -1196,7 +1223,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     expect(rangeOptions).toBeTruthy();
                 });
@@ -1209,7 +1236,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1228,7 +1255,7 @@ describe('Input Date Range', () => {
                 element.showRangeOptions = true;
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1248,7 +1275,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1269,7 +1296,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1290,7 +1317,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1311,7 +1338,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1332,7 +1359,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1353,7 +1380,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1374,7 +1401,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1395,7 +1422,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1416,7 +1443,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1437,7 +1464,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1458,7 +1485,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1481,7 +1508,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1503,7 +1530,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     const expandedCalendar = element.shadowRoot.querySelector(
                         '[data-element-id="calendar-expanded-date"]'
