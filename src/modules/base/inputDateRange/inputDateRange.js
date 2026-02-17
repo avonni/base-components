@@ -1102,8 +1102,14 @@ export default class InputDateRange extends LightningElement {
             !this.endDate
         ) {
             this.setPredefinedRangeOption(this.rangeOptionValue);
+            this.setValidTimeRange();
             this.initStartDate();
             this.initEndDate();
+            this._dispatchChange();
+            if (this.isExpanded) {
+                this._displayDate = this._startDate;
+                this.goToExpandedCalendarDate(this._startDate);
+            }
         }
     }
 
