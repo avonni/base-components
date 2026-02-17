@@ -124,5 +124,22 @@ export const listViewItems = [
                 alternativeText: 'Delete'
             }
         ]
+    },
+    {
+        label: 'Disabled Item',
+        value: 'disabled-item',
+        disabled: true,
+        actions: [
+            {
+                name: 'action-1',
+                iconName: 'utility:edit',
+                alternativeText: 'Edit'
+            },
+            {
+                name: 'action-2',
+                iconName: 'utility:delete',
+                alternativeText: 'Delete'
+            }
+        ]
     }
 ];
