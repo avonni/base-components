@@ -415,6 +415,9 @@ export default class InputDateRange extends LightningElement {
     }
     set showRangeOptions(value) {
         this._showRangeOptions = normalizeBoolean(value);
+        if (this._connected) {
+            this.initRangeOptionValue();
+        }
     }
 
     /**
