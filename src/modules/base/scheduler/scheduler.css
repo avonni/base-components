@@ -6,10 +6,6 @@
     flex: 1 1 auto;
 }
 
-.avonni-scheduler__schedule {
-    height: calc(100% - var(--avonni-scheduler-toolbar-height, 70px));
-}
-
 .avonni-scheduler__detail-popover-close-button {
     z-index: 1;
     top: 0;
