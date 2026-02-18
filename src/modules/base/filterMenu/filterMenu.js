@@ -228,7 +228,7 @@ export default class FilterMenu extends LightningElement {
     _order;
     _previousScroll;
     _preventDropdownToggle = false;
-    _rangeOptionValue = 'custom';
+    _rangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
     _searchTimeOut;
 
     @track computedItems = [];
@@ -840,8 +840,8 @@ export default class FilterMenu extends LightningElement {
         }
         this._value = deepCopy(array);
         this.currentValue = deepCopy(array);
-        this._currentRangeOptionValue = 'custom';
-        this._rangeOptionValue = 'custom';
+        this._currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
+        this._rangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
 
         if (this._connected) {
             this._computeListItems();
@@ -1586,8 +1586,8 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
-        this._currentRangeOptionValue = 'custom';
-        this._rangeOptionValue = 'custom';
+        this._currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
+        this._rangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
         this._computeListItems();
         this._computeSelectedItems();
 
@@ -1650,7 +1650,7 @@ export default class FilterMenu extends LightningElement {
     @api
     reset() {
         this.currentValue = [];
-        this._currentRangeOptionValue = 'custom';
+        this._currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
         if (this.isList) {
             this._computeListItems();
         }
@@ -2593,8 +2593,8 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
-        this._currentRangeOptionValue = 'custom';
-        this._rangeOptionValue = 'custom';
+        this._currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
+        this._rangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
         this._computeListItems();
         this._dispatchApply();
     }

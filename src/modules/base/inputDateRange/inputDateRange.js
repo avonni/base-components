@@ -1590,7 +1590,7 @@ export default class InputDateRange extends LightningElement {
             state = 'DESELECT_END';
         }
 
-        this.rangeOptionValue = 'custom';
+        this.rangeOptionValue = RANGES_VALUES.default;
 
         // Case execution
         switch (state) {
@@ -1654,13 +1654,13 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._startDate = null;
             }
-            this.rangeOptionValue = 'custom';
+            this.rangeOptionValue = RANGES_VALUES.default;
             this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._endDate);
         } else if (!value?.trim()) {
             this._endDate = null;
-            this.rangeOptionValue = 'custom';
+            this.rangeOptionValue = RANGES_VALUES.default;
             this.setValidTimeRange();
             this._dispatchChange();
             if (this._startDate) {
@@ -1703,7 +1703,7 @@ export default class InputDateRange extends LightningElement {
             return date ? new Date(date) : null;
         });
 
-        this.rangeOptionValue = 'custom';
+        this.rangeOptionValue = RANGES_VALUES.default;
         const [start, end] = dates ?? [];
         const clickedOnFirstValue =
             dates[0] && clickedDate.getTime() === dates[0].getTime();
@@ -1839,7 +1839,7 @@ export default class InputDateRange extends LightningElement {
         ) {
             state = 'DESELECT_START';
         }
-        this.rangeOptionValue = 'custom';
+        this.rangeOptionValue = RANGES_VALUES.default;
 
         // Case execution
         switch (state) {
@@ -1904,13 +1904,13 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._endDate = null;
             }
-            this.rangeOptionValue = 'custom';
+            this.rangeOptionValue = RANGES_VALUES.default;
             this.setValidTimeRange();
             this._dispatchChange();
             this.goToExpandedCalendarDate(this._startDate);
         } else if (!value?.trim()) {
             this._startDate = null;
-            this.rangeOptionValue = 'custom';
+            this.rangeOptionValue = RANGES_VALUES.default;
             this.setValidTimeRange();
             this._dispatchChange();
             if (this._endDate) {
@@ -2023,7 +2023,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.endDate) {
             this._endDate = null;
-            this.rangeOptionValue = 'custom';
+            this.rangeOptionValue = RANGES_VALUES.default;
             this._dispatchChange();
         }
 
@@ -2065,7 +2065,7 @@ export default class InputDateRange extends LightningElement {
         const value = event.currentTarget.value;
         if (!value && this.startDate) {
             this._startDate = null;
-            this.rangeOptionValue = 'custom';
+            this.rangeOptionValue = RANGES_VALUES.default;
             this._dispatchChange();
         }
 
@@ -2188,7 +2188,7 @@ export default class InputDateRange extends LightningElement {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         this._endDate = this.addOffsetTimezone(today);
-        this.rangeOptionValue = 'custom';
+        this.rangeOptionValue = RANGES_VALUES.default;
 
         if (this._endDate < this._startDate) {
             this._startDate = null;
@@ -2214,7 +2214,7 @@ export default class InputDateRange extends LightningElement {
     handleSelectExpandedToday() {
         this.setPredefinedTodayRange();
         this.setValidTimeRange();
-        this.rangeOptionValue = 'custom';
+        this.rangeOptionValue = RANGES_VALUES.default;
         this._dispatchChange();
         if (this.isExpanded) {
             this._displayDate = this._startDate;
@@ -2229,7 +2229,7 @@ export default class InputDateRange extends LightningElement {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         this._startDate = this.addOffsetTimezone(today);
-        this.rangeOptionValue = 'custom';
+        this.rangeOptionValue = RANGES_VALUES.default;
 
         if (this._startDate > this._endDate) this._endDate = null;
         this.setValidTimeRange();
