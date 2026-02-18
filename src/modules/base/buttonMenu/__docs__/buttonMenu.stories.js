@@ -1,5 +1,7 @@
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
+import { ButtonMenuFooter } from '../__examples__/buttonMenuFooter';
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
+import { ButtonMenuInfiniteLoading } from '../__examples__/buttonMenuInfiniteLoading';
 import ButtonMenuSizesComponent from '../__examples__/sizes/sizes';
 import ButtonMenuVariantsComponent from '../__examples__/variants/variants';
 
@@ -14,6 +16,17 @@ export default {
             description: 'The keyboard shortcut for the button menu.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        allowSearch: {
+            name: 'allow-search',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display search box.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         alternativeText: {
@@ -46,6 +59,18 @@ export default {
                 'Describes the reason for showing the draft indicator. This is required when is-draft is true.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the button menu. Use with the loadmore event to retrieve more items.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         hideDownArrow: {
@@ -177,6 +202,20 @@ export default {
                 category: 'menu'
             }
         },
+        menuLength: {
+            name: 'menu-length',
+            control: {
+                type: 'select'
+            },
+            options: ['5-items', '7-items', '10-items'],
+            description:
+                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '7-items' },
+                category: 'menu'
+            }
+        },
         nubbin: {
             control: {
                 type: 'boolean'
@@ -199,6 +238,18 @@ export default {
             table: {
                 type: { summary: 'string' },
                 category: 'icon'
+            }
+        },
+        searchInputPlaceholder: {
+            name: 'search-input-placeholder',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text that is displayed in the search input when the input is empty.',
+            table: {
+                defaultValue: { summary: 'Search…' },
+                type: { summary: 'string' }
             }
         },
         title: {
@@ -271,8 +322,10 @@ export default {
         }
     },
     args: {
+        allowSearch: false,
         alternativeText: 'Show Menu',
         disabled: false,
+        enableInfiniteLoading: false,
         hideDownArrow: false,
         iconName: 'utility:down',
         iconSize: 'medium',
@@ -280,6 +333,7 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         menuAlignment: 'left',
+        menuLength: '7-items',
         nubbin: false,
         triggers: 'click',
         variant: 'border'
@@ -287,7 +341,10 @@ export default {
 };
 
 const Template = (args) => ButtonMenuBase(args);
+const TemplateFooter = (args) => ButtonMenuFooter(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
+const TemplateInfiniteLoading = (args) => ButtonMenuInfiniteLoading(args);
+
 const darkBackground = {
     backgrounds: {
         default: 'dark'
@@ -458,6 +515,18 @@ SuccessWithLabel.args = {
     label: 'Menu'
 };
 export const Illustration = TemplateIllustration.bind({});
+
+export const Footer = TemplateFooter.bind({});
+Footer.args = {
+    variant: 'bare'
+};
+
+export const InfiniteLoading = TemplateInfiniteLoading.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite Loading',
+    enableInfiniteLoading: true,
+    allowSearch: true
+};
 
 /**
  * Example with different combinations of sizes, fallback icon types.

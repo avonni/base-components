@@ -9,6 +9,13 @@
  */
 
 /**
+ * Contains the footer menu items.
+ *
+ * @memberof slots
+ * @name footer
+ */
+
+/**
  * @namespace stylingHooks
  */
 /**

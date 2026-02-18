@@ -2,9 +2,11 @@ import { LightningElement, api } from 'lwc';
 
 export default class ButtonMenu extends LightningElement {
     @api accessKey;
+    @api allowSearch;
     @api alternativeText;
     @api disabled;
     @api draftAlternativeText;
+    @api enableInfiniteLoading;
     @api groupOrder;
     @api hideDownArrow;
     @api iconName;
@@ -14,7 +16,9 @@ export default class ButtonMenu extends LightningElement {
     @api label;
     @api loadingStateAlternativeText;
     @api menuAlignment;
+    @api menuLength;
     @api nubbin;
+    @api searchInputPlaceholder;
     @api title;
     @api tooltip;
     @api value;
@@ -23,4 +27,5 @@ export default class ButtonMenu extends LightningElement {
     @api click() {}
     @api close() {}
     @api focus() {}
+    @api focusSearchInput() {}
 }
