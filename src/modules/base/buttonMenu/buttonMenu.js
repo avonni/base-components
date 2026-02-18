@@ -673,7 +673,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     get computedFooterContainerClass() {
         return classSet(
-            'avonni_button_menu__footer-container slds-popover__footer'
+            'avonni-button_menu__footer-container slds-popover__footer'
         )
             .add({
                 'slds-hide': !this._showFooter
@@ -960,6 +960,9 @@ export default class ButtonMenu extends ButtonMenuBase {
         }
     }
 
+    /**
+     * Focus the dropdown.
+     */
     focusDropdown() {
         requestAnimationFrame(() => {
             if (
@@ -970,11 +973,14 @@ export default class ButtonMenu extends ButtonMenuBase {
             }
 
             const menuItem = this.getMenuItemByIndex(0);
+            const footerItem = this.getFooterItemByIndex(0);
             this._dropdownIsFocused = true;
             if (this.focusTrap && this.allowSearch) {
                 this.focusTrap.focus();
             } else if (menuItem) {
                 menuItem.focus();
+            } else if (footerItem) {
+                footerItem.focus();
             }
             // We stay focus on the button is there is no menu items
             else if (this.isTriggerFocus) {
@@ -985,6 +991,29 @@ export default class ButtonMenu extends ButtonMenuBase {
                 this.dropdownElement?.focus();
             }
         });
+    }
+
+    /**
+     * Get footer item with index in footer item array.
+     *
+     * @param {object[]} index
+     * @return footer item from array
+     */
+    getFooterItemByIndex(index) {
+        return this.getFooterItems()[index];
+    }
+
+    /**
+     * Get item array from footer.
+     *
+     * @return {object[]}
+     */
+    getFooterItems() {
+        const footer = this.footerSlot;
+        if (!footer) return [];
+
+        const assigned = footer.assignedElements({ flatten: true });
+        return assigned.flatMap((el) => Array.from(el.children));
     }
 
     startAutoPositionning() {
@@ -1069,10 +1098,16 @@ export default class ButtonMenu extends ButtonMenuBase {
 
         const isMenuItemFocused = related && this.isValidMenuItem(related);
 
+        const isFooterItemFocused =
+            related &&
+            this.getFooterItems().some(
+                (el) => el === related || el.contains(related)
+            );
         const isSearch = related && related === this.searchInput;
 
-        // The only items focused by `focusDropdown` are the menu items and the search.
-        const isFocusOut = !isMenuItemFocused && !isSearch;
+        // The only items focused by `focusDropdown` are the menu items, the footer items and the search.
+        const isFocusOut =
+            !isMenuItemFocused && !isSearch && !isFooterItemFocused;
         if (this.isTriggerFocus && isFocusOut) {
             this.toggleMenuVisibility();
         }
