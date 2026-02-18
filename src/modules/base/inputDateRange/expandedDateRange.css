@@ -106,11 +106,11 @@
     );
 }
 
-.avonni-input-date__range__vertical-navigation-item:first-of-type {
+.avonni-input-date-range__vertical-navigation-item:first-of-type {
     border-bottom: 1px solid var(--lwc-colorBorder, #dddbda);
 }
 
-.avonni-input-date__range__vertical-navigation-item[aria-disabled='true'] {
+.avonni-input-date-range__vertical-navigation-item[aria-disabled='true'] {
     background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
     border-color: var(--slds-g-color-border-base-1, #c9c9c9);
     color: var(--slds-g-color-neutral-base-50, #444);
