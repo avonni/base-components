@@ -1,0 +1,183 @@
+.avonni-date-range__label-container {
+    display: flex;
+}
+
+.avonni-date-range__label-container p {
+    padding-top: var(--lwc-spacingXxSmall, 0.25rem);
+    padding-right: var(--lwc-spacingXxSmall, 0.25rem);
+}
+
+.avonni-date-range__label-container.slds1 p {
+    color: var(
+        --avonni-input-date-range-header-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
+    font-size: var(--avonni-input-date-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-input-date-range-header-font-style, normal);
+    font-weight: var(--avonni-input-date-range-header-font-weight, 400);
+}
+
+.avonni-date-range__label-container.slds2 p {
+    color: var(
+        --avonni-input-date-range-header-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-input-date-range-header-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-style: var(--avonni-input-date-range-header-font-style, normal);
+    font-weight: var(
+        --avonni-input-date-range-header-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
+}
+
+.avonni-input-date-range__button-container {
+    max-width: 250px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.avonni-input-date-range__labels {
+    color: var(
+        --avonni-input-date-range-labels-text-color,
+        var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
+    );
+    font-size: var(--avonni-input-date-range-labels-font-size, 0.75rem);
+    font-style: var(--avonni-input-date-range-labels-font-style, normal);
+    font-weight: var(--avonni-input-date-range-labels-font-weight, 400);
+}
+
+.avonni-input-date-range__datetime-container > * {
+    margin-right: var(--lwc-spacingXSmall, 0.5rem);
+    margin-bottom: var(--lwc-spacingXxSmall, 0.25rem);
+    min-width: 150px;
+}
+
+.avonni-date-range__input_error {
+    box-shadow: var(--slds-g-color-error-base-40, #ba0517) 0 0 0 1px inset;
+}
+
+.avonni-input-date-range__vertical-navigation-container {
+    width: 200px;
+    order: 1;
+    padding-right: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-inline-start,
+        0
+    );
+    padding-top: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-end,
+        0
+    );
+}
+
+.avonni-input-date-range__vertical-navigation-container
+    > lightning-vertical-navigation {
+    list-style: none;
+}
+
+.avonni-input-date-range__calendar-expanded-container {
+    order: 2;
+    padding-right: var(
+        --avonni-input-date-range-expanded-calendar-container-inline-end,
+        0
+    );
+    padding-left: var(
+        --avonni-input-date-range-expanded-calendar-container-inline-start,
+        0
+    );
+    padding-top: var(
+        --avonni-input-date-range-expanded-calendar-container-spacing-block-start,
+        0
+    );
+    padding-bottom: var(
+        --avonni-input-date-range-expanded-calendar-container-spacing-block-end,
+        0
+    );
+}
+
+.avonni-input-date-range__vertical-navigation-item:first-of-type {
+    border-bottom: 1px solid var(--lwc-colorBorder, #dddbda);
+}
+
+.avonni-input-date-range__vertical-navigation-item[aria-disabled='true'] {
+    background-color: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    border-color: var(--slds-g-color-border-base-1, #c9c9c9);
+    color: var(--slds-g-color-neutral-base-50, #444);
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.avonni-input-date-range__calendar {
+    --avonni-calendar-color-background: var(
+        --avonni-input-date-range-calendar-color-background
+    );
+    --avonni-calendar-date-text-color: var(
+        --avonni-input-date-range-calendar-date-text-color
+    );
+    --avonni-calendar-date-disabled-text-color: var(
+        --avonni-input-date-range-calendar-date-disabled-text-color
+    );
+    --avonni-calendar-weekdays-text-color: var(
+        --avonni-input-date-range-calendar-weekdays-text-color
+    );
+    --avonni-calendar-month-text-color: var(
+        --avonni-input-date-range-calendar-month-text-color
+    );
+    --avonni-calendar-today-color-background: var(
+        --avonni-input-date-range-calendar-today-color-background
+    );
+    --avonni-calendar-today-text-color: var(
+        --avonni-input-date-range-calendar-today-text-color
+    );
+    --avonni-calendar-date-color-background-hover: var(
+        --avonni-input-date-range-calendar-date-color-background-hover
+    );
+    --avonni-calendar-selected-date-color-background: var(
+        --avonni-input-date-range-calendar-selected-date-color-background
+    );
+    --avonni-calendar-selected-date-color-background-focus: var(
+        --avonni-input-date-range-calendar-selected-date-color-background-focus
+    );
+    --avonni-calendar-selected-date-color-background-hover: var(
+        --avonni-input-date-range-calendar-selected-date-color-background-hover
+    );
+    --avonni-calendar-selected-date-text-color: var(
+        --avonni-input-date-range-calendar-selected-date-text-color
+    );
+    --avonni-calendar-selected-date-text-color-focus: var(
+        --avonni-input-date-range-calendar-selected-date-text-color-focus
+    );
+    --avonni-calendar-selected-date-text-color-hover: var(
+        --avonni-input-date-range-calendar-selected-date-text-color-hover
+    );
+    --avonni-calendar-multi-selected-color-border-hover: var(
+        --avonni-input-date-range-calendar-multi-selected-color-border-hover
+    );
+    --avonni-calendar-multi-selected-styling-border-hover: var(
+        --avonni-input-date-range-calendar-multi-selected-styling-border-hover
+    );
+    --avonni-calendar-week-label-text-color: var(
+        --avonni-input-date-range-calendar-week-label-text-color
+    );
+    --avonni-calendar-week-label-font-size: var(
+        --avonni-input-date-range-calendar-week-label-font-size
+    );
+    --avonni-calendar-week-label-font-weight: var(
+        --avonni-input-date-range-calendar-week-label-font-weight
+    );
+}

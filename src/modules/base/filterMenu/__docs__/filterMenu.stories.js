@@ -404,7 +404,25 @@ export const DateRange = Template.bind({});
 DateRange.args = {
     typeAttributes: {
         labelStartDate: 'Start',
-        labelEndDate: 'End'
+        labelEndDate: 'End',
+        showRangeOptions: true
+    },
+    weekStartDay: 1,
+    buttonVariant: 'container',
+    resetButtonLabel: 'Clear',
+    applyButtonLabel: 'Save',
+    label: 'Dates',
+    type: 'date-range',
+    value: [new Date(2022, 10, 16, 11), new Date(2022, 10, 20, 15, 30)]
+};
+
+export const DateRangeExpanded = Template.bind({});
+DateRangeExpanded.args = {
+    typeAttributes: {
+        isExpanded: true,
+        labelStartDate: 'Start',
+        labelEndDate: 'End',
+        showRangeOptions: true
     },
     weekStartDay: 1,
     buttonVariant: 'container',
