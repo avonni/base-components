@@ -119,8 +119,16 @@
             "path": "src/modules/base/buttonPopover/buttonPopover.js"
         },
         {
+            "name": "c/primitiveCalendar",
+            "path": "src/modules/base/primitiveCalendar/primitiveCalendar.js"
+        },
+        {
             "name": "c/calendar",
             "path": "src/modules/base/calendar/calendar.js"
+        },
+        {
+            "name": "c/calendarUtils",
+            "path": "src/modules/base/calendarUtils/calendarUtils.js"
         },
         {
             "name": "c/card",
