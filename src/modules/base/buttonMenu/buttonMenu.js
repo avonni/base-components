@@ -673,7 +673,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      */
     get computedFooterContainerClass() {
         return classSet(
-            'avonni-button_menu__footer-container slds-popover__footer'
+            'avonni-button-menu__footer-container slds-popover__footer'
         )
             .add({
                 'slds-hide': !this._showFooter
