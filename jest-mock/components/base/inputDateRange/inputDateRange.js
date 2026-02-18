@@ -17,7 +17,6 @@ export default class InputDateRange extends LightningElement {
     @api timeStyle;
     @api type;
     @api disabled;
-    @api rangeOptionValue;
     @api readOnly;
     @api required;
     @api showRangeOptions;
@@ -63,4 +62,7 @@ export default class InputDateRange extends LightningElement {
     setCustomValidity() {
         return undefined;
     }
+
+    @api
+    setRangeOption() {}
 }

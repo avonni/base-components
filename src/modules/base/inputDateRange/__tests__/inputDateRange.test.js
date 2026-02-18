@@ -61,7 +61,6 @@ describe('Input Date Range', () => {
             expect(element.labelStartDate).toBeUndefined();
             expect(element.labelStartTime).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
-            expect(element.rangeOptionValue).toBe('custom');
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
             expect(element.requiredAlternativeText).toBe('Required');
@@ -378,32 +377,6 @@ describe('Input Date Range', () => {
                         { label: 'Year-to-date Custom', value: 'yearToDate' },
                         { label: 'Last yea Custom', value: 'lastYear' }
                     ]);
-                });
-            });
-        });
-
-        describe('Option Range Value', () => {
-            it('Passed to the component', () => {
-                element.showRangeOptions = true;
-                element.rangeOptionValue = 'today';
-
-                return Promise.resolve().then(() => {
-                    const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__range-options"]'
-                    );
-                    expect(rangeOptions.value).toBe('today');
-                });
-            });
-            it('Passed to the component in expanded', () => {
-                element.showRangeOptions = true;
-                element.rangeOptionValue = 'today';
-                element.isExpanded = true;
-
-                return Promise.resolve().then(() => {
-                    const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__range-options"]'
-                    );
-                    expect(rangeOptions.selectedItem).toBe('today');
                 });
             });
         });
@@ -1777,6 +1750,13 @@ describe('Input Date Range', () => {
             element.setCustomValidity('Something');
             expect(spy).toHaveBeenCalled();
         });
+
+        // setRangeOption
+        it('setRangeOption method', () => {
+            const spy = jest.spyOn(element, 'setRangeOption');
+            element.setRangeOption('today', true);
+            expect(spy).toHaveBeenCalled();
+        });
     });
 
     describe('Events', () => {
@@ -2502,6 +2482,70 @@ describe('Input Date Range', () => {
                     expect(element.value).toMatchObject({
                         endDate: today,
                         startDate: today
+                    });
+                });
+            });
+
+            it('change event dispatched by setRangeOption', () => {
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    element.setRangeOption('today', true);
+                    jest.runAllTimers();
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: today,
+                        startDate: today
+                    });
+                });
+            });
+
+            it('change event dispatched by setRangeOption in expanded', () => {
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+                    element.setRangeOption('today', true);
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalledWith(today);
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: today,
+                        startDate: today
+                    });
+                });
+            });
+
+            it('change event not dispatched by setRangeOption if apply range is false', () => {
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    element.setRangeOption('today', false);
+                    jest.runAllTimers();
+                    expect(handler).not.toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: undefined,
+                        startDate: undefined
                     });
                 });
             });

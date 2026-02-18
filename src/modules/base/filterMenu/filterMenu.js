@@ -221,6 +221,7 @@ export default class FilterMenu extends LightningElement {
     _weekStartDay = DEFAULT_WEEK_START_DAY;
 
     _allowBlur = true;
+    _currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
     _dateRangeFrames = [];
     _dropdownIsFocused = false;
     _isSmallDateRange = false;
@@ -232,7 +233,6 @@ export default class FilterMenu extends LightningElement {
 
     @track computedItems = [];
     computedTypeAttributes = {};
-    currentRangeOptionValue = DEFAULT_DATE_RANGE_OPTION_VALUE;
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
@@ -840,7 +840,7 @@ export default class FilterMenu extends LightningElement {
         }
         this._value = deepCopy(array);
         this.currentValue = deepCopy(array);
-        this.currentRangeOptionValue = 'custom';
+        this._currentRangeOptionValue = 'custom';
         this._rangeOptionValue = 'custom';
 
         if (this._connected) {
@@ -1572,7 +1572,7 @@ export default class FilterMenu extends LightningElement {
     @api
     apply() {
         this._value = [...this.currentValue];
-        this._rangeOptionValue = this.currentRangeOptionValue;
+        this._rangeOptionValue = this._currentRangeOptionValue;
         this._computeSelectedItems();
         this._close();
     }
@@ -1586,7 +1586,7 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.currentValue = [];
-        this.currentRangeOptionValue = 'custom';
+        this._currentRangeOptionValue = 'custom';
         this._rangeOptionValue = 'custom';
         this._computeListItems();
         this._computeSelectedItems();
@@ -1650,7 +1650,7 @@ export default class FilterMenu extends LightningElement {
     @api
     reset() {
         this.currentValue = [];
-        this.currentRangeOptionValue = 'custom';
+        this._currentRangeOptionValue = 'custom';
         if (this.isList) {
             this._computeListItems();
         }
@@ -1717,6 +1717,22 @@ export default class FilterMenu extends LightningElement {
             // If the items are set while the popover is open, prevent losing focus
             this._focusDropdown();
         }
+    }
+
+    /**
+     * Compute the range option value of a date range.
+     */
+    _computeDateRangeOptionValue() {
+        if (!this.isDateRange) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            const dateRange = this.template.querySelector(
+                '[data-element-id="avonni-input-date-range"]'
+            );
+            dateRange?.setRangeOption(this._currentRangeOptionValue, false);
+        });
     }
 
     /**
@@ -2183,10 +2199,11 @@ export default class FilterMenu extends LightningElement {
 
                 this._pollBoundingRect();
                 this.currentValue = [...this.value];
-                this.currentRangeOptionValue = this._rangeOptionValue;
+                this._currentRangeOptionValue = this._rangeOptionValue;
                 this._computeListItems();
                 this._focusDropdown();
                 this._computeDateRangeExpansion();
+                this._computeDateRangeOptionValue();
             } else {
                 this._stopPositioning();
                 this._dispatchClose();
@@ -2297,7 +2314,7 @@ export default class FilterMenu extends LightningElement {
     handleDateRangeChange(event) {
         const { startDate, endDate, rangeOptionValue } = event.detail;
         this.currentValue = !startDate && !endDate ? [] : [startDate, endDate];
-        this.currentRangeOptionValue = rangeOptionValue;
+        this._currentRangeOptionValue = rangeOptionValue;
         this._dateRangeFrames.forEach((f) => cancelAnimationFrame(f));
         this._dateRangeFrames = [];
 
@@ -2576,7 +2593,7 @@ export default class FilterMenu extends LightningElement {
         }
 
         this.currentValue = [...this.value];
-        this.currentRangeOptionValue = 'custom';
+        this._currentRangeOptionValue = 'custom';
         this._rangeOptionValue = 'custom';
         this._computeListItems();
         this._dispatchApply();
@@ -2607,6 +2624,7 @@ export default class FilterMenu extends LightningElement {
             this._dispatchClose();
         } else {
             this._dispatchOpen();
+            this._computeDateRangeOptionValue();
         }
     }
 
@@ -2799,7 +2817,7 @@ export default class FilterMenu extends LightningElement {
         // Save the selection immediately
         if (this.hideApplyButton || this.hideApplyResetButtons) {
             this._value = [...this.currentValue];
-            this._rangeOptionValue = this.currentRangeOptionValue;
+            this._rangeOptionValue = this._currentRangeOptionValue;
             this._computeSelectedItems();
             this._dispatchApply();
 
