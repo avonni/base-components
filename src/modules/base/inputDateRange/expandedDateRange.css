@@ -64,11 +64,11 @@
     width: 200px;
     order: 1;
     padding-right: var(
-        --avonni-input-date-range-expanded-vertical-navigation-container-inline-end,
+        --avonni-input-date-range-expanded-vertical-navigation-container-spacing-inline-end,
         0
     );
     padding-left: var(
-        --avonni-input-date-range-expanded-vertical-navigation-container-inline-start,
+        --avonni-input-date-range-expanded-vertical-navigation-container-spacing-inline-start,
         0
     );
     padding-top: var(
