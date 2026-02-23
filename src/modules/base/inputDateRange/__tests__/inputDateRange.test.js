@@ -55,7 +55,6 @@ describe('Input Date Range', () => {
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.isExpanded).toBeFalsy();
             expect(element.label).toBeUndefined();
-            expect(element.labelRangeOptions).toEqual(RANGE_OPTIONS_LABELS_MAP);
             expect(element.labelEndDate).toBeUndefined();
             expect(element.labelEndTime).toBeUndefined();
             expect(element.labelRangeOptions).toEqual({});

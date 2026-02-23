@@ -124,7 +124,7 @@ const RANGES_VALUES = {
  * @storyId example-input-date-range--base
  * @descriptor avonni-input-date-range
  */
-export default class AvonniInputDateRange extends LightningElement {
+export default class InputDateRange extends LightningElement {
     /**
      * Help text detailing the purpose and function of the input.
      * This attribute isn't supported for file, radio, toggle, and checkbox-button types.
