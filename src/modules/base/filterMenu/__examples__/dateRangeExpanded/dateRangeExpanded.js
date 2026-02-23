@@ -1,7 +1,8 @@
 import { LightningElement } from 'lwc';
 
-export default class FilterMenuDateRange extends LightningElement {
+export default class FilterMenuDateRangeExpanded extends LightningElement {
     typeAttributes = {
+        isExpanded: true,
         labelStartDate: 'Start',
         labelEndDate: 'End',
         showRangeOptions: true

@@ -89,10 +89,7 @@ export default class Calendar extends LightningElement {
     computedMax;
     computedMin;
     computedValue = [];
-    day;
     displayDate; // The calendar displays this date's month
-    month;
-    months = MONTHS;
     year;
 
     /*
@@ -432,6 +429,7 @@ export default class Calendar extends LightningElement {
      * Disable interaction on next date layout.
      */
     get disabledNext() {
+        // Even with multiple calendars, the button next month is properly disabled.
         let disabled = this.disabled;
         const month = this.displayDate.getMonth() + 1;
         const nextDate = setDate(this.displayDate, 'month', month, 1);
@@ -448,6 +446,7 @@ export default class Calendar extends LightningElement {
      * Disable interaction on previous date layout.
      */
     get disabledPrevious() {
+        // Even with multiple calendars, the button previous month is properly disabled.
         let disabled = this.disabled;
         const month = this.displayDate.getMonth() - 1;
         const previousDate = setDate(this.displayDate, 'month', month, 1);
@@ -489,7 +488,7 @@ export default class Calendar extends LightningElement {
      * @return {boolean}
      */
     get isMultiCalendars() {
-        return this._nbMonthCalendars > 1;
+        return this.nbMonthCalendars > 1;
     }
 
     /**
@@ -544,7 +543,7 @@ export default class Calendar extends LightningElement {
         // If changing the year immedialely using the select options or the arrows to change months, it would be based on the new display date
         // whose changes were not reflected in the view yet. Therefore, the update of the display date by the method `focusDate` was removed.
         // this.displayDate = getDateWithTimezone(dateValue, this.timezone);
-
+        this.computeFocusAll();
         this.computeFocus(true);
     }
 
@@ -563,6 +562,7 @@ export default class Calendar extends LightningElement {
         }
         this.displayDate = selectedDate;
         this.updateDateParameters();
+        this.computeFocusAll();
     }
 
     /**
@@ -590,6 +590,20 @@ export default class Calendar extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Compute the class for a month button.
+     *
+     * @param {boolean} hasButton If present, the button is visible.
+     * @returns {string} The computed month button class.
+     */
+    computeMonthButtonClass(hasButton) {
+        return classSet('slds-align-middle')
+            .add({
+                'slds-hidden': !hasButton
+            })
+            .toString();
+    }
 
     /**
      * Place focus according to keyboard selection
@@ -666,9 +680,11 @@ export default class Calendar extends LightningElement {
     generateViewData() {
         const calendarDataList = [];
 
+        const firstIndex = 0;
+        const lastIndex = this.nbMonthCalendars - 1;
         for (
             let monthOffset = 0;
-            monthOffset < this._nbMonthCalendars;
+            monthOffset < this.nbMonthCalendars;
             monthOffset++
         ) {
             const displayDate = new Date(this.displayDate);
@@ -678,16 +694,31 @@ export default class Calendar extends LightningElement {
             const year = displayDate.getFullYear();
             const monthIndex = displayDate.getMonth();
             const month = MONTHS[monthIndex];
+            const hasPreviousButton = monthOffset === firstIndex;
+            const hasNextButton = monthOffset === lastIndex;
+            const hasYearSelectOption = monthOffset === lastIndex;
+            const computedPreviousButtonClass =
+                this.computeMonthButtonClass(hasPreviousButton);
+            const computedNextButtonClass =
+                this.computeMonthButtonClass(hasNextButton);
 
-            // The list uses the year-month-index as key, so each time the month change, the primitive calendars are destroyed.
+            // We have to use the monthOffset has a key, otherwise we lose focus on the next/previous buttons
+            // Since we have a if _connected for each api of avonni-primitive-calendar to generate the view, it won't cause a problem.
             calendarDataList.push({
-                id: `${year}-${monthIndex}`,
+                id: `${monthOffset}`,
+                hasPreviousButton,
+                hasNextButton,
+                computedPreviousButtonClass,
+                computedNextButtonClass,
+                hasYearSelectOption,
                 year,
                 month,
                 monthIndex,
                 displayDate
             });
         }
+        // Even if the next months exceed the max date, those months are properly disabled.
+        // We don't care about displaying months that are completely disabled.
         this.calendarDataList = calendarDataList;
     }
 
@@ -719,8 +750,8 @@ export default class Calendar extends LightningElement {
     initDates() {
         const max = getDateWithTimezone(this.max, this.timezone);
         const min = getDateWithTimezone(this.min, this.timezone);
-        this.computedMax = setDate(max, 'hours', 0, 0, 0, 0);
-        this.computedMin = setDate(min, 'hours', 0, 0, 0, 0);
+        this.computedMax = setDate(max, 'hour', 0, 0, 0, 0);
+        this.computedMin = setDate(min, 'hour', 0, 0, 0, 0);
         this.initDateLabels();
         this.initDisabledDates();
         this.initMarkedDates();
@@ -861,12 +892,8 @@ export default class Calendar extends LightningElement {
             );
         });
 
-        // First-time initialization
-        if (!this.displayDate) {
-            this.displayDate = new Date(this.computedValue[0]);
-        }
-        // Update only if ALL values are outside ALL calendars
-        else if (!isAnyValueVisible) {
+        // First-time initialization or update only if ALL values are outside ALL calendars
+        if (!this.displayDate || !isAnyValueVisible) {
             this.displayDate = new Date(this.computedValue[0]);
         }
     }
@@ -876,8 +903,6 @@ export default class Calendar extends LightningElement {
      */
     updateDateParameters() {
         this.year = this.displayDate.getFullYear();
-        this.month = MONTHS[this.displayDate.getMonth()];
-        this.day = this.displayDate.getDay();
         this.updateSelectYear();
         this.generateViewData();
     }
@@ -937,6 +962,7 @@ export default class Calendar extends LightningElement {
     validateValueIntervalMode() {
         const minValue = this.computedValue[0];
         const maxValue = this.computedValue[this.computedValue.length - 1];
+        const initComputedValue = deepCopy(this.computedValue);
 
         if (this.allValuesOutsideMinAndMax) {
             if (
@@ -971,7 +997,11 @@ export default class Calendar extends LightningElement {
                         maxValue
                     );
                 }
-                if (!this.isMultiCalendars) {
+                const shouldUpdateDisplayDate =
+                    !this.isMultiCalendars ||
+                    (this.isMultiCalendars &&
+                        !equal(initComputedValue, this.computedValue));
+                if (shouldUpdateDisplayDate) {
                     this.displayDate = new Date(this.computedValue[0]);
                 }
                 this.updateDateParameters();
@@ -983,6 +1013,7 @@ export default class Calendar extends LightningElement {
      * Validate value for multiple selection mode.
      */
     validateValueMultipleMode() {
+        const initComputedValue = deepCopy(this.computedValue);
         this.computedValue = removeValuesOutsideRange(
             this.computedValue,
             this.computedMin,
@@ -990,7 +1021,11 @@ export default class Calendar extends LightningElement {
         );
 
         if (this.computedValue.length) {
-            if (!this.isMultiCalendars) {
+            const shouldUpdateDisplayDate =
+                !this.isMultiCalendars ||
+                (this.isMultiCalendars &&
+                    !equal(initComputedValue, this.computedValue));
+            if (shouldUpdateDisplayDate) {
                 this.displayDate = new Date(this.computedValue[0]);
             }
             this.updateDateParameters();
@@ -1317,6 +1352,9 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handleYearChange(event) {
+        // The display date is always based on the first calendar, even with multiple calendars are displayed.
+        // The current year is also based on the first calendar, even if the last calendar has a different year than the first calendar.
+        // There is at most one select year option.
         this.displayDate = setDate(
             this.displayDate,
             'year',

@@ -64,7 +64,11 @@
             onkeyup={handleDropdownKeyUp}
         >
             <c-focus-trap data-element-id="avonni-focus-trap">
-                <div class="slds-p-vertical_xx-small" role="menu">
+                <div
+                    class={computedDropdownContentContainerClass}
+                    role="menu"
+                    data-element-id="avonni-filter-menu__dropdown-content-container"
+                >
                     <!-- Search box -->
                     <lightning-input
                         if:true={computedTypeAttributes.allowSearch}
@@ -224,9 +228,10 @@
                             <!-- Date Range -->
                             <c-input-date-range
                                 if:true={isDateRange}
-                                class="slds-show slds-p-around_small"
+                                class={computedDateRangeClass}
                                 date-style={computedTypeAttributes.dateStyle}
                                 end-date={dateRangeEndDate}
+                                is-expanded={computedIsExpanded}
                                 label={label}
                                 label-end-date={computedTypeAttributes.labelEndDate}
                                 label-end-time={computedTypeAttributes.labelEndTime}
@@ -236,7 +241,7 @@
                                 show-range-options={computedTypeAttributes.showRangeOptions}
                                 start-date={dateRangeStartDate}
                                 time-style={computedTypeAttributes.timeStyle}
-                                timezone={computedTypeAttributes.timezone}
+                                timezone={computedTimezone}
                                 type={computedTypeAttributes.type}
                                 variant="label-hidden"
                                 week-start-day={weekStartDay}

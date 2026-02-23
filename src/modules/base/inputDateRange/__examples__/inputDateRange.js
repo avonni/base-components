@@ -10,6 +10,7 @@ export const InputDateRange = ({
     disabled,
     endDate,
     fieldLevelHelp,
+    isExpanded,
     label,
     labelEndDate,
     labelEndTime,
@@ -34,6 +35,7 @@ export const InputDateRange = ({
     element.disabled = disabled;
     element.endDate = endDate;
     element.fieldLevelHelp = fieldLevelHelp;
+    element.isExpanded = isExpanded;
     element.label = label;
     element.labelEndDate = labelEndDate;
     element.labelEndTime = labelEndTime;

@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class InputDateRange extends LightningElement {
     @api fieldLevelHelp;
+    @api isExpanded;
     @api label;
     @api labelRangeOptions;
     @api labelStartDate;
@@ -61,4 +62,7 @@ export default class InputDateRange extends LightningElement {
     setCustomValidity() {
         return undefined;
     }
+
+    @api
+    setRangeOption() {}
 }

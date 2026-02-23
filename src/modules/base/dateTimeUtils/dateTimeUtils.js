@@ -6,4 +6,4 @@ export {
 } from './constants';
 export { DateTime } from './dateTime';
 export { getFormattedDate, isISODateOnly } from './formatter';
-export { getStartOfWeek, setDate } from './utils';
+export { getStartOfWeek, parseFormattedDateString, setDate } from './utils';

@@ -1,4 +1,5 @@
 import InputDateRange from 'avonni/inputDateRange';
+import { getFormattedDate } from 'c/dateTimeUtils';
 import { createElement } from 'lwc';
 
 // Not tested:
@@ -6,21 +7,22 @@ import { createElement } from 'lwc';
 
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
+
 const RANGE_OPTIONS_LABELS_MAP = {
-    today: 'Today',
-    yesterday: 'Yesterday',
-    thisWeek: 'This week',
-    lastWeek: 'Last week',
-    thisMonth: 'This month',
-    monthToDate: 'Month-to-date',
-    lastMonth: 'Last month',
-    thisQuarter: 'This quarter',
-    quarterToDate: 'Quarter-to-date',
-    lastQuarter: 'Last quarter',
-    thisYear: 'This year',
-    yearToDate: 'Year-to-date',
-    lastYear: 'Last year',
-    custom: 'Custom'
+    today: 'Today Custom',
+    yesterday: 'Yesterday Custom',
+    thisWeek: 'This week Custom',
+    lastWeek: 'Last week Custom',
+    thisMonth: 'This month Custom',
+    monthToDate: 'Month-to-date Custom',
+    lastMonth: 'Last month Custom',
+    thisQuarter: 'This quarter Custom',
+    quarterToDate: 'Quarter-to-date Custom',
+    lastQuarter: 'Last quarter Custom',
+    thisYear: 'This year Custom',
+    yearToDate: 'Year-to-date Custom',
+    lastYear: 'Last yea Custom',
+    custom: 'Custom Custom'
 };
 
 let element;
@@ -51,10 +53,11 @@ describe('Input Date Range', () => {
             expect(element.disabled).toBeFalsy();
             expect(element.endDate).toBeUndefined();
             expect(element.fieldLevelHelp).toBeUndefined();
+            expect(element.isExpanded).toBeFalsy();
             expect(element.label).toBeUndefined();
-            expect(element.labelRangeOptions).toEqual(RANGE_OPTIONS_LABELS_MAP);
             expect(element.labelEndDate).toBeUndefined();
             expect(element.labelEndTime).toBeUndefined();
+            expect(element.labelRangeOptions).toEqual({});
             expect(element.labelStartDate).toBeUndefined();
             expect(element.labelStartTime).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
@@ -294,7 +297,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="start-date-input-label"]'
                     );
                     expect(label.textContent).toBe(
                         'This is a label start date'
@@ -310,7 +313,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="start-time-input-label"]'
                     );
                     expect(label.textContent).toBe(
                         'This is a label start time'
@@ -325,7 +328,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="end-date-input-label"]'
                     );
                     expect(label.textContent).toBe('This is a label end date');
                 });
@@ -339,9 +342,41 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const label = element.shadowRoot.querySelector(
-                        '.slds-form-element__label'
+                        '[data-element-id="end-time-input-label"]'
                     );
                     expect(label.textContent).toBe('This is a label end time');
+                });
+            });
+        });
+
+        describe('Label Range Options', () => {
+            it('Passed to the component', () => {
+                element.showRangeOptions = true;
+                element.labelRangeOptions = RANGE_OPTIONS_LABELS_MAP;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__range-options"]'
+                    );
+                    expect(rangeOptions.options).toEqual([
+                        { label: 'Custom Custom', value: 'custom' },
+                        { label: 'Today Custom', value: 'today' },
+                        { label: 'Yesterday Custom', value: 'yesterday' },
+                        { label: 'This week Custom', value: 'thisWeek' },
+                        { label: 'Last week Custom', value: 'lastWeek' },
+                        { label: 'This month Custom', value: 'thisMonth' },
+                        { label: 'Month-to-date Custom', value: 'monthToDate' },
+                        { label: 'Last month Custom', value: 'lastMonth' },
+                        { label: 'This quarter Custom', value: 'thisQuarter' },
+                        {
+                            label: 'Quarter-to-date Custom',
+                            value: 'quarterToDate'
+                        },
+                        { label: 'Last quarter Custom', value: 'lastQuarter' },
+                        { label: 'This year Custom', value: 'thisYear' },
+                        { label: 'Year-to-date Custom', value: 'yearToDate' },
+                        { label: 'Last yea Custom', value: 'lastYear' }
+                    ]);
                 });
             });
         });
@@ -762,6 +797,312 @@ describe('Input Date Range', () => {
             });
         });
 
+        describe('Cases Expanded', () => {
+            it('SELECT_ONLY_START', () => {
+                element.startDate = null;
+                element.endDate = null;
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('navigate', {
+                            detail: {
+                                date: new Date('6/20/2021')
+                            }
+                        })
+                    );
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: [new Date('6/20/2021')],
+                                clickedDate: new Date('6/20/2021')
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalledWith(
+                        new Date('6/20/2021')
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: null,
+                        startDate: new Date('6/20/2021')
+                    });
+                });
+            });
+
+            it('DESELECT_END', () => {
+                element.startDate = new Date('6/20/2021');
+                element.endDate = new Date('6/20/2021');
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('navigate', {
+                            detail: {
+                                date: new Date('6/20/2021')
+                            }
+                        })
+                    );
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: [new Date('6/20/2021')],
+                                clickedDate: new Date('6/20/2021')
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalledWith(
+                        new Date('6/20/2021')
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: null,
+                        startDate: new Date('6/20/2021')
+                    });
+                });
+            });
+
+            it('SELECT_END_EQUAL_START', () => {
+                element.startDate = new Date('6/20/2021');
+                element.endDate = new Date('7/20/2021');
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('navigate', {
+                                detail: {
+                                    date: new Date('7/20/2021')
+                                }
+                            })
+                        );
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: [new Date('6/20/2021')],
+                                    clickedDate: new Date('7/20/2021')
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('7/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('6/20/2021'),
+                            startDate: new Date('6/20/2021')
+                        });
+                        element.startDate = new Date('6/20/2021');
+                        element.endDate = null;
+                    })
+                    .then(() => {
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('navigate', {
+                                detail: {
+                                    date: new Date('6/20/2021')
+                                }
+                            })
+                        );
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: [],
+                                    clickedDate: new Date('6/20/2021')
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('6/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('6/20/2021'),
+                            startDate: new Date('6/20/2021')
+                        });
+                    });
+            });
+
+            it('SELECT_START_EQUAL_END', () => {
+                element.startDate = new Date('6/20/2021');
+                element.endDate = new Date('7/20/2021');
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('navigate', {
+                                detail: {
+                                    date: new Date('7/20/2021')
+                                }
+                            })
+                        );
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: [new Date('7/20/2021')],
+                                    clickedDate: new Date('6/20/2021')
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('7/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('7/20/2021'),
+                            startDate: new Date('7/20/2021')
+                        });
+                        element.startDate = null;
+                        element.endDate = new Date('7/20/2021');
+                    })
+                    .then(() => {
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('navigate', {
+                                detail: {
+                                    date: new Date('6/20/2021')
+                                }
+                            })
+                        );
+                        expandedCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: [],
+                                    clickedDate: new Date('7/20/2021')
+                                }
+                            })
+                        );
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('6/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('7/20/2021'),
+                            startDate: new Date('7/20/2021')
+                        });
+                    });
+            });
+
+            it('SELECT_NEW_INTERVAL', () => {
+                element.startDate = new Date('6/20/2021');
+                element.endDate = null;
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('navigate', {
+                            detail: {
+                                date: new Date('7/20/2021')
+                            }
+                        })
+                    );
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: [
+                                    new Date('6/20/2021'),
+                                    new Date('7/20/2021')
+                                ],
+                                clickedDate: new Date('7/20/2021')
+                            }
+                        })
+                    );
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalledWith(
+                        new Date('7/20/2021')
+                    );
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: new Date('7/20/2021'),
+                        startDate: new Date('6/20/2021')
+                    });
+                });
+            });
+        });
+
         describe('Required', () => {
             it('Passed to the component', () => {
                 element.required = true;
@@ -812,6 +1153,41 @@ describe('Input Date Range', () => {
                         expect(message.textContent).toBe('Missing value!');
                     });
             });
+
+            it('Passed to the component in expanded', () => {
+                element.required = true;
+                element.messageWhenValueMissing = 'Missing value!';
+                element.type = 'datetime';
+                element.isExpanded = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.focus();
+                        element.blur();
+                        element.showHelpMessageIfInvalid();
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        const lightningInputs =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-element-id^="lightning-input"]'
+                            );
+                        lightningInputs.forEach((input) => {
+                            expect(input.className).toContain('slds-has-error');
+                        });
+                        const inputs = element.shadowRoot.querySelectorAll(
+                            '[data-element-id^="input"]'
+                        );
+                        inputs.forEach((input) => {
+                            expect(input.className).toContain('slds-has-error');
+                        });
+
+                        const message = element.shadowRoot.querySelector(
+                            '.slds-form-element__help'
+                        );
+                        expect(message.textContent).toBe('Missing value!');
+                    });
+            });
         });
 
         describe('Show Range Options', () => {
@@ -820,20 +1196,20 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     expect(rangeOptions).toBeTruthy();
                 });
             });
         });
 
-        describe('Show Range Options Change', () => {
+        describe('Show Range Options Cases', () => {
             it('today', async () => {
                 element.showRangeOptions = true;
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -852,7 +1228,7 @@ describe('Input Date Range', () => {
                 element.showRangeOptions = true;
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -872,7 +1248,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -893,7 +1269,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -914,7 +1290,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -935,7 +1311,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -956,7 +1332,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -977,7 +1353,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -998,7 +1374,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1019,7 +1395,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1040,7 +1416,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1061,7 +1437,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1082,7 +1458,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1105,7 +1481,7 @@ describe('Input Date Range', () => {
 
                 return Promise.resolve().then(() => {
                     const rangeOptions = element.shadowRoot.querySelector(
-                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                        '[data-element-id="avonni-input-date-range__range-options"]'
                     );
                     rangeOptions.dispatchEvent(
                         new CustomEvent('change', {
@@ -1118,6 +1494,39 @@ describe('Input Date Range', () => {
                         startDate: new Date(),
                         endDate: new Date()
                     });
+                });
+            });
+
+            it('today with isExpanded', async () => {
+                element.isExpanded = true;
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__range-options"]'
+                    );
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('select', {
+                            detail: {
+                                name: 'today'
+                            }
+                        })
+                    );
+
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 15, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                    });
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalled();
                 });
             });
         });
@@ -1341,6 +1750,13 @@ describe('Input Date Range', () => {
             element.setCustomValidity('Something');
             expect(spy).toHaveBeenCalled();
         });
+
+        // setRangeOption
+        it('setRangeOption method', () => {
+            const spy = jest.spyOn(element, 'setRangeOption');
+            element.setRangeOption('today', true);
+            expect(spy).toHaveBeenCalled();
+        });
     });
 
     describe('Events', () => {
@@ -1361,166 +1777,778 @@ describe('Input Date Range', () => {
             });
         });
 
-        it('change event', () => {
-            element.startDate = startDate.setHours(0, 0, 0, 0);
-            element.endDate = endDate.setHours(0, 0, 0, 0);
-            const startInput = element.shadowRoot.querySelector(
-                '[data-element-id="input-start-date"]'
-            );
-            const handler = jest.fn();
+        describe('Change', () => {
+            it('change event', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                const handler = jest.fn();
 
-            const newDate = new Date('12/12/2022').setHours(0, 0, 0, 0);
-            startInput.addEventListener('change', handler);
+                const newDate = new Date('12/12/2022').setHours(0, 0, 0, 0);
+                startInput.addEventListener('change', handler);
 
-            return Promise.resolve()
-                .then(() => {
-                    startInput.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: { startDate: newDate, endDate: endDate }
-                        })
-                    );
-                })
-                .then(() => {
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.startDate).toBe(
-                        newDate
-                    );
-                    expect(handler.mock.calls[0][0].detail.endDate).toBe(
-                        endDate
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                });
-        });
+                return Promise.resolve()
+                    .then(() => {
+                        startInput.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: { startDate: newDate, endDate: endDate }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.startDate).toBe(
+                            newDate
+                        );
+                        expect(handler.mock.calls[0][0].detail.endDate).toBe(
+                            endDate
+                        );
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    });
+            });
 
-        it('change event with timezone', () => {
-            element.startDate = startDate;
-            element.endDate = endDate;
-            element.timezone = 'America/Port-au-Prince';
-            const startInput = element.shadowRoot.querySelector(
-                '[data-element-id="input-start-date"]'
-            );
-            const handler = jest.fn();
+            it('change event with timezone', () => {
+                element.startDate = startDate;
+                element.endDate = endDate;
+                element.timezone = 'America/Port-au-Prince';
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                const handler = jest.fn();
 
-            startInput.addEventListener('change', handler);
+                startInput.addEventListener('change', handler);
 
-            return Promise.resolve()
-                .then(() => {
-                    startInput.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: { startDate: startDate, endDate: endDate }
-                        })
-                    );
-                })
-                .then(() => {
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.startDate).toBe(
-                        startDate
-                    );
-                    expect(handler.mock.calls[0][0].detail.endDate).toBe(
-                        endDate
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                });
-        });
+                return Promise.resolve()
+                    .then(() => {
+                        startInput.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    startDate: startDate,
+                                    endDate: endDate
+                                }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.startDate).toBe(
+                            startDate
+                        );
+                        expect(handler.mock.calls[0][0].detail.endDate).toBe(
+                            endDate
+                        );
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    });
+            });
 
-        it('Change event with invalid start time', () => {
-            element.startDate = new Date('7/25/2022');
-            element.endDate = new Date('7/28/2022');
-            element.type = 'datetime';
+            it('change event with invalid start time', () => {
+                element.startDate = new Date('7/25/2022');
+                element.endDate = new Date('7/28/2022');
+                element.type = 'datetime';
 
-            return Promise.resolve()
-                .then(() => {
-                    const startTimeInput = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-start-time"]'
-                    );
-                    const endTimeInput = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-end-time"]'
-                    );
-                    startTimeInput.value = '18:00:00.000';
-                    endTimeInput.value = '17:00:00.000';
-                    startTimeInput.dispatchEvent(new CustomEvent('change'));
-                    endTimeInput.dispatchEvent(new CustomEvent('change'));
-                })
-                .then(() => {
-                    const endInput = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-icon-end-date"]'
-                    );
-                    endInput.click();
-                })
-                .then(() => {
-                    const handler = jest.fn();
-                    element.addEventListener('change', handler);
-                    const endCalendar = element.shadowRoot.querySelector(
-                        '[data-element-id="calendar-end-date"]'
-                    );
-                    endCalendar.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: {
-                                value: [new Date('7/25/2022')],
-                                clickedDate: new Date('7/25/2022')
-                            }
-                        })
-                    );
-                    expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.startDate).toEqual(
-                        '2022-07-25T00:00:00.000Z'
-                    );
-                    expect(handler.mock.calls[0][0].detail.endDate).toEqual(
-                        '2022-07-25T00:00:00.000Z'
-                    );
-                });
-        });
+                return Promise.resolve()
+                    .then(() => {
+                        const startTimeInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input-start-time"]'
+                        );
+                        const endTimeInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input-end-time"]'
+                        );
+                        startTimeInput.value = '18:00:00.000';
+                        endTimeInput.value = '17:00:00.000';
+                        startTimeInput.dispatchEvent(new CustomEvent('change'));
+                        endTimeInput.dispatchEvent(new CustomEvent('change'));
+                    })
+                    .then(() => {
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-end-date"]'
+                        );
+                        endInput.click();
+                    })
+                    .then(() => {
+                        const handler = jest.fn();
+                        element.addEventListener('change', handler);
+                        const endCalendar = element.shadowRoot.querySelector(
+                            '[data-element-id="calendar-end-date"]'
+                        );
+                        endCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: [new Date('7/25/2022')],
+                                    clickedDate: new Date('7/25/2022')
+                                }
+                            })
+                        );
+                        const offset = getFormattedDate({
+                            date: new Date('7/25/2022'),
+                            timeZone:
+                                Intl.DateTimeFormat().resolvedOptions()
+                                    .timeZone,
+                            format: 'ZZ'
+                        });
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        expect(
+                            handler.mock.calls[0][0].detail.startDate
+                        ).toEqual(`2022-07-25T00:00:00.000${offset}`);
+                        expect(handler.mock.calls[0][0].detail.endDate).toEqual(
+                            `2022-07-25T00:00:00.000${offset}`
+                        );
+                    });
+            });
 
-        it('Change event with invalid end time', () => {
-            element.startDate = new Date('7/25/2022');
-            element.endDate = new Date('7/28/2022');
-            element.type = 'datetime';
+            it('change event with invalid end time', () => {
+                element.startDate = new Date('7/25/2022');
+                element.endDate = new Date('7/28/2022');
+                element.type = 'datetime';
 
-            return Promise.resolve()
-                .then(() => {
-                    const startTimeInput = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-start-time"]'
-                    );
-                    const endTimeInput = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-end-time"]'
-                    );
-                    startTimeInput.value = '18:00:00.000';
-                    endTimeInput.value = '17:00:00.000';
-                    startTimeInput.dispatchEvent(new CustomEvent('change'));
-                    endTimeInput.dispatchEvent(new CustomEvent('change'));
-                })
-                .then(() => {
+                return Promise.resolve()
+                    .then(() => {
+                        const startTimeInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input-start-time"]'
+                        );
+                        const endTimeInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input-end-time"]'
+                        );
+                        startTimeInput.value = '18:00:00.000';
+                        endTimeInput.value = '17:00:00.000';
+                        startTimeInput.dispatchEvent(new CustomEvent('change'));
+                        endTimeInput.dispatchEvent(new CustomEvent('change'));
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-start-date"]'
+                        );
+                        startInput.click();
+                    })
+                    .then(() => {
+                        const handler = jest.fn();
+                        element.addEventListener('change', handler);
+                        const startCalendar = element.shadowRoot.querySelector(
+                            '[data-element-id="calendar-start-date"]'
+                        );
+                        startCalendar.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: {
+                                    value: [new Date('7/28/2022')],
+                                    clickedDate: new Date('7/28/2022')
+                                }
+                            })
+                        );
+                        const offset = getFormattedDate({
+                            date: new Date('7/25/2022'),
+                            timeZone:
+                                Intl.DateTimeFormat().resolvedOptions()
+                                    .timeZone,
+                            format: 'ZZ'
+                        });
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        expect(
+                            handler.mock.calls[0][0].detail.startDate
+                        ).toEqual(`2022-07-28T00:00:00.000${offset}`);
+                        expect(handler.mock.calls[0][0].detail.endDate).toEqual(
+                            `2022-07-28T00:00:00.000${offset}`
+                        );
+                    });
+            });
+
+            it('change event on blurred start date input', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
                     const startInput = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-icon-start-date"]'
+                        '[data-element-id="input-start-date"]'
                     );
-                    startInput.click();
-                })
-                .then(() => {
-                    const handler = jest.fn();
-                    element.addEventListener('change', handler);
-                    const startCalendar = element.shadowRoot.querySelector(
-                        '[data-element-id="calendar-start-date"]'
+                    startInput.value = '';
+                    startInput.focus();
+                    startInput.blur();
+
+                    jest.runAllTimers();
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: new Date('7/21/2021'),
+                        startDate: null
+                    });
+                });
+            });
+
+            it('change event on blurred end date input', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const endInput = element.shadowRoot.querySelector(
+                        '[data-element-id="input-end-date"]'
                     );
-                    startCalendar.dispatchEvent(
-                        new CustomEvent('change', {
+                    endInput.value = '';
+                    endInput.focus();
+                    endInput.blur();
+
+                    jest.runAllTimers();
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: null,
+                        startDate: new Date('7/20/2021')
+                    });
+                });
+            });
+
+            it('change event on expanded start date input', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+                const newDate = new Date('6/20/2021');
+
+                return Promise.resolve()
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        startInput.value = '6/20/2021';
+                        startInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(newDate);
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('7/21/2021'),
+                            startDate: new Date('6/20/2021')
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('6/20/2021');
+                        expect(endInput.value).toBe('7/21/2021');
+                    });
+            });
+
+            it('change event on expanded start date input start date > end date', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+                const newDate = new Date('8/20/2021');
+
+                return Promise.resolve()
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        startInput.value = '8/20/2021';
+                        startInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(newDate);
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: null,
+                            startDate: new Date('8/20/2021')
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(element.startDate).toEqual(newDate);
+                        expect(startInput.value).toBe('8/20/2021');
+                        expect(element.endDate).toBeNull();
+                        expect(endInput.value).toBe('');
+                    });
+            });
+
+            it('change event on expanded start date with invalid start date', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        startInput.value = 'invalid date';
+                        startInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).not.toHaveBeenCalled();
+                        expect(handler).not.toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('7/21/2021'),
+                            startDate: new Date('7/20/2021')
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('7/20/2021');
+                        expect(endInput.value).toBe('7/21/2021');
+                    });
+            });
+
+            it('change event on expanded start date with blank start date', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        startInput.value = '';
+                        startInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('7/21/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('7/21/2021'),
+                            startDate: null
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('');
+                        expect(endInput.value).toBe('7/21/2021');
+                    });
+            });
+
+            it('change event on expanded end date input', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        endInput.value = '8/20/2021';
+                        endInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('8/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('8/20/2021'),
+                            startDate: new Date('7/20/2021')
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('7/20/2021');
+                        expect(endInput.value).toBe('8/20/2021');
+                    });
+            });
+
+            it('change event on expanded end date input end date < start date', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        endInput.value = '6/20/2021';
+                        endInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('6/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('6/20/2021'),
+                            startDate: null
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('');
+                        expect(endInput.value).toBe('6/20/2021');
+                    });
+            });
+
+            it('change event on expanded end date with invalid end date', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        endInput.value = 'invalid date';
+                        endInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).not.toHaveBeenCalled();
+                        expect(handler).not.toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: new Date('7/21/2021'),
+                            startDate: new Date('7/20/2021')
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('7/20/2021');
+                        expect(endInput.value).toBe('7/21/2021');
+                    });
+            });
+
+            it('change event on expanded end date with blank end date', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        const expandedCalendar =
+                            element.shadowRoot.querySelector(
+                                '[data-element-id="calendar-expanded-date"]'
+                            );
+
+                        const expandedSpy = jest
+                            .spyOn(expandedCalendar, 'goToDate')
+                            .mockImplementation(() => {});
+                        endInput.value = '';
+                        endInput.dispatchEvent(new CustomEvent('change'));
+                        jest.runAllTimers();
+                        expect(expandedSpy).toHaveBeenCalledWith(
+                            new Date('7/20/2021')
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: null,
+                            startDate: new Date('7/20/2021')
+                        });
+                    })
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-start-date"]'
+                        );
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="input-end-date"]'
+                        );
+                        expect(startInput.value).toBe('7/20/2021');
+                        expect(endInput.value).toBe('');
+                    });
+            });
+
+            it('change event on start today button', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const startInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-start-date"]'
+                        );
+                        startInput.click();
+                    })
+                    .then(() => {
+                        const todayButton = element.shadowRoot.querySelector(
+                            '[data-element-id="select-start-today-button"]'
+                        );
+
+                        todayButton.click();
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: null,
+                            startDate: today
+                        });
+                    });
+            });
+
+            it('change event on end today button', () => {
+                element.startDate = new Date('11/11/2111');
+                element.endDate = new Date('11/11/2111');
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve()
+                    .then(() => {
+                        const endInput = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-end-date"]'
+                        );
+                        endInput.click();
+                    })
+                    .then(() => {
+                        const todayButton = element.shadowRoot.querySelector(
+                            '[data-element-id="select-end-today-button"]'
+                        );
+
+                        todayButton.click();
+                        jest.runAllTimers();
+                        expect(handler).toHaveBeenCalled();
+                        expect(element.value).toMatchObject({
+                            endDate: today,
+                            startDate: null
+                        });
+                    });
+            });
+
+            it('change event on expanded today button', () => {
+                element.startDate = startDate.setHours(0, 0, 0, 0);
+                element.endDate = endDate.setHours(0, 0, 0, 0);
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const todayButton = element.shadowRoot.querySelector(
+                        '[data-element-id="select-expanded-today-button"]'
+                    );
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+
+                    expandedCalendar.dispatchEvent(
+                        new CustomEvent('navigate', {
                             detail: {
-                                value: [new Date('7/28/2022')],
-                                clickedDate: new Date('7/28/2022')
+                                date: today
                             }
                         })
                     );
-                    expect(handler).toHaveBeenCalledTimes(1);
-                    expect(handler.mock.calls[0][0].detail.startDate).toEqual(
-                        '2022-07-28T00:00:00.000Z'
-                    );
-                    expect(handler.mock.calls[0][0].detail.endDate).toEqual(
-                        '2022-07-28T00:00:00.000Z'
-                    );
+
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+                    todayButton.click();
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalledWith(today);
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: today,
+                        startDate: today
+                    });
                 });
+            });
+
+            it('change event dispatched by setRangeOption', () => {
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    element.setRangeOption('today', true);
+                    jest.runAllTimers();
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: today,
+                        startDate: today
+                    });
+                });
+            });
+
+            it('change event dispatched by setRangeOption in expanded', () => {
+                element.isExpanded = true;
+                element.dateStyle = 'short';
+                const today = new Date(new Date().setHours(0, 0, 0, 0));
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    const expandedCalendar = element.shadowRoot.querySelector(
+                        '[data-element-id="calendar-expanded-date"]'
+                    );
+                    const expandedSpy = jest
+                        .spyOn(expandedCalendar, 'goToDate')
+                        .mockImplementation(() => {});
+                    element.setRangeOption('today', true);
+                    jest.runAllTimers();
+                    expect(expandedSpy).toHaveBeenCalledWith(today);
+                    expect(handler).toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: today,
+                        startDate: today
+                    });
+                });
+            });
+
+            it('change event not dispatched by setRangeOption if apply range is false', () => {
+                element.dateStyle = 'short';
+
+                const handler = jest.fn();
+
+                element.addEventListener('change', handler);
+
+                return Promise.resolve().then(() => {
+                    element.setRangeOption('today', false);
+                    jest.runAllTimers();
+                    expect(handler).not.toHaveBeenCalled();
+                    expect(element.value).toMatchObject({
+                        endDate: undefined,
+                        startDate: undefined
+                    });
+                });
+            });
         });
 
         it('focus', () => {

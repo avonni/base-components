@@ -110,7 +110,8 @@ div:focus {
     color: var(--avonni-primitive-calendar-date-disabled-text-color, #adadad);
 }
 
-.slds-day {
+:not(.slds-day_adjacent-month):not(.slds-is-today):not(.slds-is-selected):not(.slds-is-selected-multi)
+    > .slds-day:not(.avonni-primitive-calendar__disabled-cell):not(.avonni-primitive-calendar__hidden-cell) {
     color: var(--avonni-primitive-calendar-date-text-color, #080707);
 }
 

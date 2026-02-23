@@ -27,3 +27,17 @@
 .avonni-filter-menu__allow-shrink-width {
     min-width: 0;
 }
+
+.slds-dropdown.avonni-filter-menu__dropdown-expanded {
+    min-width: fit-content;
+}
+
+.avonni-filter-menu__dropdown-expanded-options > * lightning-menu-divider {
+    margin-top: calc(-1 * var(--lwc-spacingXSmall, 0.5rem));
+}
+
+.avonni-filter-menu__input-date-range {
+    --avonni-input-date-range-expanded-calendar-container-spacing-block-start: 0.75rem;
+    --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-start: 0.25rem;
+    --avonni-input-date-range-expanded-vertical-navigation-container-spacing-block-end: 0.25rem;
+}

@@ -61,6 +61,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isExpanded: {
+            name: 'is-expanded',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input is expanded to show the calendars.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -94,17 +106,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        labelRangeOptions: {
-            name: 'label-range-options',
-            control: {
-                type: 'object'
-            },
-            description: 'Labels for the range options.',
-            table: {
-                type: { summary: 'object' }
-            }
-        },
-
         labelStartDate: {
             name: 'label-start-date',
             control: {
@@ -113,6 +114,16 @@ export default {
             description: 'Text label for the start input.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        labelRangeOptions: {
+            name: 'label-range-options',
+            control: {
+                type: 'object'
+            },
+            description: 'Labels for the range options.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         labelStartTime: {
@@ -268,10 +279,11 @@ export default {
     args: {
         dateStyle: 'medium',
         disabled: false,
+        isExpanded: false,
+        labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',
-        labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
         showRangeOptions: false,
         timeStyle: 'short',
         todayButtonLabel: 'Today',
@@ -325,6 +337,22 @@ DateTime.args = {
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
     dateStyle: 'short'
+};
+
+export const dateExpanded = Template.bind({});
+dateExpanded.args = {
+    label: 'Expanded date range input',
+    isExpanded: true,
+    type: 'date',
+    showRangeOptions: true
+};
+
+export const dateTimeExpanded = Template.bind({});
+dateTimeExpanded.args = {
+    label: 'Expanded datetime range input',
+    isExpanded: true,
+    type: 'datetime',
+    showRangeOptions: true
 };
 
 export const Disabled = Template.bind({});

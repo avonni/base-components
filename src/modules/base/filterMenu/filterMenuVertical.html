@@ -224,6 +224,7 @@
 
             <template if:false={isLoading}>
                 <!-- Date Range -->
+                <!-- The vertical expanded mode isn't implemented yet -->
                 <c-input-date-range
                     if:true={isDateRange}
                     class="slds-show slds-m-vertical_small"
@@ -238,7 +239,7 @@
                     show-range-options={computedTypeAttributes.showRangeOptions}
                     start-date={dateRangeStartDate}
                     time-style={computedTypeAttributes.timeStyle}
-                    timezone={computedTypeAttributes.timezone}
+                    timezone={computedTimezone}
                     type={computedTypeAttributes.type}
                     variant="label-hidden"
                     week-start-day={weekStartDay}

@@ -1805,7 +1805,9 @@ describe('Filter Menu', () => {
             it('typeAttributes for date-range', () => {
                 const typeAttributes = {
                     dateStyle: 'long',
+                    isExpanded: true,
                     labelEndDate: 'End date',
+                    labelRangeOptions: { custom: 'myCustomLabel' },
                     labelStartDate: 'Start date',
                     labelStartTime: 'Start time',
                     labelEndTime: 'End time',
@@ -1822,10 +1824,14 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
+                    jest.runAllTimers();
                     const dateRange = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-input-date-range"]'
                     );
                     expect(dateRange.dateStyle).toBe(typeAttributes.dateStyle);
+                    expect(dateRange.isExpanded).toBe(
+                        typeAttributes.isExpanded
+                    );
                     expect(dateRange.labelEndDate).toBe(
                         typeAttributes.labelEndDate
                     );
@@ -1838,12 +1844,197 @@ describe('Filter Menu', () => {
                     expect(dateRange.labelStartTime).toBe(
                         typeAttributes.labelStartTime
                     );
+                    expect(dateRange.labelRangeOptions).toEqual(
+                        typeAttributes.labelRangeOptions
+                    );
                     expect(dateRange.showRangeOptions).toBe(
                         typeAttributes.showRangeOptions
                     );
                     expect(dateRange.timeStyle).toBe(typeAttributes.timeStyle);
                     expect(dateRange.timezone).toBe(typeAttributes.timezone);
                     expect(dateRange.type).toBe(typeAttributes.type);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = left', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'left';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runAllTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = bottom-left', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'bottom-left';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runAllTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = right', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'right';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runAllTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = bottom-right', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'bottom-right';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runAllTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = center', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'right';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runAllTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = bottom-center', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'bottom-center';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runAllTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
+                });
+            });
+
+            it('typeAttributes for date-range, isExpanded = true, dropdownAlignment = auto', () => {
+                const typeAttributes = {
+                    dateStyle: 'long',
+                    isExpanded: true,
+                    showRangeOptions: true,
+                    timeStyle: 'long',
+                    timezone: 'Pacific/Noumea',
+                    type: 'datetime'
+                };
+                element.type = 'date-range';
+                element.typeAttributes = typeAttributes;
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                element.dropdownAlignment = 'auto';
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    jest.runOnlyPendingTimers();
+                    const dateRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range"]'
+                    );
+                    expect(dateRange.isExpanded).toBe(true);
                 });
             });
 

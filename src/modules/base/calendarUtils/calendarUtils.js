@@ -11,7 +11,6 @@ export {
     DEFAULT_MIN,
     DEFAULT_WEEK_START_DAY,
     MONTHS,
-    NULL_DATE,
     SELECTION_MODES
 } from './calendarConstants';
 export { CalendarDate } from './calendarDate';

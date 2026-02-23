@@ -993,7 +993,7 @@ describe('Calendar', () => {
                         new CustomEvent('selectdate', {
                             detail: {
                                 fullDate: String(day7.getTime()),
-                                disabled: day7.disabled,
+                                disabled: false,
                                 bounds: { x: 1, y: 1 }
                             }
                         })
