@@ -790,6 +790,19 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Get item array from footer.
+     *
+     * @return {object[]}
+     */
+    get footerItems() {
+        const footer = this.footerSlot;
+        if (!footer) return [];
+
+        const assigned = footer.assignedElements({ flatten: true });
+        return assigned.flatMap((el) => Array.from(el.children));
+    }
+
+    /**
      * Footer Slot DOM element
      *
      * @type {HTMLElement}
@@ -1000,20 +1013,7 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @return footer item from array
      */
     getFooterItemByIndex(index) {
-        return this.getFooterItems()[index];
-    }
-
-    /**
-     * Get item array from footer.
-     *
-     * @return {object[]}
-     */
-    getFooterItems() {
-        const footer = this.footerSlot;
-        if (!footer) return [];
-
-        const assigned = footer.assignedElements({ flatten: true });
-        return assigned.flatMap((el) => Array.from(el.children));
+        return this.footerItems[index];
     }
 
     startAutoPositionning() {
@@ -1100,7 +1100,7 @@ export default class ButtonMenu extends ButtonMenuBase {
 
         const isFooterItemFocused =
             related &&
-            this.getFooterItems().some(
+            this.footerItems.some(
                 (el) => el === related || el.contains(related)
             );
         const isSearch = related && related === this.searchInput;
