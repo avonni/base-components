@@ -26,10 +26,14 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
+
 const i18n = {
     loading: 'Loading',
     showMenu: 'Show Menu'
 };
+
+const LOAD_MORE_OFFSET = 20;
 
 const MENU_ALIGNMENTS = {
     valid: [
@@ -42,6 +46,11 @@ const MENU_ALIGNMENTS = {
         'bottom-right'
     ],
     default: 'left'
+};
+
+const MENU_LENGTHS = {
+    valid: ['5-items', '7-items', '10-items'],
+    default: '7-items'
 };
 
 const MENU_TRIGGERS = {
@@ -155,20 +164,30 @@ export default class ButtonMenu extends ButtonMenuBase {
      * @default neutral
      */
 
+    _allowSearch = false;
+    _enableInfiniteLoading = false;
     _hideDownArrow = false;
     _iconName = DEFAULT_ICON_NAME;
     _iconSize = ICON_SIZES.default;
     _isDraft = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
+    _menuLength = MENU_LENGTHS.default;
     _nubbin = false;
     _tooltip;
+    _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _triggers = MENU_TRIGGERS.default;
     _variant = BUTTON_VARIANTS.default;
 
     _autoPosition;
+    _connected = false;
     _dropdownIsFocused = false;
     _dropdownVisible = false;
+    _previousScroll = undefined;
+    _searchTimeOut;
+    _showFooter = false;
+
+    searchTerm;
 
     /*
      * ------------------------------------------------------------
@@ -186,17 +205,28 @@ export default class ButtonMenu extends ButtonMenuBase {
 
         this.addEventListener('mouseenter', this.handleMouseEnter);
         this.addEventListener('mouseleave', this.handleMouseLeave);
+        this._connected = true;
     }
 
     renderedCallback() {
         super.renderedCallback();
         this.initTooltip();
+        if (
+            this.enableInfiniteLoading &&
+            this.dropdownContentElement &&
+            this.dropdownContentElement.scrollTop === 0
+        ) {
+            this.handleScroll();
+        }
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('mouseenter', this.handleMouseEnter);
         this.removeEventListener('mouseleave', this.handleMouseLeave);
+        clearTimeout(this._searchTimeOut);
+        this._previousScroll = undefined;
+        this._connected = false;
     }
 
     /*
@@ -204,6 +234,36 @@ export default class ButtonMenu extends ButtonMenuBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, display a search box.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get allowSearch() {
+        return this._allowSearch;
+    }
+    set allowSearch(value) {
+        this._allowSearch = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, you can load a subset of items and then display more when users scroll to the end of the button menu. Use with the `loadmore` event to retrieve more items.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
 
     /**
      * If present, the small down arrow normaly displayed to the right of a custom icon is hidden. Without a custom icon-name this does nothing.
@@ -285,6 +345,14 @@ export default class ButtonMenu extends ButtonMenuBase {
     set isLoading(value) {
         const normalizedValue = normalizeBoolean(value);
         this._isLoading = normalizedValue;
+        if (
+            this._connected &&
+            !this._isLoading &&
+            this._dropdownVisible &&
+            !this._dropdownIsFocused
+        ) {
+            this.focusDropdown();
+        }
     }
 
     /**
@@ -306,6 +374,24 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Maximum length of the menu. Valid values include 5-items, 7-items and 10-items.
+     *
+     * @type {string}
+     * @default 7-items
+     * @public
+     */
+    @api
+    get menuLength() {
+        return this._menuLength;
+    }
+    set menuLength(value) {
+        this._menuLength = normalizeString(value, {
+            fallbackValue: MENU_LENGTHS.default,
+            validValues: MENU_LENGTHS.valid
+        });
+    }
+
+    /**
      * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
      *
      * @public
@@ -318,6 +404,23 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
     set nubbin(value) {
         this._nubbin = normalizeBoolean(value);
+    }
+
+    /**
+     * Text that is displayed in the search input when the input is empty.
+     *
+     * @type {string}
+     * @default Search…
+     */
+    @api
+    get searchInputPlaceholder() {
+        return this._searchInputPlaceholder;
+    }
+    set searchInputPlaceholder(value) {
+        const normalizedValue = typeof value === 'string' ? value.trim() : '';
+        this._searchInputPlaceholder = normalizedValue
+            ? normalizedValue
+            : DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     }
 
     /**
@@ -540,7 +643,40 @@ export default class ButtonMenu extends ButtonMenuBase {
                     this.nubbin && this.menuAlignment === 'bottom-right',
                 'slds-nubbin_bottom':
                     this.nubbin && this.menuAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading
+                // The condition on enable infinite loading prevent the menu from growing suddenly
+                'slds-p-vertical_large':
+                    this.isLoading && !this.enableInfiniteLoading
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Item List Class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownContentClass() {
+        const length = this.menuLength;
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-dropdown_length-5': length === '5-items',
+                'slds-dropdown_length-7': length === '7-items',
+                'slds-dropdown_length-10': length === '10-items'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Footer Container Class styling.
+     *
+     * @type {string}
+     */
+    get computedFooterContainerClass() {
+        return classSet(
+            'avonni-button-menu__footer-container slds-popover__footer'
+        )
+            .add({
+                'slds-hide': !this._showFooter
             })
             .toString();
     }
@@ -618,8 +754,61 @@ export default class ButtonMenu extends ButtonMenuBase {
         });
     }
 
+    /**
+     * HTML element of the dropdown content.
+     *
+     * @type {HTMLElement}
+     */
+    get dropdownContentElement() {
+        return this.template.querySelector(
+            '[data-element-id="div-dropdown-content"]'
+        );
+    }
+
+    /**
+     * HTML element of the dropdown.
+     *
+     * @type {HTMLElement}
+     */
+    get dropdownElement() {
+        return this.template.querySelector('[data-element-id="dropdown"]');
+    }
+
     get dropdownOpened() {
         return this._dropdownVisible;
+    }
+
+    /**
+     * HTML element of focus trap.
+     *
+     * @type {HTMLElement}
+     */
+    get focusTrap() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-focus-trap"]'
+        );
+    }
+
+    /**
+     * Get item array from footer.
+     *
+     * @return {object[]}
+     */
+    get footerItems() {
+        const footer = this.footerSlot;
+        if (!footer) return [];
+
+        const assigned = footer.assignedElements({ flatten: true });
+        return assigned.flatMap((el) => Array.from(el.children));
+    }
+
+    /**
+     * Footer Slot DOM element
+     *
+     * @type {HTMLElement}
+     */
+    get footerSlot() {
+        return this.template.querySelector('[data-element-id="slot-footer"]');
     }
 
     /**
@@ -653,12 +842,55 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * True if the end of the list is reached.
+     *
+     * @type {boolean}
+     */
+    get scrolledToEnd() {
+        const fullHeight = this.dropdownContentElement.scrollHeight;
+        const scrolledDistance = this.dropdownContentElement.scrollTop;
+        const visibleHeight = this.dropdownContentElement.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + LOAD_MORE_OFFSET >= fullHeight
+        );
+    }
+
+    /**
+     * Search Input DOM element
+     *
+     * @type {HTMLElement}
+     */
+    get searchInput() {
+        return this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+    }
+
+    /**
      * Display icon only if iconName is set and src is not set.
      *
      * @type {boolean}
      */
     get showIcon() {
         return this.iconName && !this.iconSrc;
+    }
+
+    /**
+     * Display the loading spinner that hides the items.
+     *
+     * @type {boolean}
+     */
+    get showOnlyLoading() {
+        return !this.enableInfiniteLoading && this.isLoading;
+    }
+
+    /**
+     * Display the infinite loading spinner that is visible below the items.
+     *
+     * @type {boolean}
+     */
+    get showInfiniteLoading() {
+        return this.enableInfiniteLoading && this.isLoading;
     }
 
     /**
@@ -716,6 +948,16 @@ export default class ButtonMenu extends ButtonMenuBase {
         }
     }
 
+    /**
+     * Set the focus on the search input.
+     *
+     * @public
+     */
+    @api
+    focusSearchInput() {
+        this.searchInput?.focus();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -731,6 +973,49 @@ export default class ButtonMenu extends ButtonMenuBase {
         }
     }
 
+    /**
+     * Focus the dropdown.
+     */
+    focusDropdown() {
+        requestAnimationFrame(() => {
+            if (
+                !this._dropdownVisible ||
+                (this.isLoading && !this.enableInfiniteLoading)
+            ) {
+                return;
+            }
+
+            const menuItem = this.getMenuItemByIndex(0);
+            const footerItem = this.getFooterItemByIndex(0);
+            this._dropdownIsFocused = true;
+            if (this.focusTrap && this.allowSearch) {
+                this.focusTrap.focus();
+            } else if (menuItem) {
+                menuItem.focus();
+            } else if (footerItem) {
+                footerItem.focus();
+            }
+            // We stay focus on the button is there is no menu items
+            else if (this.isTriggerFocus) {
+                this._dropdownIsFocused = false;
+                this.button?.focus();
+            } else {
+                // Allows to have the dropdown focused there are no items in the dropdown.
+                this.dropdownElement?.focus();
+            }
+        });
+    }
+
+    /**
+     * Get footer item with index in footer item array.
+     *
+     * @param {object[]} index
+     * @return footer item from array
+     */
+    getFooterItemByIndex(index) {
+        return this.footerItems[index];
+    }
+
     startAutoPositionning() {
         if (!this.isAutoAlignment || !this._dropdownVisible) {
             return;
@@ -739,9 +1024,7 @@ export default class ButtonMenu extends ButtonMenuBase {
             this._autoPosition = new AutoPosition(this);
         }
 
-        const dropdown = this.template.querySelector(
-            '[data-element-id="dropdown"]'
-        );
+        const dropdown = this.dropdownElement;
         this._autoPosition.start({
             target: () => this.button,
             element: () => dropdown,
@@ -767,8 +1050,11 @@ export default class ButtonMenu extends ButtonMenuBase {
 
     /**
      * Menu visibility toggle handler.
+     * @param {boolean} [applyFocusDropdown=true]
+     *  Whether focus should be moved to the dropdown after it becomes visible.
+     *  Defaults to true.
      */
-    toggleMenuVisibility() {
+    toggleMenuVisibility(applyFocusDropdown = true) {
         if (!this.computedDisabled) {
             this._dropdownVisible = !this._dropdownVisible;
 
@@ -783,9 +1069,15 @@ export default class ButtonMenu extends ButtonMenuBase {
                 requestAnimationFrame(() => {
                     this.startAutoPositionning();
                 });
+                if (applyFocusDropdown) {
+                    this.focusDropdown();
+                }
             } else {
                 this.stopAutoPositioning();
                 this.dispatchClose();
+                this._previousScroll = undefined;
+                clearTimeout(this._searchTimeOut);
+                this.searchTerm = null;
             }
 
             this.classList.toggle('slds-is-open');
@@ -802,12 +1094,25 @@ export default class ButtonMenu extends ButtonMenuBase {
      * Blur handler.
      */
     handleButtonBlur(event) {
-        const isMenuItemFocused =
-            event.relatedTarget && this.isValidMenuItem(event.relatedTarget);
-        if (this.isTriggerFocus && !isMenuItemFocused) {
+        const related = event.relatedTarget;
+
+        const isMenuItemFocused = related && this.isValidMenuItem(related);
+
+        const isFooterItemFocused =
+            related &&
+            this.footerItems.some(
+                (el) => el === related || el.contains(related)
+            );
+        const isSearch = related && related === this.searchInput;
+
+        // The only items focused by `focusDropdown` are the menu items, the footer items and the search.
+        const isFocusOut =
+            !isMenuItemFocused && !isSearch && !isFooterItemFocused;
+        if (this.isTriggerFocus && isFocusOut) {
             this.toggleMenuVisibility();
         }
-        if (!isMenuItemFocused) {
+
+        if (isFocusOut) {
             this.dispatchEvent(new CustomEvent('blur'));
         }
     }
@@ -818,9 +1123,6 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleButtonClick() {
         if (!this.computedDisabled && this.isTriggerClick) {
             this.toggleMenuVisibility();
-            requestAnimationFrame(() => {
-                this.focusOnMenuItem(0);
-            });
         }
     }
 
@@ -840,9 +1142,6 @@ export default class ButtonMenu extends ButtonMenuBase {
             !this.computedDisabled
         ) {
             this.toggleMenuVisibility();
-            requestAnimationFrame(() => {
-                this.focusOnMenuItem(0);
-            });
         }
     }
 
@@ -859,14 +1158,11 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             event.preventDefault();
             this.toggleMenuVisibility();
-            requestAnimationFrame(() => {
-                this.focusOnMenuItem(0);
-            });
         }
     }
 
     handleDropdownFocus() {
-        this.focusOnMenuItem(0);
+        this.focusDropdown();
     }
 
     handleDropdownFocusIn() {
@@ -888,12 +1184,100 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Dropdown keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleDropdownKeyDown(event) {
+        switch (event.key) {
+            case keyValues.escape: {
+                this.handleEscapeKey(event);
+                break;
+            }
+            default:
+        }
+    }
+
+    /**
+     * Escape keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleEscapeKey(event) {
+        if (this._dropdownVisible && !this.isTriggerFocus) {
+            this.preventDefaultAndStopPropagation(event);
+            this.toggleMenuVisibility();
+            this.button?.focus();
+        }
+    }
+
+    /**
+     * Handle the slot change of the items.
+     *
+     */
+    handleItemsSlotChange() {
+        const menuItem = this.getMenuItemByIndex(0);
+        if (menuItem && String(menuItem.tabIndex) !== '0') {
+            menuItem.tabIndex = '0';
+        }
+        if (this.template.activeElement?.dataset?.elementId === 'dropdown') {
+            this.focusDropdown();
+        }
+    }
+
+    /**
+     * Handle the slot change of the footer.
+     *
+     */
+    handleFooterSlotChange() {
+        this._showFooter = this.footerSlot?.assignedElements().length > 0;
+    }
+
+    /**
      * Dropdown menu scroll event handler.
      *
      * @param {Event} event
      */
     handleDropdownScroll(event) {
         event.stopPropagation();
+    }
+
+    /**
+     * Handle an input in the search box.
+     *
+     * @param {Event} event change event.
+     */
+    handleSearch(event) {
+        event.stopPropagation();
+        this.searchTerm = event.detail.value || null;
+
+        clearTimeout(this._searchTimeOut);
+        this._searchTimeOut = setTimeout(() => {
+            this.dispatchSearch();
+        }, 500);
+    }
+
+    /**
+     * Handle a scroll movement in the dropdown menu.
+     */
+    handleScroll() {
+        if (!this.enableInfiniteLoading || this.isLoading) {
+            return;
+        }
+
+        const fullHeight = this.dropdownContentElement.scrollHeight;
+        const visibleHeight = this.dropdownContentElement.offsetHeight;
+        const loadLimit = fullHeight - visibleHeight - LOAD_MORE_OFFSET;
+        const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
+
+        // We must use !this._previousScroll to dispatch load more
+        if (
+            this.scrolledToEnd &&
+            (!this._previousScroll || firstTimeReachingTheEnd)
+        ) {
+            this.dispatchLoadMore();
+        }
+        this._previousScroll = this.dropdownContentElement.scrollTop;
     }
 
     /**
@@ -909,11 +1293,7 @@ export default class ButtonMenu extends ButtonMenuBase {
                 break;
             }
             case keyValues.escape: {
-                if (this._dropdownVisible && !this.isTriggerFocus) {
-                    this.preventDefaultAndStopPropagation(event);
-                    this.toggleMenuVisibility();
-                    this.button.focus();
-                }
+                this.handleEscapeKey(event);
                 break;
             }
             default:
@@ -950,7 +1330,7 @@ export default class ButtonMenu extends ButtonMenuBase {
     handleMenuItemSelect(event) {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
-            this.button.focus();
+            this.button?.focus();
         }
 
         event.stopPropagation();
@@ -976,7 +1356,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             return;
         }
-        this.toggleMenuVisibility();
+        this.toggleMenuVisibility(false);
     };
 
     handleMouseLeave = () => {
@@ -987,7 +1367,7 @@ export default class ButtonMenu extends ButtonMenuBase {
         ) {
             return;
         }
-        this.toggleMenuVisibility();
+        this.toggleMenuVisibility(false);
     };
 
     /*
@@ -1011,6 +1391,20 @@ export default class ButtonMenu extends ButtonMenuBase {
     }
 
     /**
+     * Menu load more dispatch method.
+     */
+    dispatchLoadMore() {
+        /**
+         * The event fired when you scroll to the end of the dropdown menu. This event is fired only if `enable-infinite-loading` is true.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
+    }
+
+    /**
      * Menu open dispatch method.
      */
     dispatchOpen() {
@@ -1022,6 +1416,27 @@ export default class ButtonMenu extends ButtonMenuBase {
          * @public
          */
         this.dispatchEvent(new CustomEvent('open'));
+    }
+
+    /**
+     * Menu search dispatch method.
+     */
+    dispatchSearch() {
+        /**
+         * The event fired when the search input value is changed.
+         *
+         * @event
+         * @name search
+         * @param {string} value The value of the search input.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('search', {
+                detail: {
+                    value: this.searchTerm
+                }
+            })
+        );
     }
 
     /**

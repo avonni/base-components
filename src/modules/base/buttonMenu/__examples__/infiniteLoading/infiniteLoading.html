@@ -16,21 +16,33 @@
         label={label}
         loading-state-alternative-text={loadingStateAlternativeText}
         menu-alignment={menuAlignment}
-        menu-length={menuLength}
         nubbin={nubbin}
         prefix-icon-name={prefixIconName}
-        search-input-placeholder={searchInputPlaceholder}
         title={title}
         tooltip={tooltip}
         triggers={triggers}
         value={value}
         variant={variant}
+        onclose={handleClose}
+        onloadmore={handleLoadMore}
+        onopen={handleOpen}
+        onsearch={handleSearch}
     >
-        <div class="slds-p-around_x-small">
-            <avonni-illustration
-                title="Going Camping"
-                variant="going-camping"
-            ></avonni-illustration>
-        </div>
+        <template for:each={items} for:item="item">
+            <lightning-menu-item
+                if:false={item.hidden}
+                key={item.value}
+                checked={item.checked}
+                disabled={item.disabled}
+                draft-alternative-text={item.draftAlternativeText}
+                href={item.href}
+                is-draft={item.isDraft}
+                label={item.label}
+                prefix-icon-name={item.prefixIconName}
+                target={item.target}
+                value={item.value}
+                data-element-id="lightning-menu-item"
+            ></lightning-menu-item>
+        </template>
     </avonni-button-menu>
 </template>

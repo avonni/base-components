@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 
-export default class ButtonMenuIllustration extends LightningElement {
+export default class ButtonMenuFooter extends LightningElement {
     @api accessKey;
     @api allowSearch;
     @api alternativeText;
