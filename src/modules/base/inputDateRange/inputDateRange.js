@@ -630,21 +630,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Class of the range options container.
-     *
-     * @type {string}
-     */
-    get computedRangeOptionClass() {
-        return classSet('')
-            .add({
-                'avonni-input-date-range__vertical-navigation-container slds-border_right slds-m-right_x-small':
-                    this.isExpanded,
-                'slds-grid slds-wrap slds-m-bottom_x-small': !this.isExpanded
-            })
-            .toString();
-    }
-
-    /**
      * Computed range option value.
      *
      * @type {string}
