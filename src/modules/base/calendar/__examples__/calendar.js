@@ -10,6 +10,7 @@ export const Calendar = ({
     markedDates,
     min,
     max,
+    nbMonthCalendars,
     nextMonthButtonAlternativeText,
     previousMonthButtonAlternativeText,
     yearSelectAssistiveText,
@@ -27,6 +28,7 @@ export const Calendar = ({
     element.markedDates = markedDates;
     element.max = max;
     element.min = min;
+    element.nbMonthCalendars = nbMonthCalendars;
     element.nextMonthButtonAlternativeText = nextMonthButtonAlternativeText;
     element.previousMonthButtonAlternativeText =
         previousMonthButtonAlternativeText;
