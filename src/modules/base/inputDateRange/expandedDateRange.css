@@ -89,11 +89,11 @@
 .avonni-input-date-range__calendar-expanded-container {
     order: 2;
     padding-right: var(
-        --avonni-input-date-range-expanded-calendar-container-inline-end,
+        --avonni-input-date-range-expanded-calendar-container-spacing-inline-end,
         0
     );
     padding-left: var(
-        --avonni-input-date-range-expanded-calendar-container-inline-start,
+        --avonni-input-date-range-expanded-calendar-container-spacing-inline-start,
         0
     );
     padding-top: var(
