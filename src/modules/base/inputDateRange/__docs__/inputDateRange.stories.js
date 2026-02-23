@@ -1,5 +1,17 @@
 import { InputDateRange } from '../__examples__/inputDateRange';
-
+const DEFAULT_RANGE_OPTIONS_LABEL = {
+    today: 'Today',
+    yesterday: 'Yesterday',
+    thisWeek: 'This week',
+    lastWeek: 'Last week',
+    thisMonth: 'This month',
+    lastMonth: 'Last month',
+    thisQuarter: 'This quarter',
+    lastQuarter: 'Last quarter',
+    thisYear: 'This year',
+    lastYear: 'Last year',
+    custom: 'Custom'
+};
 export default {
     title: 'Example/Input Date Range',
     argTypes: {
@@ -82,6 +94,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        labelRangeOptions: {
+            name: 'label-range-options',
+            control: {
+                type: 'object'
+            },
+            description: 'Labels for the range options.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+
         labelStartDate: {
             name: 'label-start-date',
             control: {
@@ -150,6 +173,18 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Required' }
+            }
+        },
+        showRangeOptions: {
+            name: 'show-range-options',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a combobox for predefined date ranges is displayed.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         startDate: {
@@ -236,6 +271,8 @@ export default {
         readOnly: false,
         required: false,
         requiredAlternativeText: 'Required',
+        labelRangeOptions: DEFAULT_RANGE_OPTIONS_LABEL,
+        showRangeOptions: false,
         timeStyle: 'short',
         todayButtonLabel: 'Today',
         type: 'date',
@@ -249,6 +286,11 @@ const Template = (args) => InputDateRange(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Text label'
+};
+
+export const rangeOptions = Template.bind({});
+rangeOptions.args = {
+    showRangeOptions: true
 };
 
 export const readOnly = Template.bind({});

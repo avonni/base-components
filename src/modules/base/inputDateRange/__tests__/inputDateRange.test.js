@@ -6,6 +6,22 @@ import { createElement } from 'lwc';
 
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
+const RANGE_OPTIONS_LABELS_MAP = {
+    today: 'Today',
+    yesterday: 'Yesterday',
+    thisWeek: 'This week',
+    lastWeek: 'Last week',
+    thisMonth: 'This month',
+    monthToDate: 'Month-to-date',
+    lastMonth: 'Last month',
+    thisQuarter: 'This quarter',
+    quarterToDate: 'Quarter-to-date',
+    lastQuarter: 'Last quarter',
+    thisYear: 'This year',
+    yearToDate: 'Year-to-date',
+    lastYear: 'Last year',
+    custom: 'Custom'
+};
 
 let element;
 describe('Input Date Range', () => {
@@ -13,6 +29,7 @@ describe('Input Date Range', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
         jest.restoreAllMocks();
     });
 
@@ -20,7 +37,8 @@ describe('Input Date Range', () => {
         element = createElement('base-input-date-range', {
             is: InputDateRange
         });
-        jest.useFakeTimers();
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date(2024, 0, 15, 0, 0, 0, 0));
         jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
             setTimeout(() => cb(), 0);
         });
@@ -34,6 +52,7 @@ describe('Input Date Range', () => {
             expect(element.endDate).toBeUndefined();
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.label).toBeUndefined();
+            expect(element.labelRangeOptions).toEqual(RANGE_OPTIONS_LABELS_MAP);
             expect(element.labelEndDate).toBeUndefined();
             expect(element.labelEndTime).toBeUndefined();
             expect(element.labelStartDate).toBeUndefined();
@@ -42,6 +61,7 @@ describe('Input Date Range', () => {
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
             expect(element.requiredAlternativeText).toBe('Required');
+            expect(element.showRangeOptions).toBeFalsy();
             expect(element.startDate).toBeUndefined();
             expect(element.timeStyle).toBe('short');
             expect(element.timezone).toBeUndefined();
@@ -791,6 +811,314 @@ describe('Input Date Range', () => {
                         );
                         expect(message.textContent).toBe('Missing value!');
                     });
+            });
+        });
+
+        describe('Show Range Options', () => {
+            it('Passed to the component', () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    expect(rangeOptions).toBeTruthy();
+                });
+            });
+        });
+
+        describe('Show Range Options Change', () => {
+            it('today', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'today'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 15, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                    });
+                });
+            });
+            it('yesterday', async () => {
+                element.showRangeOptions = true;
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'yesterday'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 14, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 14, 0, 0, 0, 0)
+                    });
+                });
+            });
+            it('lastWeek', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'lastWeek'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 7, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 13, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('lastMonth', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'lastMonth'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2023, 11, 1, 0, 0, 0, 0),
+                        endDate: new Date(2023, 11, 31, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('lastQuarter', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'lastQuarter'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2023, 9, 1, 0, 0, 0, 0),
+                        endDate: new Date(2023, 11, 31, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('lastYear', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'lastYear'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2023, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2023, 11, 31, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('thisWeek', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'thisWeek'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 14, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 20, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('thisMonth', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'thisMonth'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 31, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('thisQuarter', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'thisQuarter'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2024, 2, 31, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('thisYear', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'thisYear'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2024, 11, 31, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('monthToDate', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'monthToDate'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('quarterToDate', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'quarterToDate'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('yearToDate', async () => {
+                element.showRangeOptions = true;
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'yearToDate'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(2024, 0, 1, 0, 0, 0, 0),
+                        endDate: new Date(2024, 0, 15, 0, 0, 0, 0)
+                    });
+                });
+            });
+
+            it('custom', async () => {
+                element.showRangeOptions = true;
+                element.startDate = new Date();
+                element.endDate = new Date();
+
+                return Promise.resolve().then(() => {
+                    const rangeOptions = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-date-range__combobox-range-options"]'
+                    );
+                    rangeOptions.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: 'custom'
+                            }
+                        })
+                    );
+                    expect(element.value).toMatchObject({
+                        startDate: new Date(),
+                        endDate: new Date()
+                    });
+                });
             });
         });
 
