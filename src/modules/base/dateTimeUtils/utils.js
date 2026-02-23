@@ -9,7 +9,7 @@ function _buildMonthMaps(locale) {
 
         const short = new Intl.DateTimeFormat(locale, { month: 'short' })
             .format(date)
-            .replace('.', '')
+            .replaceAll('.', '')
             .toLowerCase();
 
         const long = new Intl.DateTimeFormat(locale, { month: 'long' })
@@ -88,7 +88,7 @@ function parseFormattedDateString({
             );
             if (!match) return null;
 
-            const monthKey = match[1].replace('.', '').toLowerCase();
+            const monthKey = match[1].replaceAll('.', '').toLowerCase();
             month = _normalizeMonth(shortMonths[monthKey]);
             day = _normalizeDay(Number(match[2]));
             year = _normalizeYear(Number(match[3]));

@@ -750,8 +750,8 @@ export default class Calendar extends LightningElement {
     initDates() {
         const max = getDateWithTimezone(this.max, this.timezone);
         const min = getDateWithTimezone(this.min, this.timezone);
-        this.computedMax = setDate(max, 'hours', 0, 0, 0, 0);
-        this.computedMin = setDate(min, 'hours', 0, 0, 0, 0);
+        this.computedMax = setDate(max, 'hour', 0, 0, 0, 0);
+        this.computedMin = setDate(min, 'hour', 0, 0, 0, 0);
         this.initDateLabels();
         this.initDisabledDates();
         this.initMarkedDates();
