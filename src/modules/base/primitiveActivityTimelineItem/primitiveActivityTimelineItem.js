@@ -8,6 +8,7 @@ import {
     classSet,
     convertHTMLToPlainText,
     deepCopy,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -101,6 +102,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @public
      */
     @api name;
+    /**
+     * Target for the title link.
+     *
+     * @public
+     * @type {string}
+     */
+    @api target;
     /**
      * The title can include text, and is displayed in the header.
      *
@@ -813,19 +821,14 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**
      * Handles the button click event.
      */
-    handleButtonClick() {
+    handleButtonClick(event) {
+        event.stopPropagation();
         /**
          * The event fired when the button in the details section is clicked.
          * @event
@@ -871,9 +874,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Handles a click on the title. Dispatches the `itemclick` event.
+     * Handles a click on the item. Dispatches the `itemclick` event.
      */
-    handleTitleClick() {
+    handleItemClick() {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
@@ -882,5 +885,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                 bubbles: true
             })
         );
+    }
+
+    /**
+     * Stops the propagation of the event.
+     * @param {Event} event
+     */
+    stopPropagation(event) {
+        event.stopPropagation();
     }
 }

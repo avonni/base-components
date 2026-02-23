@@ -119,8 +119,16 @@
             "path": "src/modules/base/buttonPopover/buttonPopover.js"
         },
         {
+            "name": "c/primitiveCalendar",
+            "path": "src/modules/base/primitiveCalendar/primitiveCalendar.js"
+        },
+        {
             "name": "c/calendar",
             "path": "src/modules/base/calendar/calendar.js"
+        },
+        {
+            "name": "c/calendarUtils",
+            "path": "src/modules/base/calendarUtils/calendarUtils.js"
         },
         {
             "name": "c/card",
@@ -253,6 +261,10 @@
         {
             "name": "c/inputRichText",
             "path": "src/modules/base/inputRichText/inputRichText.js"
+        },
+        {
+            "name": "c/inputTimeRange",
+            "path": "src/modules/base/inputTimeRange/inputTimeRange.js"
         },
         {
             "name": "c/inputToggle",
@@ -871,6 +883,10 @@
             "path": "src/modules/base/inputRichText/inputRichText.js"
         },
         {
+            "name": "avonni/inputTimeRange",
+            "path": "src/modules/base/inputTimeRange/inputTimeRange.js"
+        },
+        {
             "name": "avonni/inputToggle",
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
@@ -1101,6 +1117,7 @@
         "avonni/inputDateRange",
         "avonni/inputPen",
         "avonni/inputRichText",
+        "avonni/inputTimeRange",
         "avonni/inputToggle",
         "avonni/kanban",
         "avonni/layout",

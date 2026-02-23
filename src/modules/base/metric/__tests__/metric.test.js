@@ -945,6 +945,87 @@ describe('Metric', () => {
                     expect(metric.value).toBe(16);
                 });
             });
+
+            it('Passed to the component, date', () => {
+                element.secondaryValue = '2025-01-01';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    // Date objects are converted to timestamps (numbers) in primitive-metric
+                    expect(typeof metric.value).toBe('number');
+                    expect(metric.value).toBe(new Date('2025-01-01').getTime());
+                });
+            });
+
+            it('Passed to the component, string', () => {
+                element.secondaryValue = '16';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, string, 0', () => {
+                element.secondaryValue = '0';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Passed to the component, number', () => {
+                element.secondaryValue = 16;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, number, 0', () => {
+                element.secondaryValue = 0;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Rejects Infinity value and does not display secondary metric', () => {
+                element.secondaryValue = Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.secondaryValue).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric).toBeFalsy();
+                });
+            });
+
+            it('Rejects -Infinity value and does not display secondary metric', () => {
+                element.secondaryValue = -Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.secondaryValue).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-secondary"]'
+                    );
+                    expect(metric).toBeFalsy();
+                });
+            });
         });
 
         describe('secondaryValueIsLoading', () => {
@@ -1137,6 +1218,87 @@ describe('Metric', () => {
                         '[data-element-id="avonni-primitive-metric-primary"]'
                     );
                     expect(metric.value).toBe(3);
+                });
+            });
+
+            it('Passed to the component, date', () => {
+                element.value = '2025-01-01';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    // Date objects are converted to timestamps (numbers) in primitive-metric
+                    expect(typeof metric.value).toBe('number');
+                    expect(metric.value).toBe(new Date('2025-01-01').getTime());
+                });
+            });
+
+            it('Passed to the component, string', () => {
+                element.value = '16';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, string, 0', () => {
+                element.value = '0';
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Passed to the component, number', () => {
+                element.value = 16;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(16);
+                });
+            });
+
+            it('Passed to the component, number, 0', () => {
+                element.value = 0;
+
+                return Promise.resolve().then(() => {
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBe(0);
+                });
+            });
+
+            it('Rejects Infinity value', () => {
+                element.value = Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.value).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBeUndefined();
+                });
+            });
+
+            it('Rejects -Infinity value', () => {
+                element.value = -Infinity;
+
+                return Promise.resolve().then(() => {
+                    expect(element.value).toBeUndefined();
+                    const metric = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-metric-primary"]'
+                    );
+                    expect(metric.value).toBeUndefined();
                 });
             });
         });

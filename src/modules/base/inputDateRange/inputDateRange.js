@@ -6,7 +6,7 @@ import {
     stopPositioning
 } from 'c/positionLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { animationFrame, keyValues, timeout, equal } from 'c/utilsPrivate';
+import { animationFrame, isOrgSlds2, keyValues, timeout, equal } from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 
 const DATE_STYLES = {
@@ -536,7 +536,9 @@ export default class InputDateRange extends LightningElement {
     get computedLabelClass() {
         return classSet('avonni-date-range__label-container')
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             })
             .toString();
     }

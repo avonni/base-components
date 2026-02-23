@@ -39,6 +39,7 @@ export default class LayoutItem extends LightningElement {
     _connected = false;
     _containerWidth = CONTAINER_WIDTHS.default;
     _orders = { default: 0 };
+    _removeLayoutItemCallback;
     _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
 
@@ -58,6 +59,8 @@ export default class LayoutItem extends LightningElement {
     }
 
     disconnectedCallback() {
+        this._removeLayoutItemCallback?.();
+        this._connected = false;
         this.dispatchDisconnected();
     }
 
@@ -331,6 +334,15 @@ export default class LayoutItem extends LightningElement {
     }
 
     /**
+     * Get the height of the item.
+     *
+     * @returns {number} Height in pixels.
+     */
+    getHeight() {
+        return this.template.host.getBoundingClientRect().height;
+    }
+
+    /**
      * Normalize the given size to a valid CSS flex-basis value.
      *
      * @param {number|string} size
@@ -363,6 +375,35 @@ export default class LayoutItem extends LightningElement {
         });
         if (oldContainerWidth === this._containerWidth) return;
         this.updateClassAndStyle();
+    }
+
+    /**
+     * Set the height of the item.
+     *
+     * @param {number|string} height Height in pixels or empty string to reset the height.
+     */
+    setHeight(height) {
+        if (
+            isNaN(height) ||
+            height === null ||
+            height === undefined ||
+            height === ''
+        ) {
+            this.template.host.style.height = '';
+            return;
+        }
+        const currentHeight = this.template.host.style.height;
+        if (currentHeight === `${height}px`) return;
+        this.template.host.style.height = `${height}px`;
+    }
+
+    /**
+     * Set the callback to remove the layout item from the parent layout.
+     *
+     * @param {function} removeLayoutItemCallback Callback to remove the layout item from the parent layout.
+     */
+    setRemoveLayoutItemCallback(removeLayoutItemCallback) {
+        this._removeLayoutItemCallback = removeLayoutItemCallback;
     }
 
     /**
@@ -415,8 +456,14 @@ export default class LayoutItem extends LightningElement {
                 detail: {
                     name: this.name,
                     callbacks: {
-                        setContainerSize: this.setContainerSize.bind(this)
-                    }
+                        setContainerSize: this.setContainerSize.bind(this),
+                        getHeight: this.getHeight.bind(this),
+                        setHeight: this.setHeight.bind(this)
+                    },
+                    // This callback is necessary because the event dispatched in the disconnectedCallback
+                    // does not always bubble up in time before it is removed from the DOM.
+                    setRemoveLayoutItemCallback:
+                        this.setRemoveLayoutItemCallback.bind(this)
                 },
                 bubbles: true
             })

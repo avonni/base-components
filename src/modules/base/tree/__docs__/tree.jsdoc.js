@@ -44,6 +44,7 @@
  * @property {boolean} disabled If true, the item is disabled. A disabled item is grayed out and can't be focused. Defaults to false.
  * @property {boolean} isLoading If true, a loading spinner is visible when the item is expanded. Defaults to false.
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data/">Output Data</a> for valid keys. The fields are visible only when the item is expanded.
+ * @property {string} target Target attribute for the link.
  */
 
 /**

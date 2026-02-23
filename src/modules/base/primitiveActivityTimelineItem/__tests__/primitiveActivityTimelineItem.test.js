@@ -85,6 +85,7 @@ describe('Primitive Activity Timeline Item', () => {
             expect(element.hasError).toBeFalsy();
             expect(element.hideVerticalBar).toBeFalsy();
             expect(element.href).toBeUndefined();
+            expect(element.target).toBeUndefined();
             expect(element.icons).toBeUndefined();
             expect(element.iconName).toBeUndefined();
             expect(element.iconSize).toBe('small');
@@ -604,6 +605,36 @@ describe('Primitive Activity Timeline Item', () => {
                 return Promise.resolve().then(() => {
                     const link = element.shadowRoot.querySelector('a');
                     expect(link.href).toContain('salesforce.com');
+                    expect(link.textContent).toBe('This is an title link text');
+                });
+            });
+        });
+
+        describe('target', () => {
+            it('Passed to the component', () => {
+                element.title = 'This is an title link text';
+                element.href = 'salesforce.com';
+                element.target = '_blank';
+
+                return Promise.resolve().then(() => {
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a-title-link"]'
+                    );
+                    expect(link.target).toBe('_blank');
+                    expect(link.textContent).toBe('This is an title link text');
+                });
+            });
+
+            it('target = _self', () => {
+                element.title = 'This is an title link text';
+                element.href = 'salesforce.com';
+                element.target = '_self';
+
+                return Promise.resolve().then(() => {
+                    const link = element.shadowRoot.querySelector(
+                        '[data-element-id="a-title-link"]'
+                    );
+                    expect(link.target).toBe('_self');
                     expect(link.textContent).toBe('This is an title link text');
                 });
             });

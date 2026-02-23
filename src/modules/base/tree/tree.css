@@ -8,3 +8,7 @@
 .avonni-tree__loading-spinner {
     height: 3rem;
 }
+
+.avonni-tree__allow-shrink {
+    min-height: 0;
+}

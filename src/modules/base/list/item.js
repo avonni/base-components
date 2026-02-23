@@ -46,6 +46,8 @@ export default class Item {
         this.imagePosition = value.imagePosition;
         this.label = value.label;
         this.name = value.name;
+        this.disableDescriptionLinkify = value.disableDescriptionLinkify;
+        this.target = value.target;
     }
 
     /**

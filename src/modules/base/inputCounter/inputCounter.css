@@ -69,7 +69,7 @@
     top: 14px;
 }
 
-.avonni-input-counter__label {
+.avonni-input-counter__label.slds1 {
     color: var(
         --avonni-input-counter-header-text-color,
         var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
@@ -77,4 +77,20 @@
     font-size: var(--avonni-input-counter-header-font-size, 0.75rem);
     font-style: var(--avonni-input-counter-header-font-style, normal);
     font-weight: var(--avonni-input-counter-header-font-weight, 400);
+}
+
+.avonni-input-counter__label.slds2 {
+    color: var(
+        --avonni-input-counter-header-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-input-counter-header-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-style: var(--avonni-input-counter-header-font-style, normal);
+    font-weight: var(
+        --avonni-input-counter-header-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
 }

@@ -131,7 +131,7 @@
     opacity: 0.2;
 }
 
-.avonni-dual-listbox__header {
+.avonni-dual-listbox__header.slds1 {
     color: var(
         --avonni-dual-listbox-header-text-color,
         var(--slds-g-color-neutral-base-30, var(--lwc-colorTextLabel, #444444))
@@ -139,6 +139,22 @@
     font-size: var(--avonni-dual-listbox-header-font-size, 0.75rem);
     font-style: var(--avonni-dual-listbox-header-font-style, normal);
     font-weight: var(--avonni-dual-listbox-header-font-weight, 400);
+}
+
+.avonni-dual-listbox__header.slds2 {
+    color: var(
+        --avonni-dual-listbox-header-text-color,
+        var(--slds-g-color-on-surface-2, #2e2e2e)
+    );
+    font-size: var(
+        --avonni-dual-listbox-header-font-size,
+        var(--slds-g-font-scale-base, 0.8125rem)
+    );
+    font-style: var(--avonni-dual-listbox-header-font-style, normal);
+    font-weight: var(
+        --avonni-dual-listbox-header-font-weight,
+        var(--slds-g-font-weight-6, 600)
+    );
 }
 
 .avonni-dual-listbox__boxes-label {

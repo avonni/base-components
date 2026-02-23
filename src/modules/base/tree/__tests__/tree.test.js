@@ -48,7 +48,8 @@ describe('Tree', () => {
                 'href',
                 'expanded',
                 'disabled',
-                'isLoading'
+                'isLoading',
+                'target'
             ]);
             expect(element.header).toBeUndefined();
             expect(element.independentMultiSelect).toBeFalsy();

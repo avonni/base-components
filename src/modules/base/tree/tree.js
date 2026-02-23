@@ -26,7 +26,8 @@ const DEFAULT_EDITABLE_FIELDS = [
     'href',
     'expanded',
     'disabled',
-    'isLoading'
+    'isLoading',
+    'target'
 ];
 const DEFAULT_EXPAND_BUTTON_ALTERNATIVE_TEXT = 'Expand Branch';
 const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load More';
@@ -269,7 +270,7 @@ export default class Tree extends LightningElement {
      * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard `Standard.Tree.Edit` action.
      *
      * @type {string[]}
-     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
+     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading', 'target']
      * @public
      */
     @api

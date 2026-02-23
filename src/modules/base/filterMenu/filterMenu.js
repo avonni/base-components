@@ -2403,21 +2403,8 @@ export default class FilterMenu extends LightningElement {
         event.stopPropagation();
         event.preventDefault();
 
-        const elementId = event.target.dataset.elementId;
-        const value = event.target.value;
-
-        let [start, end] = this.currentValue;
-
-        start = start ?? null;
-        end = end ?? null;
-
-        if (elementId === 'lightning-input-start-time') {
-            start = value;
-        } else if (elementId === 'lightning-input-end-time') {
-            end = value;
-        }
-
-        this.currentValue = [start, end];
+        const { startTime, endTime } = event.detail;
+        this.currentValue = [startTime, endTime];
 
         this._dispatchSelect();
     }

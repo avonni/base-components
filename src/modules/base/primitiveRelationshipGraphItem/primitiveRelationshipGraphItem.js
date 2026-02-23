@@ -1,10 +1,11 @@
-import { LightningElement, api } from 'lwc';
 import {
-    generateUUID,
     classSet,
+    generateUUID,
+    handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeString
 } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
@@ -21,6 +22,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api href;
     @api label;
     @api name;
+    @api target;
 
     _activeSelection = false;
     _customActions = [];
@@ -210,14 +212,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
      * @param {Event} event
      */
     handleAnchorTagClick(event) {
-        event.stopPropagation();
-        const href = event.currentTarget.href;
-        if (
-            // eslint-disable-next-line no-script-url
-            ['#', 'javascript:void(0)', 'javascript:void(0);'].includes(href)
-        ) {
-            event.preventDefault();
-        }
+        handleHTMLAnchorTagClick(event);
     }
 
     /**

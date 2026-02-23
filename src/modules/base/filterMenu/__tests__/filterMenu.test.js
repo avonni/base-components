@@ -1783,7 +1783,7 @@ describe('Filter Menu', () => {
                     expect(dropdown.classList).toContain('slds-dropdown_large');
 
                     const timeRange = element.shadowRoot.querySelector(
-                        '[data-element-id="input-time-range-container"]'
+                        '[data-element-id="avonni-input-time-range"]'
                     );
                     expect(timeRange).toBeTruthy();
                 });
@@ -1795,7 +1795,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const timeRange = element.shadowRoot.querySelector(
-                        '[data-element-id="input-time-range-container"]'
+                        '[data-element-id="avonni-input-time-range"]'
                     );
                     expect(timeRange).toBeTruthy();
                 });
@@ -1861,24 +1861,14 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
-                    const startTime = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-start-time"]'
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-time-range"]'
                     );
-                    const labelStartTime = element.shadowRoot.querySelector(
-                        '[data-element-id="label-start-time"]'
-                    );
-                    const endTime = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-end-time"]'
-                    );
-                    const labelEndTime = element.shadowRoot.querySelector(
-                        '[data-element-id="label-end-time"]'
-                    );
-                    expect(startTime.timeStyle).toBe(typeAttributes.timeStyle);
-                    expect(labelStartTime.textContent).toBe(
+                    expect(timeRange.timeStyle).toBe(typeAttributes.timeStyle);
+                    expect(timeRange.labelStartTime).toBe(
                         typeAttributes.labelStartTime
                     );
-                    expect(endTime.timeStyle).toBe(typeAttributes.timeStyle);
-                    expect(labelEndTime.textContent).toBe(
+                    expect(timeRange.labelEndTime).toBe(
                         typeAttributes.labelEndTime
                     );
                 });
@@ -2390,14 +2380,11 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
-                    const startTime = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-start-time"]'
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-time-range"]'
                     );
-                    const endTime = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-end-time"]'
-                    );
-                    expect(startTime.value).toEqual(element.value[0]);
-                    expect(endTime.value).toEqual(element.value[1]);
+                    expect(timeRange.startTime).toEqual(element.value[0]);
+                    expect(timeRange.endTime).toEqual(element.value[1]);
                 });
             });
 
@@ -2904,26 +2891,32 @@ describe('Filter Menu', () => {
                 button.click();
 
                 return Promise.resolve().then(() => {
-                    const startTime = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-start-time"]'
+                    const timeRange = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-input-time-range"]'
                     );
-                    startTime.value = '08:30:00.000';
-                    const endTime = element.shadowRoot.querySelector(
-                        '[data-element-id="lightning-input-end-time"]'
+                    const startTime = '08:30:00.000';
+                    timeRange.startTime = startTime;
+                    timeRange.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: { startTime, endTime: null }
+                        })
                     );
-                    startTime.dispatchEvent(new CustomEvent('change'));
-
                     expect(handler).toHaveBeenCalledTimes(1);
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
-                        '08:30:00.000',
+                        startTime,
                         null
                     ]);
-                    endTime.value = '17:00:00.000';
-                    endTime.dispatchEvent(new CustomEvent('change'));
+                    const endTime = '17:00:00.000';
+                    timeRange.endTime = '17:00:00.000';
+                    timeRange.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: { startTime, endTime }
+                        })
+                    );
                     expect(handler).toHaveBeenCalledTimes(2);
                     expect(handler.mock.calls[1][0].detail.value).toEqual([
-                        '08:30:00.000',
-                        '17:00:00.000'
+                        startTime,
+                        endTime
                     ]);
                 });
             });

@@ -6,7 +6,8 @@ import {
     itemsWithAvatars,
     itemsWithImages,
     itemsWithImagesAndAvatars,
-    actions
+    actions,
+    itemsWithDifferentAvatarSizes
 } from './data';
 
 export default {
@@ -65,6 +66,17 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 category: 'Infinite Loading'
+            }
+        },
+        equalHeights: {
+            name: 'equal-heights',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, all list items will have equal heights.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Base'
             }
         },
         fieldAttributes: {
@@ -309,6 +321,7 @@ export default {
     },
     args: {
         cols: 1,
+        equalHeights: false,
         loadingStateAlternativeText: 'Loading...',
         nextButtonAlternativeText: 'Next Items',
         previousButtonAlternativeText: 'Previous Items',
@@ -472,4 +485,12 @@ CheckList.args = {
     showCheckCounter: true,
     strikeThroughOnCheck: true,
     enableInfiniteLoading: true
+};
+
+export const EqualHeights = Template.bind({});
+EqualHeights.args = {
+    label: 'Equal Heights',
+    items: itemsWithDifferentAvatarSizes,
+    equalHeights: true,
+    divider: 'around'
 };

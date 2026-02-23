@@ -154,10 +154,6 @@ export default class ButtonIconPopover extends LightningElement {
      */
 
     connectedCallback() {
-        this.classList.add(
-            'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click'
-        );
         this._connected = true;
     }
 
@@ -618,7 +614,10 @@ export default class ButtonIconPopover extends LightningElement {
      */
     handlePopoverBlur(event) {
         const isButton = this.button === event.relatedTarget;
-        if (this._cancelBlur) {
+        if (
+            this._cancelBlur ||
+            this.template.host.contains(event.relatedTarget)
+        ) {
             return;
         }
         if (this.isTriggerClick && !isButton) {

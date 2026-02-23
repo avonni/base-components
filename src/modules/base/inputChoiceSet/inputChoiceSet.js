@@ -17,6 +17,7 @@ import {
 import {
     classListMutation,
     getRealDOMId,
+    isOrgSlds2,
     synchronizeAttrs
 } from 'c/utilsPrivate';
 import { api, LightningElement } from 'lwc';
@@ -626,6 +627,22 @@ export default class InputChoiceSet extends LightningElement {
      */
     get computedDirection() {
         return this.isHorizontal ? 'row' : 'column';
+    }
+
+    /**
+     * Computed Header Class styling.
+     *
+     * @type {string}
+     */
+    get computedHeaderClass() {
+        return classSet(
+            'slds-form-element__label avonni-input-choice-set__label'
+        )
+            .add({
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
+            })
+            .toString();
     }
 
     /**

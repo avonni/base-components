@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { synchronizeAttrs, getRealDOMId } from 'c/utilsPrivate';
+import { synchronizeAttrs, getRealDOMId, isOrgSlds2 } from 'c/utilsPrivate';
 import {
     classSet,
     normalizeAriaAttribute,
@@ -367,7 +367,9 @@ export default class InputToggle extends LightningElement {
             'slds-form-element slds-form-element__label slds-m-bottom_none avonni-input-toggle__label'
         ).add({
             'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
-            'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large'
+            'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large',
+            slds1: !isOrgSlds2(),
+            slds2: isOrgSlds2()
         });
     }
 

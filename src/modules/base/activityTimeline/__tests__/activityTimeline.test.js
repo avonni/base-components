@@ -816,7 +816,8 @@ describe('Activity Timeline', () => {
                         title: 'Re: Mobile conversation on Monday with the new global team',
                         description: 'You emailed Lea Chan',
                         datetimeValue: 1619013600000,
-                        href: '#',
+                        href: 'salesforce.com',
+                        target: '_blank',
                         isActive: true,
                         icons: ['utility:groups', 'utility:attach'],
                         fields: [
@@ -873,6 +874,8 @@ describe('Activity Timeline', () => {
                         expect(item.hasError).toBe(
                             ITEM[index].hasError || false
                         );
+                        expect(item.href).toBe(ITEM[index].href);
+                        expect(item.target).toBe(ITEM[index].target);
                         expect(item.isLoading).toBe(
                             ITEM[index].isLoading || false
                         );
