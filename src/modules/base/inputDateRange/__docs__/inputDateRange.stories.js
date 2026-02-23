@@ -106,7 +106,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-
         labelStartDate: {
             name: 'label-start-date',
             control: {

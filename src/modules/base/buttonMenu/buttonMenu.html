@@ -68,29 +68,76 @@
         if:true={dropdownOpened}
         class={computedDropdownClass}
         data-element-id="dropdown"
+        tabindex="0"
         onfocus={handleDropdownFocus}
         onfocusin={handleDropdownFocusIn}
         onfocusout={handleDropdownFocusOut}
+        onkeydown={handleDropdownKeyDown}
         onscroll={handleDropdownScroll}
     >
-        <div class="avonni-button-menu__dropdown-gap-cover"></div>
-        <lightning-spinner
-            if:true={isLoading}
-            alternative-text={computedLoadingStateAlternativeText}
-            size="small"
-            data-element-id="lightning-spinner"
-        ></lightning-spinner>
-        <div
-            if:false={isLoading}
-            class="slds-dropdown__list"
-            role="menu"
-            data-element-id="dropdown-list"
-            onkeydown={handleMenuItemKeyDown}
-            onmouseover={handleMenuItemMouseOver}
-            onprivatehover={handleMenuItemHover}
-            onprivateselect={handleMenuItemSelect}
-        >
-            <slot></slot>
-        </div>
+        <c-focus-trap data-element-id="avonni-focus-trap">
+            <div class="avonni-button-menu__dropdown-gap-cover"></div>
+            <lightning-spinner
+                if:true={showOnlyLoading}
+                alternative-text={computedLoadingStateAlternativeText}
+                size="small"
+                data-element-id="lightning-spinner"
+            ></lightning-spinner>
+            <lightning-input
+                if:true={allowSearch}
+                class="slds-p-around_small"
+                label={searchInputPlaceholder}
+                placeholder={searchInputPlaceholder}
+                variant="label-hidden"
+                type="search"
+                value={searchTerm}
+                autocomplete="off"
+                data-element-id="lightning-input"
+                data-is-focusable
+                onchange={handleSearch}
+            ></lightning-input>
+            <div
+                if:false={showOnlyLoading}
+                class={computedDropdownContentClass}
+                data-element-id="div-dropdown-content"
+                tabindex="-1"
+                onscroll={handleScroll}
+            >
+                <div
+                    role="menu"
+                    data-element-id="dropdown-list"
+                    onkeydown={handleMenuItemKeyDown}
+                    onmouseover={handleMenuItemMouseOver}
+                    onprivatehover={handleMenuItemHover}
+                    onprivateselect={handleMenuItemSelect}
+                >
+                    <slot
+                        onslotchange={handleItemsSlotChange}
+                        data-element-id="slot-default"
+                    ></slot>
+                </div>
+                <!-- Loading spinner -->
+                <div
+                    if:true={showInfiniteLoading}
+                    class="slds-is-relative slds-p-vertical_large"
+                >
+                    <lightning-spinner
+                        alternative-text={computedLoadingStateAlternativeText}
+                        size="small"
+                        data-element-id="lightning-spinner-infinite"
+                    ></lightning-spinner>
+                </div>
+            </div>
+            <div
+                class={computedFooterContainerClass}
+                data-element-id="avonni-button-menu__footer-container"
+            >
+                <slot
+                    name="footer"
+                    data-element-id="slot-footer"
+                    onslotchange={handleFooterSlotChange}
+                ></slot>
+            </div>
+        </c-focus-trap>
     </div>
 </template>

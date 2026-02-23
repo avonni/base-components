@@ -320,5 +320,21 @@ describe('PrimitiveAvatar', () => {
                 });
             });
         });
+
+        it('Image error event', () => {
+            element.src = 'invalid-src';
+            return Promise.resolve()
+                .then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '.avonni-avatar__image'
+                    );
+                    element.src = 'valid-src';
+                    expect(img).toBeTruthy();
+                    img.dispatchEvent(new CustomEvent('error'));
+                })
+                .then(() => {
+                    expect(element.src).toBe('valid-src');
+                });
+        });
     });
 });
