@@ -849,10 +849,12 @@ export default class FilterMenuGroup extends LightningElement {
 
         // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
         const adjustOverflowStep = () => {
+            const wrapperHeight = Math.ceil(
+                this.menuGroupWrapper?.getBoundingClientRect().height
+            );
             if (
                 this.menuGroupWrapper &&
-                this._containerMaxHeight !==
-                    this.menuGroupWrapper.getBoundingClientRect().height &&
+                Math.ceil(this._containerMaxHeight) !== wrapperHeight &&
                 this._sliceIndex > 0
             ) {
                 const sliceIndex = Math.max(0, this._sliceIndex - 1);
