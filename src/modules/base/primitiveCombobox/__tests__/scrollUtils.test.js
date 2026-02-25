@@ -9,6 +9,18 @@ describe('Primitive Combobox: Scroll Utils', () => {
 
         const loadMoreOffset = 20;
 
+        it('Invalid list', () => {
+            const result = computeScroll({
+                list: null,
+                loadMoreOffset,
+                nbOptions: 100,
+                previousStartIndex: 30,
+                previousEndIndex: 60
+            });
+
+            expect(result).toEqual({});
+        });
+
         it('No scroll', () => {
             const list = {
                 ...mockList,

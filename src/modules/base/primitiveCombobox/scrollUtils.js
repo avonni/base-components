@@ -8,6 +8,9 @@ function computeScroll({
     previousStartIndex,
     previousEndIndex
 }) {
+    if (!list) {
+        return {};
+    }
     const height = list.scrollHeight;
     const scrolledDistance = list.scrollTop;
     const bottomLimit = height - list.clientHeight - loadMoreOffset;

@@ -9,8 +9,12 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { keyValues } from 'c/utilsPrivate';
-import { classListMutation, equal, getListHeight } from 'c/utilsPrivate';
+import {
+    classListMutation,
+    equal,
+    getListHeight,
+    keyValues
+} from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Action from './action';
 import Option from './option';
@@ -1456,7 +1460,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Computes the options.
      */
-    _initComputedOptions() {
+    _initComputedOptions(resetEndIndex = false) {
         const options = this.currentParent
             ? this.currentParent.options
             : this.options;
@@ -1469,6 +1473,21 @@ export default class PrimitiveCombobox extends LightningElement {
                 searchTerm: this._searchTerm,
                 options: this._computedOptions
             });
+        }
+
+        if (resetEndIndex) {
+            // When new options have been loaded,
+            // push the end index to the max loaded options
+            const { endIndex } = computeScroll({
+                list: this.list,
+                loadMoreOffset: this.loadMoreOffset,
+                nbOptions: this._computedOptions.length,
+                previousStartIndex: this._startIndex,
+                previousEndIndex: this._endIndex
+            });
+            if (!isNaN(endIndex) && this._endIndex !== endIndex) {
+                this._endIndex = endIndex;
+            }
         }
 
         this._initVisibleOptions();
@@ -1637,7 +1656,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         if (this._connected) {
             this._initValue();
-            this._initComputedOptions();
+            this._initComputedOptions(true);
 
             this.showStartLoader = false;
             this.showEndLoader =
