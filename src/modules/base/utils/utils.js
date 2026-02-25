@@ -1,6 +1,7 @@
+export { CallTokenManager } from './callTokenManager';
 export { classSet } from './classSet';
 export { convertHTMLToPlainText, handleHTMLAnchorTagClick } from './htmlUtils';
-export { generateUUID } from './idGenerator';
+export { generateUUID, readableId } from './idGenerator';
 export { formatLabel } from './labelUtils';
 export {
     normalizeAriaAttribute,
@@ -10,4 +11,5 @@ export {
     normalizeString
 } from './normalize';
 export { queryFocusable } from './queryFocusable';
+export { to15CharId } from './salesforceIdUtils';
 export { deepCopy } from './utility';
