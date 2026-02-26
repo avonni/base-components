@@ -642,7 +642,7 @@ export default class FilterMenuGroup extends LightningElement {
             this._openedMenuCount === 0 &&
             !this._isCalculatingOverflow &&
             !this._isPopoverOpen &&
-            this.menuGroupWrapper.offsetHeight > 0
+            this.menuGroupWrapper.getBoundingClientRect().height > 0
         );
     }
 
@@ -740,7 +740,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     saveContainerMaxHeight(sliceIndex) {
         const childHeights = Array.from(this.listMenus).map(
-            (el) => el.offsetHeight
+            (el) => el.getBoundingClientRect().height
         );
         const maxChildHeight = childHeights.length
             ? Math.max(...childHeights)
@@ -789,8 +789,9 @@ export default class FilterMenuGroup extends LightningElement {
             return;
         }
 
+        const height = this.menuGroupWrapper?.getBoundingClientRect().height;
         if (
-            this._containerMaxHeight === this.menuGroupWrapper.offsetHeight &&
+            this._containerMaxHeight === height &&
             this._hasCalculatedOverflow
         ) {
             this._hasCalculatedOverflow = false;
@@ -811,13 +812,14 @@ export default class FilterMenuGroup extends LightningElement {
             this._itemsWidths[i] = width;
         });
 
-        const wrapperWidth = this.menuGroupWrapper?.offsetWidth || 0;
-        const wrapperHeight = this.menuGroupWrapper?.offsetHeight || 0;
+        const width = this.menuGroupWrapper?.getBoundingClientRect().width;
+        const wrapperWidth = Math.ceil(width) || 0;
+        const wrapperHeight = Math.ceil(height) || 0;
         let sliceIndex = this.computeSliceIndex(wrapperWidth);
 
         if (
             this._sliceIndex !== sliceIndex ||
-            this._containerMaxHeight !== wrapperHeight
+            Math.ceil(this._containerMaxHeight) !== wrapperHeight
         ) {
             this.updateVisibleMenus(wrapperWidth);
         }
@@ -837,8 +839,8 @@ export default class FilterMenuGroup extends LightningElement {
         this._isCalculatingOverflow = true;
         // Waiting for the items to be rendered
         requestAnimationFrame(() => {
-            let wrapperWidth =
-                (maxWidth ?? this.menuGroupWrapper?.offsetWidth) || 0;
+            const width = this.menuGroupWrapper?.getBoundingClientRect().width;
+            const wrapperWidth = (maxWidth ?? Math.ceil(width)) || 0;
             this.saveItemsWidths();
             let sliceIndex = this.computeSliceIndex(wrapperWidth);
             this.saveContainerMaxHeight(sliceIndex);
@@ -847,10 +849,12 @@ export default class FilterMenuGroup extends LightningElement {
 
         // Put as many items as needed in the more filters popver if the new menu display is still overflowing.
         const adjustOverflowStep = () => {
+            const wrapperHeight = Math.ceil(
+                this.menuGroupWrapper?.getBoundingClientRect().height
+            );
             if (
                 this.menuGroupWrapper &&
-                this._containerMaxHeight !==
-                    this.menuGroupWrapper.offsetHeight &&
+                Math.ceil(this._containerMaxHeight) !== wrapperHeight &&
                 this._sliceIndex > 0
             ) {
                 const sliceIndex = Math.max(0, this._sliceIndex - 1);
