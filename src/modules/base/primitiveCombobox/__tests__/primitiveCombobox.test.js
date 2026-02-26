@@ -1,16 +1,17 @@
+import { deepCopy } from 'c/utils';
 import { createElement } from 'lwc';
-import PrimitiveCombobox from '../primitiveCombobox';
-import Option from '../option';
 import Action from '../action';
+import Option from '../option';
+import PrimitiveCombobox from '../primitiveCombobox';
+import * as SCROLL_UTILS from '../scrollUtils';
 import {
-    options,
     actions,
-    topActions,
     bottomActions,
     groups,
-    searchActions
+    options,
+    searchActions,
+    topActions
 } from './data';
-import { deepCopy } from 'c/utils';
 
 // Not tested:
 // auto positionning
@@ -1700,59 +1701,102 @@ describe('Primitive Combobox', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
 
-        it('Loadmore', () => {
-            const handler = jest.fn();
-            element.addEventListener('loadmore', handler);
-            element.options = options;
-            element.enableInfiniteLoading = true;
+        describe('Loadmore', () => {
+            it('Triggered on first opening', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+                element.options = options;
+                element.enableInfiniteLoading = true;
 
-            return Promise.resolve()
-                .then(() => {
-                    element.open();
-                })
-                .then(() => {
-                    expect(handler).toHaveBeenCalled();
-                    const call = handler.mock.calls[0][0];
-                    expect(call.detail.optionValue).toBeNull();
-                    expect(call.detail.searchTerm).toBe('');
-                    expect(call.bubbles).toBeFalsy();
-                    expect(call.cancelable).toBeFalsy();
-                    expect(call.composed).toBeFalsy();
-                });
-        });
+                return Promise.resolve()
+                    .then(() => {
+                        element.open();
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalled();
+                        const call = handler.mock.calls[0][0];
+                        expect(call.detail.optionValue).toBeNull();
+                        expect(call.detail.searchTerm).toBe('');
+                        expect(call.bubbles).toBeFalsy();
+                        expect(call.cancelable).toBeFalsy();
+                        expect(call.composed).toBeFalsy();
+                    });
+            });
 
-        it('Loadmore, with a search term', () => {
-            const handler = jest.fn();
-            element.addEventListener('loadmore', handler);
-            element.options = options;
-            element.enableInfiniteLoading = true;
+            it('Triggered on scroll', () => {
+                element.options = options;
+                element.enableInfiniteLoading = true;
 
-            return Promise.resolve()
-                .then(() => {
-                    const input = element.shadowRoot.querySelector(
-                        '[data-element-id="input"]'
-                    );
-                    input.click();
-                })
-                .then(() => {
-                    expect(handler).toHaveBeenCalledTimes(1);
-                    const input = element.shadowRoot.querySelector(
-                        '[data-element-id="input"]'
-                    );
-                    input.value = 'Bur';
-                    input.dispatchEvent(new CustomEvent('input'));
-                    jest.runAllTimers();
+                return Promise.resolve()
+                    .then(() => {
+                        element.open();
+                        jest.runAllTimers();
+                    })
+                    .then(() => {
+                        const handler = jest.fn();
+                        element.addEventListener('loadmore', handler);
 
-                    const list = element.shadowRoot.querySelector(
-                        '[data-element-id="ul-listbox"]'
-                    );
-                    list.dispatchEvent(new CustomEvent('scroll'));
+                        const list = element.shadowRoot.querySelector(
+                            '[data-element-id="ul-listbox"]'
+                        );
+                        list.dispatchEvent(new CustomEvent('scroll'));
+                        expect(handler).toHaveBeenCalledTimes(1);
 
-                    expect(handler).toHaveBeenCalledTimes(2);
-                    const call = handler.mock.calls[1][0];
-                    expect(call.detail.optionValue).toBeNull();
-                    expect(call.detail.searchTerm).toBe('Bur');
-                });
+                        jest.spyOn(
+                            SCROLL_UTILS,
+                            'computeScroll'
+                        ).mockReturnValueOnce({
+                            endIndex: options.length + 1
+                        });
+
+                        element.options = options.concat([
+                            { value: 'newOption' }
+                        ]);
+                    })
+                    .then(() => {
+                        const group = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-combobox-group"]'
+                        );
+                        expect(group.options).toHaveLength(options.length + 1);
+                        expect(group.options[options.length].value).toBe(
+                            'newOption'
+                        );
+                    });
+            });
+
+            it('Triggered on scroll, with a search term', () => {
+                const handler = jest.fn();
+                element.addEventListener('loadmore', handler);
+                element.options = options;
+                element.enableInfiniteLoading = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="input"]'
+                        );
+                        input.click();
+                    })
+                    .then(() => {
+                        expect(handler).toHaveBeenCalledTimes(1);
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="input"]'
+                        );
+                        input.value = 'Bur';
+                        input.dispatchEvent(new CustomEvent('input'));
+                        jest.runAllTimers();
+
+                        const list = element.shadowRoot.querySelector(
+                            '[data-element-id="ul-listbox"]'
+                        );
+                        list.dispatchEvent(new CustomEvent('scroll'));
+
+                        expect(handler).toHaveBeenCalledTimes(2);
+                        const call = handler.mock.calls[1][0];
+                        expect(call.detail.optionValue).toBeNull();
+                        expect(call.detail.searchTerm).toBe('Bur');
+                    });
+            });
         });
 
         it('Privateselect', () => {
