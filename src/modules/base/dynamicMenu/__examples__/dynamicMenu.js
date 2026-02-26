@@ -24,6 +24,7 @@ export const DynamicMenu = ({
     menuWidth,
     nubbin,
     searchInputPlaceholder,
+    selectOnHover,
     title,
     tooltip,
     value,
@@ -48,6 +49,7 @@ export const DynamicMenu = ({
     element.menuWidth = menuWidth;
     element.nubbin = nubbin;
     element.searchInputPlaceholder = searchInputPlaceholder;
+    element.selectOnHover = selectOnHover;
     element.title = title;
     element.tooltip = tooltip;
     element.value = value;
