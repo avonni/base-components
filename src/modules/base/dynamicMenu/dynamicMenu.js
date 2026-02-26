@@ -568,11 +568,16 @@ export default class DynamicMenu extends LightningElement {
      */
     get computedListItems() {
         return this.filteredItems.map((item, index) => {
-            let { actions, avatar, label, meta, value } = item;
+            let { actions, avatar, label, meta, value, disabled } = item;
             const key = `item-key-${index}`;
             const metaJoin = meta ? meta.join(' • ') : null;
             const selected = this.value === value;
             const displayFigure = avatar || !this.hideCheckMark;
+            const computedItemWrapperClass = classSet(
+                'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background'
+            ).add({
+                'avonni-dynamic-menu__item_disabled': disabled
+            });
             const computedItemClass = classSet(
                 'slds-listbox__option slds-media slds-media_center slds-listbox__option_plain'
             ).add({
@@ -587,7 +592,9 @@ export default class DynamicMenu extends LightningElement {
                 selected,
                 value,
                 computedItemClass,
-                displayFigure
+                displayFigure,
+                computedItemWrapperClass,
+                disabled: !!disabled
             };
         });
     }
@@ -992,6 +999,12 @@ export default class DynamicMenu extends LightningElement {
     handleItemClick(event) {
         let target = event.target.getAttribute('data-element-id');
         let value = event.currentTarget.getAttribute('data-value');
+        if (target === 'item') {
+            const disabled = event.currentTarget.getAttribute('aria-disabled');
+            if (disabled === 'true') {
+                return;
+            }
+        }
         if (target === 'action') {
             /**
              * The event fired when a user clicks on an action.
