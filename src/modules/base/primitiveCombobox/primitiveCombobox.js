@@ -193,6 +193,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _isSearching = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _originalOptions = [];
+    _recomputeScroll = false;
     _scrollTimeout;
     _searchTerm = '';
     _searchTimeout;
@@ -239,7 +240,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 }
                 if (
                     this.list &&
-                    this.list.scrollTop === 0 &&
+                    (this.list.scrollTop === 0 || this._recomputeScroll) &&
                     !this._hasScrolled
                 ) {
                     this.handleScroll();
@@ -1460,7 +1461,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Computes the options.
      */
-    _initComputedOptions(resetEndIndex = false) {
+    _initComputedOptions() {
         const options = this.currentParent
             ? this.currentParent.options
             : this.options;
@@ -1473,21 +1474,6 @@ export default class PrimitiveCombobox extends LightningElement {
                 searchTerm: this._searchTerm,
                 options: this._computedOptions
             });
-        }
-
-        if (resetEndIndex) {
-            // When new options have been loaded,
-            // push the end index to the max loaded options
-            const { endIndex } = computeScroll({
-                list: this.list,
-                loadMoreOffset: this.loadMoreOffset,
-                nbOptions: this._computedOptions.length,
-                previousStartIndex: this._startIndex,
-                previousEndIndex: this._endIndex
-            });
-            if (!isNaN(endIndex) && this._endIndex !== endIndex) {
-                this._endIndex = endIndex;
-            }
         }
 
         this._initVisibleOptions();
@@ -1656,8 +1642,9 @@ export default class PrimitiveCombobox extends LightningElement {
 
         if (this._connected) {
             this._initValue();
-            this._initComputedOptions(true);
+            this._initComputedOptions();
 
+            this._recomputeScroll = true;
             this.showStartLoader = false;
             this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
@@ -2334,6 +2321,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._hasScrolled = true;
+        this._recomputeScroll = false;
         const { startIndex, endIndex, loadDown, loadMore } = computeScroll({
             list: this.list,
             loadMoreOffset: this.loadMoreOffset,
