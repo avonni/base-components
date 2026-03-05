@@ -1084,6 +1084,7 @@
         "avonni/blockquote",
         "avonni/button",
         "avonni/buttonDialog",
+        "avonni/buttonIcon",
         "avonni/buttonIconDialog",
         "avonni/buttonIconPopover",
         "avonni/buttonMenu",
