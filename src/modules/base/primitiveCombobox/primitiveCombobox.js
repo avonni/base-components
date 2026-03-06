@@ -9,8 +9,12 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { keyValues } from 'c/utilsPrivate';
-import { classListMutation, equal, getListHeight } from 'c/utilsPrivate';
+import {
+    classListMutation,
+    equal,
+    getListHeight,
+    keyValues
+} from 'c/utilsPrivate';
 import { LightningElement, api } from 'lwc';
 import Action from './action';
 import Option from './option';
@@ -189,6 +193,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _isSearching = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _originalOptions = [];
+    _recomputeScroll = false;
     _scrollTimeout;
     _searchTerm = '';
     _searchTimeout;
@@ -235,7 +240,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 }
                 if (
                     this.list &&
-                    this.list.scrollTop === 0 &&
+                    (this.list.scrollTop === 0 || this._recomputeScroll) &&
                     !this._hasScrolled
                 ) {
                     this.handleScroll();
@@ -1639,6 +1644,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this._initValue();
             this._initComputedOptions();
 
+            this._recomputeScroll = true;
             this.showStartLoader = false;
             this.showEndLoader =
                 this.currentParent && !this.enableInfiniteLoading
@@ -2315,6 +2321,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._hasScrolled = true;
+        this._recomputeScroll = false;
         const { startIndex, endIndex, loadDown, loadMore } = computeScroll({
             list: this.list,
             loadMoreOffset: this.loadMoreOffset,
