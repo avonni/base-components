@@ -1382,9 +1382,10 @@ describe('Filter Menu', () => {
                     return acc;
                 }, {});
                 element.typeAttributes = {
-                    items: ITEMS.map((item) => ({
+                    items: ITEMS.map((item, index) => ({
                         ...item,
-                        count: itemMap[item.value]
+                        count: itemMap[item.value],
+                        isOverLimit: index % 2 === 0
                     }))
                 };
                 const button = element.shadowRoot.querySelector(
@@ -1418,11 +1419,15 @@ describe('Filter Menu', () => {
                         const countLabel = item.querySelector(
                             '[data-element-id="lightning-formatted-rich-text-count-label"]'
                         );
+                        const isOverLimit = index % 2 === 0;
+                        const computedCountLabelValue = isOverLimit
+                            ? `(${index}+)`
+                            : `(${index})`;
                         const disabled = ITEMS[index].disabled ? 'true' : null;
                         expect(item.dataset.value).toBe(ITEMS[index].value);
                         expect(item.ariaDisabled).toBe(disabled);
                         expect(label.value).toBe(`${ITEMS[index].label}`);
-                        expect(countLabel.value).toBe(`(${index})`);
+                        expect(countLabel.value).toBe(computedCountLabelValue);
                     });
 
                     const prefixIcon = items[1].querySelector(
