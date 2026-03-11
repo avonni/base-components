@@ -1758,8 +1758,11 @@ export default class FilterMenu extends LightningElement {
             }
             const numberRecords = item.count || 0;
             if (hasCountLabel) {
-                item.countLabel = `(${numberRecords})`;
-                item.additionalLabel = `(${numberRecords})`;
+                const computedlabel = item.isOverLimit
+                    ? `(${numberRecords}+)`
+                    : `(${numberRecords})`;
+                item.countLabel = computedlabel;
+                item.additionalLabel = computedlabel;
             }
             const computedItem = new Item({
                 ...item,
