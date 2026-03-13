@@ -9,7 +9,7 @@ import { api, LightningElement } from 'lwc';
 
 export default class PrimitiveSchedulerEvent extends LightningElement {
     /**
-     * Background color of the occurrence.
+     * Background color of the event.
      *
      * @type {string}
      * @public

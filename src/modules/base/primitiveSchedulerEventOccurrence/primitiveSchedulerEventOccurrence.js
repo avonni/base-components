@@ -38,13 +38,6 @@ const VARIANTS = {
  */
 export default class PrimitiveSchedulerEventOccurrence extends PrimitiveSchedulerEvent {
     /**
-     * Background color of the occurrence.
-     *
-     * @type {string}
-     * @public
-     */
-    @api color;
-    /**
      * Unique name of the event this occurrence belongs to.
      *
      * @type {string}
