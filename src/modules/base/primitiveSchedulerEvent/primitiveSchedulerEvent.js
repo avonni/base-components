@@ -16,11 +16,11 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
      */
     @api color;
 
-    _headerCells = [];
     _cellDuration = 0;
     _cellHeight = 0;
     _cellWidth = 0;
     _from;
+    _headerCells = [];
     _timezone;
     _to;
     _x = 0;
@@ -49,30 +49,6 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
      */
 
     /**
-     * The header cells used to position and size the event. Two keys are allowed: xAxis and yAxis. If present, each key must be an array of cell objects.
-     *
-     * @type {object}
-     * @public
-     * @required
-     */
-    @api
-    get headerCells() {
-        return this._headerCells;
-    }
-    set headerCells(value) {
-        const normalized =
-            typeof value === 'string'
-                ? JSON.parse(value)
-                : normalizeObject(value);
-        this._headerCells = normalized;
-
-        if (this._connected) {
-            this._updatePosition();
-            this._updateLength();
-        }
-    }
-
-    /**
      * Duration of a scheduler column, in milliseconds.
      *
      * @type {number}
@@ -84,7 +60,8 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
         return this._cellDuration;
     }
     set cellDuration(value) {
-        this._cellDuration = !isNaN(Number(value)) ? Number(value) : 0;
+        this._cellDuration =
+            !isNaN(Number(value)) && value >= 0 ? Number(value) : 0;
 
         if (this._connected) {
             this._updateLength();
@@ -103,7 +80,8 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
         return this._cellHeight;
     }
     set cellHeight(value) {
-        this._cellHeight = !isNaN(Number(value)) ? Number(value) : 0;
+        this._cellHeight =
+            !isNaN(Number(value)) && value >= 0 ? Number(value) : 0;
 
         if (this._connected) {
             this._updatePosition();
@@ -123,7 +101,8 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
         return this._cellWidth;
     }
     set cellWidth(value) {
-        this._cellWidth = !isNaN(Number(value)) ? Number(value) : 0;
+        this._cellWidth =
+            !isNaN(Number(value)) && value >= 0 ? Number(value) : 0;
 
         if (this._connected) {
             this._updatePosition();
@@ -145,6 +124,30 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
     set from(value) {
         this._from =
             value instanceof DateTime ? value : this._createDate(value);
+
+        if (this._connected) {
+            this._updatePosition();
+            this._updateLength();
+        }
+    }
+
+    /**
+     * The header cells used to position and size the event. Two keys are allowed: xAxis and yAxis. If present, each key must be an array of cell objects.
+     *
+     * @type {object}
+     * @public
+     * @required
+     */
+    @api
+    get headerCells() {
+        return this._headerCells;
+    }
+    set headerCells(value) {
+        const normalized =
+            typeof value === 'string'
+                ? JSON.parse(value)
+                : normalizeObject(value);
+        this._headerCells = normalized;
 
         if (this._connected) {
             this._updatePosition();
