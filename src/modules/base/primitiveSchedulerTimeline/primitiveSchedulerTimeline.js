@@ -2,6 +2,7 @@ import { addToDate } from 'c/luxonDateTimeUtils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     DEFAULT_ACTION_NAMES,
+    PRESET_HEADERS,
     getElementOnXAxis,
     getElementOnYAxis,
     ScheduleBase,
@@ -17,13 +18,7 @@ import {
 } from 'c/utils';
 import { equal } from 'c/utilsPrivate';
 import { api, track } from 'lwc';
-import {
-    DEFAULT_START_DATE,
-    HEADERS,
-    ORIENTATIONS,
-    PRESET_HEADERS,
-    UNITS
-} from './defaults';
+import { DEFAULT_START_DATE, HEADERS, ORIENTATIONS, UNITS } from './defaults';
 import SchedulerResource from './resource';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
