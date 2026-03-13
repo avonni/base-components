@@ -1,4 +1,5 @@
 export {
+    calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,
     getFirstAvailableWeek,
