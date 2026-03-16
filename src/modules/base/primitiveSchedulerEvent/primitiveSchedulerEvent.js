@@ -332,7 +332,7 @@ export default class PrimitiveSchedulerEvent extends LightningElement {
      */
     _getOffsetStart(cellEnd, cellSize) {
         const cellDuration = this.cellDuration;
-        const from = this.from;
+        const from = this._getComparableTime(this.from);
 
         const itemDuration = cellEnd - from;
         const emptyDuration = cellDuration - itemDuration;
