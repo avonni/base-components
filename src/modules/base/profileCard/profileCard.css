@@ -207,12 +207,6 @@ article.avonni-profile-card {
     transform: scale(5.8);
 }
 
-.avonni-profile-card__text {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
 .avonni-profile-card__title {
     font-family: var(
         --avonni-profile-card-header-title-font-family,

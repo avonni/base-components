@@ -57,18 +57,16 @@
                     </template>
                     <template if:false={showHeaderSlot}>
                         <span
-                            class="
-                                avonni-profile-card__text
-                                avonni-profile-card__title
-                            "
-                            >{title}
+                            title={title}
+                            class="slds-truncate avonni-profile-card__title"
+                        >
+                            {title}
                         </span>
                         <span
-                            class="
-                                avonni-profile-card__text
-                                avonni-profile-card__subtitle
-                            "
-                            >{subtitle}
+                            title={subtitle}
+                            class="slds-truncate avonni-profile-card__subtitle"
+                        >
+                            {subtitle}
                         </span>
                     </template>
                 </div>
