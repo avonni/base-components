@@ -208,6 +208,17 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        openMenuOnHover: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the menu opens when the button is hovered over.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         searchInputPlaceholder: {
             name: 'search-input-placeholder',
             control: {
@@ -304,6 +315,7 @@ export default {
         menuLength: '7-items',
         menuWidth: 'small',
         nubbin: false,
+        openMenuOnHover: false,
         searchInputPlaceholder: 'Search…',
         selectOnHover: false,
         variant: 'border'

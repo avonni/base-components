@@ -45,6 +45,7 @@ describe('Dynamic Menu', () => {
             expect(element.menuLength).toBe('7-items');
             expect(element.menuWidth).toBe('small');
             expect(element.nubbin).toBeFalsy();
+            expect(element.openMenuOnHover).toBeFalsy();
             expect(element.searchInputPlaceholder).toBe('Search…');
             expect(element.selectOnHover).toBeFalsy();
             expect(element.title).toBeUndefined();
@@ -736,6 +737,58 @@ describe('Dynamic Menu', () => {
             });
         });
 
+        describe('Open Menu On Hover', () => {
+            it('Should open menu on button hover when openMenuOnHover is true', () => {
+                element.openMenuOnHover = true;
+                element.label = 'Hover Menu';
+                element.items = baseItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).not.toBeNull();
+                    });
+            });
+
+            it('Should not open menu on button hover when openMenuOnHover is false', () => {
+                element.openMenuOnHover = false;
+                element.label = 'Normal Menu';
+                element.items = baseItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.dispatchEvent(new CustomEvent('mouseenter'));
+                        jest.advanceTimersByTime(500);
+                    })
+                    .then(() => {
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                    });
+            });
+        });
+
         describe('Search Input Placeholder', () => {
             it('Passed to the component', () => {
                 element.allowSearch = true;
@@ -760,31 +813,6 @@ describe('Dynamic Menu', () => {
         });
 
         describe('Select On Hover', () => {
-            it('Should open menu on button hover when selectOnHover is true', () => {
-                element.selectOnHover = true;
-                element.label = 'Hover Menu';
-                element.items = baseItems;
-
-                return Promise.resolve()
-                    .then(() => {
-                        const dropdown = element.shadowRoot.querySelector(
-                            '[data-element-id="dropdown"]'
-                        );
-                        expect(dropdown).toBeNull();
-                        const button = element.shadowRoot.querySelector(
-                            '[data-element-id="button"]'
-                        );
-                        button.dispatchEvent(new CustomEvent('mouseenter'));
-                        jest.advanceTimersByTime(500);
-                    })
-                    .then(() => {
-                        const dropdown = element.shadowRoot.querySelector(
-                            '[data-element-id="dropdown"]'
-                        );
-                        expect(dropdown).not.toBeNull();
-                    });
-            });
-
             it('Should select item on hover when selectOnHover is true', () => {
                 element.selectOnHover = true;
                 element.label = 'Hover Menu';
@@ -805,8 +833,7 @@ describe('Dynamic Menu', () => {
                         const button = element.shadowRoot.querySelector(
                             '[data-element-id="button"]'
                         );
-                        button.dispatchEvent(new CustomEvent('mouseenter'));
-                        jest.advanceTimersByTime(500);
+                        button.click();
                     })
                     .then(() => {
                         const menuItems = element.shadowRoot.querySelectorAll(
@@ -824,31 +851,6 @@ describe('Dynamic Menu', () => {
                     });
             });
 
-            it('Should not open menu on button hover when selectOnHover is false', () => {
-                element.selectOnHover = false;
-                element.label = 'Normal Menu';
-                element.items = baseItems;
-
-                return Promise.resolve()
-                    .then(() => {
-                        const dropdown = element.shadowRoot.querySelector(
-                            '[data-element-id="dropdown"]'
-                        );
-                        expect(dropdown).toBeNull();
-                        const button = element.shadowRoot.querySelector(
-                            '[data-element-id="button"]'
-                        );
-                        button.dispatchEvent(new CustomEvent('mouseenter'));
-                        jest.advanceTimersByTime(500);
-                    })
-                    .then(() => {
-                        const dropdown = element.shadowRoot.querySelector(
-                            '[data-element-id="dropdown"]'
-                        );
-                        expect(dropdown).toBeNull();
-                    });
-            });
-
             it('Should not select item on hover when selectOnHover is false', () => {
                 element.selectOnHover = false;
                 element.label = 'Normal Menu';
@@ -862,8 +864,14 @@ describe('Dynamic Menu', () => {
 
                 return Promise.resolve()
                     .then(() => {
-                        // Open the menu manually
-                        element.click();
+                        const dropdown = element.shadowRoot.querySelector(
+                            '[data-element-id="dropdown"]'
+                        );
+                        expect(dropdown).toBeNull();
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="button"]'
+                        );
+                        button.click();
                     })
                     .then(() => {
                         const menuItems = element.shadowRoot.querySelectorAll(

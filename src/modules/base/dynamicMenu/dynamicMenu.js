@@ -153,6 +153,7 @@ export default class DynamicMenu extends LightningElement {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _menuLength = MENU_LENGTHS.default;
     _menuWidth = MENU_WIDTHS.default;
+    _openMenuOnHover = false;
     _selectOnHover = false;
     _value;
     _variant = BUTTON_VARIANTS.default;
@@ -438,7 +439,22 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * Determines whether the menu can be opened and if an item can be selected by hovering over it.
+     * Determines whether the menu can be opened by hovering over it.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get openMenuOnHover() {
+        return this._openMenuOnHover;
+    }
+    set openMenuOnHover(value) {
+        this._openMenuOnHover = normalizeBoolean(value);
+    }
+
+    /**
+     * Determines whether the menu item can be selected by hovering over it.
      *
      * @public
      * @type {boolean}
@@ -956,7 +972,7 @@ export default class DynamicMenu extends LightningElement {
      * Button Mouse enter event handler.
      */
     handleButtonMouseEnter() {
-        if (!this.selectOnHover || this.disabled) {
+        if (!this.openMenuOnHover || this.disabled) {
             return;
         }
         clearTimeout(this._buttonTimeout);
@@ -969,7 +985,7 @@ export default class DynamicMenu extends LightningElement {
      * Button Mouse leave event handler.
      */
     handleButtonMouseLeave() {
-        if (!this.selectOnHover || this.disabled) {
+        if (!this.openMenuOnHover || this.disabled) {
             return;
         }
         clearTimeout(this._buttonTimeout);
