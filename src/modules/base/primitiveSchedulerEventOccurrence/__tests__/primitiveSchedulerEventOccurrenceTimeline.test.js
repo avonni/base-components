@@ -67,7 +67,7 @@ describe('Primitive Scheduler Event Occurrence: timeline variants', () => {
             expect(element.startPosition).toBe(x);
 
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             const eventContent = element.shadowRoot.querySelector(
                 '[data-element-id="div-event-content"]'
@@ -140,7 +140,7 @@ describe('Primitive Scheduler Event Occurrence: timeline variants', () => {
             expect(element.startPosition).toBe(CELL_HEIGHT * 2);
 
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             const eventContent = element.shadowRoot.querySelector(
                 '[data-element-id="div-event-content"]'
