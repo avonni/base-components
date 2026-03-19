@@ -790,8 +790,13 @@ export default class FilterMenuGroup extends LightningElement {
         }
 
         const height = this.menuGroupWrapper?.getBoundingClientRect().height;
+        // If the component is scaled (for example in the avxp agent response preview component),
+        // and the container max height has been set to FILTER_MENU_POPOVER_BUTTON_SIZE,
+        // prevent an infinite resize loop.
+        const scaledHeight = this.menuGroupWrapper?.offsetHeight;
         if (
-            this._containerMaxHeight === height &&
+            (this._containerMaxHeight === height ||
+                this._containerMaxHeight === scaledHeight) &&
             this._hasCalculatedOverflow
         ) {
             this._hasCalculatedOverflow = false;
