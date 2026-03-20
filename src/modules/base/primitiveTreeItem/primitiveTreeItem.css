@@ -167,8 +167,12 @@
 }
 
 .avonni-primitive-tree-item__popover {
-    left: 0;
-    width: 100%;
+    position: fixed;
+    z-index: 100;
+}
+
+.avonni-primitive-tree-item__popover-body {
+    min-height: 50px;
 }
 
 .avonni-primitive-tree-item__chevron {
