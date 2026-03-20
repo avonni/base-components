@@ -27,6 +27,7 @@ const i18n = {
     expandBranch: 'Expand Branch',
     saveLabel: 'Save Label'
 };
+const MIN_MARGIN = 20;
 const POPOVER_FOOTER_HEIGHT = 55;
 const UNSORTABLE_ITEMS_PARTS = [
     'div-actions',
@@ -222,8 +223,12 @@ export default class PrimitiveTreeItem extends LightningElement {
             this._focusOn = null;
         }
 
-        if (this.popoverVisible) this.positionPopover();
-        if (this.level) this.updateLevel();
+        if (this.popoverVisible) {
+            this.positionPopover();
+        }
+        if (this.level) {
+            this.updateLevel();
+        }
         this.updateCheckboxStatus();
     }
 
@@ -1119,13 +1124,119 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Position the edit form popover.
      */
     positionPopover() {
-        const popoverBody = this.template.querySelector(
-            '[data-element-id="div-popover-body"]'
-        );
-        const topInWindow = popoverBody.getBoundingClientRect().top;
-        const maxHeight =
-            window.innerHeight - topInWindow - POPOVER_FOOTER_HEIGHT;
-        popoverBody.style.maxHeight = `${maxHeight}px`;
+        requestAnimationFrame(() => {
+            const wrapper = this.template.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            const popover = this.template.querySelector(
+                '[data-element-id="div-popover"]'
+            );
+            const popoverBody = this.template.querySelector(
+                '[data-element-id="div-popover-body"]'
+            );
+            const nubbin = popover.querySelector(
+                '[data-element-id="div-popover-nubbin"]'
+            );
+            const itemActions = this.template.querySelector(
+                '[data-element-id="div-actions"]'
+            );
+            if (
+                !this.itemElement ||
+                !wrapper ||
+                !popover ||
+                !popoverBody ||
+                !nubbin ||
+                !itemActions
+            )
+                return;
+
+            this.resetPopoverStyle(popover, popoverBody, nubbin);
+
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const popoverRect = popover.getBoundingClientRect();
+            const itemRect = this.itemElement.getBoundingClientRect();
+            const itemActionsRect = itemActions.getBoundingClientRect();
+
+            popover.style.width = `${itemRect.width}px`;
+
+            const height = popoverRect.height;
+            const maxHeight = window.innerHeight - MIN_MARGIN;
+
+            let state = 'CENTER';
+            if (height >= maxHeight) {
+                // The height is bigger than the viewport height
+                state = 'FULL_HEIGHT';
+            } else if (height < itemRect.bottom - MIN_MARGIN / 2) {
+                // The height is smaller than the distance between the item and the top of the viewport
+                state = 'OPEN_TOWARDS_TOP';
+            } else if (
+                height <
+                window.innerHeight - itemRect.top - MIN_MARGIN / 2
+            ) {
+                // The height is smaller than the distance between the item and the bottom of the viewport
+                state = 'OPEN_TOWARDS_BOTTOM';
+            }
+
+            const isPopoverRight = wrapperRect.left < itemRect.width;
+            const nubbinDirection = isPopoverRight ? 'left' : 'right';
+
+            let positionLeft = isPopoverRight
+                ? wrapperRect.x + itemActionsRect.x + itemActionsRect.width
+                : wrapperRect.x - popoverRect.width;
+
+            // Adjust padding in flow builder
+            const modal = popover.closest('.slds-modal__container');
+            if (modal) {
+                const modalRect = modal.getBoundingClientRect();
+                if (modalRect) {
+                    if (modalRect.width < window.innerWidth) {
+                        let innerWidth = window.innerWidth;
+                        if (window.innerWidth < 640) {
+                            innerWidth = 640;
+                        }
+                        const marginLeft = 8;
+                        positionLeft -=
+                            (innerWidth - modalRect.width) / 2 - marginLeft;
+                    }
+                }
+            }
+            popover.style.left = `${positionLeft}px`;
+
+            let bodyMaxHeight = maxHeight - POPOVER_FOOTER_HEIGHT;
+
+            switch (state) {
+                case 'OPEN_TOWARDS_BOTTOM':
+                    popover.style.top = `${itemRect.top - 5}px`;
+                    bodyMaxHeight -= itemRect.top;
+                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                    popover.classList.add(`slds-nubbin_${nubbinDirection}-top`);
+                    break;
+                case 'OPEN_TOWARDS_TOP':
+                    popover.style.top = `${itemRect.bottom - height + 5}px`;
+                    bodyMaxHeight -= window.innerHeight - itemRect.bottom;
+                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                    popover.classList.add(
+                        `slds-nubbin_${nubbinDirection}-bottom`
+                    );
+                    break;
+                case 'FULL_HEIGHT': {
+                    popover.style.top = `${MIN_MARGIN / 2}px`;
+                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                    nubbin.classList.remove('slds-hide');
+                    const nubbinHeight = nubbin.getBoundingClientRect().height;
+                    const top =
+                        itemRect.top + itemRect.height / 2 - nubbinHeight / 2;
+                    nubbin.style.top = `${top}px`;
+                    break;
+                }
+                default:
+                    popover.style.bottom = `${MIN_MARGIN / 2}px`;
+                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                    nubbin.classList.remove('slds-hide');
+                    nubbin.style.bottom = `calc(100vh - ${itemRect.bottom}px)`;
+                    break;
+            }
+        });
     }
 
     /**
@@ -1147,6 +1258,29 @@ export default class PrimitiveTreeItem extends LightningElement {
         );
         this.itemElement.style = '';
     };
+
+    resetPopoverStyle(popover, popoverBody, nubbin) {
+        if (popover) {
+            popover.style.width = '';
+            popover.style.top = '';
+            popover.style.left = '';
+            popover.style.bottom = '';
+            popover.classList.remove(
+                'slds-nubbin_right-top',
+                'slds-nubbin_left-bottom',
+                'slds-nubbin_right-bottom'
+            );
+        }
+
+        if (popoverBody) {
+            popoverBody.style = '';
+        }
+
+        if (nubbin) {
+            nubbin.classList.add('slds-hide');
+            nubbin.style = null;
+        }
+    }
 
     /**
      * Display a border when an item is dragged over this item in the parent tree.
