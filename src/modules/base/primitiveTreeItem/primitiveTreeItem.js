@@ -1181,7 +1181,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             const nubbinDirection = isPopoverRight ? 'left' : 'right';
 
             let positionLeft = isPopoverRight
-                ? wrapperRect.x + itemActionsRect.x + itemActionsRect.width
+                ? itemActionsRect.x + itemActionsRect.width + MIN_MARGIN
                 : wrapperRect.x - popoverRect.width;
 
             // Adjust padding in flow builder
@@ -1227,6 +1227,10 @@ export default class PrimitiveTreeItem extends LightningElement {
                     const top =
                         itemRect.top + itemRect.height / 2 - nubbinHeight / 2;
                     nubbin.style.top = `${top}px`;
+                    nubbin.classList.add(
+                        `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
+                    );
+
                     break;
                 }
                 default:
@@ -1278,6 +1282,10 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         if (nubbin) {
             nubbin.classList.add('slds-hide');
+            nubbin.classList.remove(
+                'avonni-primitive-tree-item__popover-nubbin-right',
+                'avonni-primitive-tree-item__popover-nubbin-left'
+            );
             nubbin.style = null;
         }
     }
