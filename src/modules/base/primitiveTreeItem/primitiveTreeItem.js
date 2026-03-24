@@ -1230,7 +1230,6 @@ export default class PrimitiveTreeItem extends LightningElement {
                     nubbin.classList.add(
                         `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
                     );
-
                     break;
                 }
                 default:
@@ -1238,6 +1237,9 @@ export default class PrimitiveTreeItem extends LightningElement {
                     popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
                     nubbin.classList.remove('slds-hide');
                     nubbin.style.bottom = `calc(100vh - ${itemRect.bottom}px)`;
+                    nubbin.classList.add(
+                        `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
+                    );
                     break;
             }
         });
