@@ -1158,12 +1158,12 @@ export default class PrimitiveTreeItem extends LightningElement {
             this.resetPopoverStyle(popover, popoverBody, nubbin);
 
             const wrapperRect = wrapper.getBoundingClientRect();
-            const popoverRect = popover.getBoundingClientRect();
-            const itemRect = this.itemElement.getBoundingClientRect();
             const itemActionsRect = itemActions.getBoundingClientRect();
 
+            const itemRect = this.itemElement.getBoundingClientRect();
             popover.style.width = `${itemRect.width}px`;
 
+            const popoverRect = popover.getBoundingClientRect();
             const height = popoverRect.height;
             const maxHeight = window.innerHeight - MIN_MARGIN;
             const popoverOffset = MIN_MARGIN / 2;
@@ -1274,6 +1274,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             popover.style.left = '';
             popover.style.bottom = '';
             popover.classList.remove(
+                'slds-nubbin_left-top',
                 'slds-nubbin_right-top',
                 'slds-nubbin_left-bottom',
                 'slds-nubbin_right-bottom'
