@@ -1182,7 +1182,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
             let positionLeft = isPopoverRight
                 ? itemActionsRect.x + itemActionsRect.width + MIN_MARGIN
-                : wrapperRect.x - popoverRect.width;
+                : wrapperRect.x - itemRect.width;
 
             // Adjust padding in flow builder
             const modal = popover.closest('.slds-modal__container');
@@ -1237,6 +1237,9 @@ export default class PrimitiveTreeItem extends LightningElement {
                     popover.style.bottom = `${MIN_MARGIN / 2}px`;
                     popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
                     nubbin.classList.remove('slds-hide');
+                    nubbin.classList.add(
+                        `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
+                    );
                     nubbin.style.bottom = `calc(100vh - ${itemRect.bottom}px)`;
                     break;
             }

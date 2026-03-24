@@ -185,6 +185,7 @@
 
 .avonni-primitive-tree-item__popover-nubbin-right {
     box-shadow: 2px -2px 2px 0 rgba(0, 0, 0, 0.16);
+    transform: rotate(45deg);
     right: -0.5rem;
 }
 
