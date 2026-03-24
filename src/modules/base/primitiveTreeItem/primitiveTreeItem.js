@@ -28,6 +28,7 @@ const i18n = {
     saveLabel: 'Save Label'
 };
 const MIN_MARGIN = 20;
+const NUBBIN_WIDTH = 12;
 const POPOVER_FOOTER_HEIGHT = 55;
 const UNSORTABLE_ITEMS_PARTS = [
     'div-actions',
@@ -1134,9 +1135,6 @@ export default class PrimitiveTreeItem extends LightningElement {
             const popoverBody = this.template.querySelector(
                 '[data-element-id="div-popover-body"]'
             );
-            const nubbin = popover.querySelector(
-                '[data-element-id="div-popover-nubbin"]'
-            );
             const itemActions = this.template.querySelector(
                 '[data-element-id="div-actions"]'
             );
@@ -1145,10 +1143,17 @@ export default class PrimitiveTreeItem extends LightningElement {
                 !wrapper ||
                 !popover ||
                 !popoverBody ||
-                !nubbin ||
                 !itemActions
-            )
+            ) {
                 return;
+            }
+
+            const nubbin = popover.querySelector(
+                '[data-element-id="div-popover-nubbin"]'
+            );
+            if (!nubbin) {
+                return;
+            }
 
             this.resetPopoverStyle(popover, popoverBody, nubbin);
 
@@ -1161,28 +1166,30 @@ export default class PrimitiveTreeItem extends LightningElement {
 
             const height = popoverRect.height;
             const maxHeight = window.innerHeight - MIN_MARGIN;
+            const popoverOffset = MIN_MARGIN / 2;
 
             let state = 'CENTER';
             if (height >= maxHeight) {
                 // The height is bigger than the viewport height
                 state = 'FULL_HEIGHT';
-            } else if (height < itemRect.bottom - MIN_MARGIN / 2) {
+            } else if (height < itemRect.bottom - popoverOffset) {
                 // The height is smaller than the distance between the item and the top of the viewport
                 state = 'OPEN_TOWARDS_TOP';
             } else if (
                 height <
-                window.innerHeight - itemRect.top - MIN_MARGIN / 2
+                window.innerHeight - itemRect.top - popoverOffset
             ) {
                 // The height is smaller than the distance between the item and the bottom of the viewport
                 state = 'OPEN_TOWARDS_BOTTOM';
             }
 
+            const offset = 5;
             const isPopoverRight = wrapperRect.left < itemRect.width;
             const nubbinDirection = isPopoverRight ? 'left' : 'right';
 
             let positionLeft = isPopoverRight
                 ? itemActionsRect.x + itemActionsRect.width + MIN_MARGIN
-                : wrapperRect.x - popoverRect.width;
+                : wrapperRect.x - wrapperRect.width - NUBBIN_WIDTH;
 
             // Adjust padding in flow builder
             const modal = popover.closest('.slds-modal__container');
@@ -1194,52 +1201,47 @@ export default class PrimitiveTreeItem extends LightningElement {
                         if (window.innerWidth < 640) {
                             innerWidth = 640;
                         }
-                        const marginLeft = 8;
                         positionLeft -=
-                            (innerWidth - modalRect.width) / 2 - marginLeft;
+                            (innerWidth - modalRect.width) / 2 + offset;
                     }
                 }
             }
             popover.style.left = `${positionLeft}px`;
-
             let bodyMaxHeight = maxHeight - POPOVER_FOOTER_HEIGHT;
 
             switch (state) {
                 case 'OPEN_TOWARDS_BOTTOM':
-                    popover.style.top = `${itemRect.top - 5}px`;
+                    popover.style.top = `${itemRect.top - offset}px`;
                     bodyMaxHeight -= itemRect.top;
                     popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
                     popover.classList.add(`slds-nubbin_${nubbinDirection}-top`);
                     break;
                 case 'OPEN_TOWARDS_TOP':
-                    popover.style.top = `${itemRect.bottom - height + 5}px`;
+                    popover.style.top = `${
+                        itemRect.bottom - height + offset
+                    }px`;
                     bodyMaxHeight -= window.innerHeight - itemRect.bottom;
                     popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
                     popover.classList.add(
                         `slds-nubbin_${nubbinDirection}-bottom`
                     );
                     break;
-                case 'FULL_HEIGHT': {
-                    popover.style.top = `${MIN_MARGIN / 2}px`;
-                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
-                    nubbin.classList.remove('slds-hide');
-                    const nubbinHeight = nubbin.getBoundingClientRect().height;
-                    const top =
-                        itemRect.top + itemRect.height / 2 - nubbinHeight / 2;
-                    nubbin.style.top = `${top}px`;
-                    nubbin.classList.add(
-                        `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
-                    );
-                    break;
-                }
                 default:
-                    popover.style.bottom = `${MIN_MARGIN / 2}px`;
-                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
-                    nubbin.classList.remove('slds-hide');
-                    nubbin.style.bottom = `calc(100vh - ${itemRect.bottom}px)`;
-                    nubbin.classList.add(
-                        `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
-                    );
+                    {
+                        popover.style.top = `${popoverOffset}px`;
+                        popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                        nubbin.classList.remove('slds-hide');
+                        const nubbinHeight =
+                            nubbin.getBoundingClientRect().height;
+                        const top =
+                            itemRect.top +
+                            itemRect.height / 2 -
+                            nubbinHeight / 2;
+                        nubbin.style.top = `${top}px`;
+                        nubbin.classList.add(
+                            `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
+                        );
+                    }
                     break;
             }
         });
