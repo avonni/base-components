@@ -1291,7 +1291,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                 'avonni-primitive-tree-item__popover-nubbin-right',
                 'avonni-primitive-tree-item__popover-nubbin-left'
             );
-            nubbin.style = null;
+            nubbin.style = '';
         }
     }
 
