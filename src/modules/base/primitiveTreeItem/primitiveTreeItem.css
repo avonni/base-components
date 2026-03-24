@@ -180,6 +180,7 @@
     z-index: -1;
     width: 1rem;
     height: 1rem;
+    transform: rotate(45deg);
     margin-top: -0.5rem;
 }
 
@@ -190,7 +191,6 @@
 
 .avonni-primitive-tree-item__popover-nubbin-left {
     box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.16);
-    transform: rotate(45deg);
     left: -0.5rem;
 }
 
