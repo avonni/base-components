@@ -1,0 +1,90 @@
+<template>
+    <div
+        if:true={show}
+        class={detailPopoverClass}
+        aria-live="polite"
+        role="tooltip"
+        data-element-id="div-detail-popover"
+        onkeyup={handleDetailPopoverKeyUp}
+        onmouseenter={handleDetailPopoverMouseEnter}
+        onmouseleave={handleDetailPopoverMouseLeave}
+    >
+        <c-focus-trap>
+            <lightning-button-icon
+                class="
+                    slds-is-absolute
+                    avonni-scheduler__detail-popover-close-button
+                "
+                alternative-text="Close popover"
+                icon-name="utility:close"
+                size="small"
+                variant="bare"
+                data-element-id="lightning-button-icon-detail-popover-close-button"
+                data-is-focusable
+                onclick={hideDetailPopover}
+            ></lightning-button-icon>
+
+            <div class="slds-popover__body">
+                <lightning-formatted-rich-text
+                    class="slds-m-bottom_small slds-text-heading_small"
+                    value={label}
+                ></lightning-formatted-rich-text>
+                <div class="slds-grid slds-wrap slds-gutters_x-small">
+                    <template for:each={fields} for:item="field">
+                        <div
+                            if:false={field.isHidden}
+                            key={field.key}
+                            class={computedFieldLayoutClass}
+                        >
+                            <c-output-data
+                                label={field.label}
+                                type={field.type}
+                                type-attributes={field.typeAttributes}
+                                value={field.value}
+                                variant={field.variant}
+                                data-element-id="avonni-output-data-detail-popover-field"
+                            ></c-output-data>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div
+                if:true={contextMenuEvent.length}
+                class="slds-popover__footer slds-text-align_right"
+            >
+                <lightning-button-group>
+                    <template for:each={firstEventActions} for:item="action">
+                        <lightning-button
+                            key={action.name}
+                            disabled={action.disabled}
+                            icon-name={action.iconName}
+                            label={action.label}
+                            name={action.name}
+                            data-is-focusable
+                            onclick={handleActionSelect}
+                        ></lightning-button>
+                    </template>
+                    <lightning-button-menu
+                        if:true={lastEventActions.length}
+                        alternative-text="More actions"
+                        menu-alignment="right"
+                        variant="border-filled"
+                        data-is-focusable
+                        onselect={handleActionSelect}
+                    >
+                        <template for:each={lastEventActions} for:item="action">
+                            <lightning-menu-item
+                                key={action.name}
+                                disabled={action.disabled}
+                                label={action.label}
+                                prefix-icon-name={action.iconName}
+                                value={action.name}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+                </lightning-button-group>
+            </div>
+        </c-focus-trap>
+    </div>
+</template>

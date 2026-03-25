@@ -531,6 +531,10 @@
             "path": "src/modules/base/primitiveSchedulerCalendarPopover/primitiveSchedulerCalendarPopover.js"
         },
         {
+            "name": "c/primitiveSchedulerDetailPopover",
+            "path": "src/modules/base/primitiveSchedulerDetailPopover/primitiveSchedulerDetailPopover.js"
+        },
+        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
