@@ -2091,15 +2091,6 @@ export default class Scheduler extends LightningElement {
                 variant
             };
         });
-
-        requestAnimationFrame(() => {
-            const closeButton = this.template.querySelector(
-                '[data-element-id="lightning-button-icon-detail-popover-close-button"]'
-            );
-            if (closeButton) {
-                closeButton.focus();
-            }
-        });
     }
 
     /**
