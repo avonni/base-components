@@ -322,10 +322,9 @@ describe('Layout', () => {
                     );
                     jest.runAllTimers();
                     expect(callback).toHaveBeenCalledTimes(1);
-                    jest.spyOn(
-                        wrapper,
-                        'getBoundingClientRect'
-                    ).mockReturnValue({ width: 1000 });
+                    jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(
+                        1000
+                    );
                     setItemsSize();
                     jest.runAllTimers();
                     expect(callback).toHaveBeenCalledTimes(2);
@@ -519,9 +518,7 @@ describe('Layout', () => {
                     })
                 );
 
-                jest.spyOn(wrapper, 'getBoundingClientRect').mockReturnValue({
-                    width: 500
-                });
+                jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(500);
 
                 callback.mockClear();
                 callObserver();
@@ -590,12 +587,9 @@ describe('Layout', () => {
                         })
                     );
 
-                    jest.spyOn(
-                        wrapper,
-                        'getBoundingClientRect'
-                    ).mockReturnValue({
-                        width: 500
-                    });
+                    jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(
+                        500
+                    );
 
                     callback.mockClear();
                     callObserver();
@@ -624,12 +618,9 @@ describe('Layout', () => {
                     );
 
                     // Mock the width to ensure we have a known value
-                    jest.spyOn(
-                        wrapper,
-                        'getBoundingClientRect'
-                    ).mockReturnValue({
-                        width: 500
-                    });
+                    jest.spyOn(wrapper, 'offsetWidth', 'get').mockReturnValue(
+                        500
+                    );
 
                     wrapper.dispatchEvent(
                         new CustomEvent('privatelayoutitemconnected', {
