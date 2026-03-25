@@ -27,6 +27,8 @@ const i18n = {
     expandBranch: 'Expand Branch',
     saveLabel: 'Save Label'
 };
+const MIN_MARGIN = 20;
+const NUBBIN_WIDTH = 12;
 const POPOVER_FOOTER_HEIGHT = 55;
 const UNSORTABLE_ITEMS_PARTS = [
     'div-actions',
@@ -222,8 +224,12 @@ export default class PrimitiveTreeItem extends LightningElement {
             this._focusOn = null;
         }
 
-        if (this.popoverVisible) this.positionPopover();
-        if (this.level) this.updateLevel();
+        if (this.popoverVisible) {
+            this.positionPopover();
+        }
+        if (this.level) {
+            this.updateLevel();
+        }
         this.updateCheckboxStatus();
     }
 
@@ -1119,13 +1125,126 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Position the edit form popover.
      */
     positionPopover() {
-        const popoverBody = this.template.querySelector(
-            '[data-element-id="div-popover-body"]'
-        );
-        const topInWindow = popoverBody.getBoundingClientRect().top;
-        const maxHeight =
-            window.innerHeight - topInWindow - POPOVER_FOOTER_HEIGHT;
-        popoverBody.style.maxHeight = `${maxHeight}px`;
+        requestAnimationFrame(() => {
+            const wrapper = this.template.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            const popover = this.template.querySelector(
+                '[data-element-id="div-popover"]'
+            );
+            const popoverBody = this.template.querySelector(
+                '[data-element-id="div-popover-body"]'
+            );
+            const itemActions = this.template.querySelector(
+                '[data-element-id="div-actions"]'
+            );
+            if (
+                !this.itemElement ||
+                !wrapper ||
+                !popover ||
+                !popoverBody ||
+                !itemActions
+            ) {
+                return;
+            }
+
+            const nubbin = popover.querySelector(
+                '[data-element-id="div-popover-nubbin"]'
+            );
+            if (!nubbin) {
+                return;
+            }
+
+            this.resetPopoverStyle(popover, popoverBody, nubbin);
+
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const itemActionsRect = itemActions.getBoundingClientRect();
+
+            const itemRect = this.itemElement.getBoundingClientRect();
+            popover.style.width = `${itemRect.width}px`;
+
+            const popoverRect = popover.getBoundingClientRect();
+            const height = popoverRect.height;
+            const maxHeight = window.innerHeight - MIN_MARGIN;
+            const popoverOffset = MIN_MARGIN / 2;
+
+            let state = 'CENTER';
+            if (height >= maxHeight) {
+                // The height is bigger than the viewport height
+                state = 'FULL_HEIGHT';
+            } else if (height < itemRect.bottom - popoverOffset) {
+                // The height is smaller than the distance between the item and the top of the viewport
+                state = 'OPEN_TOWARDS_TOP';
+            } else if (
+                height <
+                window.innerHeight - itemRect.top - popoverOffset
+            ) {
+                // The height is smaller than the distance between the item and the bottom of the viewport
+                state = 'OPEN_TOWARDS_BOTTOM';
+            }
+
+            const offset = 5;
+            const isPopoverRight = wrapperRect.left < itemRect.width;
+            const nubbinDirection = isPopoverRight ? 'left' : 'right';
+
+            let positionLeft = isPopoverRight
+                ? itemActionsRect.x + itemActionsRect.width + MIN_MARGIN
+                : wrapperRect.x - wrapperRect.width - NUBBIN_WIDTH;
+
+            // Adjust padding in flow builder
+            const modal = popover.closest('.slds-modal__container');
+            if (modal) {
+                const modalRect = modal.getBoundingClientRect();
+                if (modalRect) {
+                    if (modalRect.width < window.innerWidth) {
+                        let innerWidth = window.innerWidth;
+                        if (window.innerWidth < 640) {
+                            innerWidth = 640;
+                        }
+                        positionLeft -=
+                            (innerWidth - modalRect.width) / 2 + offset;
+                    }
+                }
+            }
+            popover.style.left = `${positionLeft}px`;
+            let bodyMaxHeight = maxHeight - POPOVER_FOOTER_HEIGHT;
+
+            switch (state) {
+                case 'OPEN_TOWARDS_BOTTOM':
+                    popover.style.top = `${itemRect.top - offset}px`;
+                    bodyMaxHeight -= itemRect.top;
+                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                    popover.classList.add(`slds-nubbin_${nubbinDirection}-top`);
+                    break;
+                case 'OPEN_TOWARDS_TOP':
+                    popover.style.top = `${
+                        itemRect.bottom - height + offset
+                    }px`;
+                    bodyMaxHeight -= window.innerHeight - itemRect.bottom;
+                    popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                    popover.classList.add(
+                        `slds-nubbin_${nubbinDirection}-bottom`
+                    );
+                    break;
+                default:
+                    {
+                        popover.style.top = `${popoverOffset}px`;
+                        popoverBody.style.maxHeight = `${bodyMaxHeight}px`;
+                        nubbin.classList.remove('slds-hide');
+                        const nubbinHeight =
+                            nubbin.getBoundingClientRect().height;
+                        const top =
+                            itemRect.top +
+                            itemRect.height / 2 -
+                            nubbinHeight / 2;
+                        nubbin.style.top = `${top}px`;
+                        nubbin.classList.add(
+                            `avonni-primitive-tree-item__popover-nubbin-${nubbinDirection}`
+                        );
+                    }
+                    break;
+            }
+        });
     }
 
     /**
@@ -1147,6 +1266,34 @@ export default class PrimitiveTreeItem extends LightningElement {
         );
         this.itemElement.style = '';
     };
+
+    resetPopoverStyle(popover, popoverBody, nubbin) {
+        if (popover) {
+            popover.style.width = '';
+            popover.style.top = '';
+            popover.style.left = '';
+            popover.style.bottom = '';
+            popover.classList.remove(
+                'slds-nubbin_left-top',
+                'slds-nubbin_right-top',
+                'slds-nubbin_left-bottom',
+                'slds-nubbin_right-bottom'
+            );
+        }
+
+        if (popoverBody) {
+            popoverBody.style = '';
+        }
+
+        if (nubbin) {
+            nubbin.classList.add('slds-hide');
+            nubbin.classList.remove(
+                'avonni-primitive-tree-item__popover-nubbin-right',
+                'avonni-primitive-tree-item__popover-nubbin-left'
+            );
+            nubbin.style = '';
+        }
+    }
 
     /**
      * Display a border when an item is dragged over this item in the parent tree.

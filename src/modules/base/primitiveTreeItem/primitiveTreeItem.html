@@ -245,81 +245,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Popover -->
-        <div
-            if:true={popoverVisible}
-            class="
-                slds-is-absolute slds-popover
-                avonni-primitive-tree-item__popover
-            "
-            aria-label="Edit item"
-            role="dialog"
-            data-element-id="div-popover"
-        >
-            <!-- Close button -->
-            <div class="slds-text-align_right">
-                <lightning-button-icon
-                    class="slds-popover__close"
-                    alternative-text={closeButtonAlternativeText}
-                    icon-name="utility:close"
-                    size="small"
-                    variant="bare"
-                    data-element-id="lightning-button-icon-close"
-                    onclick={togglePopoverVisibility}
-                    onkeydown={handlePopoverCloseKeyDown}
-                ></lightning-button-icon>
-            </div>
-
-            <div
-                class="slds-popover__body slds-scrollable_y"
-                data-element-id="div-popover-body"
-            >
-                <!-- Edit inputs -->
-                <template for:each={computedEditableFields} for:item="field">
-                    <lightning-input
-                        key={field.name}
-                        class="slds-m-bottom_x-small"
-                        checked={field.checked}
-                        label={field.label}
-                        message-toggle-active=""
-                        message-toggle-inactive=""
-                        name={field.name}
-                        required={field.required}
-                        type={field.type}
-                        value={field.value}
-                        data-element-id="lightning-input-edit-field"
-                        data-name={field.name}
-                        onblur={handleEditInputBlur}
-                        onchange={handleInputChange}
-                    ></lightning-input>
-                </template>
-            </div>
-
-            <div
-                class="
-                    slds-popover__footer
-                    slds-grid
-                    slds-grid_align-spread
-                    slds-grid_vertical-align-center
-                "
-            >
-                <lightning-button
-                    class="slds-m-right_xx-small"
-                    label={cancelButtonLabel}
-                    onclick={togglePopoverVisibility}
-                ></lightning-button>
-                <lightning-button
-                    disabled={hasError}
-                    label={doneButtonLabel}
-                    variant="brand"
-                    data-element-id="lightning-button-done"
-                    onclick={handleDone}
-                    onkeydown={handlePopoverDoneKeyDown}
-                ></lightning-button>
-            </div>
-        </div>
-
         <!-- Expanded -->
         <div if:true={showChildren} role="group">
             <!-- Child items -->
@@ -397,6 +322,87 @@
                 data-element-id="lightning-button-load-more"
                 onclick={handleLoadMore}
             ></lightning-button>
+        </div>
+        <!-- Popover -->
+        <div
+            if:true={popoverVisible}
+            class="slds-popover avonni-primitive-tree-item__popover"
+            aria-label="Edit item"
+            role="dialog"
+            data-element-id="div-popover"
+        >
+            <div
+                class="
+                    slds-is-absolute slds-hide
+                    avonni-primitive-tree-item__popover-nubbin
+                "
+                data-element-id="div-popover-nubbin"
+            ></div>
+            <!-- Close button -->
+            <div class="slds-text-align_right">
+                <lightning-button-icon
+                    class="slds-popover__close"
+                    alternative-text={closeButtonAlternativeText}
+                    icon-name="utility:close"
+                    size="small"
+                    variant="bare"
+                    data-element-id="lightning-button-icon-close"
+                    onclick={togglePopoverVisibility}
+                    onkeydown={handlePopoverCloseKeyDown}
+                ></lightning-button-icon>
+            </div>
+
+            <div
+                class="
+                    slds-popover__body
+                    avonni-primitive-tree-item__popover-body
+                    slds-scrollable_y
+                "
+                data-element-id="div-popover-body"
+            >
+                <!-- Edit inputs -->
+                <template for:each={computedEditableFields} for:item="field">
+                    <lightning-input
+                        key={field.name}
+                        class="slds-m-bottom_x-small"
+                        checked={field.checked}
+                        label={field.label}
+                        message-toggle-active=""
+                        message-toggle-inactive=""
+                        name={field.name}
+                        required={field.required}
+                        type={field.type}
+                        value={field.value}
+                        data-element-id="lightning-input-edit-field"
+                        data-name={field.name}
+                        onblur={handleEditInputBlur}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </template>
+            </div>
+
+            <div
+                class="
+                    slds-popover__footer
+                    slds-grid
+                    slds-grid_align-spread
+                    slds-grid_vertical-align-center
+                "
+            >
+                <lightning-button
+                    class="slds-m-right_xx-small"
+                    label={cancelButtonLabel}
+                    onclick={togglePopoverVisibility}
+                ></lightning-button>
+                <lightning-button
+                    disabled={hasError}
+                    label={doneButtonLabel}
+                    variant="brand"
+                    data-element-id="lightning-button-done"
+                    onclick={handleDone}
+                    onkeydown={handlePopoverDoneKeyDown}
+                ></lightning-button>
+            </div>
         </div>
     </div>
 </template>
