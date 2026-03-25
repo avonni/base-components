@@ -28,6 +28,7 @@
                 <lightning-formatted-rich-text
                     class="slds-m-bottom_small slds-text-heading_small"
                     value={label}
+                    data-element-id="lightning-formatted-rich-text-label"
                 ></lightning-formatted-rich-text>
                 <div class="slds-grid slds-wrap slds-gutters_x-small">
                     <template for:each={fields} for:item="field">
@@ -35,6 +36,7 @@
                             if:false={field.isHidden}
                             key={field.key}
                             class={computedFieldLayoutClass}
+                            data-element-id="div-field"
                         >
                             <c-output-data
                                 label={field.label}
@@ -62,6 +64,7 @@
                             label={action.label}
                             name={action.name}
                             data-is-focusable
+                            data-group-name="context-event-button"
                             onclick={handleActionSelect}
                         ></lightning-button>
                     </template>
@@ -71,6 +74,7 @@
                         menu-alignment="right"
                         variant="border-filled"
                         data-is-focusable
+                        data-element-id="context-event-button-menu"
                         onselect={handleActionSelect}
                     >
                         <template for:each={lastEventActions} for:item="action">
@@ -80,6 +84,7 @@
                                 label={action.label}
                                 prefix-icon-name={action.iconName}
                                 value={action.name}
+                                data-group-name="context-menu-event-button"
                             ></lightning-menu-item>
                         </template>
                     </lightning-button-menu>
