@@ -164,7 +164,7 @@ export default class Scheduler extends LightningElement {
         // Position the detail popover
         if (this.showDetailPopover && !this.isMobileView) {
             const popover = this.template.querySelector(
-                '[data-element-id="div-detail-popover"]'
+                '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
             );
             positionPopover(this.bounds, popover, this.selection);
         }
@@ -1237,6 +1237,15 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Label of the event details popover, shown in the header of the popover.
+     *
+     * @type {string}
+     */
+    get detailPopoverLabel() {
+        return this.selection?.occurrence?.title || '';
+    }
+
+    /**
      * If true, display the mobile view.
      *
      * @type {object[]}
@@ -1391,15 +1400,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of action objects, to be displayed as buttons in the event detail popover.
-     *
-     * @type {object[]}
-     */
-    get firstEventActions() {
-        return this.computedContextMenuEvent.slice(0, 2);
-    }
-
-    /**
      * True if the selected display is agenda.
      *
      * @type {boolean}
@@ -1424,15 +1424,6 @@ export default class Scheduler extends LightningElement {
      */
     get isTimeline() {
         return this.selectedDisplay === 'timeline';
-    }
-
-    /**
-     * Array of action objects, to be displayed in a button menu, in the event detail popover.
-     *
-     * @type {object[]}
-     */
-    get lastEventActions() {
-        return this.computedContextMenuEvent.slice(2);
     }
 
     /**
@@ -1492,21 +1483,6 @@ export default class Scheduler extends LightningElement {
         return this.customEventsPalette.length
             ? this.customEventsPalette
             : PALETTES[this.eventsPalette];
-    }
-
-    /**
-     * Computed CSS classes for the display popover.
-     *
-     * @type {string}
-     */
-    get detailPopoverClass() {
-        return classSet('slds-is-absolute slds-popover')
-            .add({
-                'slds-popover_medium': !this.isMobileView,
-                'avonni-scheduler__event-details-popover-full':
-                    this.isMobileView
-            })
-            .toString();
     }
 
     /**
@@ -2145,13 +2121,10 @@ export default class Scheduler extends LightningElement {
     /**
      * Handle the click on an action.
      *
-     * @param {Event} selectEvent `privateselect` event fired by the context menu, or `select` event fired by the detail popover button menu, or `click` event fired by a detail popover button.
+     * @param {Event} selectEvent `privateselect` event fired by the context menu, or `actionselect` event fired by the detail popover.
      */
     handleActionSelect(selectEvent) {
-        const name =
-            selectEvent.detail.name ||
-            selectEvent.detail.value ||
-            selectEvent.currentTarget.name;
+        const name = selectEvent.detail.name;
         const { event, from, to } = this.selection;
         const actionEvent = new CustomEvent('actionclick', {
             detail: {
@@ -2224,17 +2197,6 @@ export default class Scheduler extends LightningElement {
         this.schedule.cleanSelection(true);
         this.selection = null;
         this.hideRecurrenceDialog();
-    }
-
-    /**
-     * Handle a key up on the event detail popover.
-     *
-     * @param {Event} event `keyup` event.
-     */
-    handleDetailPopoverKeyUp(event) {
-        if (event.key === 'Escape') {
-            this.hideDetailPopover();
-        }
     }
 
     /**
