@@ -209,4 +209,11 @@ export default class PrimitiveSchedulerDetailPopover extends LightningElement {
     handleDetailPopoverMouseLeave() {
         this.dispatchEvent(new CustomEvent('privatemouseleave'));
     }
+
+    /**
+     * Handle the click on the hide button of the event detail popover.
+     */
+    handleHideButtonClick() {
+        this._hideDetailPopover();
+    }
 }
