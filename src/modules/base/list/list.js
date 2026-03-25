@@ -158,7 +158,7 @@ export default class List extends LightningElement {
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _mediaActions = [];
     _mediumContainerCols;
-    _showHighlightLastClicked;
+    _showHighlightLastClicked = false;
     _smallContainerCols;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
