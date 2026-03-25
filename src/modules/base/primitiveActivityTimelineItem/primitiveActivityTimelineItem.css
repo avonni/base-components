@@ -176,3 +176,19 @@
 .slds-timeline__icon {
     border-color: transparent;
 }
+
+/* Added extra classes for those selectors to take priority */
+.slds-media__body
+    > .slds-timeline__trigger.avonni-primitive-activity-timeline-item__body-last-clicked.slds-grid {
+    background-color: var(
+        --avonni-primitive-activity-timeline-item-body-color-background-last-clicked,
+        var(--slds-g-color-neutral-base-90, #e5e5e5)
+    );
+}
+
+.slds-timeline__trigger.avonni-primitive-activity-timeline-item__body:hover {
+    background-color: var(
+        --avonni-primitive-activity-timeline-item-body-color-background-hover,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    );
+}

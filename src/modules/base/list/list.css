@@ -155,6 +155,13 @@
     );
 }
 
+.avonni-list__highlightable .avonni-list__item[data-last-clicked='true'] {
+    --avonni-card-color-background: var(
+        --avonni-list-item-color-background-last-clicked,
+        var(--slds-g-color-neutral-base-90, #e5e5e5)
+    );
+}
+
 .avonni-list__image_container {
     height: 100%;
     width: 100%;

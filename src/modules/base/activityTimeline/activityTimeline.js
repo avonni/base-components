@@ -172,8 +172,10 @@ export default class ActivityTimeline extends LightningElement {
     _locale = DEFAULT_LOCALE;
     _maxVisibleItems;
     _orientation = ORIENTATIONS.default;
+    _showHighlightLastClicked = false;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
+    _lastClickedItemName;
     _redrawHorizontalTimeline = true;
 
     // Horizontal Activity Timeline
@@ -711,6 +713,20 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * If present, highlight the last clicked item. This attribute is only supported for the vertical orientation.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get showHighlightLastClicked() {
+        return this._showHighlightLastClicked;
+    }
+    set showHighlightLastClicked(value) {
+        this._showHighlightLastClicked = normalizeBoolean(value);
+    }
+
+    /**
      * Specifies the sorting direction. Valid values include asc and desc.
      * This attribute is only supported for the vertical orientation.
      *
@@ -1054,6 +1070,8 @@ export default class ActivityTimeline extends LightningElement {
         this.sortedItems.forEach((item) => {
             const computedItem = deepCopy(item);
             this.supportDeprecatedAttributes(computedItem);
+            computedItem.isLastClicked =
+                this._lastClickedItemName === computedItem.name;
 
             let date = computedItem.datetimeValue;
             const isDateOnly = isISODateOnly(date);
@@ -1324,6 +1342,15 @@ export default class ActivityTimeline extends LightningElement {
     handleItemClick(event) {
         event.stopPropagation();
         const name = event.detail.name || event.currentTarget.dataset.name;
+
+        this._lastClickedItemName = name;
+        if (!this.isTimelineHorizontal) {
+            (this.computedItems || []).forEach((computedItem) => {
+                computedItem.isLastClicked =
+                    this._lastClickedItemName === computedItem.name;
+            });
+            this.computedItems = [...(this.computedItems || [])];
+        }
 
         /**
          * The event fired when a user clicks on an item.

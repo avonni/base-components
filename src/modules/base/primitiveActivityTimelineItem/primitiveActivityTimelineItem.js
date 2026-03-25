@@ -136,7 +136,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _iconSize = ICON_SIZES.default;
     _iconVariant = ICON_VARIANTS.default;
     _isActive = false;
+    _isLastClicked = false;
     _isLoading = false;
+    _showHighlightLastClicked = false;
     _timezone;
 
     _connected = false;
@@ -497,6 +499,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * If present, the item is the latest to be clicked by the user.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLastClicked() {
+        return this._isLastClicked;
+    }
+    set isLastClicked(value) {
+        this._isLastClicked = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the detail section is in a loading state and shows a spinner.
      *
      * @public
@@ -509,6 +525,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, highlight the last clicked item.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get showHighlightLastClicked() {
+        return this._showHighlightLastClicked;
+    }
+    set showHighlightLastClicked(value) {
+        this._showHighlightLastClicked = normalizeBoolean(value);
     }
 
     /**
@@ -547,6 +577,22 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             this.avatar?.initials ||
             this.avatar?.fallbackIconName
         );
+    }
+
+    /**
+     * Computed styling class for the item body.
+     *
+     * @type {string}
+     */
+    get computedBodyClass() {
+        return classSet(
+            'avonni-primitive-activity-timeline-item__body slds-grid slds-grid_align-spread slds-timeline__trigger'
+        )
+            .add({
+                'avonni-primitive-activity-timeline-item__body-last-clicked':
+                    this.showHighlightLastClicked && this.isLastClicked
+            })
+            .toString();
     }
 
     /**

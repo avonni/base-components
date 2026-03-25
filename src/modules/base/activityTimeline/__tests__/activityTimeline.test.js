@@ -71,6 +71,7 @@ describe('Activity Timeline', () => {
             expect(element.locale).toBe('en-GB');
             expect(element.maxVisibleItems).toBeUndefined();
             expect(element.orientation).toBe('vertical');
+            expect(element.showHighlightLastClicked).toBeFalsy();
             expect(element.sortedDirection).toBe('desc');
             expect(element.timezone).toBeUndefined();
             expect(element.title).toBeUndefined();
@@ -1029,6 +1030,24 @@ describe('Activity Timeline', () => {
         });
     });
 
+    describe('showHighlightLastClicked', () => {
+        it('Passed to the component', () => {
+            element.items = testItems;
+            element.showHighlightLastClicked = true;
+
+            return Promise.resolve().then(() => {
+                const timelineItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                );
+
+                expect(timelineItems).toHaveLength(testItems.length);
+                timelineItems.forEach((timelineItem) => {
+                    expect(timelineItem.showHighlightLastClicked).toBe(true);
+                });
+            });
+        });
+    });
+
     describe('title', () => {
         it('Passed to the component', () => {
             element.title = 'This is an title text';
@@ -1150,24 +1169,31 @@ describe('Activity Timeline', () => {
                 const handler = jest.fn();
                 element.addEventListener('itemclick', handler);
 
-                return Promise.resolve().then(() => {
-                    const item = element.shadowRoot.querySelector(
-                        'c-primitive-activity-timeline-item'
-                    );
-                    item.dispatchEvent(
-                        new CustomEvent('itemclick', {
-                            detail: { name: testItems[0].name },
-                            bubbles: true
-                        })
-                    );
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.name).toBe(
-                        testItems[0].name
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                        );
+                        item.dispatchEvent(
+                            new CustomEvent('itemclick', {
+                                detail: { name: testItems[0].name },
+                                bubbles: true
+                            })
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.name).toBe(
+                            testItems[0].name
+                        );
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    })
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            `[data-element-id="avonni-primitive-activity-timeline-item"][data-name="${testItems[0].name}"]`
+                        );
+                        expect(item.isLastClicked).toBe(true);
+                    });
             });
         });
 

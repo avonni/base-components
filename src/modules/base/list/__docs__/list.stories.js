@@ -223,6 +223,17 @@ export default {
                 category: 'Check List'
             }
         },
+        showHighlightLastClicked: {
+            name: 'show-highlight-last-clicked',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, highlight the last clicked item.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         smallContainerCols: {
             name: 'small-container-cols',
             control: { type: 'number', min: 1, max: 12 },
@@ -325,6 +336,7 @@ export default {
         loadingStateAlternativeText: 'Loading...',
         nextButtonAlternativeText: 'Next Items',
         previousButtonAlternativeText: 'Previous Items',
+        showHighlightLastClicked: false,
         sortable: false,
         sortableIconPosition: 'right',
         variant: 'base'
@@ -493,4 +505,11 @@ EqualHeights.args = {
     items: itemsWithDifferentAvatarSizes,
     equalHeights: true,
     divider: 'around'
+};
+
+export const ShowHighlightLastClicked = Template.bind({});
+ShowHighlightLastClicked.args = {
+    items,
+    showHighlightLastClicked: true,
+    sortable: true
 };

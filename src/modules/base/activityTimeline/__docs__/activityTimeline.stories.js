@@ -365,6 +365,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        showHighlightLastClicked: {
+            name: 'show-highlight-last-clicked',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, highlight the last clicked item. This attribute is only supported for the vertical orientation.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         sortedDirection: {
             name: 'sorted-direction',
             control: {
@@ -423,7 +435,8 @@ export default {
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
         hideItemDate: false,
-        intervalDaysLength: 15
+        intervalDaysLength: 15,
+        showHighlightLastClicked: false
     }
 };
 
@@ -456,6 +469,9 @@ Horizontal.args = {
     items: horizontalItems,
     actions: actions
 };
+
+export const ShowHighlightLastClicked = Template.bind({});
+ShowHighlightLastClicked.args = { items, showHighlightLastClicked: true };
 
 export const Daily = Template.bind({});
 Daily.args = {

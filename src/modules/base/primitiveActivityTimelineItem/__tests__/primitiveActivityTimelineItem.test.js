@@ -92,8 +92,10 @@ describe('Primitive Activity Timeline Item', () => {
             expect(element.iconVariant).toBe('square');
             expect(element.isActive).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
+            expect(element.isLastClicked).toBeFalsy();
             expect(element.loadingStateAlternativeText).toBe('Loading');
             expect(element.name).toBeUndefined();
+            expect(element.showHighlightLastClicked).toBeFalsy();
             expect(element.timezone).toBeUndefined();
             expect(element.title).toBeUndefined();
         });
@@ -790,6 +792,22 @@ describe('Primitive Activity Timeline Item', () => {
                     expect(spinner).toBeTruthy();
                     expect(spinner.alternativeText).toBe(
                         'This is a loading text'
+                    );
+                });
+            });
+        });
+
+        describe('showHighlightLastClicked', () => {
+            it('Passed to the component', () => {
+                element.showHighlightLastClicked = true;
+                element.isLastClicked = true;
+
+                return Promise.resolve().then(() => {
+                    const body = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-timeline-item__body"]'
+                    );
+                    expect(body.classList).toContain(
+                        'avonni-primitive-activity-timeline-item__body-last-clicked'
                     );
                 });
             });
