@@ -214,7 +214,7 @@ export default class Layout extends LightningElement {
      * Compute current width value.
      */
     get width() {
-        const width = this.wrapper?.getBoundingClientRect().width || 0;
+        const width = this.wrapper?.offsetWidth || 0;
         return this.getSizeFromWidth(width);
     }
 
