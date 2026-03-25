@@ -200,7 +200,12 @@ export default class VisualPicker extends LightningElement {
      */
     @api requiredAlternativeText = DEFAULT_REQUIRED_ALTERNATIVE_TEXT;
 
-    _columnAttributes = {};
+    _columnAttributes = {
+        cols: DEFAULT_COLUMNS.default,
+        smallContainerCols: DEFAULT_COLUMNS.small,
+        mediumContainerCols: DEFAULT_COLUMNS.medium,
+        largeContainerCols: DEFAULT_COLUMNS.large
+    };
     _disabled = DEFAULT_DISABLED;
     _enableInfiniteLoading = false;
     _fieldAttributes = {};
