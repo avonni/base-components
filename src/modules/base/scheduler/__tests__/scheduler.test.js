@@ -1070,26 +1070,40 @@ describe('Scheduler', () => {
                         jest.runAllTimers();
                     })
                     .then(() => {
-                        const fields = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-output-data-detail-popover-field"]'
+                        const detailsPopover = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                         );
-                        expect(fields).toHaveLength(5);
-                        expect(fields[0].label).toBe('Title');
-                        expect(fields[0].value).toBe('Event 1');
-                        expect(fields[0].variant).toBe('label-hidden');
-                        expect(fields[0].type).toBeUndefined();
-                        expect(fields[1].value).toBe('20, 02 2023, 12:00:00');
-                        expect(fields[1].label).toBe('Starting date');
-                        expect(fields[1].type).toBe('text');
-                        expect(fields[2].value).toBe('20, 02 2023, 14:30:00');
-                        expect(fields[2].label).toBe('Ending date');
-                        expect(fields[2].type).toBe('text');
-                        expect(fields[3].value).toBeFalsy();
-                        expect(fields[3].label).toBeUndefined();
-                        expect(fields[3].type).toBe('boolean');
-                        expect(fields[4].value).toBe(RESOURCES[0].label);
-                        expect(fields[4].label).toBe('Resources');
-                        expect(fields[4].type).toBeUndefined();
+                        expect(detailsPopover.fields).toHaveLength(5);
+                        expect(detailsPopover.fields[0].label).toBe('Title');
+                        expect(detailsPopover.fields[0].value).toBe('Event 1');
+                        expect(detailsPopover.fields[0].variant).toBe(
+                            'label-hidden'
+                        );
+                        expect(detailsPopover.fields[0].type).toBeUndefined();
+                        expect(detailsPopover.fields[1].value).toBe(
+                            '20, 02 2023, 12:00:00'
+                        );
+                        expect(detailsPopover.fields[1].label).toBe(
+                            'Starting date'
+                        );
+                        expect(detailsPopover.fields[1].type).toBe('text');
+                        expect(detailsPopover.fields[2].value).toBe(
+                            '20, 02 2023, 14:30:00'
+                        );
+                        expect(detailsPopover.fields[2].label).toBe(
+                            'Ending date'
+                        );
+                        expect(detailsPopover.fields[2].type).toBe('text');
+                        expect(detailsPopover.fields[3].value).toBeFalsy();
+                        expect(detailsPopover.fields[3].label).toBeUndefined();
+                        expect(detailsPopover.fields[3].type).toBe('boolean');
+                        expect(detailsPopover.fields[4].value).toBe(
+                            RESOURCES[0].label
+                        );
+                        expect(detailsPopover.fields[4].label).toBe(
+                            'Resources'
+                        );
+                        expect(detailsPopover.fields[4].type).toBeUndefined();
                     });
             });
 
@@ -1183,21 +1197,27 @@ describe('Scheduler', () => {
                         jest.runAllTimers();
                     })
                     .then(() => {
-                        const fields = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="avonni-output-data-detail-popover-field"]'
+                        const detailsPopover = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                         );
-                        expect(fields).toHaveLength(4);
-                        expect(fields[1].value).toBe(from.toFormat('DD'));
-                        expect(fields[1].label).toBe('Starting date');
-                        expect(fields[1].type).toBe('text');
-                        expect(fields[2].value).toBeTruthy();
-                        expect(fields[2].label).toBeUndefined();
-                        expect(fields[2].type).toBe('boolean');
-                        expect(fields[3].value).toBe(
+                        expect(detailsPopover.fields).toHaveLength(5);
+                        expect(detailsPopover.fields[1].value).toBe(
+                            from.toFormat('DD')
+                        );
+                        expect(detailsPopover.fields[1].label).toBe(
+                            'Starting date'
+                        );
+                        expect(detailsPopover.fields[1].type).toBe('text');
+                        expect(detailsPopover.fields[3].value).toBeTruthy();
+                        expect(detailsPopover.fields[3].label).toBeUndefined();
+                        expect(detailsPopover.fields[3].type).toBe('boolean');
+                        expect(detailsPopover.fields[4].value).toBe(
                             `${RESOURCES[0].label}, ${RESOURCES[1].label}`
                         );
-                        expect(fields[3].label).toBe('Resources');
-                        expect(fields[3].type).toBeUndefined();
+                        expect(detailsPopover.fields[4].label).toBe(
+                            'Resources'
+                        );
+                        expect(detailsPopover.fields[4].type).toBeUndefined();
                     });
             });
         });
@@ -4454,9 +4474,9 @@ describe('Scheduler', () => {
                 })
                 .then(() => {
                     const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeTruthy();
+                    expect(detailPopover.show).toBeTruthy();
 
                     const agenda = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-scheduler-agenda"]'
@@ -4471,9 +4491,9 @@ describe('Scheduler', () => {
                 })
                 .then(() => {
                     const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeFalsy();
+                    expect(detailPopover.show).toBeFalsy();
                 });
         });
 
@@ -4503,10 +4523,10 @@ describe('Scheduler', () => {
                     jest.runAllTimers();
                 })
                 .then(() => {
-                    const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                    const detailsPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeTruthy();
+                    expect(detailsPopover.show).toBeTruthy();
 
                     const agenda = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-primitive-scheduler-agenda"]'
@@ -4521,14 +4541,14 @@ describe('Scheduler', () => {
                     jest.runAllTimers();
                 })
                 .then(() => {
-                    const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                    const detailsPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeFalsy();
+                    expect(detailsPopover.show).toBeFalsy();
                 });
         });
 
-        it('hide detail popover on escape key', () => {
+        it('hide detail popover on close event from details popover', () => {
             element.selectedDisplay = 'agenda';
 
             return Promise.resolve()
@@ -4554,18 +4574,16 @@ describe('Scheduler', () => {
                 })
                 .then(() => {
                     const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeTruthy();
-                    const keyup = new CustomEvent('keyup');
-                    keyup.key = 'Escape';
-                    detailPopover.dispatchEvent(keyup);
+                    expect(detailPopover.show).toBeTruthy();
+                    detailPopover.dispatchEvent(new CustomEvent('close'));
                 })
                 .then(() => {
                     const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeFalsy();
+                    expect(detailPopover.show).toBeFalsy();
                 });
         });
 
@@ -4594,18 +4612,20 @@ describe('Scheduler', () => {
                     jest.runAllTimers();
                 })
                 .then(() => {
-                    const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                    const detailsPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeTruthy();
-                    detailPopover.dispatchEvent(new CustomEvent('mouseleave'));
+                    expect(detailsPopover.show).toBeTruthy();
+                    detailsPopover.dispatchEvent(
+                        new CustomEvent('privatemouseleave')
+                    );
                     jest.runAllTimers();
                 })
                 .then(() => {
                     const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeFalsy();
+                    expect(detailPopover.show).toBeFalsy();
                 });
         });
 
@@ -4634,19 +4654,23 @@ describe('Scheduler', () => {
                     jest.runAllTimers();
                 })
                 .then(() => {
-                    const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                    const detailsPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeTruthy();
-                    detailPopover.dispatchEvent(new CustomEvent('mouseleave'));
-                    detailPopover.dispatchEvent(new CustomEvent('mouseenter'));
+                    expect(detailsPopover.show).toBeTruthy();
+                    detailsPopover.dispatchEvent(
+                        new CustomEvent('privatemouseleave')
+                    );
+                    detailsPopover.dispatchEvent(
+                        new CustomEvent('privatemouseenter')
+                    );
                     jest.runAllTimers();
                 })
                 .then(() => {
-                    const detailPopover = element.shadowRoot.querySelector(
-                        '[data-element-id="div-detail-popover"]'
+                    const detailsPopover = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-primitive-scheduler-detail-popover"]'
                     );
-                    expect(detailPopover).toBeTruthy();
+                    expect(detailsPopover.show).toBeTruthy();
                 });
         });
 
