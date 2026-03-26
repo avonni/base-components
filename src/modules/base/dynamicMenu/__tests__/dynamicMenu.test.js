@@ -345,8 +345,35 @@ describe('Dynamic Menu', () => {
                         expect(item.label).toBe(correspondingItem.label);
                         expect(item.meta).toBe(correspondingItem.meta);
                         expect(item.value).toBe(correspondingItem.value);
+                        expect(item.disabled).toBe(correspondingItem.disabled);
                     });
                 });
+            });
+        });
+
+        describe('Disabled Item', () => {
+            it('Renders disabled item', () => {
+                element.label = 'label';
+                element.items = listViewItems;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="item"]'
+                        );
+                        items.forEach((item) => {
+                            let expectedClass =
+                                'avonni-dynamic-menu__item_min-height avonni-dynamic-menu__item_color-background';
+                            if (item.getAttribute('aria-disabled') === 'true') {
+                                expectedClass +=
+                                    ' avonni-dynamic-menu__item_disabled';
+                            }
+                            expect(item.className).toEqual(expectedClass);
+                        });
+                    });
             });
         });
 
