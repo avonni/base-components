@@ -1350,6 +1350,7 @@ export default class ActivityTimeline extends LightningElement {
                     this._lastClickedItemName === computedItem.name;
             });
             this.computedItems = [...(this.computedItems || [])];
+            this.orderedDates = [...(this.orderedDates || [])];
         }
 
         /**
