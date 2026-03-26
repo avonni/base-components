@@ -84,41 +84,24 @@ const nextAllowedMonth = (
  * @param {DateTime} startDate The date we start from.
  * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
  * @param {number[]} allowedDays Array of allowed days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
- * @param {boolean} keepOriginalTime If false, the time of the date will be set to 00:00:00.000 when the day is not allowed. Defaults to false.
  * @returns {DateTime} Date of the next allowed day of the week.
  */
-const nextAllowedDay = (
-    startDate,
-    allowedMonths,
-    allowedDays,
-    keepOriginalTime = false
-) => {
+const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
     let date =
         startDate instanceof DateTime
             ? startDate
             : dateTimeObjectFrom(startDate);
     if (!isAllowedDay(date, allowedDays)) {
         // Add a day
-        date = date.plus({ days: 1 });
-        if (!keepOriginalTime) {
-            date = date.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-        }
-        date = nextAllowedDay(
-            date,
-            allowedMonths,
-            allowedDays,
-            keepOriginalTime
-        );
+        date = date
+            .plus({ days: 1 })
+            .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+        date = nextAllowedDay(date, allowedMonths, allowedDays);
 
         // If the next day available is another month, make sure the month is allowed
         if (date.diff(startDate, 'months') > 0) {
             date = nextAllowedMonth(date, allowedMonths);
-            date = nextAllowedDay(
-                date,
-                allowedMonths,
-                allowedDays,
-                keepOriginalTime
-            );
+            date = nextAllowedDay(date, allowedMonths, allowedDays);
         }
     }
     return date;
@@ -466,90 +449,7 @@ const spansOnMoreThanOneDay = ({ event, from, to, endOfTo, startOfFrom }) => {
     );
 };
 
-/**
- * Calculate the end date of an event based on a starting date, a duration and a duration unit, while taking into account unavailable days and months.
- *
- * @param {DateTime} startDate Start date of the event.
- * @param {number} duration Duration of the event.
- * @param {string} durationUnit Unit of the duration.
- * @param {number[]} availableMonths Array of available months.
- * @param {number[]} availableDaysOfTheWeek Array of available days of the week.
- * @returns {DateTime} The calculated end date of the event.
- */
-const calculateEndDateFromDuration = (
-    startDate,
-    duration,
-    durationUnit,
-    availableMonths,
-    availableDaysOfTheWeek
-) => {
-    let currentDate = nextAllowedMonth(startDate, availableMonths, false);
-
-    const step = (unit, amount = 1, normalizeDay = false) => {
-        currentDate = addToDate(currentDate, unit, amount);
-        currentDate = nextAllowedMonth(
-            currentDate,
-            availableMonths,
-            normalizeDay
-        );
-
-        if (normalizeDay) {
-            currentDate = nextAllowedDay(
-                currentDate,
-                availableMonths,
-                availableDaysOfTheWeek,
-                true
-            );
-        }
-    };
-
-    const computedDuration =
-        durationUnit === 'week'
-            ? duration * availableDaysOfTheWeek.length
-            : duration;
-    const whole = Math.floor(computedDuration);
-    const fractional = computedDuration - whole;
-
-    if (durationUnit === 'day' || durationUnit === 'week') {
-        currentDate = nextAllowedDay(
-            currentDate,
-            availableMonths,
-            availableDaysOfTheWeek,
-            true
-        );
-        for (let i = 0; i < whole; i++) {
-            step('day', 1, true);
-        }
-        if (fractional > 0) {
-            step('day', fractional, true);
-        }
-        return currentDate;
-    } else if (durationUnit === 'month') {
-        for (let i = 0; i < whole; i++) {
-            step(durationUnit, 1, false);
-        }
-        if (fractional > 0) {
-            step(durationUnit, fractional, false);
-        }
-        return nextAllowedDay(
-            currentDate,
-            availableMonths,
-            availableDaysOfTheWeek,
-            true
-        );
-    }
-    currentDate = addToDate(currentDate, durationUnit, duration);
-    currentDate = nextAllowedMonth(currentDate, availableMonths, false);
-    return nextAllowedDay(
-        currentDate,
-        availableMonths,
-        availableDaysOfTheWeek,
-        true
-    );
-};
-
 export {
-    calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,
     getFirstAvailableWeek,

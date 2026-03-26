@@ -1,6 +1,5 @@
 import { DateTime } from 'c/luxon';
 import {
-    calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,
     getFirstAvailableWeek,
@@ -1050,80 +1049,6 @@ describe('Date Computations', () => {
                     })
                 ).toBe(false);
             });
-        });
-    });
-
-    describe('calculateEndDateFromDuration()', () => {
-        it('Calculates end date based on duration in days', () => {
-            const availableDays = [1, 2, 3, 4, 5];
-            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
-            const start = DateTime.fromISO(
-                '2025-05-30T10:00:00-04:00',
-                timeZone
-            );
-            const result = calculateEndDateFromDuration(
-                start,
-                5.5,
-                'day',
-                availableMonths,
-                availableDays
-            );
-            // Skip 31st May (Saturday), skip June, skip 5th July (Saturday), skip 6th July (Sunday)
-            expect(result.toISO()).toBe('2025-07-07T22:00:00.000-04:00');
-        });
-
-        it('Calculates end date based on duration in weeks', () => {
-            const availableDays = [1, 2, 3, 4, 5];
-            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
-            const start = DateTime.fromISO(
-                '2025-05-30T10:00:00-04:00',
-                timeZone
-            );
-            const result = calculateEndDateFromDuration(
-                start,
-                2,
-                'week',
-                availableMonths,
-                availableDays
-            );
-            // Skip 31st May (Saturday), skip June, skip 5th July (Saturday), skip 6th July (Sunday), skip 12th July (Saturday), skip 13th July (Sunday)
-            expect(result.toISO()).toBe('2025-07-14T10:00:00.000-04:00');
-        });
-
-        it('Calculates end date based on duration in months', () => {
-            const availableDays = [1, 2, 3, 4, 5];
-            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
-            const start = DateTime.fromISO(
-                '2025-05-27T10:00:00-04:00',
-                timeZone
-            );
-            const result = calculateEndDateFromDuration(
-                start,
-                1,
-                'month',
-                availableMonths,
-                availableDays
-            );
-            // Skip June and skips weekend at the end of duration
-            expect(result.toISO()).toBe('2025-07-28T10:00:00.000-04:00');
-        });
-
-        it('Calculates end date base on duration in years', () => {
-            const availableDays = [1, 2, 3, 4, 5];
-            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
-            const start = DateTime.fromISO(
-                '2025-02-07T10:00:00-05:00',
-                timeZone
-            );
-            const result = calculateEndDateFromDuration(
-                start,
-                1,
-                'year',
-                availableMonths,
-                availableDays
-            );
-            // Skips weekend at the end of duration
-            expect(result.toISO()).toBe('2026-02-09T10:00:00.000-05:00');
         });
     });
 });
