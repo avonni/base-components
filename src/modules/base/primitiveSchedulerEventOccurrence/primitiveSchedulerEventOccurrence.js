@@ -1,9 +1,4 @@
-import { DateTime } from 'c/luxon';
-import {
-    dateTimeObjectFrom,
-    getWeekday,
-    getWeekNumber
-} from 'c/luxonDateTimeUtils';
+import PrimitiveSchedulerEvent from 'c/primitiveSchedulerEvent';
 import {
     DEFAULT_ACTION_NAMES,
     isAllDay,
@@ -17,7 +12,7 @@ import {
     normalizeString
 } from 'c/utils';
 import { classListMutation } from 'c/utilsPrivate';
-import { api, LightningElement } from 'lwc';
+import { api } from 'lwc';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -41,14 +36,7 @@ const VARIANTS = {
  * @class
  * @descriptor c-primitive-scheduler-event-occurrence
  */
-export default class PrimitiveSchedulerEventOccurrence extends LightningElement {
-    /**
-     * Background color of the occurrence.
-     *
-     * @type {string}
-     * @public
-     */
-    @api color;
+export default class PrimitiveSchedulerEventOccurrence extends PrimitiveSchedulerEvent {
     /**
      * Unique name of the event this occurrence belongs to.
      *
@@ -80,15 +68,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api theme;
 
-    _cellDuration = 0;
-    _cellHeight = 0;
-    _cellWidth = 0;
     _dateFormat = DEFAULT_DATE_FORMAT;
     _disabled = false;
     _event;
     _eventData = {};
-    _from;
-    _headerCells = [];
     _hiddenActions = [];
     _labels = {};
     _occurrence = {};
@@ -98,16 +81,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _resourceKey;
     _resources = [];
     _scrollOffset = 0;
-    _timezone;
     _title;
-    _to;
     _variant = VARIANTS.default;
-    _x = 0;
-    _y = 0;
     _zoomToFit = false;
 
-    _focused = false;
-    _offsetStart = 0;
     computedLabels = {};
 
     /*
@@ -117,7 +94,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
 
     connectedCallback() {
-        this.initLabels();
+        super.connectedCallback();
+        this._initLabels();
         this._connected = true;
     }
 
@@ -125,7 +103,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updatePosition();
         this.updateLength();
         this.updateThickness();
-        this.updateStickyLabels();
+        this._updateStickyLabels();
     }
 
     render() {
@@ -152,11 +130,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._cellDuration;
     }
     set cellDuration(value) {
-        this._cellDuration = !isNaN(Number(value)) ? Number(value) : 0;
+        super.cellDuration = value;
 
         if (this._connected) {
-            this.updateLength();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
     }
 
@@ -172,12 +149,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._cellHeight;
     }
     set cellHeight(value) {
-        this._cellHeight = !isNaN(Number(value)) ? Number(value) : 0;
-
-        if (this._connected) {
-            this.updatePosition();
-            this.updateLength();
-        }
+        super.cellHeight = value;
     }
 
     /**
@@ -192,12 +164,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._cellWidth;
     }
     set cellWidth(value) {
-        this._cellWidth = !isNaN(Number(value)) ? Number(value) : 0;
+        super.cellWidth = value;
 
         if (this._connected) {
-            this.updatePosition();
-            this.updateLength();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
     }
 
@@ -215,7 +185,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._dateFormat =
             typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -274,7 +244,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set eventData(value) {
         this._eventData = typeof value === 'object' ? value : {};
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -289,12 +259,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._from;
     }
     set from(value) {
-        this._from = value instanceof DateTime ? value : this.createDate(value);
+        super.from = value;
 
         if (this._connected) {
-            this.updatePosition();
-            this.updateLength();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
     }
 
@@ -310,16 +278,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._headerCells;
     }
     set headerCells(value) {
-        const normalized =
-            typeof value === 'string'
-                ? JSON.parse(value)
-                : normalizeObject(value);
-        this._headerCells = normalized;
+        super.headerCells = value;
 
         if (this._connected) {
-            this.updatePosition();
-            this.updateLength();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
     }
 
@@ -351,7 +313,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set labels(value) {
         this._labels = typeof value === 'object' ? { ...value } : {};
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -456,7 +418,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set resourceKey(value) {
         this._resourceKey = value;
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -472,7 +434,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set resources(value) {
         this._resources = normalizeArray(value);
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -516,7 +478,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set rowKey(value) {
         this._resourceKey = value;
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -532,7 +494,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set rows(value) {
         this._resources = normalizeArray(value);
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -547,7 +509,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set scrollLeftOffset(value) {
         this._scrollOffset = !isNaN(Number(value)) ? Number(value) : 0;
-        if (this._connected) this.updateStickyLabels();
+        if (this._connected) this._updateStickyLabels();
     }
 
     /**
@@ -563,7 +525,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set scrollOffset(value) {
         this._scrollOffset = !isNaN(Number(value)) ? Number(value) : 0;
-        if (this._connected) this.updateStickyLabels();
+        if (this._connected) this._updateStickyLabels();
     }
 
     /**
@@ -584,25 +546,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get timezone() {
-        return this._timezone;
-    }
-    set timezone(value) {
-        this._timezone = value;
-
-        if (this._connected) {
-            this.updatePosition();
-            this.updateLength();
-        }
-    }
-
-    /**
      * Title of the occurrence.
      *
      * @type {string}
@@ -615,7 +558,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set title(value) {
         this._title = value;
 
-        if (this._connected) this.initLabels();
+        if (this._connected) this._initLabels();
     }
 
     /**
@@ -630,11 +573,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._to;
     }
     set to(value) {
-        this._to = value instanceof DateTime ? value : this.createDate(value);
+        super.to = value;
 
         if (this._connected) {
-            this.updateLength();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
     }
 
@@ -665,7 +607,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             this.updatePosition();
             this.updateLength();
             this.updateThickness();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
     }
 
@@ -697,29 +639,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._x;
     }
     set x(value) {
-        this._x = parseInt(value, 10);
-
+        super.x = value;
         if (this._connected) {
-            this.updateHostTranslate();
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         }
-    }
-
-    /**
-     * Vertical position of the occurrence in the scheduler, in pixels.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get y() {
-        return this._y;
-    }
-    set y(value) {
-        this._y = parseInt(value, 10);
-
-        if (this._connected) this.updateHostTranslate();
     }
 
     /**
@@ -735,7 +658,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set zoomToFit(value) {
         this._zoomToFit = normalizeBoolean(value);
-        this.updateStickyLabels();
+        this._updateStickyLabels();
     }
 
     /*
@@ -910,8 +833,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.isTimeline
             ? null
             : `
-                background-color: ${this.transparentColor};
-                --avonni-primitive-scheduler-event-occurrence-background-color: ${this.transparentColor};
+                background-color: ${this._getTransparentColor(
+                    this.computedColor
+                )};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${this._getTransparentColor(
+                    this.computedColor
+                )};
             `;
     }
 
@@ -933,7 +860,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return (
             this.hideResizeIcon ||
             (this.preventPastEventCreation &&
-                this.to <= this.createDate(new Date()))
+                this.to <= this._createDate(new Date()))
         );
     }
 
@@ -959,17 +886,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return (
             this.hideResizeIcon ||
             (this.preventPastEventCreation &&
-                this.from <= this.createDate(new Date()))
+                this.from <= this._createDate(new Date()))
         );
-    }
-
-    /**
-     * Outermost HTML element of the component.
-     *
-     * @type {HTMLElement}
-     */
-    get hostElement() {
-        return this.template.host;
     }
 
     /**
@@ -1159,68 +1077,34 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (this.displayAsDot) {
             return '';
         }
-        const isDefault = this.theme === 'default';
-        const isTransparent = this.theme === 'transparent';
-        const isRounded = this.theme === 'rounded';
-        const isHollow = this.theme === 'hollow';
-        const isLine = this.theme === 'line';
+        const { computedColor, theme } = this;
+        const transparentColor = this._getTransparentColor(this.computedColor);
+        const isDefault = theme === 'default';
+        const isTransparent = theme === 'transparent';
+        const isRounded = theme === 'rounded';
+        const isHollow = theme === 'hollow';
+        const isLine = theme === 'line';
 
         let style = '';
         if (isDefault || isRounded || (isTransparent && this._focused)) {
             style += `
-                background-color: ${this.computedColor};
-                --avonni-primitive-scheduler-event-occurrence-background-color: ${this.computedColor};
+                background-color: ${computedColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${computedColor};
             `;
         } else if (isTransparent && !this._focused) {
             style += `
-                background-color: ${this.transparentColor};
-                --avonni-primitive-scheduler-event-occurrence-background-color: ${this.transparentColor};
+                background-color: ${transparentColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${transparentColor};
             `;
         }
         if (isTransparent) {
-            style += `border-left-color: ${this.computedColor};`;
+            style += `border-left-color: ${computedColor};`;
         }
         if (isHollow || isLine) {
-            style += `border-color: ${this.computedColor}`;
+            style += `border-color: ${computedColor}`;
         }
 
         return style;
-    }
-
-    /**
-     * Computed timeline header cells.
-     *
-     * @type {object[]}
-     */
-    get timelineHeaderCells() {
-        return this.isVerticalTimeline
-            ? this.headerCells.yAxis
-            : this.headerCells.xAxis;
-    }
-
-    /**
-     * If the computedColor is a hexadecimal or RGB color, transparent version of the computedColor (30% of opacity). Else, it is equal to the computedColor.
-     *
-     * @type {string}
-     */
-    get transparentColor() {
-        if (!this.computedColor) return undefined;
-
-        const isHex = this.computedColor.match(
-            /#([a-zA-Z0-9]{3}$|[a-zA-Z0-9]{6}$)/
-        );
-        if (isHex) {
-            return isHex[0].length === 4
-                ? `${isHex[0]}${isHex[1]}50`
-                : `${isHex[0]}50`;
-        }
-        const isRGB = this.computedColor.match(
-            /rgb\(([0-9]+,\s?[0-9]+,\s?[0-9]+)\)/
-        );
-        if (isRGB) {
-            return `rgba(${isRGB[1]}, 0.3)`;
-        }
-        return this.computedColor;
     }
 
     /*
@@ -1228,21 +1112,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Set the focus on the occurrence.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-event-occurrence"]'
-        );
-        if (wrapper) {
-            wrapper.focus();
-        }
-    }
 
     /**
      * Hide the right label. Since the label is not part of the component width, it is used to make sure it doesn't overflow.
@@ -1290,67 +1159,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateLength() {
-        if (this.isStandalone) {
-            this.updateStandaloneLength();
-            this._offsetStart = 0;
-            return;
-        } else if (this.hostElement) {
-            this.hostElement.style.width = null;
-        }
-        const from = this.getComparableTime(this.from);
-        const headerCells = this.isVerticalCalendar
-            ? this.headerCells.yAxis
-            : this.timelineHeaderCells;
-
-        let to = this.getComparableTime(this.to);
-        const cellSize = this.isVertical ? this.cellHeight : this.cellWidth;
-        if (!headerCells || !cellSize || !this.cellDuration) {
-            return;
-        }
-
-        // Find the cell where the event starts
-        let i = this.getStartCellIndex(headerCells);
-        if (i < 0) return;
-
-        let length = 0;
-        const startsInMiddleOfCell =
-            this.getComparableTime(headerCells[i].start) < from;
-
-        if (startsInMiddleOfCell) {
-            // If the event starts in the middle of a cell,
-            // add only the appropriate length in the first cell
-            const cellEnd = this.getComparableTime(headerCells[i].end);
-            length += this.getOffsetStart(cellEnd, cellSize);
-            if (this.referenceLine) return;
-
-            if (cellEnd > to && from.ts !== to.ts) {
-                // If the event ends before the end of the first column
-                // remove the appropriate length of the first column
-                length -= this.getOffsetEnd(cellEnd, cellSize, to);
-                this.setLength(length);
-                return;
-            }
-            i += 1;
-        } else if (this.referenceLine) return;
-
-        // Add the length of the header cells completely filled by the event
-        while (i < headerCells.length) {
-            const cellStart = this.getComparableTime(headerCells[i].start);
-            if (cellStart + this.cellDuration > to) break;
-            length += cellSize;
-            i += 1;
-        }
-
-        // If the event ends in the middle of a column,
-        // add the remaining length
-        const cell = headerCells[i];
-        const cellStart = cell && this.getComparableTime(cell.start);
-        if (cell && cellStart < to) {
-            const eventDurationLeft = to - cellStart;
-            const colPercentEnd = eventDurationLeft / this.cellDuration;
-            length += cellSize * colPercentEnd;
-        }
-        this.setLength(length);
+        super._updateLength();
     }
 
     /**
@@ -1360,13 +1169,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updatePosition() {
-        if (this.isTimeline || this.isHorizontalCalendar) {
-            this.updatePositionInTimeline();
-        } else {
-            this.updatePositionInCalendar();
-        }
-
-        this.updateHostTranslate();
+        this._updatePosition();
     }
 
     /**
@@ -1423,7 +1226,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     /**
      * Align the event with its resource.
      */
-    alignPositionWithResource() {
+    _alignPositionWithResource() {
         if (this.referenceLine) {
             return;
         }
@@ -1448,84 +1251,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Create a Luxon DateTime object from a date, including the timezone.
-     *
-     * @param {string|number|Date} date Date to convert.
-     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
-     */
-    createDate(date) {
-        return dateTimeObjectFrom(date, { zone: this.timezone });
-    }
-
-    /**
-     * If the event is in a vertical setup of a calendar, remove the year, month and day from the date, to allow for comparison of the time only.
-     *
-     * @param {Date} date Date to transform.
-     * @returns {Date}
-     */
-    getComparableTime(date) {
-        if (!this.isVerticalCalendar || !date) {
-            return date;
-        }
-        const time = this.createDate(date);
-        return time.set({ year: 1, month: 1, day: 1 });
-    }
-
-    /**
-     * Get the size (in pixels) between the end of the event, and the end of the last cell it crosses.
-     *
-     * @param {Date} cellEnd Time at which the cell ends.
-     * @param {number} cellSize Size of the cell, in pixels.
-     * @param {DateTime} to End date of the event.
-     * @returns {number} Size of the offset between the end of the event, and the end of the cell.
-     */
-    getOffsetEnd(cellEnd, cellSize, to) {
-        const durationLeft = cellEnd - to;
-        const percentageLeft = durationLeft / this.cellDuration;
-        return percentageLeft * cellSize;
-    }
-
-    /**
-     * Get the size (in pixels) between the start of the event, and the end of the first cell it crosses.
-     *
-     * @param {Date} cellEnd Time at which the cell ends.
-     * @param {number} cellSize Size of the cell, in pixels.
-     * @returns {number} Size of the offset between the start of the event, and the end of the cell.
-     */
-    getOffsetStart(cellEnd, cellSize) {
-        const cellDuration = this.cellDuration;
-        const from = this.getComparableTime(this.from);
-
-        const eventDuration = cellEnd - from;
-        const emptyDuration = cellDuration - eventDuration;
-        const emptyPercentageOfCell = emptyDuration / cellDuration;
-        this._offsetStart = cellSize * emptyPercentageOfCell;
-        this.updateHostTranslate();
-        if (this.referenceLine) return 0;
-
-        const eventPercentageOfCell = eventDuration / cellDuration;
-        return cellSize * eventPercentageOfCell;
-    }
-
-    /**
-     * Get the first cell that the event crosses.
-     *
-     * @param {object[]} cells Array of cell objects.
-     * @returns {object} First cell crossed.
-     */
-    getStartCellIndex(cells) {
-        const start = this.occurrence.weekStart || this.from;
-        return cells.findIndex((cell) => {
-            return (
-                this.getComparableTime(cell.end) > this.getComparableTime(start)
-            );
-        });
-    }
-
-    /**
      * Initialize the labels values.
      */
-    initLabels() {
+    _initLabels() {
         if (!this.resources.length || !this.resourceKey) return;
 
         const labels = {};
@@ -1564,7 +1292,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     if (
                         ['from', 'to', 'recurrenceEndDate'].includes(fieldName)
                     ) {
-                        const dateValue = this.createDate(computedValue);
+                        const dateValue = this._createDate(computedValue);
                         labels[position].value = dateValue
                             ? dateValue.toFormat(this.dateFormat)
                             : computedValue;
@@ -1579,54 +1307,27 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.computedLabels = labels;
 
         requestAnimationFrame(() => {
-            this.updateStickyLabels();
+            this._updateStickyLabels();
         });
     }
 
     /**
-     * Set the length of the event through its CSS style.
-     *
-     * @param {number} length Length of the event.
+     * Update the position of the occurrence in the scheduler grid.
      */
-    setLength(length) {
-        const style = this.hostElement.style;
-        if (this.isVertical) {
-            style.height = length ? `${length}px` : null;
-            if (this.cellWidth && this.numberOfEventsInThisTimeFrame) {
-                const width =
-                    this.cellWidth / this.numberOfEventsInThisTimeFrame;
-                style.width = `${width}px`;
-            } else if (this.isCalendar) {
-                style.width = `${this.cellWidth}px`;
-            } else {
-                style.width = null;
-            }
+    _updatePosition() {
+        if (this.isTimeline || this.isHorizontalCalendar) {
+            this._updatePositionInTimeline();
         } else {
-            style.width = `${length}px`;
-            style.height = null;
+            this._updatePositionInCalendar();
         }
-    }
 
-    /**
-     * Add the computed position to the inline style of the component host.
-     */
-    updateHostTranslate() {
-        let x = this.x;
-        if (this.isVertical && !this.referenceLine) {
-            x = this.x + this.offsetSide;
-        } else if (!this.isVertical) {
-            x = this.x + this._offsetStart;
-        }
-        const y = this.isVertical ? this.y + this._offsetStart : this.y;
-        if (this.hostElement) {
-            this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
-        }
+        this._updateHostTranslate();
     }
 
     /**
      * Update the position of the event if it is set in a calendar.
      */
-    updatePositionInCalendar() {
+    _updatePositionInCalendar() {
         const style = this.hostElement.style;
         const isMonth = this.isMonthCalendar;
 
@@ -1639,7 +1340,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         let overflows = this.overflowsCell;
         const yAxis = this.headerCells.yAxis;
         if (yAxis && !overflows && !isPlaceholder) {
-            const firstVisibleDate = this.createDate(yAxis[0].start);
+            const firstVisibleDate = this._createDate(yAxis[0].start);
             const startsBeforeBeginningOfMonth =
                 this.from < firstVisibleDate &&
                 this.to > firstVisibleDate.endOf('day');
@@ -1649,20 +1350,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
         style.display = isMonth && overflows ? 'none' : null;
 
+        const { cellHeight, headerCells, cellWidth } = this;
         if (
-            !this.headerCells.xAxis ||
-            !this.headerCells.yAxis ||
-            !this.cellWidth ||
-            !this.cellHeight
+            !headerCells.xAxis ||
+            !headerCells.yAxis ||
+            !cellWidth ||
+            !cellHeight
         ) {
             return;
         }
 
         // Get the vertical and horizontal cells indices
         const start = this.occurrence.firstAllowedDate;
-        const yIndex = this.getStartCellIndex(this.headerCells.yAxis);
-        const xIndex = this.headerCells.xAxis.findIndex((cell) => {
-            const cellEnd = this.createDate(cell.end);
+        const yIndex = this._getStartCellIndex(headerCells.yAxis);
+        const xIndex = headerCells.xAxis.findIndex((cell) => {
+            const cellEnd = this._createDate(cell.end);
             const sameWeekDay = cellEnd.weekday === start.weekday;
             return cellEnd > start && (!this.isMonthCalendar || sameWeekDay);
         });
@@ -1670,8 +1372,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (yIndex < 0 || xIndex < 0) {
             return;
         }
-        this._y = yIndex * this.cellHeight;
-        this._x = xIndex * this.cellWidth;
+        this._y = yIndex * cellHeight;
+        this._x = xIndex * cellWidth;
 
         if (this.isMonthCalendar) {
             this._y += this.offsetSide;
@@ -1681,29 +1383,30 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     /**
      * Update the position of the event if it is set in a timeline.
      */
-    updatePositionInTimeline() {
-        if (!this.timelineHeaderCells) {
+    _updatePositionInTimeline() {
+        const { cellHeight, cellWidth, cells } = this;
+        if (!cells) {
             return;
         }
 
         // Find the cell where the event starts
-        const i = this.getStartCellIndex(this.timelineHeaderCells);
+        const i = this._getStartCellIndex(cells);
         if (i < 0) return;
 
         // Place the event at the right header
         if (this.isVerticalTimeline) {
-            this._y = i * this.cellHeight;
+            this._y = i * cellHeight;
         } else {
-            this._x = i * this.cellWidth;
+            this._x = i * cellWidth;
         }
 
-        this.alignPositionWithResource();
+        this._alignPositionWithResource();
     }
 
     /**
      * Set the left position of the sticky label.
      */
-    updateStickyLabels() {
+    _updateStickyLabels() {
         const stickyLabel = this.template.querySelector(
             '[data-element-id="div-center-label-wrapper"]'
         );
@@ -1720,74 +1423,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
-    /**
-     * Compute and update the length of a standalone event.
-     */
-    updateStandaloneLength() {
-        const headerCells = this.headerCells.xAxis;
-        const isOneCellLength =
-            this.referenceLine || !this.spansOnMoreThanOneDay;
-
-        if ((isOneCellLength || !headerCells) && this.hostElement) {
-            // The event should span on one cell
-            this.hostElement.style.width = this.cellWidth
-                ? `${this.cellWidth}px`
-                : null;
-            this.hostElement.style.height = null;
-            return;
-        }
-
-        // The event should span on more than one cell.
-        // Find the cell where it starts.
-        const from = this.occurrence.firstAllowedDate;
-        let i = headerCells.findIndex((cell) => {
-            const cellStart = this.createDate(cell.start);
-            return cellStart.weekday === from.weekday;
-        });
-        if (i < 0) return;
-
-        let length = 0;
-
-        // Add the full length of the cells the event passes through
-        while (i < headerCells.length) {
-            const cellStart = this.createDate(headerCells[i].start);
-            const sameWeek = getWeekNumber(from) === getWeekNumber(this.to);
-            if (getWeekday(cellStart) > getWeekday(this.to) && sameWeek) {
-                break;
-            }
-            length += this.cellWidth;
-            i += 1;
-        }
-        this.setLength(length);
-    }
-
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Handle the blur event fired by the occurrence if it is not disabled.
-     * Dispatch a privateblur event.
-     *
-     * @param {Event} event
-     */
-    handleBlur() {
-        this._focused = false;
-
-        /**
-         * The event fired when the occurrence is blurred, if it is not disabled.
-         *
-         * @event
-         * @name privateblur
-         * @param {string} eventName Name of the event this occurrence belongs to.
-         * @param {string} key Key of this occurrence.
-         * @param {number} x Horizontal position of the occurrence.
-         * @param {number} y Vertical position of the occurrence.
-         */
-        this.dispatchEvent(new CustomEvent('privateblur'));
-    }
 
     /**
      * Handle the contextmenu event fired by the occurrence if it is not disabled.
@@ -1924,20 +1564,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
          * @param {number} y Vertical position of the occurrence.
          */
         this.dispatchCustomEvent('privatefocus', event);
-    }
-
-    /**
-     * Handle the keydown event fired by the occurrence if it is not disabled.
-     * Open the context menu if the space bar or enter were pressed.
-     *
-     * @param {Event} event
-     */
-    handleKeyDown(event) {
-        const key = event.key;
-        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
-            event.preventDefault();
-            this.handleContextMenu(event);
-        }
     }
 
     /**

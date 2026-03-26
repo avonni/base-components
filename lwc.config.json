@@ -531,6 +531,10 @@
             "path": "src/modules/base/primitiveSchedulerCalendarPopover/primitiveSchedulerCalendarPopover.js"
         },
         {
+            "name": "c/primitiveSchedulerEvent",
+            "path": "src/modules/base/primitiveSchedulerEvent/primitiveSchedulerEvent.js"
+        },
+        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
@@ -953,6 +957,10 @@
         {
             "name": "avonni/primitiveSchedulerHeaderGroup",
             "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
+        },
+        {
+            "name": "avonni/primitiveSchedulerEvent",
+            "path": "src/modules/base/primitiveSchedulerEvent/primitiveSchedulerEvent.js"
         },
         {
             "name": "avonni/profileCard",

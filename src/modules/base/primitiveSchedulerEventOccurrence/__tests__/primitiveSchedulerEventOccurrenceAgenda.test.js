@@ -41,7 +41,7 @@ describe('Primitive Scheduler Event Occurrence: agenda variant', () => {
             );
 
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             const eventContent = element.shadowRoot.querySelector(
                 '[data-element-id="div-event-content"]'
@@ -83,7 +83,7 @@ describe('Primitive Scheduler Event Occurrence: agenda variant', () => {
             expect(element.shadowRoot.host.style.height).toBeFalsy();
 
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             const eventContent = element.shadowRoot.querySelector(
                 '[data-element-id="div-event-content"]'
