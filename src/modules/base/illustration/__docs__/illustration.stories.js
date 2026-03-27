@@ -16,43 +16,77 @@ export default {
             control: {
                 type: 'select'
             },
+            description:
+                'The size of the illustration. Valid values include small and large.',
             options: ['small', 'large'],
             table: {
-                defaultValue: { summary: 'small' }
+                defaultValue: { summary: 'small' },
+                type: { summary: 'string' }
             }
         },
         variant: {
             control: {
                 type: 'select'
             },
+            description:
+                'Illustration name of the illustration. Valid values include text-only, going-camping, maintenance, desert, open-road, no-access, no-connection, not-available-in-lightning, page-not-available, walkthrough-not-available, fishing-deals, lake-mountain, no-events, no-task, setup, gone-fishing, no-access-2, no-content, no-preview, preview, research, access-deleted, access-limit, access-request, cart-noitems, error-appconnection, error-connectionissue, error-recoverable, error-unrecoverable, maintenance-planned, maintenance-unplanned, noresults-filter, noresults-search, noresults-unknown, success-assigned, success-new, success-selfassigned',
             options: [
                 'text-only',
+                'desert',
+                'fishing-deals',
                 'going-camping',
                 'gone_fishing',
+                'gone-fishing',
+                'lake-mountain',
                 'maintenance',
-                'desert',
-                'open-road',
+                'no-access-2',
                 'no-access',
                 'no-connection',
-                'not-available-in-lightning',
-                'page-not-available',
-                'walkthrough-not-available',
-                'fishing-deals',
-                'lake-mountain',
-                'no-events',
-                'no-events-2',
-                'no-task',
-                'no-task-2',
-                'setup',
-                'gone-fishing',
-                'no-access-2',
                 'no-content',
+                'no-events-2',
+                'no-events',
                 'no-preview',
+                'no-task-2',
+                'no-task',
+                'not-available-in-lightning',
+                'open-road',
+                'page-not-available',
                 'preview',
-                'research'
+                'research',
+                'setup',
+                'walkthrough-not-available',
+                // new variants
+                'access-deleted',
+                'access-limit',
+                'access-request',
+                'cart-noitems',
+                'error-appconnection',
+                'error-connectionissue',
+                'error-recoverable',
+                'error-unrecoverable',
+                'maintenance-planned',
+                'maintenance-unplanned',
+                'noresults-filter',
+                'noresults-search',
+                'noresults-unknown',
+                'success-assigned',
+                'success-new',
+                'success-selfassigned'
             ],
             table: {
-                defaultValue: { summary: 'text-only' }
+                defaultValue: { summary: 'text-only' },
+                type: { summary: 'string' }
+            }
+        },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                "Assistive text that describes the illustration. Provide this text for assistive devices if the meaning of the surrounding content isn't sufficient.",
+            table: {
+                type: { summary: 'string' }
             }
         }
     },
@@ -244,4 +278,116 @@ VariantResearch.args = {
     title: 'Research',
     size: 'large',
     variant: 'research'
+};
+
+export const VariantAccessDeleted = TemplateWithSlots.bind({});
+VariantAccessDeleted.args = {
+    title: 'Access Deleted',
+    size: 'large',
+    variant: 'access-deleted'
+};
+
+export const VariantAccessLimit = TemplateWithSlots.bind({});
+VariantAccessLimit.args = {
+    title: 'Access Limit',
+    size: 'large',
+    variant: 'access-limit'
+};
+
+export const VariantAccessRequest = TemplateWithSlots.bind({});
+VariantAccessRequest.args = {
+    title: 'Access Request',
+    size: 'large',
+    variant: 'access-request'
+};
+
+export const VariantCartNoItems = TemplateWithSlots.bind({});
+VariantCartNoItems.args = {
+    title: 'Cart No Items',
+    size: 'large',
+    variant: 'cart-noitems'
+};
+
+export const VariantErrorAppConnection = TemplateWithSlots.bind({});
+VariantErrorAppConnection.args = {
+    title: 'Error App Connection',
+    size: 'large',
+    variant: 'error-appconnection'
+};
+
+export const VariantErrorConnectionIssue = TemplateWithSlots.bind({});
+VariantErrorConnectionIssue.args = {
+    title: 'Error Connection Issue',
+    size: 'large',
+    variant: 'error-connectionissue'
+};
+
+export const VariantErrorRecoverable = TemplateWithSlots.bind({});
+VariantErrorRecoverable.args = {
+    title: 'Error Recoverable',
+    size: 'large',
+    variant: 'error-recoverable'
+};
+
+export const VariantErrorUnrecoverable = TemplateWithSlots.bind({});
+VariantErrorUnrecoverable.args = {
+    title: 'Error Unrecoverable',
+    size: 'large',
+    variant: 'error-unrecoverable'
+};
+
+export const VariantMaintenancePlanned = TemplateWithSlots.bind({});
+VariantMaintenancePlanned.args = {
+    title: 'Maintenance Planned',
+    size: 'large',
+    variant: 'maintenance-planned'
+};
+
+export const VariantMaintenanceUnplanned = TemplateWithSlots.bind({});
+VariantMaintenanceUnplanned.args = {
+    title: 'Maintenance Unplanned',
+    size: 'large',
+    variant: 'maintenance-unplanned'
+};
+
+export const VariantNoResultsFilter = TemplateWithSlots.bind({});
+VariantNoResultsFilter.args = {
+    title: 'No Results Filter',
+    size: 'large',
+    variant: 'noresults-filter'
+};
+
+export const VariantNoResultsSearch = TemplateWithSlots.bind({});
+VariantNoResultsSearch.args = {
+    title: 'No Results Search',
+    size: 'large',
+    variant: 'noresults-search'
+};
+
+export const VariantNoResultsUnknown = TemplateWithSlots.bind({});
+VariantNoResultsUnknown.args = {
+    title: 'No Results Unknown',
+    size: 'large',
+    variant: 'noresults-unknown'
+};
+
+export const VariantSuccessAssigned = TemplateWithSlots.bind({});
+VariantSuccessAssigned.args = {
+    title: 'Success Assigned',
+    size: 'large',
+    variant: 'success-assigned'
+};
+
+export const VariantSuccessNew = TemplateWithSlots.bind({});
+VariantSuccessNew.args = {
+    title: 'Success New',
+    size: 'large',
+    variant: 'success-new'
+};
+
+export const VariantSuccessSelfAssigned = TemplateWithSlots.bind({});
+VariantSuccessSelfAssigned.args = {
+    title: 'Success Self Assigned',
+    size: 'large',
+    variant: 'success-selfassigned'
 };
