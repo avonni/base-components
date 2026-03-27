@@ -168,13 +168,19 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-color-background-sortable
- * @default --avonni-list-item-color-background, transparent
+ * @name --avonni-list-item-color-background-highlight
+ * @default #e5e5e5
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-color-background-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-color-background-sortable
+ * @default --avonni-list-item-color-background, transparent
  * @type color
  */
 /**
