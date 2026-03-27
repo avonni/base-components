@@ -144,6 +144,7 @@ export default class List extends LightningElement {
         smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
         variant: 'standard'
     };
+    _highlightOnClick = false;
     _imageAttributes = {
         fallbackSrc: null,
         position: 'left',
@@ -158,7 +159,6 @@ export default class List extends LightningElement {
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _mediaActions = [];
     _mediumContainerCols;
-    _highlightOnClick = false;
     _smallContainerCols;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;

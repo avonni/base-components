@@ -161,6 +161,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _hideVerticalBar = false;
+    _highlightOnClick = false;
     _iconSize = ICON_SIZES.default;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _isLoading = false;
@@ -172,7 +173,6 @@ export default class ActivityTimeline extends LightningElement {
     _locale = DEFAULT_LOCALE;
     _maxVisibleItems;
     _orientation = ORIENTATIONS.default;
-    _highlightOnClick = false;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _lastClickedItemName;

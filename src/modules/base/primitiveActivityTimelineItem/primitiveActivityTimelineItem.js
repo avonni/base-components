@@ -132,13 +132,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _hideVerticalBar = false;
+    _highlightOnClick = false;
     _iconName;
     _iconSize = ICON_SIZES.default;
     _iconVariant = ICON_VARIANTS.default;
     _isActive = false;
     _isLastClicked = false;
     _isLoading = false;
-    _highlightOnClick = false;
     _timezone;
 
     _connected = false;
