@@ -22,6 +22,7 @@ export const ActivityTimeline = ({
     groupBy,
     hideItemDate,
     hideVerticalBar,
+    highlightOnClick,
     iconName,
     iconSize,
     intervalDaysLength,
@@ -35,7 +36,6 @@ export const ActivityTimeline = ({
     locale,
     maxVisibleItems,
     orientation,
-    showHighlightLastClicked,
     sortedDirection,
     timezone,
     title
@@ -57,6 +57,7 @@ export const ActivityTimeline = ({
     element.groupBy = groupBy;
     element.hideItemDate = hideItemDate;
     element.hideVerticalBar = hideVerticalBar;
+    element.highlightOnClick = highlightOnClick;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.isLoading = isLoading;
@@ -70,7 +71,6 @@ export const ActivityTimeline = ({
     element.locale = locale;
     element.maxVisibleItems = maxVisibleItems;
     element.orientation = orientation;
-    element.showHighlightLastClicked = showHighlightLastClicked;
     element.sortedDirection = sortedDirection;
     element.timezone = timezone;
     element.title = title;

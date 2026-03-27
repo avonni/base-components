@@ -138,7 +138,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _isActive = false;
     _isLastClicked = false;
     _isLoading = false;
-    _showHighlightLastClicked = false;
+    _highlightOnClick = false;
     _timezone;
 
     _connected = false;
@@ -424,6 +424,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * If present, highlight the last clicked item.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get highlightOnClick() {
+        return this._highlightOnClick;
+    }
+    set highlightOnClick(value) {
+        this._highlightOnClick = normalizeBoolean(value);
+    }
+
+    /**
      * Deprecated. Use `avatar` instead.
      * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
      * When omitted, a simplified timeline bullet replaces it.
@@ -528,20 +542,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * If present, highlight the last clicked item.
-     *
-     * @type {boolean}
-     * @public
-     */
-    @api
-    get showHighlightLastClicked() {
-        return this._showHighlightLastClicked;
-    }
-    set showHighlightLastClicked(value) {
-        this._showHighlightLastClicked = normalizeBoolean(value);
-    }
-
-    /**
      * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
      *
      * @type {string}
@@ -590,7 +590,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         )
             .add({
                 'avonni-primitive-activity-timeline-item__body-last-clicked':
-                    this.showHighlightLastClicked && this.isLastClicked
+                    this.highlightOnClick && this.isLastClicked
             })
             .toString();
     }

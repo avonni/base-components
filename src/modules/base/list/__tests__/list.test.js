@@ -44,6 +44,7 @@ describe('List', () => {
                 smallContainerCols: 12,
                 variant: 'standard'
             });
+            expect(element.highlightOnClick).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toMatchObject([]);
             expect(element.imageAttributes).toEqual({
@@ -65,7 +66,6 @@ describe('List', () => {
                 'Previous Items'
             );
             expect(element.showCheckCounter).toBeFalsy();
-            expect(element.showHighlightLastClicked).toBeFalsy();
             expect(element.smallContainerCols).toBeUndefined();
             expect(element.sortable).toBeFalsy();
             expect(element.sortableIconName).toBeUndefined();
@@ -251,6 +251,22 @@ describe('List', () => {
                     expect(element.fieldAttributes.largeContainerCols).toBe(3);
                     expect(element.fieldAttributes.mediumContainerCols).toBe(1);
                     expect(element.fieldAttributes.smallContainerCols).toBe(1);
+                });
+            });
+        });
+
+        describe('Highlight On Click', () => {
+            it('Passed to the component', () => {
+                element.items = ITEMS;
+                element.highlightOnClick = true;
+
+                return Promise.resolve().then(() => {
+                    const listContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="list-container"]'
+                    );
+                    expect(listContainer.classList).toContain(
+                        'avonni-list__highlightable'
+                    );
                 });
             });
         });
@@ -840,22 +856,6 @@ describe('List', () => {
                         '[data-element-id="label"]'
                     );
                     expect(label.innerHTML).toBe('List (2/5)');
-                });
-            });
-        });
-
-        describe('Show Highlight Last Clicked', () => {
-            it('Passed to the component', () => {
-                element.items = ITEMS;
-                element.showHighlightLastClicked = true;
-
-                return Promise.resolve().then(() => {
-                    const listContainer = element.shadowRoot.querySelector(
-                        '[data-element-id="list-container"]'
-                    );
-                    expect(listContainer.classList).toContain(
-                        'avonni-list__highlightable'
-                    );
                 });
             });
         });

@@ -28,17 +28,16 @@
  * @property {boolean} hasCheckbox If present, a checkbox is displayed before the label. Defaults to false.
  * @property {boolean} hasError If present, display an error message in the details section. Defaults to false.
  * @property {boolean} hideVerticalBar If present, the vertical bar is hidden. Defaults to false.
+ * @property {boolean} highlightOnClick If present, highlight the last clicked item.
  * @property {string} href URL to use as a link for the title.
  * @property {string} iconName (Deprecated) Use `avatar` instead. The Lightning Design System name of the icon displayed in the item header, before the title. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
  * @property {string} iconSize The size of the item's icon. Valid values are xx-small, x-small, small, medium and large. Defaults to small.
  * @property {string} iconVariant The shape of the item's icon. Valid values include circle and square. Defaults to square.
  * @property {string[]} icons Array of icon names to display after the title.
  * @property {boolean} isActive If present, and the item has no icon, a blue circle will replace the default gray bullet. Defaults to false.
- * @property {boolean} isLastClicked  If present, the item is the latest to be clicked by the user.
  * @property {boolean} isLoading If present, the detail section is in a loading state and shows a spinner. Defaults to false.
  * @property {string} loadingStateAlternativeText Message displayed while the detail section is in the loading state. Defaults to "Loading...".
  * @property {string} name Required. Unique name of the item.
- * @property {boolean} showHighlightLastClicked If present, highlight the last clicked item.
  * @property {string} target Target for the title link.
  * @property {string} timezone Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
  * @property {string} title Title of the item, displayed in the item header.
@@ -107,14 +106,14 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-activity-timeline-item-body-color-background-hover
- * @default #f3f3f3
+ * @name --avonni-activity-timeline-item-body-color-background-highlight
+ * @default #e5e5e5
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-activity-timeline-item-body-color-background-last-clicked
- * @default #e5e5e5
+ * @name --avonni-activity-timeline-item-body-color-background-hover
+ * @default #f3f3f3
  * @type color
  */
 /**

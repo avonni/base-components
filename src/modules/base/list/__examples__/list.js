@@ -23,7 +23,7 @@ export const List = ({
     previousButtonAlternativeText,
     smallContainerCols,
     showCheckCounter,
-    showHighlightLastClicked,
+    highlightOnClick,
     sortable,
     sortableIconName,
     sortableIconPosition,
@@ -53,7 +53,7 @@ export const List = ({
     element.previousButtonAlternativeText = previousButtonAlternativeText;
     element.smallContainerCols = smallContainerCols;
     element.showCheckCounter = showCheckCounter;
-    element.showHighlightLastClicked = showHighlightLastClicked;
+    element.highlightOnClick = highlightOnClick;
     element.sortable = sortable;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;

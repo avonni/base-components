@@ -158,7 +158,7 @@ export default class List extends LightningElement {
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _mediaActions = [];
     _mediumContainerCols;
-    _showHighlightLastClicked = false;
+    _highlightOnClick = false;
     _smallContainerCols;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
@@ -482,6 +482,20 @@ export default class List extends LightningElement {
     }
 
     /**
+     * If present, highlight the last clicked item.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get highlightOnClick() {
+        return this._highlightOnClick;
+    }
+    set highlightOnClick(value) {
+        this._highlightOnClick = normalizeBoolean(value);
+    }
+
+    /**
      * Image attributes: fallbackSrc, cropFit, position, size, width, height and cropPosition.
      *
      * @type {object}
@@ -690,20 +704,6 @@ export default class List extends LightningElement {
         if (this._connected) {
             this.updateColumnCount();
         }
-    }
-
-    /**
-     * If present, highlight the last clicked item.
-     *
-     * @type {boolean}
-     * @public
-     */
-    @api
-    get showHighlightLastClicked() {
-        return this._showHighlightLastClicked;
-    }
-    set showHighlightLastClicked(value) {
-        this._showHighlightLastClicked = normalizeBoolean(value);
     }
 
     /**
@@ -980,7 +980,7 @@ export default class List extends LightningElement {
             'slds-grid avonni-list__flex-col avonni-list__single-line':
                 this.isSingleLine,
             'slds-scrollable_y': this.isNotSingleLine,
-            'avonni-list__highlightable': this.showHighlightLastClicked
+            'avonni-list__highlightable': this.highlightOnClick
         }).toString();
     }
 

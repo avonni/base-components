@@ -181,7 +181,7 @@
 .slds-media__body
     > .slds-timeline__trigger.avonni-primitive-activity-timeline-item__body-last-clicked.slds-grid {
     background-color: var(
-        --avonni-primitive-activity-timeline-item-body-color-background-last-clicked,
+        --avonni-primitive-activity-timeline-item-body-color-background-highlight,
         var(--slds-g-color-neutral-base-90, #e5e5e5)
     );
 }

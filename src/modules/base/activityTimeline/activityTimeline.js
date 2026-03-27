@@ -172,7 +172,7 @@ export default class ActivityTimeline extends LightningElement {
     _locale = DEFAULT_LOCALE;
     _maxVisibleItems;
     _orientation = ORIENTATIONS.default;
-    _showHighlightLastClicked = false;
+    _highlightOnClick = false;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _lastClickedItemName;
@@ -488,6 +488,20 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * If present, highlight the last clicked item. This attribute is only supported for the vertical orientation.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get highlightOnClick() {
+        return this._highlightOnClick;
+    }
+    set highlightOnClick(value) {
+        this._highlightOnClick = normalizeBoolean(value);
+    }
+
+    /**
      * The size of the title's icon. Valid values are xx-small, x-small, small, medium and large.
      *
      * @public
@@ -710,20 +724,6 @@ export default class ActivityTimeline extends LightningElement {
                 this.renderedCallback();
             }, 0);
         }
-    }
-
-    /**
-     * If present, highlight the last clicked item. This attribute is only supported for the vertical orientation.
-     *
-     * @type {boolean}
-     * @public
-     */
-    @api
-    get showHighlightLastClicked() {
-        return this._showHighlightLastClicked;
-    }
-    set showHighlightLastClicked(value) {
-        this._showHighlightLastClicked = normalizeBoolean(value);
     }
 
     /**

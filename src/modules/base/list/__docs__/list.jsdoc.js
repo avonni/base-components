@@ -168,13 +168,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-color-background-hover
+ * @name --avonni-list-item-color-background-highlight
+ * @default #e5e5e5
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-color-background-last-clicked
- * @default #e5e5e5
+ * @name --avonni-list-item-color-background-hover
  * @type color
  */
 /**

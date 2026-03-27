@@ -59,6 +59,7 @@ describe('Activity Timeline', () => {
             expect(element.groupBy).toBeUndefined();
             expect(element.hideItemDate).toBeFalsy();
             expect(element.hideVerticalBar).toBeFalsy();
+            expect(element.highlightOnClick).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.intervalDaysLength).toBe(15);
             expect(element.isLoading).toBeFalsy();
@@ -71,7 +72,6 @@ describe('Activity Timeline', () => {
             expect(element.locale).toBe('en-GB');
             expect(element.maxVisibleItems).toBeUndefined();
             expect(element.orientation).toBe('vertical');
-            expect(element.showHighlightLastClicked).toBeFalsy();
             expect(element.sortedDirection).toBe('desc');
             expect(element.timezone).toBeUndefined();
             expect(element.title).toBeUndefined();
@@ -384,6 +384,24 @@ describe('Activity Timeline', () => {
                         '[data-element-id="avonni-primitive-activity-timeline-item"]'
                     );
                     expect(timelineItems.dateFormat).toBeFalsy();
+                });
+            });
+        });
+
+        describe('highlightOnClick', () => {
+            it('Passed to the component', () => {
+                element.items = testItems;
+                element.highlightOnClick = true;
+
+                return Promise.resolve().then(() => {
+                    const timelineItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                    );
+
+                    expect(timelineItems).toHaveLength(testItems.length);
+                    timelineItems.forEach((timelineItem) => {
+                        expect(timelineItem.highlightOnClick).toBe(true);
+                    });
                 });
             });
         });
@@ -1025,24 +1043,6 @@ describe('Activity Timeline', () => {
                             expect(it.timezone).toBe('Pacific/Honolulu');
                         });
                     });
-                });
-            });
-        });
-    });
-
-    describe('showHighlightLastClicked', () => {
-        it('Passed to the component', () => {
-            element.items = testItems;
-            element.showHighlightLastClicked = true;
-
-            return Promise.resolve().then(() => {
-                const timelineItems = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-primitive-activity-timeline-item"]'
-                );
-
-                expect(timelineItems).toHaveLength(testItems.length);
-                timelineItems.forEach((timelineItem) => {
-                    expect(timelineItem.showHighlightLastClicked).toBe(true);
                 });
             });
         });
