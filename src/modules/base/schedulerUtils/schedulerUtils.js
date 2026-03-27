@@ -1,9 +1,12 @@
 export {
+    calculateConstrainedDurationFromRange,
+    calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,
     getFirstAvailableWeek,
     isAllDay,
     isAllowedDay,
+    isAllowedMonth,
     isAllowedTime,
     nextAllowedDay,
     nextAllowedMonth,
