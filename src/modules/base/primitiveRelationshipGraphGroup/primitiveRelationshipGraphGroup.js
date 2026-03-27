@@ -16,6 +16,7 @@ const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
 const DEFAULT_NO_RESULTS_MESSAGE = 'No items to display.';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load More';
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -36,7 +37,9 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api isFirstLevel = false;
     @api itemActions;
     @api label;
+    @api levelPath = [];
     @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
     @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
     @api name;
     @api selected = false;
@@ -46,6 +49,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _actionsPosition = ACTIONS_POSITIONS.default;
     _customActions = [];
     _defaultActions = [];
+    _enableInfiniteLoading = false;
     _expanded = true;
     _hasSelectedChildren;
     _isLoading = false;
@@ -106,6 +110,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set defaultActions(value) {
         this._defaultActions = normalizeArray(value);
+    }
+
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
     }
 
     @api
@@ -257,6 +269,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.actions && this.actionsPosition === 'top';
     }
 
+    get showLoadMoreButton() {
+        return this.enableInfiniteLoading && !this.isLoading;
+    }
+
     get showNoResultsMessage() {
         return (
             !this.isLoading &&
@@ -306,6 +322,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         handleHTMLAnchorTagClick(event);
     }
 
+    handleLoadMore() {
+        this.dispatchLoadMore();
+    }
+
     handleSelect(event) {
         this._hasSelectedChildren = undefined;
         this.dispatchEvent(
@@ -330,7 +350,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
                 detail: {
                     name: this.name,
                     closed,
-                    isActiveGroup: !!this.selectedItemComponent
+                    isActiveGroup: !!this.selectedItemComponent,
+                    levelPath: this.levelPath
                 }
             })
         );
@@ -349,6 +370,16 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: event.detail
+            })
+        );
+    }
+
+    dispatchLoadMore() {
+        this.dispatchEvent(
+            new CustomEvent('privateitemloadmore', {
+                detail: { name: this.name, levelPath: this.levelPath },
+                bubbles: true,
+                composed: true
             })
         );
     }

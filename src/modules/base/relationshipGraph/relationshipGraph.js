@@ -518,6 +518,11 @@ export default class RelationshipGraph extends LightningElement {
         this.updateLine();
     }
 
+    handleLoadMore(event) {
+        event.stopPropagation();
+        this.dispatchLoadMore(event);
+    }
+
     /**
      * Action click event dispatcher.
      *
@@ -538,6 +543,22 @@ export default class RelationshipGraph extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: event.detail
             })
+        );
+    }
+
+    dispatchLoadMore(event) {
+        const { name, levelPath, closed } = event.detail;
+
+        /**
+         * The event fired when a "Load more" button is clicked.
+         *
+         * @event
+         * @name loadmore
+         * @param {number[]} levelPath Array of the levels of depth of the item that is loading. Empty if the root level is loading.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadmore', { detail: { name, levelPath, closed } })
         );
     }
 

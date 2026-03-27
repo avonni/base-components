@@ -179,6 +179,14 @@
                 ></c-primitive-relationship-graph-item>
             </template>
 
+            <lightning-button
+                if:true={showLoadMoreButton}
+                label={loadMoreButtonLabel}
+                variant="base"
+                data-element-id="lightning-button-load-more"
+                onclick={handleLoadMore}
+            ></lightning-button>
+
             <!-- Bottom actions -->
             <template if:false={topActions}>
                 <template for:each={actions} for:item="action">

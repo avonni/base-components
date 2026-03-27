@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
 import { classSet, normalizeArray } from 'c/utils';
+import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api actionsMenuAlternativeText;
@@ -17,9 +17,14 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api variant;
 
     _groups = [];
+    _levelPath = [];
     _selectedGroups;
+    _selectedGroupIndex;
     _selectedItemName;
     _selectedItem;
+    _selectedItemIndex;
+
+    computedGroups = [];
 
     /*
      * -------------------------------------------------------------
@@ -69,7 +74,17 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     }
     set groups(proxy) {
         this._groups = normalizeArray(proxy);
+        this.initGroups();
         this.updateSelection();
+    }
+
+    @api
+    get levelPath() {
+        return this._levelPath;
+    }
+    set levelPath(value) {
+        this._levelPath = value;
+        this.initGroups();
     }
 
     @api
@@ -141,6 +156,20 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         );
     }
 
+    get nestedLevelPath() {
+        if (
+            this._selectedGroupIndex !== undefined &&
+            this._selectedItemIndex !== undefined
+        ) {
+            return [
+                ...this.levelPath,
+                this._selectedGroupIndex,
+                this._selectedItemIndex
+            ];
+        }
+        return this.levelPath;
+    }
+
     get selectedGroupComponent() {
         const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-primitive-relationship-graph-group"]'
@@ -176,6 +205,15 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     cleanSelection() {
         this._selectedGroups = undefined;
         if (this.childLevel) this.childLevel.selectedGroups = undefined;
+    }
+
+    initGroups() {
+        this.computedGroups = this.groups.map((group, index) => {
+            return {
+                ...group,
+                levelPath: [...this.levelPath, index]
+            };
+        });
     }
 
     updateLine() {
@@ -237,13 +275,23 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         if (!this.groups) return;
 
         const groups = JSON.parse(JSON.stringify(this.groups));
-        const selectedGroup = groups.find((group) => group.selected);
-        if (selectedGroup && selectedGroup.items) {
-            const selectedItem = selectedGroup.items.find(
-                (item) => item.selected
-            );
-            if (selectedItem && selectedItem.groups)
-                this._selectedGroups = selectedItem.groups;
+        const selectedGroupIndex = groups.findIndex((group) => group.selected);
+        if (selectedGroupIndex !== -1) {
+            const selectedGroup = groups[selectedGroupIndex];
+            this._selectedGroupIndex = selectedGroupIndex;
+            if (selectedGroup && selectedGroup.items) {
+                const selectedItemIndex = selectedGroup.items.findIndex(
+                    (item) => item.selected
+                );
+                if (selectedItemIndex > -1) {
+                    const selectedItem = selectedGroup.items[selectedItemIndex];
+                    this._selectedItem = selectedItem;
+                    this._selectedItemIndex = selectedItemIndex;
+                    if (selectedItem.groups) {
+                        this._selectedGroups = selectedItem.groups;
+                    }
+                }
+            }
         }
     }
 
@@ -297,6 +345,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             new CustomEvent('toggle', {
                 detail: {
                     name: event.detail.name,
+                    levelPath: event.detail.levelPath,
                     closed: event.detail.closed
                 }
             })
