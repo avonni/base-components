@@ -1,5 +1,6 @@
 import { DateTime } from 'c/luxon';
 import {
+    calculateConstrainedDurationFromRange,
     calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,
@@ -1124,6 +1125,93 @@ describe('Date Computations', () => {
             );
             // Skips weekend at the end of duration
             expect(result.toISO()).toBe('2026-02-09T10:00:00.000-05:00');
+        });
+    });
+
+    describe('calculateConstrainedDurationFromRange()', () => {
+        it('Calculates end date based on duration in days', () => {
+            const availableDays = [1, 2, 3, 4, 5];
+            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
+            const start = DateTime.fromISO(
+                '2025-05-30T10:00:00-04:00',
+                timeZone
+            );
+            const end = DateTime.fromISO(
+                '2025-07-07T22:00:00.000-04:00',
+                timeZone
+            );
+
+            const result = calculateConstrainedDurationFromRange(
+                start,
+                end,
+                'day',
+                availableMonths,
+                availableDays
+            );
+            expect(result).toEqual(5.5);
+        });
+
+        it('Calculates end date based on duration in weeks', () => {
+            const availableDays = [1, 2, 3, 4, 5];
+            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
+            const start = DateTime.fromISO(
+                '2025-05-30T10:00:00-04:00',
+                timeZone
+            );
+            const end = DateTime.fromISO(
+                '2025-07-16T22:00:00.000-04:00',
+                timeZone
+            );
+            const result = calculateConstrainedDurationFromRange(
+                start,
+                end,
+                'week',
+                availableMonths,
+                availableDays
+            );
+            expect(result).toEqual(2.5);
+        });
+
+        it('Calculates end date based on duration in months', () => {
+            const availableDays = [1, 2, 3, 4, 5];
+            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
+            const start = DateTime.fromISO(
+                '2025-05-27T10:00:00-04:00',
+                timeZone
+            );
+            const end = DateTime.fromISO(
+                '2025-08-11T10:00:00.000-04:00',
+                timeZone
+            );
+            const result = calculateConstrainedDurationFromRange(
+                start,
+                end,
+                'month',
+                availableMonths,
+                availableDays
+            );
+            expect(result).toEqual(1.5);
+        });
+
+        it('Calculates end date base on duration in years', () => {
+            const availableDays = [1, 2, 3, 4, 5];
+            const availableMonths = [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11];
+            const start = DateTime.fromISO(
+                '2025-02-07T10:00:00-05:00',
+                timeZone
+            );
+            const end = DateTime.fromISO(
+                '2026-08-10T23:00:00.000-04:00',
+                timeZone
+            );
+            const result = calculateConstrainedDurationFromRange(
+                start,
+                end,
+                'year',
+                availableMonths,
+                availableDays
+            );
+            expect(result).toEqual(1.5);
         });
     });
 });

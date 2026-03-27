@@ -1,4 +1,5 @@
 export {
+    calculateConstrainedDurationFromRange,
     calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,

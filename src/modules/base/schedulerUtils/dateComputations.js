@@ -483,7 +483,13 @@ const calculateEndDateFromDuration = (
     availableMonths,
     availableDaysOfTheWeek
 ) => {
-    let currentDate = nextAllowedMonth(startDate, availableMonths, false);
+    let currentDate = nextAllowedMonth(startDate, availableMonths);
+    currentDate = nextAllowedDay(
+        startDate,
+        availableMonths,
+        availableDaysOfTheWeek,
+        true
+    );
 
     const step = (unit, amount = 1, normalizeDay = false) => {
         currentDate = addToDate(currentDate, unit, amount);
@@ -545,7 +551,7 @@ const calculateEndDateFromDuration = (
     // For year unit, we consider that the event can span on unavailable days and unavailable months.
     // We only look for the next available year at each step, and then adjust the end date at the end to make sure it is on an available day and month.
     currentDate = addToDate(currentDate, durationUnit, duration);
-    currentDate = nextAllowedMonth(currentDate, availableMonths, false);
+    currentDate = nextAllowedMonth(currentDate, availableMonths);
     return nextAllowedDay(
         currentDate,
         availableMonths,
@@ -554,7 +560,179 @@ const calculateEndDateFromDuration = (
     );
 };
 
+/**
+ * Count the number of allowed days between two dates.
+ * Excludes the start date, includes the end date.
+ *
+ * @param {DateTime} from Start date (exclusive).
+ * @param {DateTime} to End date (inclusive).
+ * @param {number[]} availableMonths Array of allowed months.
+ * @param {number[]} availableDaysOfTheWeek Array of allowed days of the week.
+ * @returns {number} Number of allowed days.
+ */
+function _countAllowedWeekdaysBetween(
+    from,
+    to,
+    availableMonths,
+    availableDaysOfTheWeek
+) {
+    let count = 0;
+    let current = from.plus({ days: 1 }); // Start from day after 'from'
+    while (current <= to) {
+        if (
+            isAllowedMonth(current, availableMonths) &&
+            isAllowedDay(current, availableDaysOfTheWeek)
+        ) {
+            count++;
+        }
+        current = current.plus({ days: 1 });
+    }
+    return count;
+}
+
+/**
+ * Counts full and partial units (days, months, years) between two dates, while taking into account unavailable days and months.
+ *
+ * @param {DateTime} from Start date.
+ * @param {DateTime} to End date.
+ * @param {number[]} availableMonths Array of allowed months.
+ * @param {number[]} availableDaysOfTheWeek Array of allowed days of the week.
+ * @param {string} unit The time unit (day, month or year).
+ * @param {boolean} startNewMonthOnFirstDay If false, the original day of the date will be kept, even if the original date month is not allowed. Defaults to true.
+ * @returns {number} Number of valid units between the dates.
+ */
+function _countConstrainedUnitsInRange(
+    from,
+    to,
+    availableMonths,
+    availableDaysOfTheWeek,
+    unit,
+    startNewMonthOnFirstDay
+) {
+    let current = nextAllowedMonth(from, availableMonths);
+    current = nextAllowedDay(
+        from,
+        availableMonths,
+        availableDaysOfTheWeek,
+        true
+    );
+
+    let count = 0;
+    let prev = current;
+    const valueToAdd = { [unit]: 1 };
+
+    while (current < to) {
+        prev = current;
+        current = nextAllowedMonth(
+            current.plus(valueToAdd),
+            availableMonths,
+            startNewMonthOnFirstDay
+        );
+        current = nextAllowedDay(
+            current,
+            availableMonths,
+            availableDaysOfTheWeek,
+            true
+        );
+
+        if (current < to) {
+            count++;
+        }
+    }
+
+    current = nextAllowedMonth(current, availableMonths);
+    current = nextAllowedDay(
+        current,
+        availableMonths,
+        availableDaysOfTheWeek,
+        true
+    );
+
+    let fraction;
+    if (unit === 'months') {
+        // For month calculations, use working days to calculate the fraction
+        // Use a standard month length based on available days per week
+        const workingDaysUsed = _countAllowedWeekdaysBetween(
+            prev,
+            to,
+            availableMonths,
+            availableDaysOfTheWeek
+        );
+        const standardWorkingDaysPerMonth = availableDaysOfTheWeek.length * 4;
+        fraction = workingDaysUsed / standardWorkingDaysPerMonth;
+    } else {
+        // For other units, use calendar days
+        const totalStep = current.diff(prev).as('milliseconds');
+        const usedPart = to.diff(prev).as('milliseconds');
+        fraction = usedPart / totalStep;
+    }
+
+    return count + Math.max(0, Math.min(1, fraction));
+}
+
+/**
+ * Computes the duration of a date range, while taking into account unavailable days and months.
+ *
+ * @param {DateTime} from Start date.
+ * @param {DateTime} to End date.
+ * @param {string} durationUnit The time unit (day, month or year).
+ * @param {number[]} availableMonths Array of allowed months.
+ * @param {number[]} availableDaysOfTheWeek Array of allowed days of the week.
+ * @returns {number} Number of valid units between the dates.
+ */
+const calculateConstrainedDurationFromRange = (
+    from,
+    to,
+    durationUnit,
+    availableMonths,
+    availableDaysOfTheWeek
+) => {
+    let currentDate = nextAllowedMonth(from, availableMonths);
+    currentDate = nextAllowedDay(
+        from,
+        availableMonths,
+        availableDaysOfTheWeek,
+        true
+    );
+
+    if (durationUnit === 'month') {
+        return _countConstrainedUnitsInRange(
+            currentDate,
+            to,
+            availableMonths,
+            availableDaysOfTheWeek,
+            'months',
+            false
+        );
+    } else if (durationUnit === 'year') {
+        return _countConstrainedUnitsInRange(
+            currentDate,
+            to,
+            availableMonths,
+            availableDaysOfTheWeek,
+            'years',
+            false
+        );
+    }
+
+    const workingDays = _countConstrainedUnitsInRange(
+        from,
+        to,
+        availableMonths,
+        availableDaysOfTheWeek,
+        'days',
+        true
+    );
+
+    if (durationUnit === 'day') {
+        return workingDays;
+    }
+
+    return workingDays / availableDaysOfTheWeek.length;
+};
+
 export {
+    calculateConstrainedDurationFromRange,
     calculateEndDateFromDuration,
     containsAllowedDateTimes,
     getDisabledWeekdaysLabels,
