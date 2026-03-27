@@ -589,7 +589,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             'avonni-primitive-activity-timeline-item__body slds-grid slds-grid_align-spread slds-timeline__trigger'
         )
             .add({
-                'avonni-primitive-activity-timeline-item__body-last-clicked':
+                'avonni-primitive-activity-timeline-item__body-highlight':
                     this.highlightOnClick && this.isLastClicked
             })
             .toString();

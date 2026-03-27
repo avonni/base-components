@@ -622,7 +622,7 @@ describe('Primitive Activity Timeline Item', () => {
                         '[data-element-id="avonni-timeline-item__body"]'
                     );
                     expect(body.classList).toContain(
-                        'avonni-primitive-activity-timeline-item__body-last-clicked'
+                        'avonni-primitive-activity-timeline-item__body-highlight'
                     );
                 });
             });
