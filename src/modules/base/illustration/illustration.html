@@ -1,5 +1,12 @@
 <template>
     <div class={computedIllustrationClass}>
+        <span
+            if:true={alternativeText}
+            class="slds-assistive-text"
+            data-element-id="illustration-assistive-text"
+        >
+            {alternativeText}
+        </span>
         <img
             if:true={showSvg}
             class="slds-illustration__svg"
@@ -17,5 +24,6 @@
         <div class="avonni-illustration__content">
             <slot></slot>
         </div>
+        <slot name="cta"></slot>
     </div>
 </template>
