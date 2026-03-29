@@ -524,6 +524,45 @@ describe('Illustration', () => {
                     );
                 });
             });
+
+            it('success-assigned', () => {
+                element.variant = 'success-assigned';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/success-assigned.svg'
+                    );
+                });
+            });
+
+            it('success-new', () => {
+                element.variant = 'success-new';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/success-new.svg'
+                    );
+                });
+            });
+
+            it('success-selfassigned', () => {
+                element.variant = 'success-selfassigned';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/success-selfassigned.svg'
+                    );
+                });
+            });
         });
     });
 });
