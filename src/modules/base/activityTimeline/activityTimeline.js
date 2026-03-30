@@ -161,6 +161,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _hideVerticalBar = false;
+    _highlightOnClick = false;
     _iconSize = ICON_SIZES.default;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _isLoading = false;
@@ -174,6 +175,7 @@ export default class ActivityTimeline extends LightningElement {
     _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
+    _lastClickedItemName;
     _redrawHorizontalTimeline = true;
 
     // Horizontal Activity Timeline
@@ -483,6 +485,20 @@ export default class ActivityTimeline extends LightningElement {
     }
     set hideVerticalBar(value) {
         this._hideVerticalBar = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, highlight the last clicked item. This attribute is only supported for the vertical orientation.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get highlightOnClick() {
+        return this._highlightOnClick;
+    }
+    set highlightOnClick(value) {
+        this._highlightOnClick = normalizeBoolean(value);
     }
 
     /**
@@ -1054,6 +1070,8 @@ export default class ActivityTimeline extends LightningElement {
         this.sortedItems.forEach((item) => {
             const computedItem = deepCopy(item);
             this.supportDeprecatedAttributes(computedItem);
+            computedItem.isLastClicked =
+                this._lastClickedItemName === computedItem.name;
 
             let date = computedItem.datetimeValue;
             const isDateOnly = isISODateOnly(date);
@@ -1324,6 +1342,16 @@ export default class ActivityTimeline extends LightningElement {
     handleItemClick(event) {
         event.stopPropagation();
         const name = event.detail.name || event.currentTarget.dataset.name;
+
+        this._lastClickedItemName = name;
+        if (!this.isTimelineHorizontal) {
+            (this.computedItems || []).forEach((computedItem) => {
+                computedItem.isLastClicked =
+                    this._lastClickedItemName === computedItem.name;
+            });
+            this.computedItems = [...(this.computedItems || [])];
+            this.orderedDates = [...(this.orderedDates || [])];
+        }
 
         /**
          * The event fired when a user clicks on an item.

@@ -41,7 +41,12 @@ describe('Visual Picker', () => {
     describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.collapsedShowMoreButton).toBe('Show more');
-            expect(element.columnAttributes).toMatchObject({});
+            expect(element.columnAttributes).toEqual({
+                cols: 12,
+                smallContainerCols: 12,
+                mediumContainerCols: 6,
+                largeContainerCols: 4
+            });
             expect(element.disabled).toBeFalsy();
             expect(element.expandedShowMoreButton).toBe('Show less');
             expect(element.fieldAttributes).toMatchObject({});

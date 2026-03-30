@@ -84,6 +84,7 @@ describe('Primitive Activity Timeline Item', () => {
             expect(element.hasCheckbox).toBeFalsy();
             expect(element.hasError).toBeFalsy();
             expect(element.hideVerticalBar).toBeFalsy();
+            expect(element.highlightOnClick).toBeFalsy();
             expect(element.href).toBeUndefined();
             expect(element.target).toBeUndefined();
             expect(element.icons).toBeUndefined();
@@ -92,6 +93,7 @@ describe('Primitive Activity Timeline Item', () => {
             expect(element.iconVariant).toBe('square');
             expect(element.isActive).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
+            expect(element.isLastClicked).toBeFalsy();
             expect(element.loadingStateAlternativeText).toBe('Loading');
             expect(element.name).toBeUndefined();
             expect(element.timezone).toBeUndefined();
@@ -606,6 +608,22 @@ describe('Primitive Activity Timeline Item', () => {
                     const link = element.shadowRoot.querySelector('a');
                     expect(link.href).toContain('salesforce.com');
                     expect(link.textContent).toBe('This is an title link text');
+                });
+            });
+        });
+
+        describe('highlightOnClick', () => {
+            it('Passed to the component', () => {
+                element.highlightOnClick = true;
+                element.isLastClicked = true;
+
+                return Promise.resolve().then(() => {
+                    const body = element.shadowRoot.querySelector(
+                        '[data-element-id="avonni-timeline-item__body"]'
+                    );
+                    expect(body.classList).toContain(
+                        'avonni-primitive-activity-timeline-item__body-highlight'
+                    );
                 });
             });
         });

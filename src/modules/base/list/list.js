@@ -144,6 +144,7 @@ export default class List extends LightningElement {
         smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
         variant: 'standard'
     };
+    _highlightOnClick = false;
     _imageAttributes = {
         fallbackSrc: null,
         position: 'left',
@@ -198,6 +199,7 @@ export default class List extends LightningElement {
     _itemElements;
     _initialItemPositions;
     _isComputingCachedWidth = false;
+    _lastClickedItemName;
     _listHasImages = false;
     _menuTop;
     _menuBottom;
@@ -477,6 +479,20 @@ export default class List extends LightningElement {
         if (this._connected) {
             this.setItemProperties();
         }
+    }
+
+    /**
+     * If present, highlight the last clicked item.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get highlightOnClick() {
+        return this._highlightOnClick;
+    }
+    set highlightOnClick(value) {
+        this._highlightOnClick = normalizeBoolean(value);
     }
 
     /**
@@ -963,7 +979,8 @@ export default class List extends LightningElement {
         return classSet({
             'slds-grid avonni-list__flex-col avonni-list__single-line':
                 this.isSingleLine,
-            'slds-scrollable_y': this.isNotSingleLine
+            'slds-scrollable_y': this.isNotSingleLine,
+            'avonni-list__highlightable': this.highlightOnClick
         }).toString();
     }
 
@@ -1937,6 +1954,8 @@ export default class List extends LightningElement {
                 this._listHasFields = true;
             }
 
+            newItem.lastClicked = this._lastClickedItemName === newItem.name;
+
             return newItem;
         });
     }
@@ -2141,6 +2160,19 @@ export default class List extends LightningElement {
                 this._currentColumnCount = defaultSize;
                 break;
         }
+    }
+
+    /**
+     * Update the attribute `_lastClickedItemName` and compute the flag `lastClicked` for each items.
+     * @param {string} name Name of the last clicked item.
+     */
+    _updateLastClickedItemName(name) {
+        this._lastClickedItemName = name;
+        this.computedItems.forEach((computedItem) => {
+            computedItem.lastClicked =
+                this._lastClickedItemName === computedItem.name;
+        });
+        this.computedItems = [...this.computedItems];
     }
 
     /*
@@ -2528,6 +2560,7 @@ export default class List extends LightningElement {
         if (!this.computedItems[itemIndex]) {
             return;
         }
+
         /**
          * The event fired when a user clicks on a media action.
          *
@@ -2714,6 +2747,8 @@ export default class List extends LightningElement {
         if (!item || event.ctrlKey || event.metaKey || this._preventItemClick) {
             return;
         }
+
+        this._updateLastClickedItemName(this.computedItems[itemIndex].name);
 
         /**
          * The event fired when a user clicks on an item.

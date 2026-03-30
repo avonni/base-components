@@ -81,3 +81,12 @@
         --avonni-activity-timeline-show-more-button-neutral-sizing-border
     );
 }
+
+.avonni-primitive-activity-timeline-item {
+    --avonni-primitive-activity-timeline-item-body-color-background-highlight: var(
+        --avonni-activity-timeline-item-body-color-background-highlight
+    );
+    --avonni-primitive-activity-timeline-item-body-color-background-hover: var(
+        --avonni-activity-timeline-item-body-color-background-hover
+    );
+}

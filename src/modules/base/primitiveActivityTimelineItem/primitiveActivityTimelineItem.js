@@ -132,10 +132,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _hideVerticalBar = false;
+    _highlightOnClick = false;
     _iconName;
     _iconSize = ICON_SIZES.default;
     _iconVariant = ICON_VARIANTS.default;
     _isActive = false;
+    _isLastClicked = false;
     _isLoading = false;
     _timezone;
 
@@ -422,6 +424,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * If present, highlight the last clicked item.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get highlightOnClick() {
+        return this._highlightOnClick;
+    }
+    set highlightOnClick(value) {
+        this._highlightOnClick = normalizeBoolean(value);
+    }
+
+    /**
      * Deprecated. Use `avatar` instead.
      * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
      * When omitted, a simplified timeline bullet replaces it.
@@ -497,6 +513,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * If present, the item is the latest to be clicked by the user.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLastClicked() {
+        return this._isLastClicked;
+    }
+    set isLastClicked(value) {
+        this._isLastClicked = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the detail section is in a loading state and shows a spinner.
      *
      * @public
@@ -547,6 +577,22 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             this.avatar?.initials ||
             this.avatar?.fallbackIconName
         );
+    }
+
+    /**
+     * Computed styling class for the item body.
+     *
+     * @type {string}
+     */
+    get computedBodyClass() {
+        return classSet(
+            'avonni-primitive-activity-timeline-item__body slds-grid slds-grid_align-spread slds-timeline__trigger'
+        )
+            .add({
+                'avonni-primitive-activity-timeline-item__body-highlight':
+                    this.highlightOnClick && this.isLastClicked
+            })
+            .toString();
     }
 
     /**

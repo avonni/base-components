@@ -35,6 +35,7 @@ export const InfiniteLoadingActivityTimeline = ({
     locale,
     maxVisibleItems,
     orientation,
+    highlightOnClick,
     sortedDirection,
     timezone,
     title
@@ -71,6 +72,7 @@ export const InfiniteLoadingActivityTimeline = ({
     element.locale = locale;
     element.maxVisibleItems = maxVisibleItems;
     element.orientation = orientation;
+    element.highlightOnClick = highlightOnClick;
     element.sortedDirection = sortedDirection;
     element.timezone = timezone;
     element.title = title;
