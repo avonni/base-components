@@ -1891,8 +1891,7 @@ export default class List extends LightningElement {
         this._resizeObserver = new AvonniResizeObserver(
             this.listContainer,
             () => {
-                const width =
-                    this.fieldsContainer?.getBoundingClientRect().width || 0;
+                const width = this.fieldsContainer?.offsetWidth || 0;
                 this._setFieldItemsSizeCallbacks.forEach((callback) => {
                     callback(width);
                 });
@@ -2058,8 +2057,7 @@ export default class List extends LightningElement {
 
             // Compute the width on the next microtask to ensure DOM is ready.
             queueMicrotask(() => {
-                this._cachedWidth =
-                    this.fieldsContainer?.getBoundingClientRect().width || 0;
+                this._cachedWidth = this.fieldsContainer?.offsetWidth || 0;
                 this._isComputingCachedWidth = false;
             });
         }
@@ -2493,8 +2491,7 @@ export default class List extends LightningElement {
         this._setFieldItemsSizeCallbacks.set(name, callbacks.setItemsSize);
 
         const setAllFieldsItemsSize = () => {
-            const widthFields =
-                this.fieldsContainer?.getBoundingClientRect().width || 0;
+            const widthFields = this.fieldsContainer?.offsetWidth || 0;
             this._setFieldItemsSizeCallbacks.forEach((callback) => {
                 callback(widthFields);
             });
@@ -2527,8 +2524,7 @@ export default class List extends LightningElement {
         event.stopPropagation();
         this._setFieldItemsSizeCallbacks.delete(event.detail.name);
         const setAllFieldsItemsSize = () => {
-            const width =
-                this.fieldsContainer?.getBoundingClientRect().width || 0;
+            const width = this.fieldsContainer?.offsetWidth || 0;
             this._setFieldItemsSizeCallbacks.forEach((callback) => {
                 callback(width);
             });
