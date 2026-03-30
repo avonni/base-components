@@ -44,6 +44,7 @@ describe('List', () => {
                 smallContainerCols: 12,
                 variant: 'standard'
             });
+            expect(element.highlightOnClick).toBeFalsy();
             expect(element.isLoading).toBeFalsy();
             expect(element.items).toMatchObject([]);
             expect(element.imageAttributes).toEqual({
@@ -250,6 +251,22 @@ describe('List', () => {
                     expect(element.fieldAttributes.largeContainerCols).toBe(3);
                     expect(element.fieldAttributes.mediumContainerCols).toBe(1);
                     expect(element.fieldAttributes.smallContainerCols).toBe(1);
+                });
+            });
+        });
+
+        describe('Highlight On Click', () => {
+            it('Passed to the component', () => {
+                element.items = ITEMS;
+                element.highlightOnClick = true;
+
+                return Promise.resolve().then(() => {
+                    const listContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="list-container"]'
+                    );
+                    expect(listContainer.classList).toContain(
+                        'avonni-list__highlightable'
+                    );
                 });
             });
         });
@@ -1216,26 +1233,33 @@ describe('List', () => {
                 element.addEventListener('itemclick', handler);
                 element.items = ITEMS;
 
-                return Promise.resolve().then(() => {
-                    const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="li-item"]'
-                    );
+                return Promise.resolve()
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
 
-                    items[2].dispatchEvent(new CustomEvent('click'));
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                        ITEMS[2]
-                    );
-                    expect(
-                        handler.mock.calls[0][0].detail.bounds
-                    ).not.toBeUndefined();
-                    expect(handler.mock.calls[0][0].detail.name).toBe(
-                        ITEMS[2].name
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                });
+                        items[2].dispatchEvent(new CustomEvent('click'));
+                        expect(handler).toHaveBeenCalled();
+                        expect(
+                            handler.mock.calls[0][0].detail.item
+                        ).toMatchObject(ITEMS[2]);
+                        expect(
+                            handler.mock.calls[0][0].detail.bounds
+                        ).not.toBeUndefined();
+                        expect(handler.mock.calls[0][0].detail.name).toBe(
+                            ITEMS[2].name
+                        );
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
+                        expect(items[2].dataset.lastClicked).toEqual('true');
+                    });
             });
 
             it('Fired with keyboard', () => {
@@ -1243,28 +1267,35 @@ describe('List', () => {
                 element.addEventListener('itemclick', handler);
                 element.items = ITEMS;
 
-                return Promise.resolve().then(() => {
-                    const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="li-item"]'
-                    );
+                return Promise.resolve()
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
 
-                    const event = new CustomEvent('keydown');
-                    event.key = 'Enter';
-                    items[1].dispatchEvent(event);
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                        ITEMS[1]
-                    );
-                    expect(
-                        handler.mock.calls[0][0].detail.bounds
-                    ).not.toBeUndefined();
-                    expect(handler.mock.calls[0][0].detail.name).toBe(
-                        ITEMS[1].name
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                });
+                        const event = new CustomEvent('keydown');
+                        event.key = 'Enter';
+                        items[1].dispatchEvent(event);
+                        expect(handler).toHaveBeenCalled();
+                        expect(
+                            handler.mock.calls[0][0].detail.item
+                        ).toMatchObject(ITEMS[1]);
+                        expect(
+                            handler.mock.calls[0][0].detail.bounds
+                        ).not.toBeUndefined();
+                        expect(handler.mock.calls[0][0].detail.name).toBe(
+                            ITEMS[1].name
+                        );
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
+                        expect(items[1].dataset.lastClicked).toEqual('true');
+                    });
             });
 
             it('Itemcheck is also fired if variant is check-list', () => {
@@ -1273,25 +1304,32 @@ describe('List', () => {
                 element.items = ITEMS;
                 element.variant = 'check-list';
 
-                return Promise.resolve().then(() => {
-                    const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="li-item"]'
-                    );
-                    items[2].dispatchEvent(new CustomEvent('click'));
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                        ITEMS[2]
-                    );
-                    expect(handler.mock.calls[0][0].detail.name).toBe(
-                        ITEMS[2].name
-                    );
-                    expect(
-                        handler.mock.calls[0][0].detail.checked
-                    ).toBeTruthy();
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
+                        items[2].dispatchEvent(new CustomEvent('click'));
+                        expect(handler).toHaveBeenCalled();
+                        expect(
+                            handler.mock.calls[0][0].detail.item
+                        ).toMatchObject(ITEMS[2]);
+                        expect(handler.mock.calls[0][0].detail.name).toBe(
+                            ITEMS[2].name
+                        );
+                        expect(
+                            handler.mock.calls[0][0].detail.checked
+                        ).toBeTruthy();
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="li-item"]'
+                        );
+                        expect(items[2].dataset.lastClicked).toEqual('true');
+                    });
             });
         });
 

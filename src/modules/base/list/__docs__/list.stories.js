@@ -90,6 +90,17 @@ export default {
                 category: 'Base'
             }
         },
+        highlightOnClick: {
+            name: 'highlight-on-click',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, highlight the last clicked item.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         imageAttributes: {
             name: 'image-attributes',
             control: {
@@ -322,6 +333,8 @@ export default {
     args: {
         cols: 1,
         equalHeights: false,
+        highlightOnClick: false,
+
         loadingStateAlternativeText: 'Loading...',
         nextButtonAlternativeText: 'Next Items',
         previousButtonAlternativeText: 'Previous Items',

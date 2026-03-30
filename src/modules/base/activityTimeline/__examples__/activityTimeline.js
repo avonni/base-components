@@ -22,6 +22,7 @@ export const ActivityTimeline = ({
     groupBy,
     hideItemDate,
     hideVerticalBar,
+    highlightOnClick,
     iconName,
     iconSize,
     intervalDaysLength,
@@ -56,6 +57,7 @@ export const ActivityTimeline = ({
     element.groupBy = groupBy;
     element.hideItemDate = hideItemDate;
     element.hideVerticalBar = hideVerticalBar;
+    element.highlightOnClick = highlightOnClick;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.isLoading = isLoading;

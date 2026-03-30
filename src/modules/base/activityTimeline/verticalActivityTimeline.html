@@ -45,6 +45,7 @@
                 <template for:each={computedItems} for:item="item">
                     <li key={item.name}>
                         <c-primitive-activity-timeline-item
+                            class="avonni-primitive-activity-timeline-item"
                             actions={actions}
                             avatar={item.avatar}
                             button-disabled={item.buttonDisabled}
@@ -63,11 +64,13 @@
                             has-checkbox={item.hasCheckbox}
                             has-error={item.hasError}
                             hide-vertical-bar={hideVerticalBar}
+                            highlight-on-click={highlightOnClick}
                             href={item.href}
                             icon-size={itemIconSize}
                             icon-variant={itemIconVariant}
                             icons={item.icons}
                             is-active={item.isActive}
+                            is-last-clicked={item.isLastClicked}
                             is-loading={item.isLoading}
                             loading-state-alternative-text={item.loadingStateAlternativeText}
                             name={item.name}
@@ -104,6 +107,9 @@
                         <template for:each={date.items} for:item="item">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
+                                    class="
+                                        avonni-primitive-activity-timeline-item
+                                    "
                                     actions={actions}
                                     avatar={item.avatar}
                                     button-disabled={item.buttonDisabled}
@@ -122,11 +128,13 @@
                                     has-checkbox={item.hasCheckbox}
                                     has-error={item.hasError}
                                     hide-vertical-bar={hideVerticalBar}
+                                    highlight-on-click={highlightOnClick}
                                     href={item.href}
                                     icon-size={itemIconSize}
                                     icon-variant={itemIconVariant}
                                     icons={item.icons}
                                     is-active={item.isActive}
+                                    is-last-clicked={item.isLastClicked}
                                     is-loading={item.isLoading}
                                     loading-state-alternative-text={item.loadingStateAlternativeText}
                                     name={item.name}

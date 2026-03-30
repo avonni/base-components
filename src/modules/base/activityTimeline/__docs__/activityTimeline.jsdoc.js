@@ -28,6 +28,7 @@
  * @property {boolean} hasCheckbox If present, a checkbox is displayed before the label. Defaults to false.
  * @property {boolean} hasError If present, display an error message in the details section. Defaults to false.
  * @property {boolean} hideVerticalBar If present, the vertical bar is hidden. Defaults to false.
+ * @property {boolean} highlightOnClick If present, highlight the last clicked item.
  * @property {string} href URL to use as a link for the title.
  * @property {string} iconName (Deprecated) Use `avatar` instead. The Lightning Design System name of the icon displayed in the item header, before the title. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
  * @property {string} iconSize The size of the item's icon. Valid values are xx-small, x-small, small, medium and large. Defaults to small.
@@ -102,6 +103,18 @@
  * @name --avonni-activity-timeline-title-font-weight
  * @type font
  * @default 400
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-body-color-background-highlight
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-body-color-background-hover
+ * @default #f3f3f3
+ * @type color
  */
 /**
  * @memberof stylingHooks

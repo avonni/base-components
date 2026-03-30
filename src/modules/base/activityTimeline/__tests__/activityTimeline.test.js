@@ -59,6 +59,7 @@ describe('Activity Timeline', () => {
             expect(element.groupBy).toBeUndefined();
             expect(element.hideItemDate).toBeFalsy();
             expect(element.hideVerticalBar).toBeFalsy();
+            expect(element.highlightOnClick).toBeFalsy();
             expect(element.iconName).toBeUndefined();
             expect(element.intervalDaysLength).toBe(15);
             expect(element.isLoading).toBeFalsy();
@@ -383,6 +384,24 @@ describe('Activity Timeline', () => {
                         '[data-element-id="avonni-primitive-activity-timeline-item"]'
                     );
                     expect(timelineItems.dateFormat).toBeFalsy();
+                });
+            });
+        });
+
+        describe('highlightOnClick', () => {
+            it('Passed to the component', () => {
+                element.items = testItems;
+                element.highlightOnClick = true;
+
+                return Promise.resolve().then(() => {
+                    const timelineItems = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                    );
+
+                    expect(timelineItems).toHaveLength(testItems.length);
+                    timelineItems.forEach((timelineItem) => {
+                        expect(timelineItem.highlightOnClick).toBe(true);
+                    });
                 });
             });
         });
@@ -1150,24 +1169,31 @@ describe('Activity Timeline', () => {
                 const handler = jest.fn();
                 element.addEventListener('itemclick', handler);
 
-                return Promise.resolve().then(() => {
-                    const item = element.shadowRoot.querySelector(
-                        'c-primitive-activity-timeline-item'
-                    );
-                    item.dispatchEvent(
-                        new CustomEvent('itemclick', {
-                            detail: { name: testItems[0].name },
-                            bubbles: true
-                        })
-                    );
-                    expect(handler).toHaveBeenCalled();
-                    expect(handler.mock.calls[0][0].detail.name).toBe(
-                        testItems[0].name
-                    );
-                    expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                    expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                    expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                });
+                return Promise.resolve()
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            '[data-element-id="avonni-primitive-activity-timeline-item"]'
+                        );
+                        item.dispatchEvent(
+                            new CustomEvent('itemclick', {
+                                detail: { name: testItems[0].name },
+                                bubbles: true
+                            })
+                        );
+                        expect(handler).toHaveBeenCalled();
+                        expect(handler.mock.calls[0][0].detail.name).toBe(
+                            testItems[0].name
+                        );
+                        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                    })
+                    .then(() => {
+                        const item = element.shadowRoot.querySelector(
+                            `[data-element-id="avonni-primitive-activity-timeline-item"][data-name="${testItems[0].name}"]`
+                        );
+                        expect(item.isLastClicked).toBe(true);
+                    });
             });
         });
 
