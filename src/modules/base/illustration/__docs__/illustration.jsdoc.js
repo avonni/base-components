@@ -2,6 +2,12 @@
  * @namespace slots
  */
 /**
+ * Placeholder for the call-to-action button.
+ *
+ * @memberof slots
+ * @name actions
+ */
+/**
  * Placeholder for your content below the illustration.
  *
  * @memberof slots
