@@ -60,27 +60,27 @@
 }
 
 .avonni-primitive-activity-timeline-item__action-icon_xx-small {
-    margin: -0.1rem 0 0 -0.5rem;
+    margin: -0.1rem 0 0 0;
     transform: scale(0.55);
 }
 
 .avonni-primitive-activity-timeline-item__action-icon_x-small {
-    margin: -0.15rem 0 0 -0.5rem;
+    margin: -0.15rem 0 0 0;
     transform: scale(0.6);
 }
 
 .avonni-primitive-activity-timeline-item__action-icon_small {
-    margin: -0.3rem 0 0 -0.5rem;
+    margin: -0.3rem 0 0 0;
     transform: scale(0.7);
 }
 
 .avonni-primitive-activity-timeline-item__action-icon_medium {
-    margin: -0.5rem 0 0 -0.5rem;
+    margin: -0.5rem 0 0 0;
     transform: scale(0.8);
 }
 
 .avonni-primitive-activity-timeline-item__action-icon_large {
-    margin: -0.7rem 0 0 -0.5rem;
+    margin: -0.7rem 0 0 0;
     transform: scale(0.85);
 }
 
