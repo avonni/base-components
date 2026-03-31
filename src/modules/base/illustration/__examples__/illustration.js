@@ -5,8 +5,9 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const Illustration = ({ title, size, variant }) => {
+export const Illustration = ({ alternativeText, size, title, variant }) => {
     const element = document.createElement('ac-base-illustration');
+    element.alternativeText = alternativeText;
     element.size = size;
     element.title = title;
     element.variant = variant;

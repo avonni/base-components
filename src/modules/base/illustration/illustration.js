@@ -1,36 +1,74 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, normalizeString } from 'c/utils';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 
 const ILLUSTRATION_SIZES = { valid: ['small', 'large'], default: 'small' };
 
 const ILLUSTRATION_VARIANTS = {
     valid: [
+        // old variants
         'text-only',
+        'desert',
+        'fishing-deals',
         'going-camping',
         'gone_fishing',
+        'gone-fishing',
+        'lake-mountain',
         'maintenance',
-        'desert',
-        'open-road',
+        'no-access-2',
         'no-access',
         'no-connection',
-        'not-available-in-lightning',
-        'page-not-available',
-        'walkthrough-not-available',
-        'fishing-deals',
-        'lake-mountain',
-        'no-events',
-        'no-events-2',
-        'no-task',
-        'no-task-2',
-        'setup',
-        'gone-fishing',
-        'no-access-2',
         'no-content',
+        'no-events-2',
+        'no-events',
         'no-preview',
+        'no-task-2',
+        'no-task',
+        'not-available-in-lightning',
+        'open-road',
+        'page-not-available',
         'preview',
-        'research'
+        'research',
+        'setup',
+        'walkthrough-not-available',
+        // new variants
+        'access-deleted',
+        'access-limit',
+        'access-request',
+        'cart-noitems',
+        'error-appconnection',
+        'error-connectionissue',
+        'error-recoverable',
+        'error-unrecoverable',
+        'maintenance-planned',
+        'maintenance-unplanned',
+        'noresults-filter',
+        'noresults-search',
+        'noresults-unknown',
+        'success-assigned',
+        'success-new',
+        'success-selfassigned'
     ],
     default: 'text-only'
+};
+
+const SLDS2_TO_SLDS1_VARIANTS = {
+    'access-deleted': 'no-content',
+    'access-limit': 'no-access',
+    'access-request': 'no-access',
+    'cart-noitems': 'gone-fishing',
+    'error-appconnection': 'no-connection',
+    'error-connectionissue': 'no-connection',
+    'error-recoverable': 'no-events',
+    'error-unrecoverable': 'walkthrough-not-available',
+    'maintenance-planned': 'maintenance',
+    'maintenance-unplanned': 'maintenance',
+    'noresults-filter': 'no-preview',
+    'noresults-search': 'no-preview',
+    'noresults-unknown': 'no-preview',
+    'success-assigned': 'gone-fishing',
+    'success-new': 'gone-fishing',
+    'success-selfassigned': 'gone-fishing'
 };
 
 /**
@@ -40,6 +78,13 @@ const ILLUSTRATION_VARIANTS = {
  * @public
  */
 export default class Illustration extends LightningElement {
+    /**
+     * Assistive text that describes the illustration. Provide this text for assistive devices if the meaning of the surrounding content isn't sufficient.
+     *
+     * @type {string}
+     * @public
+     */
+    @api alternativeText;
     /**
      * The illustration title.
      *
@@ -76,7 +121,12 @@ export default class Illustration extends LightningElement {
     }
 
     /**
-     * The variant types of illustrations. Valid values include text-only, going-camping, gone_fishing, maintenance, desert, open-road, no-access, no-connection, not-available-in-lightning page-not-available, walkthrough-not-available, fishing-deals, lake-mountain, no-events, no-events-2, no-task, no-task-2, setup, gone-fishing, no-access-2, no-content, no-preview, preview and research
+     * Illustration name of the illustration. Valid values include text-only, going-camping, maintenance, desert,
+     * open-road, no-access, no-connection, not-available-in-lightning, page-not-available, walkthrough-not-available,
+     * fishing-deals, lake-mountain, no-events, no-task, setup, gone-fishing, no-access-2, no-content, no-preview,
+     * preview, research, access-deleted, access-limit, access-request, cart-noitems, error-appconnection,
+     * error-connectionissue, error-recoverable, error-unrecoverable, maintenance-planned, maintenance-unplanned,
+     * noresults-filter, noresults-search, noresults-unknown, success-assigned, success-new, success-selfassigned.
      *
      * @type {string}
      * @public
@@ -110,6 +160,12 @@ export default class Illustration extends LightningElement {
             .toString();
     }
 
+    get computedVariant() {
+        return isOrgSlds2()
+            ? this.variant
+            : SLDS2_TO_SLDS1_VARIANTS[this.variant] || this.variant;
+    }
+
     /**
      * Show Illustration SVG.
      *
@@ -125,6 +181,6 @@ export default class Illustration extends LightningElement {
      * @type {string}
      */
     get svgURL() {
-        return `/assets/canvas-elements/illustrationLibrary/${this.variant}.svg`;
+        return `/assets/canvas-elements/illustrationLibrary/${this.computedVariant}.svg`;
     }
 }

@@ -1,6 +1,11 @@
 import { createElement } from 'lwc';
 import Illustration from 'c/illustration';
 
+// mock isOrgSlds2
+jest.mock('c/utilsPrivate', () => ({
+    isOrgSlds2: jest.fn(() => true)
+}));
+
 let element;
 describe('Illustration', () => {
     afterEach(() => {
@@ -18,9 +23,24 @@ describe('Illustration', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.alternativeText).toBeUndefined();
             expect(element.size).toBe('small');
             expect(element.title).toBeUndefined();
             expect(element.variant).toBe('text-only');
+        });
+
+        describe('alternativeText', () => {
+            it('Passed to the component', () => {
+                element.alternativeText = 'This is a alternative text';
+                return Promise.resolve().then(() => {
+                    const assistiveText = element.shadowRoot.querySelector(
+                        '[data-element-id="illustration-assistive-text"]'
+                    );
+                    expect(assistiveText.textContent).toBe(
+                        'This is a alternative text'
+                    );
+                });
+            });
         });
 
         describe('size', () => {
@@ -332,6 +352,214 @@ describe('Illustration', () => {
                     );
                     expect(img.src).toContain(
                         '/assets/canvas-elements/illustrationLibrary/research.svg'
+                    );
+                });
+            });
+
+            it('access-deleted', () => {
+                element.variant = 'access-deleted';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/access-deleted.svg'
+                    );
+                });
+            });
+
+            it('access-limit', () => {
+                element.variant = 'access-limit';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/access-limit.svg'
+                    );
+                });
+            });
+
+            it('access-request', () => {
+                element.variant = 'access-request';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/access-request.svg'
+                    );
+                });
+            });
+
+            it('cart-noitems', () => {
+                element.variant = 'cart-noitems';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/cart-noitems.svg'
+                    );
+                });
+            });
+
+            it('error-appconnection', () => {
+                element.variant = 'error-appconnection';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/error-appconnection.svg'
+                    );
+                });
+            });
+
+            it('error-connectionissue', () => {
+                element.variant = 'error-connectionissue';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/error-connectionissue.svg'
+                    );
+                });
+            });
+
+            it('error-recoverable', () => {
+                element.variant = 'error-recoverable';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/error-recoverable.svg'
+                    );
+                });
+            });
+
+            it('error-unrecoverable', () => {
+                element.variant = 'error-unrecoverable';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/error-unrecoverable.svg'
+                    );
+                });
+            });
+
+            it('maintenance-planned', () => {
+                element.variant = 'maintenance-planned';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/maintenance-planned.svg'
+                    );
+                });
+            });
+
+            it('maintenance-unplanned', () => {
+                element.variant = 'maintenance-unplanned';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/maintenance-unplanned.svg'
+                    );
+                });
+            });
+
+            it('noresults-filter', () => {
+                element.variant = 'noresults-filter';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/noresults-filter.svg'
+                    );
+                });
+            });
+
+            it('noresults-search', () => {
+                element.variant = 'noresults-search';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/noresults-search.svg'
+                    );
+                });
+            });
+
+            it('noresults-unknown', () => {
+                element.variant = 'noresults-unknown';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/noresults-unknown.svg'
+                    );
+                });
+            });
+
+            it('success-assigned', () => {
+                element.variant = 'success-assigned';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/success-assigned.svg'
+                    );
+                });
+            });
+
+            it('success-new', () => {
+                element.variant = 'success-new';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/success-new.svg'
+                    );
+                });
+            });
+
+            it('success-selfassigned', () => {
+                element.variant = 'success-selfassigned';
+
+                return Promise.resolve().then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.src).toContain(
+                        '/assets/canvas-elements/illustrationLibrary/success-selfassigned.svg'
                     );
                 });
             });

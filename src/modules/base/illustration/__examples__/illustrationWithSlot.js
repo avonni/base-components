@@ -5,8 +5,14 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const IllustrationWithSlot = ({ title, size, variant }) => {
+export const IllustrationWithSlot = ({
+    alternativeText,
+    size,
+    title,
+    variant
+}) => {
     const element = document.createElement('ac-base-illustration-with-slot');
+    element.alternativeText = alternativeText;
     element.size = size;
     element.title = title;
     element.variant = variant;
