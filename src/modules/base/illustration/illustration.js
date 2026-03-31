@@ -121,7 +121,12 @@ export default class Illustration extends LightningElement {
     }
 
     /**
-     * The variant types of illustrations. Valid values include text-only, going-camping, gone_fishing, maintenance, desert, open-road, no-access, no-connection, not-available-in-lightning page-not-available, walkthrough-not-available, fishing-deals, lake-mountain, no-events, no-events-2, no-task, no-task-2, setup, gone-fishing, no-access-2, no-content, no-preview, preview and research
+     * Illustration name of the illustration. Valid values include text-only, going-camping, maintenance, desert,
+     * open-road, no-access, no-connection, not-available-in-lightning, page-not-available, walkthrough-not-available,
+     * fishing-deals, lake-mountain, no-events, no-task, setup, gone-fishing, no-access-2, no-content, no-preview,
+     * preview, research, access-deleted, access-limit, access-request, cart-noitems, error-appconnection,
+     * error-connectionissue, error-recoverable, error-unrecoverable, maintenance-planned, maintenance-unplanned,
+     * noresults-filter, noresults-search, noresults-unknown, success-assigned, success-new, success-selfassigned.
      *
      * @type {string}
      * @public
