@@ -153,6 +153,8 @@ export default class DynamicMenu extends LightningElement {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _menuLength = MENU_LENGTHS.default;
     _menuWidth = MENU_WIDTHS.default;
+    _openMenuOnHover = false;
+    _selectOnHover = false;
     _value;
     _variant = BUTTON_VARIANTS.default;
 
@@ -165,10 +167,12 @@ export default class DynamicMenu extends LightningElement {
     showFooter = true;
 
     _boundingRect = {};
+    _buttonTimeout;
     _cancelBlur = false;
     _dropdownIsFocused = false;
     _dropdownVisible = false;
     _focusedIndex = 0;
+    _itemTimeouts = new Map();
     _order;
 
     /*
@@ -198,6 +202,12 @@ export default class DynamicMenu extends LightningElement {
         if (this._deRegistrationCallback) {
             this._deRegistrationCallback();
         }
+
+        clearTimeout(this._buttonTimeout);
+        this._itemTimeouts.forEach((timeout) => {
+            clearTimeout(timeout);
+        });
+        this._itemTimeouts.clear();
     }
 
     /**
@@ -429,6 +439,36 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Determines whether the menu can be opened by hovering over it.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get openMenuOnHover() {
+        return this._openMenuOnHover;
+    }
+    set openMenuOnHover(value) {
+        this._openMenuOnHover = normalizeBoolean(value);
+    }
+
+    /**
+     * Determines whether the menu item can be selected by hovering over it.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get selectOnHover() {
+        return this._selectOnHover;
+    }
+    set selectOnHover(value) {
+        this._selectOnHover = normalizeBoolean(value);
+    }
+
+    /**
      * Value of the selected item.
      *
      * @public
@@ -646,6 +686,18 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Close Dropdown menu.
+     *
+     * @public
+     */
+    @api
+    close() {
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
      * Set focus on the button.
      *
      * @public
@@ -706,15 +758,6 @@ export default class DynamicMenu extends LightningElement {
      */
     cancelBlur() {
         this._cancelBlur = true;
-    }
-
-    /**
-     * Close Dropdown menu.
-     */
-    close() {
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
     }
 
     /**
@@ -876,6 +919,12 @@ export default class DynamicMenu extends LightningElement {
             }
 
             this.classList.toggle('slds-is-open');
+
+            clearTimeout(this._buttonTimeout);
+            this._itemTimeouts.forEach((timeout) => {
+                clearTimeout(timeout);
+            });
+            this._itemTimeouts.clear();
         }
     }
 
@@ -917,6 +966,29 @@ export default class DynamicMenu extends LightningElement {
         if (event.button === mainButton) {
             this.cancelBlur();
         }
+    }
+
+    /**
+     * Button Mouse enter event handler.
+     */
+    handleButtonMouseEnter() {
+        if (!this.openMenuOnHover || this.disabled) {
+            return;
+        }
+        clearTimeout(this._buttonTimeout);
+        this._buttonTimeout = setTimeout(() => {
+            this.handleButtonClick();
+        }, 500);
+    }
+
+    /**
+     * Button Mouse leave event handler.
+     */
+    handleButtonMouseLeave() {
+        if (!this.openMenuOnHover || this.disabled) {
+            return;
+        }
+        clearTimeout(this._buttonTimeout);
     }
 
     /**
@@ -1090,6 +1162,24 @@ export default class DynamicMenu extends LightningElement {
         event.currentTarget.classList.add(
             'avonni-dynamic-menu__display_action'
         );
+
+        if (!this.selectOnHover || this.disabled) {
+            return;
+        }
+        clearTimeout(this._itemTimeouts.get(event.currentTarget));
+        this._itemTimeouts.delete(event.currentTarget);
+
+        const currentTarget = event.currentTarget;
+        const target = event.target;
+        this._itemTimeouts.set(
+            currentTarget,
+            setTimeout(() => {
+                this.handleItemClick({
+                    target,
+                    currentTarget
+                });
+            }, 500)
+        );
     }
 
     /**
@@ -1101,6 +1191,11 @@ export default class DynamicMenu extends LightningElement {
         event.currentTarget.classList.remove(
             'avonni-dynamic-menu__display_action'
         );
+        if (!this.selectOnHover || this.disabled) {
+            return;
+        }
+        clearTimeout(this._itemTimeouts.get(event.currentTarget));
+        this._itemTimeouts.delete(event.currentTarget);
     }
 
     /**

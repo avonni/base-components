@@ -23,7 +23,9 @@ export const DynamicMenuInGroup = ({
     menuAlignment,
     menuLength,
     menuWidth,
+    openMenuOnHover,
     searchInputPlaceholder,
+    selectOnHover,
     title,
     tooltip,
     value,
@@ -47,7 +49,9 @@ export const DynamicMenuInGroup = ({
     element.menuAlignment = menuAlignment;
     element.menuLength = menuLength;
     element.menuWidth = menuWidth;
+    element.openMenuOnHover = openMenuOnHover;
     element.searchInputPlaceholder = searchInputPlaceholder;
+    element.selectOnHover = selectOnHover;
     element.title = title;
     element.tooltip = tooltip;
     element.value = value;
