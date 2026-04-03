@@ -24,6 +24,7 @@ export {
     DEFAULT_EVENTS_LABELS,
     DEFAULT_TIME_SPAN,
     EVENTS_THEMES,
+    PRESET_HEADERS,
     WEEK_START_DAYS
 } from './defaults';
 export {
