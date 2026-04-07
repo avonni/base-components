@@ -12,6 +12,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api isFirstLevel = false;
     @api itemActions;
     @api loadingStateAlternativeText;
+    @api loadMoreButtonLabel;
     @api noResultsMessage;
     @api shrinkIconName;
     @api variant;

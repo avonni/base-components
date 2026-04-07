@@ -38,7 +38,6 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api isFirstLevel = false;
     @api itemActions;
     @api label;
-    @api levelPath = [];
     @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
     @api noResultsMessage = DEFAULT_NO_RESULTS_MESSAGE;
@@ -55,6 +54,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _hasSelectedChildren;
     _isLoading = false;
     _items = [];
+    _levelPath = [];
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
     closed = false;
@@ -154,6 +154,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set items(value) {
         this._items = normalizeArray(value);
+    }
+
+    @api
+    get levelPath() {
+        return this._levelPath;
+    }
+    set levelPath(value) {
+        this._levelPath = normalizeArray(value);
     }
 
     @api

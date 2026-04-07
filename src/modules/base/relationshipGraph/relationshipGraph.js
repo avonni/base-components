@@ -15,6 +15,7 @@ const DEFAULT_ACTIONS_MENU_ALTERNATIVE_TEXT = 'Show menu';
 const DEFAULT_EMPTY_MESSAGE = 'No items to display.';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
+const DEFAULT_LOAD_MORE_BUTTON_LABEL = 'Load More';
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -81,6 +82,13 @@ export default class RelationshipGraph extends LightningElement {
      * @public
      */
     @api loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    /**
+     * Label for the "Load more" button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api loadMoreButtonLabel = DEFAULT_LOAD_MORE_BUTTON_LABEL;
     /**
      * Message to display when the relationship graph has no items to display.
      *
