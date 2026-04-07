@@ -134,19 +134,6 @@
             data-element-id="avonni-primitive-relation-graph-group-content"
         >
             <div
-                if:true={isLoading}
-                class="
-                    slds-is-relative
-                    avonni-relationship-graph-group__loading-spinner
-                "
-            >
-                <lightning-spinner
-                    alternative-text={loadingStateAlternativeText}
-                    size="small"
-                    data-element-id="lightning-spinner"
-                ></lightning-spinner>
-            </div>
-            <div
                 if:true={showNoResultsMessage}
                 data-element-id="no-results-message"
             >
@@ -178,6 +165,20 @@
                     onselect={handleSelect}
                 ></c-primitive-relationship-graph-item>
             </template>
+
+            <div
+                if:true={isLoading}
+                class="
+                    slds-is-relative
+                    avonni-relationship-graph-group__loading-spinner
+                "
+            >
+                <lightning-spinner
+                    alternative-text={loadingStateAlternativeText}
+                    size="small"
+                    data-element-id="lightning-spinner"
+                ></lightning-spinner>
+            </div>
 
             <lightning-button
                 if:true={showLoadMoreButton}

@@ -1,5 +1,6 @@
 import {
     classSet,
+    deepCopy,
     handleHTMLAnchorTagClick,
     normalizeArray,
     normalizeBoolean,
@@ -351,7 +352,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
                     name: this.name,
                     closed,
                     isActiveGroup: !!this.selectedItemComponent,
-                    levelPath: this.levelPath
+                    levelPath: deepCopy(this.levelPath)
                 }
             })
         );
@@ -377,7 +378,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     dispatchLoadMore() {
         this.dispatchEvent(
             new CustomEvent('privateitemloadmore', {
-                detail: { name: this.name, levelPath: this.levelPath },
+                detail: {
+                    name: this.name,
+                    levelPath: deepCopy(this.levelPath)
+                },
                 bubbles: true,
                 composed: true
             })

@@ -20,8 +20,6 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     _levelPath = [];
     _selectedGroups;
     _selectedGroupIndex;
-    _selectedItemName;
-    _selectedItem;
     _selectedItemIndex;
 
     computedGroups = [];
@@ -83,7 +81,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return this._levelPath;
     }
     set levelPath(value) {
-        this._levelPath = value;
+        this._levelPath = normalizeArray(value);
         this.initGroups();
     }
 
@@ -274,6 +272,10 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     updateSelection() {
         if (!this.groups) return;
 
+        this._selectedGroupIndex = undefined;
+        this._selectedItemIndex = undefined;
+        this._selectedGroups = undefined;
+
         const groups = JSON.parse(JSON.stringify(this.groups));
         const selectedGroupIndex = groups.findIndex((group) => group.selected);
         if (selectedGroupIndex !== -1) {
@@ -285,7 +287,6 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
                 );
                 if (selectedItemIndex > -1) {
                     const selectedItem = selectedGroup.items[selectedItemIndex];
-                    this._selectedItem = selectedItem;
                     this._selectedItemIndex = selectedItemIndex;
                     if (selectedItem.groups) {
                         this._selectedGroups = selectedItem.groups;
