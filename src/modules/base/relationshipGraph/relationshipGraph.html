@@ -48,7 +48,7 @@
         </template>
     </div>
 
-    <div class={computedWrapperClass}>
+    <div class={computedWrapperClass} onprivateitemloadmore={handleLoadMore}>
         <div
             if:true={hasRootHeader}
             class={computedLineClass}
@@ -67,6 +67,7 @@
             is-first-level="true"
             item-actions={itemActions}
             loading-state-alternative-text={loadingStateAlternativeText}
+            load-more-button-label={loadMoreButtonLabel}
             no-results-message={noResultsMessage}
             shrink-icon-name={shrinkIconName}
             variant={variant}
