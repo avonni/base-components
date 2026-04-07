@@ -271,7 +271,12 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     get showLoadMoreButton() {
-        return this.enableInfiniteLoading && !this.isLoading;
+        return (
+            this.enableInfiniteLoading &&
+            !this.isLoading &&
+            Array.isArray(this.items) &&
+            this.items.length > 0
+        );
     }
 
     get showNoResultsMessage() {
