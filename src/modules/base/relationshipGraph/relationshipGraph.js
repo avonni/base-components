@@ -547,18 +547,18 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     dispatchLoadMore(event) {
-        const { name, levelPath, closed } = event.detail;
+        const { name, levelPath } = event.detail;
 
         /**
          * The event fired when a "Load more" button is clicked.
          *
          * @event
          * @name loadmore
-         * @param {number[]} levelPath Array of the levels of depth of the item that is loading. Empty if the root level is loading.
+         * @param {number[]} levelPath Array of the levels of depth of the item that is loading.
          * @public
          */
         this.dispatchEvent(
-            new CustomEvent('loadmore', { detail: { name, levelPath, closed } })
+            new CustomEvent('loadmore', { detail: { name, levelPath } })
         );
     }
 
