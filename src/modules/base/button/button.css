@@ -1,3 +1,4 @@
+/* In SLDS2, they no longer set effects on lightning-button when :focus, but they do set on :focus-visible */
 .avonni-button {
     --slds-c-button-shadow: var(--avonni-button-shadow);
     --slds-c-button-shadow-focus: var(--avonni-button-shadow-focus);
@@ -83,32 +84,32 @@
     );
 }
 
-.avonni-button_bare:disabled,
-.avonni-button_bare-inverse:disabled,
-.avonni-button_base:disabled,
-.avonni-button_border-inverse:disabled,
-.avonni-button_container:disabled,
-.avonni-button_inverse:disabled {
+.slds-button.avonni-button_bare:disabled,
+.slds-button.avonni-button_bare-inverse:disabled,
+.slds-button.avonni-button_base:disabled,
+.slds-button.avonni-button_border-inverse:disabled,
+.slds-button.avonni-button_container:disabled,
+.slds-button.avonni-button_inverse:disabled {
     color: #dddbda;
     background-color: transparent;
     border-color: transparent;
     pointer-events: none;
 }
 
-.avonni-button_brand:disabled,
-.avonni-button_destructive:disabled,
-.avonni-button_success:disabled {
+.slds-button.avonni-button_brand:disabled,
+.slds-button.avonni-button_destructive:disabled,
+.slds-button.avonni-button_success:disabled {
     color: #fff;
     background-color: #c9c7c5;
     border-color: #c9c7c5;
     pointer-events: none;
 }
 
-.avonni-button_brand-outline:disabled,
-.avonni-button_border:disabled,
-.avonni-button_border-filled:disabled,
-.avonni-button_destructive-text:disabled,
-.avonni-button_neutral:disabled {
+.slds-button.avonni-button_brand-outline:disabled,
+.slds-button.avonni-button_border:disabled,
+.slds-button.avonni-button_border-filled:disabled,
+.slds-button.avonni-button_destructive-text:disabled,
+.slds-button.avonni-button_neutral:disabled {
     color: #dddbda;
     background-color: #fff;
     border-color: #c9c7c5;
@@ -116,6 +117,13 @@
 }
 
 .avonni-button_bare {
+    padding-right: var(--avonni-button-bare-spacing-inline-end, 0);
+    padding-left: var(--avonni-button-bare-spacing-inline-start, 0);
+    padding-top: var(--avonni-button-bare-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-bare-spacing-block-end, 0);
+}
+
+.avonni-button_bare:not(:active) {
     --slds-c-button-color-background: var(
         --avonni-button-bare-color-background
     );
@@ -124,14 +132,10 @@
         --avonni-button-bare-text-color,
         var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
     );
-    padding-right: var(--avonni-button-bare-spacing-inline-end, 0);
-    padding-left: var(--avonni-button-bare-spacing-inline-start, 0);
-    padding-top: var(--avonni-button-bare-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-bare-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_bare:active {
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_bare:active {
     --slds-c-button-color-background-active: var(
         --avonni-button-bare-color-background-active
     );
@@ -143,8 +147,9 @@
     );
 }
 
-.avonni-button_bare:hover,
-.avonni-button_bare:focus {
+.avonni-button_bare.slds1:focus:not(:active),
+.avonni-button_bare:hover:not(:active),
+.avonni-button_bare:focus-visible.slds2:not(:active) {
     --slds-c-button-color-background: var(
         --avonni-button-bare-color-background-hover
     );
@@ -154,11 +159,12 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_bare:focus-visible.slds2:not(:active) {
+    --slds-c-button-color-border: transparent;
+}
+
 .avonni-button_bare-inverse {
-    background-color: var(
-        --avonni-button-bare-inverse-color-background,
-        transparent
-    );
     border-color: var(--avonni-button-bare-inverse-color-border, transparent);
     color: var(
         --avonni-button-bare-inverse-text-color,
@@ -170,7 +176,14 @@
     padding-bottom: var(--avonni-button-bare-inverse-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
+.avonni-button_bare-inverse:not(:active) {
+    background-color: var(
+        --avonni-button-bare-inverse-color-background,
+        transparent
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button_bare-inverse:active {
     background-color: var(
         --avonni-button-bare-inverse-color-background-active,
@@ -203,20 +216,28 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_bare-inverse.slds2:focus-visible:not(:active) {
+    border-color: transparent;
+}
+
 .avonni-button_base {
-    --slds-c-button-color-background: var(
-        --avonni-button-base-color-background
-    );
-    --slds-c-button-color-border: var(--avonni-button-base-color-border);
-    --slds-c-button-text-color: var(--avonni-button-base-text-color);
     padding-right: var(--avonni-button-base-spacing-inline-end);
     padding-left: var(--avonni-button-base-spacing-inline-start);
     padding-top: var(--avonni-button-base-spacing-block-start);
     padding-bottom: var(--avonni-button-base-spacing-block-end);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_base:active {
+.avonni-button_base:not(:active) {
+    --slds-c-button-color-background: var(
+        --avonni-button-base-color-background
+    );
+    --slds-c-button-color-border: var(--avonni-button-base-color-border);
+    --slds-c-button-text-color: var(--avonni-button-base-text-color);
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_base:active {
     --slds-c-button-color-background-active: var(
         --avonni-button-base-color-background-active
     );
@@ -228,30 +249,24 @@
     );
 }
 
-.avonni-button_base:focus-visible,
-.avonni-button_base:hover {
+.avonni-button_base:focus-visible:not(:active),
+.avonni-button_base:hover:not(:active),
+.avonni-button_base.slds1:focus:not(:active) {
     --slds-c-button-color-background: var(
         --avonni-button-base-color-background-hover
     );
-}
-
-.avonni-button_base:focus {
-    --slds-c-button-color-background: var(
-        --avonni-button-base-color-background-hover
-    );
-}
-
-.avonni-button_base:focus-visible,
-.avonni-button_base:hover,
-.avonni-button_base:focus {
     --slds-c-button-color-border: var(--avonni-button-base-color-border-hover);
     --slds-c-button-text-color-hover: var(
         --avonni-button-base-text-color-hover
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_base:focus-visible.slds2:not(:active) {
+    --slds-c-button-color-border: transparent;
+}
+
 .avonni-button_border {
-    background-color: var(--avonni-button-border-color-background);
     border-color: var(
         --avonni-button-border-color-border,
         var(--slds-g-color-border-2, var(--slds-g-color-border-base-4, #747474))
@@ -266,8 +281,12 @@
     padding-bottom: var(--avonni-button-border-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_border:active {
+.avonni-button_border:not(:active) {
+    background-color: var(--avonni-button-border-color-background);
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+button.slds-button.avonni-button.avonni-button_border:active {
     background-color: var(--avonni-button-border-color-background-active);
     border-color: var(
         --avonni-button-border-color-border-active,
@@ -284,8 +303,8 @@
 }
 
 /* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
-.slds-button.avonni-button_border:focus-visible,
-.slds-button.avonni-button_border:hover {
+.slds-button.avonni-button.avonni-button_border:focus-visible,
+.slds-button.avonni-button.avonni-button_border:hover {
     --avonni-button-border-text-color: var(
         --avonni-button-border-text-color-hover,
         var(
@@ -295,7 +314,7 @@
     );
 }
 
-.avonni-button_border:focus {
+.avonni-button_border.slds1:focus {
     --avonni-button-border-text-color: var(
         --avonni-button-border-text-color-hover,
         var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
@@ -304,18 +323,19 @@
 
 .avonni-button_border:focus-visible,
 .avonni-button_border:hover,
-.avonni-button_border:focus {
+.avonni-button_border.slds1:focus {
     background-color: var(--avonni-button-border-color-background-hover);
     --avonni-button-border-color-border: var(
         --avonni-button-border-color-border-hover
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_border.slds2:focus-visible:not(:active) {
+    --avonni-button-border-color-border: transparent;
+}
+
 .avonni-button_border-filled {
-    background-color: var(
-        --avonni-button-border-filled-color-background,
-        var(--slds-g-color-neutral-base-100, #fff)
-    );
     border-color: var(
         --avonni-button-border-filled-color-border,
         var(--slds-g-color-border-2, var(--slds-g-color-border-base-4, #747474))
@@ -330,8 +350,23 @@
     padding-bottom: var(--avonni-button-border-filled-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_border-filled:active {
+.avonni-button_border-filled:not(:active) {
+    background-color: var(
+        --avonni-button-border-filled-color-background,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
+    border-color: var(
+        --avonni-button-border-filled-color-border,
+        var(--slds-g-color-border-2, var(--slds-g-color-border-base-4, #747474))
+    );
+    color: var(
+        --avonni-button-border-filled-text-color,
+        var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+button.slds-button.avonni-button.avonni-button_border-filled:active {
     background-color: var(
         --avonni-button-border-filled-color-background-active,
         var(--slds-g-color-neutral-base-100, #fff)
@@ -351,8 +386,8 @@
 }
 
 /* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
-.slds-button.avonni-button_border-filled:focus-visible,
-.slds-button.avonni-button_border-filled:hover {
+.slds-button.avonni-button.avonni-button_border-filled:focus-visible,
+.slds-button.avonni-button.avonni-button_border-filled:hover {
     --avonni-button-border-filled-text-color: var(
         --avonni-button-border-filled-text-color-hover,
         var(
@@ -362,7 +397,7 @@
     );
 }
 
-.avonni-button_border-filled:focus {
+.avonni-button_border-filled.slds1:focus {
     --avonni-button-border-filled-text-color: var(
         --avonni-button-border-filled-text-color-hover,
         var(--slds-g-color-accent-3, var(--lwc-brandAccessibleActive, #014486))
@@ -371,7 +406,7 @@
 
 .avonni-button_border-filled:focus-visible,
 .avonni-button_border-filled:hover,
-.avonni-button_border-filled:focus {
+.avonni-button_border-filled.slds1:focus {
     background-color: var(
         --avonni-button-border-filled-color-background-hover,
         var(
@@ -382,6 +417,11 @@
     --avonni-button-border-filled-color-border: var(
         --avonni-button-border-filled-color-border-hover
     );
+}
+
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_border-filled.slds2:focus-visible:not(:active) {
+    --avonni-button-border-filled-color-border: transparent;
 }
 
 .avonni-button_border-inverse {
@@ -406,8 +446,15 @@
     padding-bottom: var(--avonni-button-border-inverse-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_border-inverse:active {
+.avonni-button_border-inverse:not(:active) {
+    background-color: var(
+        --avonni-button-border-inverse-color-background,
+        transparent
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_border-inverse:active {
     background-color: var(
         --avonni-button-border-inverse-color-background-active,
         transparent
@@ -423,7 +470,8 @@
 }
 
 .avonni-button_border-inverse:hover,
-.avonni-button_border-inverse:focus {
+.avonni-button_border-inverse.slds1:focus,
+.avonni-button_border-inverse.slds2:focus-visible:not(:active) {
     background-color: var(
         --avonni-button-border-inverse-color-background-hover,
         transparent
@@ -438,26 +486,51 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_border-inverse.slds2:focus-visible:not(:active) {
+    border-color: transparent;
+}
+
 .avonni-button_brand {
     --slds-c-button-brand-color-background: var(
         --avonni-button-brand-color-background
     );
     --slds-c-button-brand-color-border: var(--avonni-button-brand-color-border);
     --slds-c-button-brand-text-color: var(--avonni-button-brand-text-color);
+    padding-top: var(--avonni-button-brand-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-brand-spacing-block-end, 0);
+}
+
+.avonni-button_brand:not(:active) {
+    --slds-c-button-brand-color-background: var(
+        --avonni-button-brand-color-background
+    );
+}
+
+.avonni-button_brand.slds1 {
     --slds-c-button-brand-spacing-inline-end: var(
         --avonni-button-brand-spacing-inline-end
     );
     --slds-c-button-brand-spacing-inline-start: var(
         --avonni-button-brand-spacing-inline-start
     );
-    padding-top: var(--avonni-button-brand-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-brand-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_brand:active {
+.avonni-button_brand.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-brand-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-brand-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_brand:active {
     /* Exception "[kx-scope='button-brand']:active" class overwrites background-color to value of --slds-c-button-brand-color-background. */
-    --slds-c-button-brand-color-background: var(
+    --slds-c-button-brand-color-background-active: var(
         --avonni-button-brand-color-background-active
     );
     /* Exception "[kx-scope='button-brand']:active" class overwrites border-color to transparent. */
@@ -472,11 +545,11 @@
         --avonni-button-brand-text-color-active
     );
 }
-
-.avonni-button_brand:hover,
-.avonni-button_brand:focus {
+.avonni-button_brand:hover:not(:active),
+.avonni-button_brand.slds1:focus:not(:active),
+.avonni-button_brand.slds2:focus-visible:not(:active) {
     /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover" class overwrites background-color to value of --slds-c-button-brand-color-background */
-    --slds-c-button-brand-color-background: var(
+    --slds-c-button-brand-color-background-hover: var(
         --avonni-button-brand-color-background-hover
     );
     /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover" class overwrites border-color to transparent */
@@ -489,6 +562,12 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard*/
+.avonni-button_brand.slds2:focus-visible:not(:active) {
+    border-color: transparent;
+    --slds-c-button-brand-color-border: transparent;
+}
+
 .avonni-button_brand-outline {
     --slds-c-button-outline-brand-color-background: var(
         --avonni-button-outline-brand-color-background
@@ -497,18 +576,72 @@
         --avonni-button-outline-brand-color-border
     );
     --slds-c-button-text-color: var(--avonni-button-outline-brand-text-color);
+    padding-top: var(--avonni-button-outline-brand-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-outline-brand-spacing-block-end, 0);
+}
+
+/* --slds-c-button-outline-brand-* does not exist in SLDS2*/
+.avonni-button_brand-outline.slds2:not(:active) {
+    --slds-c-button-color-background: var(
+        --slds-c-button-outline-brand-color-background
+    );
+    --slds-c-button-color-border: var(
+        --slds-c-button-outline-brand-color-border,
+        var(--slds-g-color-border-accent-1, #066afe)
+    );
+}
+
+.avonni-button_brand-outline.slds2:hover:not(:active) {
+    --slds-c-button-color-background: var(
+        --slds-c-button-outline-brand-color-background-hover
+    );
+    --slds-c-button-color-border: var(
+        --slds-c-button-outline-brand-color-border-hover,
+        var(--slds-g-color-border-accent-1, #066afe)
+    );
+}
+
+.avonni-button_brand-outline.slds2:active {
+    --slds-c-button-color-background: var(
+        --slds-c-button-outline-brand-color-background-active
+    );
+    --slds-c-button-color-border: var(
+        --slds-c-button-outline-brand-color-border-active,
+        var(--slds-g-color-border-accent-1, #066afe)
+    );
+}
+
+.avonni-button_brand-outline:not(:active) {
+    --slds-c-button-outline-brand-color-background: var(
+        --avonni-button-outline-brand-color-background
+    );
+    --slds-c-button-outline-brand-color-border: var(
+        --avonni-button-outline-brand-color-border
+    );
+}
+
+.avonni-button_brand-outline.slds1 {
     --slds-c-button-outline-brand-spacing-inline-end: var(
         --avonni-button-outline-brand-spacing-inline-end
     );
     --slds-c-button-outline-brand-spacing-inline-start: var(
         --avonni-button-outline-brand-spacing-inline-start
     );
-    padding-top: var(--avonni-button-outline-brand-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-outline-brand-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_brand-outline:active {
+.avonni-button_brand-outline.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-outline-brand-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-outline-brand-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_brand-outline:active {
     --slds-c-button-outline-brand-color-background-active: var(
         --avonni-button-outline-brand-color-background-active
     );
@@ -521,8 +654,9 @@
     );
 }
 
-.avonni-button_brand-outline:hover,
-.avonni-button_brand-outline:focus {
+.avonni-button_brand-outline:hover:not(:active),
+.avonni-button_brand-outline.slds1:focus:not(:active),
+.avonni-button_brand-outline.slds2:focus-visible:not(:active) {
     --slds-c-button-outline-brand-color-background-hover: var(
         --avonni-button-outline-brand-color-background-hover
     );
@@ -533,6 +667,12 @@
     --slds-c-button-text-color-hover: var(
         --avonni-button-outline-brand-text-color-hover
     );
+}
+
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_brand-outline.slds2:focus-visible:not(:active) {
+    --slds-c-button-outline-brand-color-border-hover: transparent;
+    --slds-c-button-outline-brand-color-border: transparent;
 }
 
 .avonni-button_container {
@@ -554,8 +694,8 @@
     padding-bottom: var(--avonni-button-container-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_container:active {
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+button.slds-button.avonni-button.avonni-button_container:active {
     background-color: var(
         --avonni-button-container-color-background-active,
         var(--slds-c-button-color-background, transparent)
@@ -574,8 +714,8 @@
 }
 
 /* For LDS 2.0 hover and focus states are separate for text color and hover takes precedence */
-.slds-button.avonni-button_container:focus-visible,
-.slds-button.avonni-button_container:hover {
+.slds-button.avonni-button.avonni-button_container:focus-visible,
+.slds-button.avonni-button.avonni-button_container:hover {
     --avonni-button-container-text-color: var(
         --avonni-button-container-text-color-hover,
         var(
@@ -585,7 +725,7 @@
     );
 }
 
-.avonni-button_container:focus {
+.avonni-button_container:focus.slds1 {
     --avonni-button-container-text-color: var(
         --avonni-button-container-text-color-hover,
         var(--lwc-brandAccessibleActive, #014486)
@@ -594,7 +734,7 @@
 
 .avonni-button_container:focus-visible,
 .avonni-button_container:hover,
-.avonni-button_container:focus {
+.avonni-button_container:focus.slds1 {
     background-color: var(
         --avonni-button-container-color-background-hover,
         transparent
@@ -603,6 +743,11 @@
         --avonni-button-container-color-border-hover,
         transparent
     );
+}
+
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_container.slds2:focus-visible:not(:active) {
+    --avonni-button-container-color-border: transparent;
 }
 
 .avonni-button_destructive {
@@ -616,18 +761,57 @@
     --slds-c-button-destructive-text-color: var(
         --avonni-button-destructive-text-color
     );
+    padding-top: var(--avonni-button-destructive-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-destructive-spacing-block-end, 0);
+}
+
+.avonni-button_destructive.slds1 {
     --slds-c-button-destructive-spacing-inline-end: var(
         --avonni-button-destructive-spacing-inline-end
     );
     --slds-c-button-destructive-spacing-inline-start: var(
         --avonni-button-destructive-spacing-inline-start
     );
-    padding-top: var(--avonni-button-destructive-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-destructive-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_destructive:active {
+.avonni-button_destructive.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-destructive-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-destructive-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+.avonni-button_destructive.slds2:not(:active) {
+    --slds-c-button-text-color: var(
+        --avonni-button-destructive-text-color,
+        var(--slds-c-button-destructive-color, #fff)
+    );
+}
+
+.avonni-button_destructive.slds2:focus-visible:not(:active),
+.avonni-button_destructive.slds2:hover:not(:active) {
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-destructive-text-color-hover,
+        var(--slds-c-button-destructive-color-hover, #fff)
+    );
+}
+
+.avonni-button_destructive.slds2:active {
+    --slds-c-button-color-border-active: var(
+        --slds-c-button-destructive-color-border-active
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-button-destructive-text-color-active,
+        var(--slds-c-button-destructive-color-hover, #fff)
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_destructive:active {
     background-color: var(
         --avonni-button-destructive-color-background-active,
         var(--slds-c-button-destructive-color-background-hover, rgb(142, 3, 15))
@@ -641,7 +825,8 @@
 }
 
 .avonni-button_destructive:hover,
-.avonni-button_destructive:focus {
+.avonni-button_destructive.slds1:focus,
+.avonni-button_destructive.slds2:focus-visible:not(:active) {
     background-color: var(
         --avonni-button-destructive-color-background-hover,
         var(--slds-c-button-destructive-color-background-hover, rgb(142, 3, 15))
@@ -654,6 +839,12 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_destructive.slds2:focus-visible:not(:active) {
+    --slds-c-button-destructive-color-border-hover: transparent;
+    --slds-c-button-destructive-color-border: transparent;
+}
+
 .avonni-button_destructive-text {
     --slds-c-button-text-destructive-color-background: var(
         --avonni-button-text-destructive-color-background
@@ -664,18 +855,74 @@
     --slds-c-button-text-destructive-text-color: var(
         --avonni-button-text-destructive-text-color
     );
+    padding-top: var(--avonni-button-text-destructive-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-text-destructive-spacing-block-end, 0);
+}
+
+.avonni-button_destructive-text.slds1 {
     --slds-c-button-text-destructive-spacing-inline-end: var(
         --avonni-button-text-destructive-spacing-inline-end
     );
     --slds-c-button-text-destructive-spacing-inline-start: var(
         --avonni-button-text-destructive-spacing-inline-start
     );
-    padding-top: var(--avonni-button-text-destructive-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-text-destructive-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_destructive-text:active {
+.avonni-button_destructive-text.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-text-destructive-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-text-destructive-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+/* --slds-c-button-destructive-text-* does not exist in SLDS2*/
+.avonni-button_destructive-text.slds2:not(:active) {
+    --slds-c-button-color-background: var(
+        --slds-c-button-text-destructive-color-background
+    );
+    --slds-c-button-text-color: var(
+        --avonni-button-text-destructive-text-color,
+        var(--slds-g-color-error-1, #b60554)
+    );
+    --slds-c-button-color-border: var(
+        --avonni-button-text-destructive-color-border,
+        var(--slds-g-color-border-error-2, #8a033e)
+    );
+}
+.avonni-button_destructive-text.slds2:hover:not(:active) {
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-text-destructive-text-color-hover,
+        var(--slds-g-color-error-1, #b60554)
+    );
+    --slds-c-button-color-border: var(
+        --avonni-button-text-destructive-color-border-hover,
+        var(--slds-g-color-border-error-2, #8a033e)
+    );
+    --slds-c-button-color-background: var(
+        --slds-c-button-text-destructive-color-background-hover
+    );
+}
+
+.avonni-button_destructive-text.slds2:active {
+    --slds-c-button-color-background: var(
+        --slds-c-button-text-destructive-color-background-active
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-button-text-destructive-text-color-active,
+        var(--slds-g-color-error-1, #b60554)
+    );
+    --slds-c-button-color-border-active: var(
+        --avonni-button-text-destructive-color-border-active,
+        var(--slds-g-color-border-error-2, #8a033e)
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_destructive-text:active {
     --slds-c-button-text-destructive-color-background-active: var(
         --avonni-button-text-destructive-color-background-active
     );
@@ -687,8 +934,21 @@
     );
 }
 
+.avonni-button_destructive-text:not(:active) {
+    --slds-c-button-text-destructive-color-background: var(
+        --avonni-button-text-destructive-color-background
+    );
+    --slds-c-button-text-destructive-color-border: var(
+        --avonni-button-text-destructive-color-border
+    );
+    --slds-c-button-text-destructive-text-color: var(
+        --avonni-button-text-destructive-text-color
+    );
+}
+
 .avonni-button_destructive-text:hover,
-.avonni-button_destructive-text:focus {
+.avonni-button_destructive-text.slds1:focus,
+.avonni-button_destructive-text.slds2:focus-visible:not(:active) {
     --slds-c-button-text-destructive-color-background-hover: var(
         --avonni-button-text-destructive-color-background-hover
     );
@@ -700,6 +960,17 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_destructive-text.slds2:focus-visible:not(:active) {
+    --slds-c-button-text-destructive-color-border-hover: transparent;
+    --slds-c-button-text-destructive-color-border: transparent;
+    --slds-c-button-color-border: transparent;
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-text-destructive-text-color-hover,
+        var(--slds-g-color-error-1, #b60554)
+    );
+}
+
 .avonni-button_inverse {
     --slds-c-button-inverse-color-background: var(
         --avonni-button-inverse-color-background
@@ -708,18 +979,43 @@
         --avonni-button-inverse-color-border
     );
     --slds-c-button-inverse-text-color: var(--avonni-button-inverse-text-color);
+    padding-top: var(--avonni-button-inverse-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-inverse-spacing-block-end, 0);
+}
+
+.avonni-button_inverse.slds1 {
     --slds-c-button-inverse-spacing-inline-end: var(
         --avonni-button-inverse-spacing-inline-end
     );
     --slds-c-button-inverse-spacing-inline-start: var(
         --avonni-button-inverse-spacing-inline-start
     );
-    padding-top: var(--avonni-button-inverse-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-inverse-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_inverse:active {
+.avonni-button_inverse.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-inverse-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-inverse-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+.avonni-button_inverse.slds2:active {
+    --slds-c-button-color-border-active: var(
+        --avonni-button-inverse-color-border-active,
+        transparent
+    );
+    --slds-c-button-color-border: var(
+        --avonni-button-inverse-color-border-active,
+        transparent
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_inverse:active {
     --slds-c-button-inverse-color-background-active: var(
         --avonni-button-inverse-color-background-active
     );
@@ -732,7 +1028,8 @@
 }
 
 .avonni-button_inverse:hover,
-.avonni-button_inverse:focus {
+.avonni-button_inverse.slds1:focus,
+.avonni-button_inverse.slds2:focus-visible:not(:active) {
     --slds-c-button-inverse-color-background-hover: var(
         --avonni-button-inverse-color-background-hover
     );
@@ -749,6 +1046,14 @@
     box-shadow: none;
 }
 
+/* In SLDS2, we force a specific color border when the button is focused through keyboard*/
+.avonni-button_inverse.slds2:focus-visible:not(:active) {
+    --slds-c-button-inverse-color-border-hover: var(
+        --slds-g-color-surface-container-2,
+        #f3f3f3
+    );
+}
+
 .avonni-button_neutral {
     --slds-c-button-neutral-color-background: var(
         --avonni-button-neutral-color-background
@@ -757,18 +1062,32 @@
         --avonni-button-neutral-color-border
     );
     --slds-c-button-text-color: var(--avonni-button-neutral-text-color);
+    padding-top: var(--avonni-button-neutral-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-neutral-spacing-block-end, 0);
+}
+
+.avonni-button_neutral.slds1 {
     --slds-c-button-neutral-spacing-inline-end: var(
         --avonni-button-neutral-spacing-inline-end
     );
     --slds-c-button-neutral-spacing-inline-start: var(
         --avonni-button-neutral-spacing-inline-start
     );
-    padding-top: var(--avonni-button-neutral-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-neutral-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_neutral:active {
+.avonni-button_neutral.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-neutral-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-neutral-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_neutral:active {
     --slds-c-button-neutral-color-background-active: var(
         --avonni-button-neutral-color-background-active
     );
@@ -782,7 +1101,8 @@
 }
 
 .avonni-button_neutral:hover,
-.avonni-button_neutral:focus {
+.avonni-button_neutral.slds2:focus-visible,
+.avonni-button_neutral.slds1:focus {
     --slds-c-button-neutral-color-background-hover: var(
         --avonni-button-neutral-color-background-hover
     );
@@ -795,6 +1115,11 @@
     );
 }
 
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard*/
+.avonni-button_neutral.slds2:focus-visible:not(:active) {
+    --slds-c-button-neutral-color-border: transparent;
+}
+
 .avonni-button_success {
     background-color: var(
         --avonni-button-success-color-background,
@@ -804,18 +1129,62 @@
         --avonni-button-success-color-border
     );
     --slds-c-button-success-text-color: var(--avonni-button-success-text-color);
+    padding-top: var(--avonni-button-success-spacing-block-start, 0);
+    padding-bottom: var(--avonni-button-success-spacing-block-end, 0);
+}
+
+.avonni-button_success.slds1 {
     --slds-c-button-success-spacing-inline-end: var(
         --avonni-button-success-spacing-inline-end
     );
     --slds-c-button-success-spacing-inline-start: var(
         --avonni-button-success-spacing-inline-start
     );
-    padding-top: var(--avonni-button-success-spacing-block-start, 0);
-    padding-bottom: var(--avonni-button-success-spacing-block-end, 0);
 }
 
-/* Leave .slds-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_success:active {
+.avonni-button_success.slds2 {
+    --slds-c-button-spacing-inline-end: var(
+        --avonni-button-success-spacing-inline-end,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+    --slds-c-button-spacing-inline-start: var(
+        --avonni-button-success-spacing-inline-start,
+        var(--slds-s-button-spacing-inline, var(--slds-g-spacing-4, 1rem))
+    );
+}
+
+.avonni-button_success.slds2:not(:active) {
+    --slds-c-button-text-color: var(
+        --avonni-button-success-text-color,
+        var(--slds-c-button-success-color, #fff)
+    );
+}
+
+.avonni-button_success.slds2:focus-visible:not(:active),
+.avonni-button_success.slds2:hover:not(:active) {
+    --slds-c-button-color-border-hover: var(
+        --avonni-button-success-color-border-hover,
+        var(--slds-c-button-success-color-border-hover, #fff)
+    );
+    --slds-c-button-text-color-hover: var(
+        --avonni-button-success-text-color-hover,
+        var(--slds-c-button-success-color-hover, #fff)
+    );
+}
+
+.avonni-button_success.slds2:active {
+    --slds-c-button-color-border-active: var(
+        --avonni-button-success-color-border-active,
+        var(--slds-c-button-success-color-border-hover, #fff)
+    );
+    --slds-c-button-text-color-active: var(
+        --avonni-button-success-text-color-active,
+        var(--slds-c-button-success-color-hover, #fff)
+    );
+}
+
+/* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
+.slds-button.avonni-button.avonni-button_success:active {
     background-color: var(
         --avonni-button-success-color-background-active,
         var(--slds-c-button-success-color-background-hover, #2e844a)
@@ -829,7 +1198,8 @@
 }
 
 .avonni-button_success:hover,
-.avonni-button_success:focus {
+.avonni-button_success.slds1:focus,
+.avonni-button_success.slds2:focus-visible:not(:active) {
     background-color: var(
         --avonni-button-success-color-background-hover,
         var(--slds-c-button-success-color-background-hover, #2e844a)
@@ -840,6 +1210,12 @@
     --slds-c-button-success-text-color-hover: var(
         --avonni-button-success-text-color-hover
     );
+}
+
+/* In SLDS2, we force a transparent color border when the button is focused through keyboard */
+.avonni-button_success.slds2:focus-visible:not(:active) {
+    --slds-c-button-success-color-border-hover: transparent;
+    --slds-c-button-success-color-border: transparent;
 }
 
 .avonni-button__container_medium {
