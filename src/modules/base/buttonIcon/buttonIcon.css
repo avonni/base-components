@@ -579,16 +579,16 @@ otherwise the color background is transparent by default. */
     );
 }
 
-.avonni-button-icon_brand.slds2:active {
+.slds-button.avonni-button-icon_brand.slds2:active {
     --slds-c-button-color-background: var(
         --avonni-button-icon-brand-color-background-active,
-        var(--slds-g-color-accent-container-1, #066afe)
+        var(--slds-g-color-accent-container-2, #0250d9)
     );
 }
 
 /* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-icon.avonni-button-icon_brand:active {
-    --slds-c-button-brand-color-background-hover: var(
+    --slds-c-button-brand-color-background-active: var(
         --avonni-button-icon-brand-color-background-active
     );
     /* Exception "[kx-scope='button-brand']:active" class overwrites border-color to transparent. */

@@ -529,10 +529,6 @@ button.slds-button.avonni-button.avonni-button_border-filled:active {
 
 /* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button.avonni-button_brand:active {
-    /* Exception "[kx-scope='button-brand']:active" class overwrites background-color to value of --slds-c-button-brand-color-background. */
-    --slds-c-button-brand-color-background-active: var(
-        --avonni-button-brand-color-background-active
-    );
     /* Exception "[kx-scope='button-brand']:active" class overwrites border-color to transparent. */
     border-color: var(
         --avonni-button-brand-color-border-active,
@@ -541,24 +537,54 @@ button.slds-button.avonni-button.avonni-button_border-filled:active {
             var(--lwc-brandAccessibleActive, #014486)
         )
     );
+
     --slds-c-button-brand-text-color-active: var(
         --avonni-button-brand-text-color-active
     );
 }
+
+.slds-button.avonni-button.avonni-button_brand.slds1:active {
+    /* Exception "[kx-scope='button-brand']:active" class overwrites background-color to value of --slds-c-button-brand-color-background. */
+    --slds-c-button-brand-color-background: var(
+        --avonni-button-brand-color-background-active
+    );
+}
+
+.slds-button.avonni-button.avonni-button_brand.slds2:active {
+    --slds-c-button-brand-color-background-active: var(
+        --avonni-button-brand-color-background-active
+    );
+}
+
 .avonni-button_brand:hover:not(:active),
 .avonni-button_brand.slds1:focus:not(:active),
+.avonni-button_brand.slds2:hover:not(:active),
 .avonni-button_brand.slds2:focus-visible:not(:active) {
-    /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover" class overwrites background-color to value of --slds-c-button-brand-color-background */
-    --slds-c-button-brand-color-background-hover: var(
-        --avonni-button-brand-color-background-hover
-    );
-    /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover" class overwrites border-color to transparent */
+    /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover"
+       class overwrites border-color to transparent */
     border-color: var(
         --avonni-button-brand-color-border-hover,
         var(--slds-g-color-accent-container-2)
     );
+
     --slds-c-button-brand-text-color-hover: var(
         --avonni-button-brand-text-color-hover
+    );
+}
+
+.avonni-button_brand:hover:not(:active),
+.avonni-button_brand.slds1:focus:not(:active) {
+    /* Exception "[kx-scope='button-brand']:focus, [kx-scope='button-brand']:hover"
+   class overwrites background-color to value of --slds-c-button-brand-color-background */
+    --slds-c-button-brand-color-background: var(
+        --avonni-button-brand-color-background-hover
+    );
+}
+
+.avonni-button_brand.slds2:hover:not(:active),
+.avonni-button_brand.slds2:focus-visible:not(:active) {
+    --slds-c-button-brand-color-background-hover: var(
+        --avonni-button-brand-color-background-hover
     );
 }
 
