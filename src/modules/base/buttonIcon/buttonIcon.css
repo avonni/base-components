@@ -465,8 +465,8 @@ button.slds-button.avonni-button-icon.avonni-button-icon_border-filled:active {
 }
 
 /* In SLDS2, we force a transparent color border when the button is focused through keyboard */
-.avonni-button-icon_border.slds2:focus-visible:not(:active) {
-    --avonni-button-icon-border-color-border: transparent;
+.avonni-button-icon_border-filled.slds2:focus-visible:not(:active) {
+    --avonni-button-icon-border-filled-color-border: transparent;
 }
 
 .avonni-button-icon_border-inverse {
