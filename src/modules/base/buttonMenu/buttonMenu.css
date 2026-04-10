@@ -624,8 +624,15 @@ button.slds-button.avonni-button-menu.avonni-button-menu_border-filled:active {
     padding-bottom: var(--avonni-button-menu-button-brand-spacing-block-end, 0);
 }
 
+.slds-button.avonni-button-menu_brand.slds1:active {
+    --slds-c-button-brand-color-background-active: var(
+        --avonni-button-menu-button-brand-color-background-active
+    );
+}
+
 .slds-button.avonni-button-menu_brand.slds2:active {
-    --slds-c-button-color-background: var(
+    /* In SLDS2, we need to force the fallback value */
+    --slds-c-button-color-background-active: var(
         --avonni-button-menu-button-brand-color-background-active,
         var(--slds-g-color-accent-container-2, #0250d9)
     );
@@ -633,9 +640,6 @@ button.slds-button.avonni-button-menu.avonni-button-menu_border-filled:active {
 
 /* Leave .slds-button specificity so it takes precedence over hover and focus states */
 .slds-button.avonni-button-menu.avonni-button-menu_brand:active {
-    --slds-c-button-brand-color-background-active: var(
-        --avonni-button-menu-button-brand-color-background-active
-    );
     /* Exception "[kx-scope='button-brand']:active" class overwrites border-color to transparent. */
     border-color: var(
         --avonni-button-menu-button-brand-color-border-active,

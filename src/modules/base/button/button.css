@@ -336,14 +336,6 @@ button.slds-button.avonni-button.avonni-button_border:active {
 }
 
 .avonni-button_border-filled {
-    border-color: var(
-        --avonni-button-border-filled-color-border,
-        var(--slds-g-color-border-2, var(--slds-g-color-border-base-4, #747474))
-    );
-    color: var(
-        --avonni-button-border-filled-text-color,
-        var(--slds-s-button-color, var(--slds-g-color-neutral-base-50, #747474))
-    );
     padding-right: var(--avonni-button-border-filled-spacing-inline-end, 1rem);
     padding-left: var(--avonni-button-border-filled-spacing-inline-start, 1rem);
     padding-top: var(--avonni-button-border-filled-spacing-block-start, 0);
