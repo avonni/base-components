@@ -1370,7 +1370,7 @@ button.slds-button.avonni-button-menu.avonni-button-menu_container:active {
         var(--slds-c-button-success-color, #fff)
     );
 }
-.avonni-button-menu_success.slds2:focus:not(:active),
+.avonni-button-menu_success.slds2:focus-visible:not(:active),
 .avonni-button-menu_success.slds2:hover:not(:active) {
     --slds-c-button-color-border-hover: var(
         --avonni-button-menu-button-success-color-border-hover,

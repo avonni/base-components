@@ -451,7 +451,7 @@ button.slds-button.avonni-button-icon.avonni-button-icon_border-filled:active {
 .avonni-button-icon_border-filled:focus-visible,
 .avonni-button-icon_border-filled:hover,
 .avonni-button-icon_border-filled.slds1:focus,
-.avonni-button-icon_border.slds2:focus-visible:not(:active) {
+.avonni-button-icon_border-filled.slds2:focus-visible:not(:active) {
     background-color: var(
         --avonni-button-icon-border-filled-color-background-hover,
         var(
@@ -923,11 +923,11 @@ button.slds-button.avonni-button-icon.avonni-button-icon_container:active {
 }
 
 .avonni-button-icon_destructive-text.slds1 {
-    --slds-c-button-destructive-spacing-inline-end: var(
+    --slds-c-button-text-destructive-spacing-inline-end: var(
         --avonni-button-icon-text-destructive-spacing-inline-end,
         0
     );
-    --slds-c-button-destructive-spacing-inline-start: var(
+    --slds-c-button-text-destructive-spacing-inline-start: var(
         --avonni-button-icon-text-destructive-spacing-inline-start,
         0
     );
