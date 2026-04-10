@@ -1119,7 +1119,7 @@ button.slds-button.avonni-button.avonni-button_container:active {
 }
 
 .avonni-button_neutral:hover,
-.avonni-button_neutral.slds2:focus-visible,
+.avonni-button_neutral.slds2:focus-visible:not(:active),
 .avonni-button_neutral.slds1:focus {
     --slds-c-button-neutral-color-background-hover: var(
         --avonni-button-neutral-color-background-hover

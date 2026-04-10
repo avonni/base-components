@@ -129,9 +129,9 @@
     padding-bottom: var(--avonni-button-icon-bare-spacing-block-end, 0);
 }
 
-/* In SLDS2, --slds-c-button-color-background-active and --slds-c-button-color-border-active have no effect for this variant, 
-so we have to set the color directly */
-.slds-button.avonni-button-icon_bare.slds2:active {
+/* In SLDS2, --slds-c-button-color-background-active and --slds-c-button-color-border-active have no effect for this variant 
+because of slds-button_icon, so we have to set the color directly */
+button.slds-button.avonni-button-icon_bare.slds2:active {
     --slds-c-button-color-background: var(
         --avonni-button-icon-bare-color-background-active
     );
@@ -267,7 +267,7 @@ button.slds-button.avonni-button-icon.avonni-button-icon_bare:active {
 
 /* In SLDS2, --slds-c-button-color-background-active and --slds-c-button-color-border-active have no effect for this variant, 
 so we have to set the color directly */
-.slds-button.avonni-button-icon_base.slds2:active {
+button.slds-button.avonni-button-icon_base.slds2:active {
     --slds-c-button-color-background: var(
         --avonni-button-icon-base-color-background-active
     );
@@ -277,7 +277,7 @@ so we have to set the color directly */
 }
 
 /* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button-icon.avonni-button-icon_base:active {
+button.slds-button.avonni-button-icon.avonni-button-icon_base:active {
     --slds-c-button-color-background-active: var(
         --avonni-button-icon-base-color-background-active
     );
