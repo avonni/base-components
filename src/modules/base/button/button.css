@@ -184,7 +184,7 @@
 }
 
 /* Leave .slds-button and .avonni-button specificity so it takes precedence over hover and focus states */
-.slds-button.avonni-button_bare-inverse:active {
+.slds-button.avonni-button.avonni-button_bare-inverse:active {
     background-color: var(
         --avonni-button-bare-inverse-color-background-active,
         transparent
@@ -201,7 +201,7 @@
 
 .avonni-button_bare-inverse:focus-visible,
 .avonni-button_bare-inverse:hover,
-.avonni-button_bare-inverse:focus {
+.avonni-button_bare-inverse.slds1:focus {
     background-color: var(
         --avonni-button-bare-inverse-color-background-hover,
         transparent
