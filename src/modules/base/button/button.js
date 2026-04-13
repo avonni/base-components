@@ -1,7 +1,7 @@
 import { isCustomIconType, isStandardIconType } from 'c/iconUtils';
 import PrimitiveButton from 'c/primitiveButton';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { hasAnimation, isCSR } from 'c/utilsPrivate';
+import { hasAnimation, isOrgSlds2, isCSR } from 'c/utilsPrivate';
 import { api } from 'lwc';
 import { animate, getKineticsAttributes } from './kinetics';
 
@@ -241,7 +241,9 @@ export default class Button extends PrimitiveButton {
                 'avonni-button__container_large':
                     this.iconSize === 'large' && this.showMedia,
                 'avonni-button__container_medium':
-                    this.iconSize === 'medium' && this.showMedia
+                    this.iconSize === 'medium' && this.showMedia,
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             });
     }
 

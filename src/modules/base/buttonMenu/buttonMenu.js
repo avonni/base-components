@@ -3,7 +3,7 @@ import { AutoPosition, Direction } from 'c/positionLibrary';
 import { ButtonMenuBase } from 'c/buttonMenuUtils';
 import { Tooltip } from 'c/tooltipLibrary';
 import { classSet, normalizeBoolean, normalizeString } from 'c/utils';
-import { buttonGroupOrderClass, keyValues } from 'c/utilsPrivate';
+import { buttonGroupOrderClass, isOrgSlds2, keyValues } from 'c/utilsPrivate';
 import { api } from 'lwc';
 
 const BUTTON_VARIANTS = {
@@ -544,7 +544,9 @@ export default class ButtonMenu extends ButtonMenuBase {
             'slds-button_text-destructive': this.variant === 'destructive-text',
             'slds-button_inverse': this.variant === 'inverse',
             'slds-button_neutral': this.variant === 'neutral',
-            'slds-button_success': this.variant === 'success'
+            'slds-button_success': this.variant === 'success',
+            slds1: !isOrgSlds2(),
+            slds2: isOrgSlds2()
         });
 
         if (this.stretch) {

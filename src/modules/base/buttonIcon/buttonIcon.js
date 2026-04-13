@@ -3,6 +3,7 @@ import PrimitiveButton from 'c/primitiveButton';
 import { Tooltip, TooltipType } from 'c/tooltipLibrary';
 import { classSet, normalizeString } from 'c/utils';
 import { api } from 'lwc';
+import { isOrgSlds2 } from 'c/utilsPrivate';
 
 const BUTTON_VARIANTS = {
     valid: [
@@ -306,7 +307,9 @@ export default class ButtonIcon extends PrimitiveButton {
                 'avonni-button-icon_large':
                     !this.isBare && this.size === 'large',
                 'avonni-button-icon_medium':
-                    !this.isBare && this.size === 'medium'
+                    !this.isBare && this.size === 'medium',
+                slds1: !isOrgSlds2(),
+                slds2: isOrgSlds2()
             });
     }
 

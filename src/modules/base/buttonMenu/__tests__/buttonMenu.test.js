@@ -1047,7 +1047,7 @@ describe('Button Menu', () => {
                         '[data-element-id="button"]'
                     );
                     expect(button.className).toContain(
-                        'avonni-button-menu_border avonni-button-menu__button_label'
+                        'slds-button avonni-button-menu avonni-button-menu_border slds1 avonni-button-menu__button_label'
                     );
                 });
             });
