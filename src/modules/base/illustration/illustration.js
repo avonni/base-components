@@ -130,6 +130,7 @@ export default class Illustration extends LightningElement {
      *
      * @type {string}
      * @public
+     *
      * @default text-only
      */
     @api
