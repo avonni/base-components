@@ -768,9 +768,10 @@ export default class InputCounter extends LightningElement {
         this.updateProxyInputAttributes('value');
 
         /**
+         * The event fired when the value changes.
+         *
          * @event
          * @name change
-         * @description The event fired when the value changes.
          * @param {number} value New value of the input.
          * @public
          */

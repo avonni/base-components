@@ -964,7 +964,8 @@ export default class InputPen extends LightningElement {
      *
      * @public
      */
-    @api focus() {
+    @api
+    focus() {
         const focusableElement =
             this.template.querySelector('[data-focusable]');
         if (focusableElement) {
