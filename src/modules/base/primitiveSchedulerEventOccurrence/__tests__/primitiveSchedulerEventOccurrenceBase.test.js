@@ -174,7 +174,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
             element.addEventListener('privatemousedown', mouseDownHandler);
 
             const eventWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             const mouseDown = new CustomEvent('mousedown');
             mouseDown.button = 0;
@@ -194,7 +194,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
 
             return Promise.resolve().then(() => {
                 const eventWrapper = element.shadowRoot.querySelector(
-                    '[data-element-id="div-event-occurrence"]'
+                    '[data-element-id="div-event-wrapper"]'
                 );
                 const mouseDown = new CustomEvent('mousedown');
                 mouseDown.button = 0;
@@ -456,7 +456,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
 
         return Promise.resolve().then(() => {
             const eventWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
             const mouseDown = new CustomEvent('mousedown');
@@ -530,7 +530,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
 
         return Promise.resolve().then(() => {
             const eventWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
+                '[data-element-id="div-event-wrapper"]'
             );
             const mouseDown = new CustomEvent('mousedown');
             mouseDown.button = 0;
@@ -860,7 +860,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
     it('Scheduler event occurence: focus method', () => {
         const handler = jest.fn();
         const wrapper = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         wrapper.focus = handler;
 
@@ -1103,7 +1103,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privateblur', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         eventElement.dispatchEvent(new CustomEvent('blur'));
 
@@ -1122,7 +1122,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privatecontextmenu', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         const event = new CustomEvent('contextmenu');
         event.clientX = 10;
@@ -1148,7 +1148,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privatecontextmenu', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         const event = new CustomEvent('keydown');
         event.clientX = 10;
@@ -1176,7 +1176,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privatedblclick', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         const event = new CustomEvent('dblclick');
         event.clientX = 10;
@@ -1274,7 +1274,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privatefocus', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         const event = new CustomEvent('focus');
         event.clientX = 10;
@@ -1338,7 +1338,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privatemouseenter', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         const event = new CustomEvent('mouseenter');
         event.clientX = 10;
@@ -1365,7 +1365,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         element.addEventListener('privatemouseleave', handler);
 
         const eventElement = element.shadowRoot.querySelector(
-            '[data-element-id="div-event-occurrence"]'
+            '[data-element-id="div-event-wrapper"]'
         );
         const event = new CustomEvent('mouseleave');
         event.clientX = 10;
