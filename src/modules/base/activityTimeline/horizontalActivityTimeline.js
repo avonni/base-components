@@ -1,8 +1,8 @@
-import * as d3 from 'd3';
 import { getFormattedDate } from 'c/dateTimeUtils';
 import { computeSldsClass, createAvatar } from 'c/iconUtils';
 import { convertHTMLToPlainText } from 'c/utils';
 import { keyValues } from 'c/utilsPrivate';
+import * as d3 from 'd3';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -1178,7 +1178,7 @@ export class HorizontalActivityTimeline {
      */
     findEndPositionOfItem(item) {
         const itemGroup = this._timelineSVG.select(
-            '#timeline-item-' + item.name
+            `[id="timeline-item-${item.name}"]`
         );
         const textLength = itemGroup
             .select('text')
@@ -1221,7 +1221,7 @@ export class HorizontalActivityTimeline {
      */
     findStartPositionOfItem(item) {
         const itemGroup = this._timelineSVG.select(
-            '#timeline-item-' + item.name
+            `[id="timeline-item-${item.name}"]`
         );
         const xTextStartPosition = Number(itemGroup.select('text').attr('x'));
         return (
