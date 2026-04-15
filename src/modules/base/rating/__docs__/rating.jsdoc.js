@@ -169,3 +169,32 @@
  * @default 400
  * @type font
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-rating-button-color-background-disabled-selected
+ * @type color
+ * @default #c9c7c5
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-rating-button-color-border-disabled-selected
+ * @type color
+ * @default #c9c7c5
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-rating-button-radius-border
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-rating-button-sizing-border
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-rating-button-styling-border
+ * @type string
+ * @default solid
+ */

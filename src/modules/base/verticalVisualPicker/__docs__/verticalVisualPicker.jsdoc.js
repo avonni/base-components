@@ -293,3 +293,15 @@
  * @default 1px
  * @type sizing
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-help-message-height
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-legend-height
+ * @type dimension
+ * @default 0px
+ */

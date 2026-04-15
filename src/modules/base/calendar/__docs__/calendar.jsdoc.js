@@ -136,3 +136,9 @@
  * @property {string} iconPosition The side on which the icon is displayed. Default is left and accepted values are left and right.
  * @property {string} iconVariant The color scheme for the icon. Accepted variants include inverse, success, warning, and error.
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-width
+ * @type dimension
+ * @default fit-content
+ */

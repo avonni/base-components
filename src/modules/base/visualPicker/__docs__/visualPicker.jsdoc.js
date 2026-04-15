@@ -516,3 +516,102 @@
  * @default 15rem
  * @type sizing
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-overlay-background
+ * @type color
+ * @default linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.55) 75%, rgba(0, 0, 0, 0) 100%)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-overlay-fields-label-text-color
+ * @type color
+ * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-overlay-fields-value-text-color
+ * @type color
+ * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-overlay-text-color
+ * @type color
+ * @default #fff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-color-background-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-color-background-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-color-border-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-color-border-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-radius-border
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-sizing-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-spacing-block-end
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-spacing-block-start
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-spacing-inline-end
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-spacing-inline-start
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-show-more-button-text-color-hover
+ * @type color
+ */

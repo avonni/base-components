@@ -74,12 +74,7 @@
  * @default normal
  * @type font
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-metric-label-font-weigth
- * @default normal
- * @type (string|number)
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-metric-label-line-clamp
@@ -324,4 +319,10 @@
  * @name --avonni-metric-positive-trend-text-color
  * @default #2e844a
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-label-font-weight
+ * @type font
+ * @default normal
  */

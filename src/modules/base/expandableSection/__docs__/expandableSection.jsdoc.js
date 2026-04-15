@@ -119,11 +119,7 @@
  * @default transparent
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-expandable-section-shaded-header-color-border-active
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-text-color

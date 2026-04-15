@@ -18,12 +18,7 @@
  * @type dimension
  * @default 1rem
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-radius-border
- * @type radius
- * @default 0.25rem
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-sizing-border
@@ -104,12 +99,7 @@
  * @type color
  * @default transparent
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-text-color
- * @type color
- * @default #fff
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-bare-inverse-color-background-active
@@ -122,12 +112,7 @@
  * @type color
  * @default rgba(255, 255, 255, 0.75)
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-text-color-active
- * @type color
- * @default rgba(255, 255, 255, 0.75)
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-bare-inverse-color-background-hover
@@ -139,12 +124,6 @@
  * @name --avonni-button-icon-dialog-bare-inverse-color-border-hover
  * @type color
  * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-bare-inverse-text-color-hover
- * @type color
- * @default rgba(255, 255, 255, 0.5)
  */
 
 /**
@@ -434,12 +413,7 @@
  * @type color
  * @default #0176d3
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-text-color
- * @type color
- * @default #0176d3
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-outline-brand-color-background-active
@@ -452,12 +426,7 @@
  * @type color
  * @default #0176d3
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-outline-brand-color-background-hover
@@ -469,12 +438,6 @@
  * @name --avonni-button-icon-dialog-outline-brand-color-border-hover
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-outline-brand-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -495,24 +458,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-color-background-active
- * @type color
- * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-color-border-active
- * @type color
- * @default #014486
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-container-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-container-color-background-hover
@@ -616,12 +562,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-text-destructive-text-color-active
- * @type color
- * @default #8e030f
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-text-destructive-color-background-hover
@@ -708,12 +649,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-text-color
- * @type color
- * @default #0176d3
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-neutral-color-background-active
@@ -726,12 +662,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-icon-dialog-neutral-color-background-hover
@@ -743,12 +674,6 @@
  * @name --avonni-button-icon-dialog-neutral-color-border-hover
  * @type color
  * @default #747474
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-icon-dialog-neutral-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -832,4 +757,29 @@
  * @name --avonni-button-icon-dialog-image-object-fit
  * @type string
  * @default cover
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-icon-dialog-bare-inverse-background-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-icon-dialog-destructive-text-color-hover-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-icon-dialog-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-icon-dialog-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-icon-dialog-text-color-hover
+ * @type color
  */

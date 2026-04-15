@@ -315,3 +315,80 @@
  * @default 15rem
  * @type radius
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-sizing-border-disabled
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-button-styling-border-disabled
+ * @type string
+ * @default solid
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-color-background-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-color-background-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-color-border-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-color-border-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-spacing-block-end
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-spacing-block-start
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-spacing-inline-end
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-spacing-inline-start
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-overflow-button-text-color-hover
+ * @type color
+ */

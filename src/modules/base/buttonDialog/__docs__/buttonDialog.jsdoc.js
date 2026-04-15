@@ -29,12 +29,7 @@
  * @type dimension
  * @default 1.875rem
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-radius-border
- * @type radius
- * @default 0.25rem
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-sizing-border
@@ -163,12 +158,7 @@
  * @type color
  * @default transparent
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-text-color
- * @type color
- * @default #fff
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-bare-inverse-spacing-inline-end
@@ -205,12 +195,7 @@
  * @type color
  * @default rgba(255, 255, 255, 0.75)
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-text-color-active
- * @type color
- * @default rgba(255, 255, 255, 0.75)
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-bare-inverse-color-background-hover
@@ -222,12 +207,6 @@
  * @name --avonni-button-dialog-bare-inverse-color-border-hover
  * @type color
  * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-bare-inverse-text-color-hover
- * @type color
- * @default rgba(255, 255, 255, 0.5)
  */
 
 /**
@@ -637,12 +616,7 @@
  * @type color
  * @default #0176d3
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-outline-brand-text-color
- * @type color
- * @default #0176d3
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-outline-brand-spacing-inline-end
@@ -679,12 +653,7 @@
  * @type color
  * @default #0176d3
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-outline-brand-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-outline-brand-color-background-hover
@@ -696,12 +665,6 @@
  * @name --avonni-button-dialog-outline-brand-color-border-hover
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-outline-brand-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -746,24 +709,7 @@
  * @type dimension
  * @default 0
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-container-color-background-active
- * @type color
- * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-container-color-border-active
- * @type color
- * @default #014486
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-container-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-container-color-background-hover
@@ -915,12 +861,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-text-destructive-text-color-active
- * @type color
- * @default #8e030f
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-text-destructive-color-background-hover
@@ -1031,12 +972,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-neutral-text-color
- * @type color
- * @default #0176d3
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-neutral-spacing-inline-end
@@ -1073,12 +1009,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-neutral-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-dialog-neutral-color-background-hover
@@ -1090,12 +1021,6 @@
  * @name --avonni-button-dialog-neutral-color-border-hover
  * @type color
  * @default #747474
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-dialog-neutral-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -1203,4 +1128,29 @@
  * @name --avonni-button-dialog-image-object-fit
  * @type string
  * @default cover
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-dialog-bare-inverse-background-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-dialog-destructive-text-color-hover-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-dialog-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-dialog-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-dialog-text-color-hover
+ * @type color
  */

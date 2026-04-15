@@ -158,3 +158,9 @@
  * @type number
  * @default 2
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-header-font-style
+ * @type font
+ * @default normal
+ */

@@ -297,3 +297,15 @@
  * @default 0.5rem
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-avatar-icon-color-foreground
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-avatar-icon-color-foreground-default
+ * @type color
+ * @default #ffffff
+ */

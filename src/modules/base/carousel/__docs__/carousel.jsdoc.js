@@ -118,11 +118,7 @@
  * @name --avonni-carousel-item-image-sizing-height
  * @type length-percentage
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-carousel-item-image-positioning-object-fit
- * @type keyword
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-item-image-positioning-object-position
@@ -224,24 +220,14 @@
  * @default #ffffff
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-carousel-inactive-indicator-shaded-color-background-hover
- * @default #fafaf9
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-shaded-color-border
  * @default #747474
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-carousel-inactive-indicator-shaded-color-border-hover
- * @default #747474
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-background

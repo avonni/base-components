@@ -268,12 +268,7 @@
  * @default #0176d3
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-hero-banner-primary-button-brand-color-border-active
- * @default #014486
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-brand-color-border-hover

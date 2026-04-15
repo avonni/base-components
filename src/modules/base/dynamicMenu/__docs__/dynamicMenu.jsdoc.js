@@ -185,24 +185,6 @@
  * @type color
  * @default transparent
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-inverse-text-color
- * @type color
- * @default #fff
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-inverse-text-color-active
- * @type color
- * @default rgba(255, 255, 255, 0.75)
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-inverse-text-color-hover
- * @type color
- * @default rgba(255, 255, 255, 0.5)
- */
 
 /**
  * @memberof stylingHooks
@@ -514,24 +496,6 @@
  * @name --avonni-dynamic-menu-outline-brand-color-border-hover
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-outline-brand-text-color
- * @type color
- * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-outline-brand-text-color-active
- * @type color
- * @default #014486
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-outline-brand-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -963,4 +927,34 @@
  * @name --avonni-dynamic-menu-item-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-inverse-background-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-inverse-background-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-inverse-background-color-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-text-color-hover
+ * @type color
  */

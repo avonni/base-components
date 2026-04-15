@@ -345,3 +345,15 @@
  * @default 0.5rem
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-container-sizing-border
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-container-styling-border
+ * @type string
+ * @default solid
+ */

@@ -173,3 +173,87 @@
  * @default #1589ee
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-button-radius-border
+ * @type dimension
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-button-text-color-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-color-background
+ * @type color
+ * @default #f3f3f3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-background
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-background-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-background-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-border
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-border-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-border-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-radius-border
+ * @type dimension
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-sizing-border
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-text-color
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-text-color-active
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-text-color-hover
+ * @type color
+ * @default #ffffff
+ */

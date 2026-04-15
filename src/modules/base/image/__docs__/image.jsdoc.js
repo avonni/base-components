@@ -89,3 +89,9 @@
  * @default 0
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-image-magnifier-border
+ * @type string
+ * @default 1px solid #ccc
+ */
