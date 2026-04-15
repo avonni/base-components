@@ -1,4 +1,14 @@
 /**
+ * @namespace slots
+ */
+/**
+ * Placeholder for custom actions.
+ *
+ * @memberof slots
+ * @name actions
+ */
+
+/**
  * @namespace stylingHooks
  */
 /**
