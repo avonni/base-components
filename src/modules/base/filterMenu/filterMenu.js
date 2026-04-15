@@ -618,7 +618,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Deprecated. Set the items in the type attributes.
      *
-     * @type {object[]}
+     * @type {AvonniFilterMenuItem[]}
      * @deprecated
      */
     @api
@@ -792,7 +792,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Attributes specific to the type (see **Types and Type Attributes**).
      *
-     * @type {object}
+     * @type {AvonniFilterMenuTypeAttributes}
      * @public
      */
     @api

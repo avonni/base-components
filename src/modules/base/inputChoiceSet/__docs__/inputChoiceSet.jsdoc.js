@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} Option
+ * @typedef {object} AvonniInputChoiceSetOption
  * @name options
  * @property {string} alternativeText Alternative text of the option.
  * @property {string} color CSS color value. If present, the checkbox, radio button or button will take this color.
@@ -13,7 +13,7 @@
  * @property {string} value Value of the option.
  */
 /**
- * @typedef {Object} TypeAttributes
+ * @typedef {object} AvonniInputChoiceSetTypeAttributes
  * @name typeAttributes
  * @property {string} checkmarkPosition Describes the position of the checkmark for button and toggle when showCheckmark is present. Valid values include left and right.
  * @property {boolean} displayAsRow If present, display buttons as row.
@@ -24,7 +24,7 @@
  * @property {boolean} stretch If present, vertical or horizontal button groups stretch to full width.
  */
 /**
- * @typedef {Object} OrientationAttributes
+ * @typedef {object} AvonniInputChoiceSetOrientationAttributes
  * @name orientationAttributes
  * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
  * @property {string|number} largeContainerCols Number of columns on small container widths. Width is greater or equal to 1024px. See `cols` for accepted values.

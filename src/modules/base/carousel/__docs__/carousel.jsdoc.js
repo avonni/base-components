@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} Item
+ * @typedef {object} AvonniCarouselItem
  * @name items
  * @property {string} name Required. Unique name for the item.
  * @property {string} title Primary string that will be used as the heading.
@@ -9,15 +9,23 @@
  * @property {string} href Item link.
  * @property {string} src URL of the item image.
  * @property {string} target Target for the item link.
- * @property {object[]} actions Array of action objects for the item.
+ * @property {AvonniCarouselAction[]} actions Array of action objects for the item.
  */
 /**
- * @typedef {Object} Action
+ * @typedef {object} AvonniCarouselAction
  * @name actions
  * @property {string} label Action label.
  * @property {string} name Required.  Unique name of the action. It will be returned by the actionclick event.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
  * @property {boolean} disabled If present, the action item is shown as disabled. Defaults to false.
+ */
+
+/**
+ * @typedef {object} AvonniCarouselAssistiveText
+ * @property {string} autoplayButton Assistive text for the autoplay button. Defaults to 'Play / Stop auto-play'.
+ * @property {string} loading Assistive text for the loading state. Defaults to 'Loading...'.
+ * @property {string} nextPanel Assistive text for the next panel button. Defaults to 'Next Panel'.
+ * @property {string} previousPanel Assistive text for the previous panel button. Defaults to 'Previous Panel'.
  */
 
 /**

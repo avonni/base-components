@@ -118,7 +118,7 @@ export default class Calendar extends LightningElement {
      * Array of date label objects. If a date has several labels, the first one in the array will be used.
      *
      * @public
-     * @type {object[]}
+     * @type {AvonniCalendarDateLabel[]}
      */
     @api
     get dateLabels() {
@@ -156,7 +156,7 @@ export default class Calendar extends LightningElement {
      * Array of disabled dates. The dates should be a Date object, a timestamp, or an ISO8601 formatted string.
      *
      * @public
-     * @type {object[]}
+     * @type {string[]}
      */
     @api
     get disabledDates() {
@@ -191,7 +191,7 @@ export default class Calendar extends LightningElement {
      * Array of marked date objects. A maximum of three markers can be displayed on a same date.
      *
      * @public
-     * @type {object[]}
+     * @type {AvonniCalendarMarkedDate[]}
      */
     @api
     get markedDates() {
@@ -210,7 +210,7 @@ export default class Calendar extends LightningElement {
      * Specifies the maximum date, which the calendar can show.
      *
      * @public
-     * @type {object}
+     * @type {Date|string}
      * @default Date(2099, 11, 31)
      */
     @api
@@ -235,7 +235,7 @@ export default class Calendar extends LightningElement {
      * Specifies the minimum date, which the calendar can show.
      *
      * @public
-     * @type {object}
+     * @type {Date|string}
      * @default Date(1900, 0, 1)
      */
     @api

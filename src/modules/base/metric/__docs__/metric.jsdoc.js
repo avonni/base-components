@@ -1,5 +1,5 @@
 /**
- * @typedef {object} MetricAvatar
+ * @typedef {object} AvonniMetricAvatar
  * @name avatar
  * @property {string} alternativeText The alternative text used to describe the avatar.
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.

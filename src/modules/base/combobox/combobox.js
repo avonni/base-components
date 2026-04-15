@@ -190,7 +190,7 @@ export default class Combobox extends LightningElement {
     /**
      * Array of action objects. The actions are displayed at the end of the combobox options.
      *
-     * @type {object[]}
+     * @type {AvonniComboboxAction[]}
      * @public
      */
     @api
@@ -219,7 +219,7 @@ export default class Combobox extends LightningElement {
     /**
      * Action object. The back action is used to go back to the previous level, after clicking on an option that has nested options.
      *
-     * @type {object}
+     * @type {AvonniComboboxAction}
      * @default { iconName: 'utility:chevronleft', label: Label of the parent option }
      * @public
      */
@@ -305,7 +305,7 @@ export default class Combobox extends LightningElement {
     /**
      * Array of group objects. The groups are used to separate the options inside the drop-down.
      *
-     * @type {object[]}
+     * @type {AvonniComboboxGroup[]}
      * @public
      */
     @api
@@ -509,7 +509,7 @@ export default class Combobox extends LightningElement {
     /**
      * Array of option objects.
      *
-     * @type {object[]}
+     * @type {AvonniComboboxOption[]}
      * @public
      */
     @api
@@ -589,7 +589,7 @@ export default class Combobox extends LightningElement {
     /**
      * Array of scope objects. The scopes are displayed in a drop-down menu, to the left of the combobox input.
      *
-     * @type {object[]}
+     * @type {AvonniComboboxScope[]}
      * @public
      */
     @api
@@ -607,7 +607,7 @@ export default class Combobox extends LightningElement {
     /**
      * Array of group objects. The groups are used to separate the scopes inside the drop-down.
      *
-     * @type {object[]}
+     * @type {AvonniComboboxGroup[]}
      * @public
      */
     @api

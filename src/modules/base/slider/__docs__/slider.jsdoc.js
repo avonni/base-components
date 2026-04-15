@@ -1,8 +1,21 @@
 /**
- * @typedef {Object[]} CustomLabels
+ * @typedef {object} AvonniSliderCustomLabels
  * @name customLabels
  * @property {string} label Label to be displayed as custom label.
  * @property {number} value Decimal value associated with custom label. Custom label will be displayed at the decimal equivalent of this value on the slider.
+ */
+
+/**
+ * @typedef {object} AvonniSliderUnitAttributes
+ * @property {string} currencyCode Only used by the currency unit. The currency code to be used for the currency unit.
+ * @property {string} currencyDisplayAs Only used by the currency unit. The currency display as to be used for the currency unit.
+ * @property {AvonniSliderCustomLabels[]} customLabels Only used by the percent unit. If true, the value will be formatted as a percentage.
+ * @property {string} isFormatted Only used by the percent unit. If true, the value will be formatted as a percentage.
+ * @property {number} minimumIntegerDigits The minimum number of integer digits to be used for the currency unit.
+ * @property {number} minimumFractionDigits The minimum number of fraction digits to be used for the currency unit.
+ * @property {number} maximumFractionDigits The maximum number of fraction digits to be used for the currency unit.
+ * @property {number} minimumSignificantDigits The minimum number of significant digits to be used for the currency unit.
+ * @property {number} maximumSignificantDigits The maximum number of significant digits to be used for the currency unit.
  */
 
 /**

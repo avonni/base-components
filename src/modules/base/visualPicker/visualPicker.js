@@ -282,7 +282,7 @@ export default class VisualPicker extends LightningElement {
      * Column attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols
      * Number of columns depending on the width of the container. See 'cols' for accepted values.
      *
-     * @type {object}
+     * @type {AvonniColumnAttributes}
      * @public
      */
     @api
@@ -354,7 +354,7 @@ export default class VisualPicker extends LightningElement {
     /**
      * Field attributes: variant, cols
      *
-     * @type {object}
+     * @type {AvonniFieldAttributes}
      * @public
      */
     @api
@@ -415,7 +415,7 @@ export default class VisualPicker extends LightningElement {
     /**
      * Image attributes: fallbackSrc, cropFit, position, size and height.
      *
-     * @type {object}
+     * @type {AvonniImageAttributes}
      * @public
      */
     @api
@@ -475,7 +475,7 @@ export default class VisualPicker extends LightningElement {
     /**
      * Array of items with attributes populating the visual picker.
      *
-     * @type {object[]}
+     * @type {AvonniVisualPickerItem[]}
      * @public
      */
     @api

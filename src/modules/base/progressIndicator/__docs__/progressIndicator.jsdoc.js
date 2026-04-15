@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} ProgressIndicatorSteps
+ * @typedef {Object} AvonniProgressIndicatorSteps
  * @name step
  * @property {string} assistiveText Description of the step for screen-readers.
  * @property {string} label Text label to title the step.

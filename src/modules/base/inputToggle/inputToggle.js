@@ -1,17 +1,17 @@
-import { LightningElement, api } from 'lwc';
-import { synchronizeAttrs, getRealDOMId, isOrgSlds2 } from 'c/utilsPrivate';
+import {
+    FieldConstraintApiWithProxyInput,
+    InteractingState,
+    normalizeVariant,
+    VARIANT
+} from 'c/inputUtils';
 import {
     classSet,
     normalizeAriaAttribute,
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import {
-    InteractingState,
-    FieldConstraintApiWithProxyInput,
-    normalizeVariant,
-    VARIANT
-} from 'c/inputUtils';
+import { getRealDOMId, isOrgSlds2, synchronizeAttrs } from 'c/utilsPrivate';
+import { api, LightningElement } from 'lwc';
 
 const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';

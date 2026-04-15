@@ -178,7 +178,7 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Array of menu objects.
      *
-     * @type {object[]}
+     * @type {AvonniFilterMenuGroupMenu[]}
      * @public
      */
     @api

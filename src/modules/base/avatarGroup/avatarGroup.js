@@ -271,7 +271,7 @@ export default class AvatarGroup extends LightningElement {
 
     /**
      * An array of items to be rendered as avatar in a group.
-     * @type {object[]}
+     * @type {AvonniAvatarGroupItem[]}
      * @public
      */
     @api

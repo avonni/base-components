@@ -487,9 +487,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>. The value is read-only.
+     * Value of the input. The value is read-only.
      *
-     * @type {object}
+     * @type {AvonniInputDateRangeValue}
      * @public
      */
     @api

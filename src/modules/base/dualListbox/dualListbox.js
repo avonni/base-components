@@ -1,5 +1,4 @@
-import { LightningElement, api } from 'lwc';
-import { equal, getListHeight, isOrgSlds2 } from 'c/utilsPrivate';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import {
     classSet,
     deepCopy,
@@ -9,7 +8,8 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utils';
-import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { equal, getListHeight, isOrgSlds2 } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 import { handleKeyDownOnOption } from './keyboard';
 import Option from './option';
 
@@ -550,7 +550,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Array of option objects that are available for selection.
      *
-     * @type {object[]}
+     * @type {AvonniDualListboxOption[]}
      * @public
      */
     @api

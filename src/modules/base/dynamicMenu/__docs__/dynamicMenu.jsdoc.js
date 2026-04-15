@@ -1,13 +1,14 @@
 /**
- * @typedef {Object} DynamicMenuItem
+ * @typedef {object} AvonniDynamicMenuItem
  * @name items
  * @property {string} label Item label.
  * @property {string[]} meta An array of descriptive meta tags text.
  * @property {string} value Item text value.
- * @property {object} avatar avatar object.
+ * @property {AvonniDynamicMenuAvatar} avatar avatar object.
+ * @property {AvonniDynamicMenuAction} actions Array of action objects.
  */
 /**
- * @typedef {Object} DynamicMenuAction
+ * @typedef {object} AvonniDynamicMenuAction
  * @name actions
  * @property {string} alternativeText The alternative text used to describe the icon. This text should describe what happens when you click the button, for example 'Upload File', not what the icon looks like, 'Paperclip'.
  * @property {boolean} disabled If present, the action item is shown as disabled. Defaults to false.
@@ -15,7 +16,7 @@
  * @property {string} name Required.  Unique name of the action. It will be returned by the actionclick event.
  */
 /**
- * @typedef {Object} DynamicMenuAvatar
+ * @typedef {object} AvonniDynamicMenuAvatar
  * @name avatar
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.

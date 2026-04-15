@@ -222,7 +222,7 @@ export default class VerticalVisualPicker extends LightningElement {
     /**
      * Array of items with attributes populating the vertical visual picker.
      *
-     * @type {object[]}
+     * @type {VerticalVisualPickerItem[]}
      * @public
      */
     @api

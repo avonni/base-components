@@ -1,25 +1,25 @@
 /**
- * @typedef {Object} VisualPickerItem
+ * @typedef {object} AvonniVisualPickerItem
  * @name items
- * @property {object} avatar An object with item fields to be rendered as an avatar.
+ * @property {AvonniVisualPickerAvatar} avatar An object with item fields to be rendered as an avatar.
  * @property {string} avatarPosition If present, sets the position of the avatar. Valid values include top, bottom, right, left, right-of-content and left-of-content. The value defaults to left.
  * @property {string} avatarVerticalAlignment If present, sets the vertical aligment of the avatar. Valid values includes top, bottom and center. The value defaults to center.
  * @property {string} description The description can include text, and is displayed under the title inside the figure.
  * @property {string} descriptionPosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
- * @property {object[]} fields An object with fields displayed in the visual picker.
+ * @property {AvonniVisualPickerField[]} fields An object with fields displayed in the visual picker.
  * @property {boolean} hidden If present, the item is hidden and won't be displayed. Default is false.
  * @property {string} imgAlternativeText The assistive text for the image in the figure.
  * @property {string} imgSrc The URL of the image in the figure.
  * @property {string} itemDescription The description can include text, and is displayed under the title.
  * @property {string} itemTitle The title can include text and is displayed under the item.
- * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the visual picker item figure.
+ * @property {AvonniVisualPickerTag[]} tags Array of tag objects. The tags will be displayed as badges in the visual picker item figure.
  * @property {string} title The title can include text and is displayed inside the figure.
  * @property {string} titlePosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
  * @property {string} value Required. A unique value for the item.
  */
 /**
- * @typedef {Object} VisualPickerAvatar
+ * @typedef {object} AvonniVisualPickerAvatar
  * @name itemAvatar
  * @property {string} alternativeText The alternative text used to describe the avatar, which is displayed as hover text on the image.
  * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -31,19 +31,19 @@
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
  */
 /**
- * @typedef {Object} VisualPickerField
+ * @typedef {object} AvonniVisualPickerField
  * @name itemFields
  * @property {string} label Field label.
  * @property {string} value The value of the field.
  */
 /**
- * @typedef {Object} VisualPickerTag
+ * @typedef {object} AvonniVisualPickerTag
  * @name itemTags
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
  */
 /**
- * @typedef {Object} ImageAttributes
+ * @typedef {object} AvonniImageAttributes
  * @name imageAttributes
  * @property {string} fallbackSrc The source URL to use if item.imageSrc is invalid or is not specified.
  * @property {string} position The position of the image relative to the content. The supported positions are left, right, top, bottom, background and overlay.
@@ -52,13 +52,13 @@
  * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
  */
 /**
- * @typedef {Object} FieldAttributes
+ * @typedef {object} AvonniFieldAttributes
  * @name fieldAttributes
  * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
  * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
  */
 /**
- * @typedef {Object} ColumnAttributes
+ * @typedef {object} AvonniColumnAttributes
  * @name columnAttributes
  * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
  * @property {string|number} largeContainerCols Number of columns on large container widths. Width is greater or equal to 1024px. See `cols` for accepted values.

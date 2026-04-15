@@ -1,5 +1,5 @@
 /**
- * @typedef {object} CompareAttributes
+ * @typedef {object} AvonniImageCompareAttributes
  * @name items
  * @property {string} orientation The orientation of the slider. Valid values include horizontal and vertical. The default is horizontal.
  * @property {string} moveOn Indicates the behavior of the slider. Valid values include hover and click. The default is click.

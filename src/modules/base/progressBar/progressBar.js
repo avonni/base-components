@@ -196,7 +196,7 @@ export default class ProgressBar extends LightningElement {
     /**
      * Object of attributes for the pin.
      *
-     * @type {object}
+     * @type {AvonniProgressBarPinAttributes}
      * @public
      */
     @api
@@ -224,7 +224,7 @@ export default class ProgressBar extends LightningElement {
     /**
      * Array of reference lines objects.
      *
-     * @type {object[]}
+     * @type {AvonniProgressBarReferenceLine[]}
      * @public
      */
     @api
