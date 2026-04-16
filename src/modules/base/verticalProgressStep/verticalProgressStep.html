@@ -34,7 +34,9 @@
                 avonni-vertical-progress-step__content-in-line_border-bottom
             "
         >
-            <div if:true={label} class="slds-truncate">{label}</div>
+            <div if:true={label} class="slds-truncate" title={label}>
+                {label}
+            </div>
             <template if:true={showLabelSlot}>
                 <slot
                     class="slds-truncate"

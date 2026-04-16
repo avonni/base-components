@@ -131,13 +131,17 @@
                                     target={selectedItem.target}
                                     onclick={handleAnchorTagClick}
                                 >
-                                    <div class="slds-truncate">
+                                    <div
+                                        class="slds-truncate"
+                                        title={selectedItem.title}
+                                    >
                                         {selectedItem.title}
                                     </div>
                                 </a>
                                 <div
                                     if:false={selectedItem.href}
                                     class="slds-truncate"
+                                    title={selectedItem.title}
                                 >
                                     {selectedItem.title}
                                 </div>

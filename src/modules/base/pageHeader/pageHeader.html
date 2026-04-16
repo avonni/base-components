@@ -43,6 +43,7 @@
                                             slds-page-header__title
                                             slds-truncate
                                         "
+                                        title={title}
                                     >
                                         <template if:true={hasStringTitle}>
                                             {title}
@@ -79,6 +80,7 @@
                                                 slds-page-header__title
                                                 slds-truncate
                                             "
+                                            title={title}
                                         >
                                             <template if:true={hasStringTitle}>
                                                 {title}
@@ -107,7 +109,10 @@
         </div>
         <div class="slds-page-header__row">
             <div if:false={isBaseVariant} class="slds-page-header__col-meta">
-                <p class="slds-page-header__meta-text slds-truncate">
+                <p
+                    class="slds-page-header__meta-text slds-truncate"
+                    title={info}
+                >
                     <template if:true={hasStringInfo}>{info}</template>
                     <template if:false={hasStringInfo}>
                         <slot name="info"></slot>

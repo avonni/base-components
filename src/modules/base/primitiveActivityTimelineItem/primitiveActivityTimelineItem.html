@@ -64,9 +64,15 @@
                                 data-element-id="a-title-link"
                                 onclick={handleAnchorTagClick}
                             >
-                                <h3 class="slds-truncate">{title}</h3>
+                                <h3 class="slds-truncate" title={title}>
+                                    {title}
+                                </h3>
                             </a>
-                            <h3 if:false={href} class="slds-truncate">
+                            <h3
+                                if:false={href}
+                                class="slds-truncate"
+                                title={title}
+                            >
                                 {title}
                             </h3>
                         </div>
@@ -94,6 +100,7 @@
                             if:true={dateFormat}
                             class="slds-timeline__date slds-truncate"
                             data-element-id="avonni-formatted-date-time"
+                            title={formattedDate}
                         >
                             {formattedDate}
                         </div>
@@ -156,7 +163,10 @@
                             variant="error"
                             size="x-small"
                         ></lightning-icon>
-                        <p class="slds-truncate">
+                        <p
+                            class="slds-truncate"
+                            title="There was an error loading the details"
+                        >
                             There was an error loading the details
                         </p>
                     </div>
