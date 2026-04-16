@@ -21,7 +21,11 @@
         "
     >
         <span class={computedWrapTextClass}>
-            <lightning-formatted-rich-text style="width: 100%" value={value}>
+            <lightning-formatted-rich-text
+                style="width: 100%"
+                title={value}
+                value={value}
+            >
             </lightning-formatted-rich-text>
         </span>
         <c-primitive-cell-editable-button
