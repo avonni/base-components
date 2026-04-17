@@ -105,10 +105,14 @@
                                                 slds-m-bottom_x-small
                                                 slds-truncate
                                             "
+                                            title={item.title}
                                         >
                                             {item.title}
                                         </p>
-                                        <p class={item.descriptionClass}>
+                                        <p
+                                            class={item.descriptionClass}
+                                            title={item.description}
+                                        >
                                             {item.description}
                                         </p>
                                         <div

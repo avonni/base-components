@@ -32,6 +32,7 @@
                                 slds-page-header__title
                                 slds-hyphenate slds-truncate
                             "
+                            title={title}
                         >
                             <template if:true={hasStringTitle}>
                                 {title}
@@ -53,6 +54,7 @@
                 slds-truncate
                 slds-m-top_xx-small
             "
+            title={info}
         >
             <template if:true={hasStringInfo}>{info}</template>
             <template if:false={hasStringInfo}>

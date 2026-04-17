@@ -29,7 +29,9 @@
                 ></c-avatar>
             </div>
             <div if:false={avatar.primaryText} class="slds-media__body">
-                <span class="slds-truncate" aria-hidden="true">{label}</span>
+                <span class="slds-truncate" aria-hidden="true" title={label}
+                    >{label}</span
+                >
             </div>
             <div
                 if:true={isLocked}

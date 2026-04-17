@@ -18,7 +18,11 @@
                 slot="figure"
                 src={avatarSrc}
             ></avonni-avatar>
-            <div if:true={label} class="slds-text-heading_small slds-truncate">
+            <div
+                if:true={label}
+                class="slds-text-heading_small slds-truncate"
+                title={label}
+            >
                 <a
                     if:true={displayAsLink}
                     href={href}
@@ -59,6 +63,7 @@
                     <dt
                         key={generateKey}
                         class="slds-dl_horizontal__label slds-truncate"
+                        title={data.label}
                     >
                         {data.label}
                     </dt>

@@ -206,7 +206,10 @@
                 icon-name={computedLabels.right.iconName}
                 size="x-small"
             ></lightning-icon>
-            <span if:true={computedLabels.right.value} class="slds-truncate"
+            <span
+                if:true={computedLabels.right.value}
+                class="slds-truncate"
+                title={computedLabels.right.value}
                 >{computedLabels.right.value}
             </span>
         </div>
