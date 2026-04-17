@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} ComboboxOption
+ * @typedef {object} AvonniComboboxOption
  * @name options
  * @property {object} avatar An object with item fields to be rendered as an avatar.
  * @property {boolean} disabled If true, the option will be disabled.
@@ -13,7 +13,7 @@
  */
 
 /**
- * @typedef {Object} ComboboxAvatar
+ * @typedef {object} AvonniComboboxAvatar
  * @name avatar
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the option avatar image fails to load. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
@@ -24,7 +24,7 @@
  */
 
 /**
- * @typedef {Object} ComboboxScope
+ * @typedef {object} AvonniComboboxScope
  * @name scopes
  * @property {string} iconName The Lightning Design System name of the icon displayed to the left of the label. Specify the name in the format 'utility:chevronright' where 'utility' is the category, and 'chevronright' is the specific icon to be displayed.
  * @property {string[]} groups Array of group names this scope belongs to.
@@ -33,14 +33,14 @@
  */
 
 /**
- * @typedef {Object} ComboboxGroup
+ * @typedef {object} AvonniComboboxGroup
  * @name groups
  * @property {string} label Label of the option.
  * @property {string} name Required. A unique name for the group. It will be used as a reference in the options.
  */
 
 /**
- * @typedef {Object} ComboboxAction
+ * @typedef {object} AvonniComboboxAction
  * @name actions
  * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. Defaults to false.
  * @property {boolean} displayOnSearch If true, the action will only be visible during a search. This value defaults to false.

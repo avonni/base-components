@@ -272,7 +272,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Array of option objects.
      *
-     * @type {object[]}
+     * @type {AvonniInputChoiceSetOption[]}
      * @public
      * @required
      */
@@ -315,7 +315,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and multipleRows.
      *
-     * @type {object}
+     * @type {AvonniInputChoiceSetOrientationAttributes}
      * @public
      */
     @api
@@ -408,7 +408,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Attributes specific to the type (see **Types and Type Attributes**).
      *
-     * @type {object}
+     * @type {AvonniInputChoiceSetTypeAttributes}
      * @public
      */
     @api

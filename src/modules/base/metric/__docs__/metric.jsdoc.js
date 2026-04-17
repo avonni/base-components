@@ -1,5 +1,5 @@
 /**
- * @typedef {object} MetricAvatar
+ * @typedef {object} AvonniMetricAvatar
  * @name avatar
  * @property {string} alternativeText The alternative text used to describe the avatar.
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
@@ -74,12 +74,7 @@
  * @default normal
  * @type font
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-metric-label-font-weigth
- * @default normal
- * @type (string|number)
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-metric-label-line-clamp
@@ -324,4 +319,10 @@
  * @name --avonni-metric-positive-trend-text-color
  * @default #2e844a
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-label-font-weight
+ * @type font
+ * @default normal
  */

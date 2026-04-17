@@ -115,16 +115,22 @@
  * @default 600
  * @type font
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-width
+ * @type dimension
+ * @default fit-content
+ */
 
 /**
- * @typedef {Object} MarkedDate
+ * @typedef {object} AvonniCalendarMarkedDate
  * @name markedDates
  * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
  * @property {string} color Color of the marker. Defaults to #bf0201.
  */
 
 /**
- * @typedef {Object} DateLabel
+ * @typedef {object} AvonniCalendarDateLabel
  * @name dateLabels
  * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
  * To prioritize a date label, place it toward the end of the array.

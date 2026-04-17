@@ -93,7 +93,7 @@ export default class Status extends LightningElement {
     /**
      * Array of available state objects. The selected state will be displayed as the current status.
      *
-     * @type {Object[]}
+     * @type {AvonniStatusState[]}
      * @public
      */
     @api

@@ -99,3 +99,20 @@
  * @default 400
  * @type font
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-label-font-size
+ * @type font
+ * @default xx-small:10px | x-small:10px | small:11px | medium:12px | large:14px | x-large:16px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-label-line-clamp
+ * @type number
+ * @default 2
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-value-font-size
+ * @type font
+ */

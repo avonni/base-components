@@ -324,3 +324,9 @@
  * @name --avonni-blockquote-container-letter-spacing
  * @type sizing
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-warning-color-background
+ * @type color
+ * @default #fafaf9
+ */

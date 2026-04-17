@@ -1124,3 +1124,78 @@
  * @type string
  * @default cover
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-color-background-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-color-background-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-color-border-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-color-border-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-spacing-block-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-spacing-block-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-spacing-inline-end
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-spacing-inline-start
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-button-base-text-color-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-image-object-fit
+ * @type string
+ * @default cover
+ */

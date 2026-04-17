@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} DynamicMenuItem
+ * @typedef {object} AvonniDynamicMenuItem
  * @name items
  * @property {object[]} actions Array of action objects for the item.
  * @property {object} avatar Avatar object.
@@ -7,9 +7,11 @@
  * @property {string} label Item label.
  * @property {string[]} meta An array of descriptive meta tags text.
  * @property {string} value Item text value.
+ * @property {AvonniDynamicMenuAvatar} avatar avatar object.
+ * @property {AvonniDynamicMenuAction} actions Array of action objects.
  */
 /**
- * @typedef {Object} DynamicMenuAction
+ * @typedef {object} AvonniDynamicMenuAction
  * @name actions
  * @property {string} alternativeText The alternative text used to describe the icon. This text should describe what happens when you click the button, for example 'Upload File', not what the icon looks like, 'Paperclip'.
  * @property {boolean} disabled If present, the action item is shown as disabled. Defaults to false.
@@ -17,7 +19,7 @@
  * @property {string} name Required.  Unique name of the action. It will be returned by the actionclick event.
  */
 /**
- * @typedef {Object} DynamicMenuAvatar
+ * @typedef {object} AvonniDynamicMenuAvatar
  * @name avatar
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
@@ -186,24 +188,6 @@
  * @name --avonni-dynamic-menu-bare-inverse-color-border-hover
  * @type color
  * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-inverse-text-color
- * @type color
- * @default #fff
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-inverse-text-color-active
- * @type color
- * @default rgba(255, 255, 255, 0.75)
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-inverse-text-color-hover
- * @type color
- * @default rgba(255, 255, 255, 0.5)
  */
 
 /**
@@ -516,24 +500,6 @@
  * @name --avonni-dynamic-menu-outline-brand-color-border-hover
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-outline-brand-text-color
- * @type color
- * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-outline-brand-text-color-active
- * @type color
- * @default #014486
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-dynamic-menu-outline-brand-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -983,4 +949,34 @@
  * @name --avonni-dynamic-menu-item-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-inverse-background-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-inverse-background-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-inverse-background-color-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-text-color-hover
+ * @type color
  */

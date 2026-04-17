@@ -1,26 +1,26 @@
 /**
- * @typedef {Object} VerticalVisualPickerItem
+ * @typedef {object} VerticalVisualPickerItem
  * @name items
- * @property {object} avatar An object with item fields to be rendered as an avatar.
+ * @property {VerticalVisualPickerAvatar} avatar An object with item fields to be rendered as an avatar.
  * @property {string} description Description displayed under the title.
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
  * @property {string} imgAlternativeText The assistive text for the image.
  * @property {string} imgSrc The URL of the image. If avatar is present and imgSrc are present, the image is prioritize.
  * @property {string} mediaPosition Sets the position of the avatar or the image if present. Valid values include right and left. The value defaults to left.
- * @property {object[]} subItems Array of input choice set options.
+ * @property {VerticalVisualPickerSubItem[]} subItems Array of input choice set options.
  * @property {boolean} subItemsMultiSelect Defines the input choice set is-multi-select attribute.
  * @property {string[]} tags Array of tags.
  * @property {string} title Title of the item.
  * @property {string} value Required. A unique value for the item.
  */
 /**
- * @typedef {Object} VerticalVisualPickerSubItem
+ * @typedef {object} VerticalVisualPickerSubItem
  * @name itemsSubItem
  * @property {string} label Label of the sub item.
  * @property {string} value Required. A unique value for the sub item.
  */
 /**
- * @typedef {Object} VerticalVisualPickerAvatar
+ * @typedef {object} VerticalVisualPickerAvatar
  * @name itemsAvatar
  * @property {string} alternativeText The alternative text used to describe the avatar, which is displayed as hover text on the image.
  * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -32,7 +32,7 @@
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
  */
 /**
- * @typedef {Object} VerticalVisualPickerTag
+ * @typedef {object} VerticalVisualPickerTag
  * @name itemsTag
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
@@ -292,4 +292,16 @@
  * @name --avonni-vertical-visual-picker-show-more-button-sizing-border
  * @default 1px
  * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-help-message-height
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-legend-height
+ * @type dimension
+ * @default 0px
  */

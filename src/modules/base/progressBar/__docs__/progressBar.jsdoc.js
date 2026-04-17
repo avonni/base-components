@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} ProgressBarReferenceLine
+ * @typedef {object} AvonniProgressBarReferenceLine
  * @name referenceLines
  * @property {string} label Required. Label displayed on the reference badge.
  * @property {number} value Value of the reference line on the progress bar. Defaults to 0.
@@ -8,7 +8,7 @@
  *
  */
 /**
- * @typedef {Object} PinAttributes
+ * @typedef {object} AvonniProgressBarPinAttributes
  * @name pinAttributes
  * @property {string} position Specify the position of the pin relative to the vertical bar. Valid values include left and right. Defaults to right.
  * @property {string} type Specify the type of the pin. Valid values include circle and rectangle. Defaults to rectangle.

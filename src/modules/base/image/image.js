@@ -1,10 +1,11 @@
-import { LightningElement, api } from 'lwc';
 import {
     classSet,
     normalizeBoolean,
     normalizeObject,
     normalizeString
 } from 'c/utils';
+import { keyValues } from 'c/utilsPrivate';
+import { LightningElement, api } from 'lwc';
 import {
     followMagnifier,
     getMagnifierData,
@@ -14,7 +15,6 @@ import {
     showMagnifierBox,
     standardMagnifier
 } from './magnifier';
-import { keyValues } from 'c/utilsPrivate';
 
 const COMPARE_ORIENTATION = {
     valid: ['horizontal', 'vertical'],
@@ -184,7 +184,7 @@ export default class Image extends LightningElement {
     /**
      * Specifies the compare slider attributes.
      *
-     * @type {object}
+     * @type {AvonniImageCompareAttributes}
      * @public
      */
     @api

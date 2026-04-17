@@ -460,7 +460,7 @@ export default class Slider extends LightningElement {
     /**
      * Attributes specific to the selected unit. See Units and Unit Attributes table for more details.
      *
-     * @type {object}
+     * @type {AvonniSliderUnitAttributes}
      * @public
      */
     @api

@@ -24,21 +24,13 @@
  * @type number
  * @default 2
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-link-icon-radius-border
- * @type dimension
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-icon-color-background
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-link-icon-color-background-complete
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-icon-color-foreground
@@ -182,4 +174,29 @@
  * @name --avonni-visual-picker-link-title-line-clamp
  * @type number
  * @default 1
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-background-complete
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-radius-border
+ * @type dimension
  */

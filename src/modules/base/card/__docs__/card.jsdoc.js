@@ -224,12 +224,7 @@
  * @default 1rem
  * @type dimension
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-footer-spacing-inline-end
- * @default 1rem
- * @type dimension
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-text-align
@@ -310,4 +305,16 @@
  * @name --avonni-card-media-sizing-border
  * @default 1px
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-color-background
+ * @type color
+ * @default white
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-footer-padding-right
+ * @type dimension
+ * @default 1rem
  */

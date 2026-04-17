@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} Tag
+ * @typedef {Object} AvonniAvatarTag
  * @name tags
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the style of the chip. Valid values include base, brand, warning, error, success, info, alt-inverse, inverse, offline. Defaults to base.
@@ -7,7 +7,7 @@
  */
 
 /**
- * @typedef {Object} Action
+ * @typedef {Object} AvonniAvatarAction
  * @name actions
  * @property {boolean} disabled If true, the action is disabled.
  * @property {string} label Action label. If only one action present, label is used as alternative-text. If there are many options, the icon and label are displayed in a menu.

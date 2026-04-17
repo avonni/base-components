@@ -106,3 +106,13 @@
  * @name --avonni-page-header-record-home-vertical-icon-color-foreground
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-record-home-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-record-home-icon-color-foreground
+ * @type color
+ */

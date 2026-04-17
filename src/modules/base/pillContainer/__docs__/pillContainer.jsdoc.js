@@ -1,5 +1,5 @@
 /**
- * @typedef {object} PillContainerActions
+ * @typedef {object} AvonniPillContainerActions
  * @name actions
  * @property {boolean} disabled If true, the action is disabled and cannot be selected. Defaults to false.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
@@ -8,7 +8,7 @@
  */
 
 /**
- * @typedef {object} PillContainerAvatar
+ * @typedef {object} AvonniPillContainerAvatar
  * @name avatars
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
@@ -17,12 +17,12 @@
  */
 
 /**
- * @typedef {object} PillContainerItem
+ * @typedef {object} AvonniPillContainerItem
  * @name items
  * @property {string} href Url of the page that the pill's link goes to.
  * @property {string} label Text to display in the pill.
  * @property {string} name Name to identify the pill.
- * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
+ * @property {AvonniPillContainerAvatar} avatar Avatar object. If present, the avatar is displayed to the left of the label.
  * @property {string} target The target attribute for the link.
  */
 

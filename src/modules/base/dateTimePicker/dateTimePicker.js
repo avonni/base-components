@@ -349,7 +349,7 @@ export default class DateTimePicker extends LightningElement {
     /**
      * Avatar object. The avatar will be displayed in the header, to the left of the label.
      *
-     * @type {object}
+     * @type {AvonniDateTimePickerAvatar}
      * @public
      */
     @api
@@ -489,7 +489,7 @@ export default class DateTimePicker extends LightningElement {
     /**
      * Array of disabled dates. The dates must be Date objects or valid ISO8601 strings.
      *
-     * @type {object[]}
+     * @type {Date[]}
      * @public
      */
     @api
@@ -620,7 +620,7 @@ export default class DateTimePicker extends LightningElement {
     /**
      * Maximum date the calendar can show. The value should be a Date object, a timestamp, or an ISO8601 formatted string.
      *
-     * @type {object|string}
+     * @type {Date|string}
      * @default 2099-12-31
      * @public
      */
@@ -641,7 +641,7 @@ export default class DateTimePicker extends LightningElement {
     /**
      * Minimum date the calendar can show. The value should be a Date object, a timestamp, or an ISO8601 formatted string.
      *
-     * @type {object|string}
+     * @type {Date|string}
      * @default 1900-01-01
      * @public
      */

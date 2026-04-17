@@ -1,5 +1,5 @@
 /**
- * @typedef {object} ChipContainerItem
+ * @typedef {object} AvonniChipContainerItem
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
  * @property {string} backgroundColor If present, it replaces the default variant background color of the chip.
@@ -15,7 +15,7 @@
  */
 
 /**
- * @typedef {object} ChipContainerAvatar
+ * @typedef {object} AvonniChipContainerAvatar
  * @name avatars
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
@@ -344,4 +344,16 @@
  * @name --avonni-chip-spacing-inline-end
  * @default 0.5rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-container-sizing-border
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-container-styling-border
+ * @type string
+ * @default solid
  */

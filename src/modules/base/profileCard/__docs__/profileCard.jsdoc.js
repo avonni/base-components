@@ -69,18 +69,7 @@
  * @default #c9c9c9
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-header-title-font-family
- * @default 'Salesforce Sans', Arial, sans-serif
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-header-subtitle-font-family
- * @default 'Salesforce Sans', Arial, sans-serif
- * @type font
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-profile-card-title-text-color
@@ -176,4 +165,32 @@
  * @name --avonni-profile-card-radius-border
  * @default 0.25rem
  * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-shadow
+ * @type string
+ * @default 0 2px 2px 0 rgba(0, 0, 0, 0.1)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-header-subtitle-font-family
+ * @type font
+ * @default "Salesforce Sans", Arial, sans-serif
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-header-title-font-family
+ * @type font
+ * @default "Salesforce Sans", Arial, sans-serif
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-subtitle-letter-spacing
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-title-letter-spacing
+ * @type dimension
  */

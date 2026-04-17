@@ -167,7 +167,7 @@ export default class ChipContainer extends LightningElement {
     /**
      * Array of item objects to display as chips in the container.
      *
-     * @type {object[]}
+     * @type {AvonniChipContainerItem[]}
      * @public
      */
     @api

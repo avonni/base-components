@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} DateTimePickerAvatar
+ * @typedef {object} AvonniDateTimePickerAvatar
  * @name avatar
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the option avatar image fails to load. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
@@ -172,4 +172,88 @@
  * @name --avonni-date-time-picker-weekly-day-header-text-color-today
  * @default #1589ee
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-button-radius-border
+ * @type dimension
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-button-text-color-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-color-background
+ * @type color
+ * @default #f3f3f3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-background
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-background-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-background-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-border
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-border-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-color-border-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-radius-border
+ * @type dimension
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-sizing-border
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-text-color
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-text-color-active
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-next-button-text-color-hover
+ * @type color
+ * @default #ffffff
  */

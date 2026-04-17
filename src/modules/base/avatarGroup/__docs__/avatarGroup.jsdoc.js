@@ -1,5 +1,5 @@
 /**
- * @typedef AvatarGroupItem
+ * @typedef {object} AvonniAvatarGroupItem
  * @name Items
  * @property {string} alternativeText The alternative text used to describe the avatar.
  * @property {string} name Name to identify the avatar. It will be returned by the avatarclick and avataractionclick events.
@@ -30,8 +30,9 @@
  * @property {string} actionMenuIcon Optional custom icon to replace the button menu down arrow default.
  * Names are written in the format 'utility:threedots' where 'utility' is the category, and 'threedots' is the specific icon to be displayed.
  */
+
 /**
- * @typedef {Object} AvatarGroupTag
+ * @typedef {object} AvonniAvatarGroupTag
  * @name tags
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the style of the chip. Valid values include base, brand, warning, error, success, info, alt-inverse, inverse, offline. Defaults to base.

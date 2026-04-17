@@ -357,7 +357,7 @@ export default class DynamicMenu extends LightningElement {
     /**
      * Array of item objects.
      *
-     * @type {object[]}
+     * @type {AvonniDynamicMenuItem[]}
      * @public
      */
     @api

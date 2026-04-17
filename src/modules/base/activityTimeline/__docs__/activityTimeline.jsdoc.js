@@ -65,11 +65,7 @@
  * @name --avonni-activity-timeline-icon-color-background
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-activity-timeline-icon-color-background-complete
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-activity-timeline-icon-color-foreground
@@ -247,4 +243,10 @@
  * @name --avonni-activity-timeline-show-more-button-neutral-sizing-border
  * @default 1px
  * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-item-description-line-clamp
+ * @type number
+ * @default 3
  */

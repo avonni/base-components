@@ -253,7 +253,7 @@ export default class Carousel extends LightningElement {
     /**
      * Description of the carousel items for screen-readers.
      *
-     * @type {object}
+     * @type {AvonniCarouselAssistiveText}
      * @public
      * @default <code>{ autoplayButton: 'Play / Stop auto-play', nextPanel: 'Next Panel', previousPanel: 'Previous Panel' }</code>
      */
@@ -268,7 +268,8 @@ export default class Carousel extends LightningElement {
                 text.autoplayButton || DEFAULT_ASSISTIVE_TEXT_AUTOPLAY_BUTTON,
             nextPanel: text.nextPanel || DEFAULT_ASSISTIVE_TEXT_NEXT_PANEL,
             previousPanel:
-                text.previousPanel || DEFAULT_ASSISTIVE_TEXT_PREVIOUS_PANEL
+                text.previousPanel || DEFAULT_ASSISTIVE_TEXT_PREVIOUS_PANEL,
+            loading: text.loading || DEFAULT_LOADING_STATE_ASSISTIVE_TEXT
         };
     }
 
@@ -412,7 +413,7 @@ export default class Carousel extends LightningElement {
     /**
      * Array of item objects to display in the carousel.
      *
-     * @type {object[]}
+     * @type {AvonniCarouselItem[]}
      * @public
      * @required
      */

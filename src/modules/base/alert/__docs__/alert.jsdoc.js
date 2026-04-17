@@ -237,3 +237,9 @@
  * @default 0
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-size-background
+ * @type dimension
+ * @default 64px 64px
+ */

@@ -101,7 +101,7 @@ export default class PillContainer extends LightningElement {
     /**
      * Array of actions to display to the right of each pill.
      *
-     * @type {object[]}
+     * @type {AvonniPillContainerActions[]}
      * @public
      */
     @api
@@ -176,7 +176,7 @@ export default class PillContainer extends LightningElement {
     /**
      * Array of item objects to display as pills in the container.
      *
-     * @type {object[]}
+     * @type {AvonniPillContainerItem[]}
      * @public
      */
     @api

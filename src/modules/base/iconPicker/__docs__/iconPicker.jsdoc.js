@@ -25,3 +25,9 @@
  * @default 400
  * @type font
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-builder-icon-picker-popover-height
+ * @type dimension
+ * @default 14rem
+ */

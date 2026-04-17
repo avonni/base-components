@@ -2,10 +2,16 @@
  * @namespace slots
  */
 /**
- * Placeholder for your content in the expandable-section.
+ * Placeholder for your content in the main section.
  *
  * @memberof slots
  * @name default
+ */
+/**
+ * Placeholder for your content in the title.
+ *
+ * @memberof slots
+ * @name title
  */
 
 /**
@@ -119,11 +125,7 @@
  * @default transparent
  * @type color
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-expandable-section-shaded-header-color-border-active
- * @type color
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-text-color

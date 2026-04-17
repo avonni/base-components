@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} FilterMenuGroupMenu
+ * @typedef {Object} AvonniFilterMenuGroupMenu
  * @name menus
  * @property {string} accessKey The keyboard shortcut for the button menu (horizontal variant) or the checkbox group (vertical variant).
  * @property {string} alternativeText The assistive text for the button menu.
@@ -24,7 +24,7 @@
  * @property {string} title Title of the button (horizontal variant) or the label (vertical variant).
  * @property {string} tooltip The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).
  * @property {string} type Type of the filter menu. Valid values include date-range, list and range. Defaults to list.
- * @property {object} typeAttributes Attributes specific to the type (see **Types and Type Attributes** in <a href="/components/filter-menu">Filter Menu</a>).
+ * @property {AvonniFilterMenuTypeAttributes} typeAttributes Attributes specific to the type.
  */
 
 /**

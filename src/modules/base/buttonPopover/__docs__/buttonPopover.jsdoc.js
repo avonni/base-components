@@ -38,12 +38,7 @@
  * @type dimension
  * @default 1.875rem
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-radius-border
- * @type radius
- * @default 0.25rem
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-sizing-border
@@ -167,12 +162,7 @@
  * @type color
  * @default transparent
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-bare-inverse-text-color
- * @type color
- * @default #fff
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-bare-inverse-spacing-inline-end
@@ -209,12 +199,7 @@
  * @type color
  * @default rgba(255, 255, 255, 0.75)
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-bare-inverse-text-color-active
- * @type color
- * @default rgba(255, 255, 255, 0.75)
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-bare-inverse-color-background-hover
@@ -226,12 +211,6 @@
  * @name --avonni-button-popover-bare-inverse-color-border-hover
  * @type color
  * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-bare-inverse-text-color-hover
- * @type color
- * @default rgba(255, 255, 255, 0.5)
  */
 
 /**
@@ -641,12 +620,7 @@
  * @type color
  * @default #0176d3
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-outline-brand-text-color
- * @type color
- * @default #0176d3
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-outline-brand-spacing-inline-end
@@ -683,12 +657,7 @@
  * @type color
  * @default #0176d3
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-outline-brand-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-outline-brand-color-background-hover
@@ -700,12 +669,6 @@
  * @name --avonni-button-popover-outline-brand-color-border-hover
  * @type color
  * @default #0176d3
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-outline-brand-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -750,24 +713,7 @@
  * @type dimension
  * @default 0
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-container-color-background-active
- * @type color
- * @default transparent
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-container-color-border-active
- * @type color
- * @default #014486
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-container-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-container-color-background-hover
@@ -919,12 +865,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-text-destructive-text-color-active
- * @type color
- * @default #8e030f
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-text-destructive-color-background-hover
@@ -1035,12 +976,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-neutral-text-color
- * @type color
- * @default #0176d3
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-neutral-spacing-inline-end
@@ -1077,12 +1013,7 @@
  * @type color
  * @default #747474
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-neutral-text-color-active
- * @type color
- * @default #014486
- */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-popover-neutral-color-background-hover
@@ -1094,12 +1025,6 @@
  * @name --avonni-button-popover-neutral-color-border-hover
  * @type color
  * @default #747474
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-button-popover-neutral-text-color-hover
- * @type color
- * @default #014486
  */
 
 /**
@@ -1207,4 +1132,29 @@
  * @name --avonni-button-popover-image-object-fit
  * @type string
  * @default cover
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-popover-bare-inverse-background-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-popover-destructive-text-color-hover-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-popover-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-popover-text-color-active
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-popover-text-color-hover
+ * @type color
  */

@@ -188,7 +188,7 @@ export default class Avatar extends LightningElement {
      * Array of action objects. If the array contains a single action, it is displayed as a button icon. Otherwise, actions are placed in a button menu with a label and icon.
      *
      * @public
-     * @type {object[]}
+     * @type {AvonniAvatarAction[]}
      */
     @api
     get actions() {
@@ -453,7 +453,7 @@ export default class Avatar extends LightningElement {
      * Array of tag objects. The tags are displayed as chips in the details.
      *
      * @public
-     * @type {object[]}
+     * @type {AvonniAvatarTag[]}
      */
     @api
     get tags() {

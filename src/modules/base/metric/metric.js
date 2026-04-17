@@ -222,7 +222,7 @@ export default class Metric extends LightningElement {
     /**
      * Avatar object.
      *
-     * @type {object}
+     * @type {AvonniMetricAvatar}
      * @public
      */
     @api

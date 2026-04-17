@@ -1,4 +1,10 @@
 /**
+ * @typedef {object} AvonniInputDateRangeValue
+ * @property {string} startDate The start date of the date range.
+ * @property {string} endDate The end date of the date range.
+ */
+
+/**
  * @namespace stylingHooks
  */
 /**
