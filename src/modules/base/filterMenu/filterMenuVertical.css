@@ -69,6 +69,7 @@
     overflow: hidden;
     /* Avoid Salesforce Experience site styles affecting the section button */
     margin-bottom: 0;
+    align-items: center;
 }
 
 .avonni-filter-menu__label-container-collapsible {

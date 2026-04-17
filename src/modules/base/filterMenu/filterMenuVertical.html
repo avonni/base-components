@@ -46,7 +46,6 @@
                     avonni-filter-menu__allow-shrink-width
                     slds-truncate
                 "
-                title={label}
             >
                 <span class="avonni-filter-menu__label slds-truncate"
                     >{label}</span
@@ -91,7 +90,6 @@
                     avonni-filter-menu__allow-shrink-width
                     slds-truncate
                 "
-                title={label}
             >
                 <span class="avonni-filter-menu__label slds-truncate"
                     >{label}</span
@@ -117,12 +115,14 @@
     <template if:true={displayFilters}>
         <!-- Search box -->
         <div class="avonni-filter-menu__search-wrapper">
+            <!-- Salesforce Experience add margin to the lightning input so we have to remove it with slds-m-bottom_none -->
             <lightning-input
                 if:true={computedTypeAttributes.allowSearch}
                 class="
                     slds-grow
                     avonni-filter-menu__allow-shrink-width
                     slds-p-vertical_x-small
+                    slds-m-bottom_none
                 "
                 disabled={disabled}
                 label={computedTypeAttributes.searchInputPlaceholder}

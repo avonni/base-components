@@ -36,6 +36,17 @@ export default class KanbanGroup {
         return this._label;
     }
 
+    get showItemCount() {
+        return this._showItemCount;
+    }
+
+    get truncatedTitle() {
+        if (this._showItemCount) {
+            return `${this._label} (${this._tiles.length})`;
+        }
+        return this._label;
+    }
+
     get value() {
         return this._value;
     }

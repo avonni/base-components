@@ -70,9 +70,10 @@
                     data-element-id="avonni-filter-menu__dropdown-content-container"
                 >
                     <!-- Search box -->
+                    <!-- Salesforce Experience add margin to the lightning input so we have to remove it with slds-m-bottom_none -->
                     <lightning-input
                         if:true={computedTypeAttributes.allowSearch}
-                        class="slds-p-around_small"
+                        class="slds-p-around_small slds-m-bottom_none"
                         label={computedTypeAttributes.searchInputPlaceholder}
                         placeholder={computedTypeAttributes.searchInputPlaceholder}
                         variant="label-hidden"

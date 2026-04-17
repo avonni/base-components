@@ -13,17 +13,10 @@
             src={svgURL}
             data-element-id="img"
         />
-        <div class="slds-text-longform">
-            <div
-                class="avonni-illustration__title slds-m-bottom_small"
-                data-element-id="h3"
-            >
-                {title}
-            </div>
-        </div>
-        <div class="avonni-illustration__content">
-            <slot></slot>
-        </div>
+
+        <h3 class="avonni-illustration__title" data-element-id="h3">{title}</h3>
+
+        <slot></slot>
         <slot name="actions"></slot>
     </div>
 </template>

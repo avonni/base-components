@@ -26,7 +26,9 @@ export default class DynamicMenuInGroup extends LightningElement {
     @api menuLength = DEFAULT_MENU_LENGTH;
     @api menuWidth = DEFAULT_MENU_WIDTH;
     @api nubbin = false;
+    @api openMenuOnHover = false;
     @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+    @api selectOnHover = false;
     @api title;
     @api tooltip;
     @api value;
